@@ -1,0 +1,9 @@
+<% if params[:assign_project] %>
+  <%= render 'form_project_assignees' , project: @project %>
+<% else %>
+  <h1> Project#edit </h1>
+  <%= form_for @project, local: true, class: "form-inline" do |f| %>
+	<%= render 'form', project: @project, f: f %>
+	  <%= f.submit "Update", class: 'btn btn-success' %>
+	<% end %>
+<%end%>

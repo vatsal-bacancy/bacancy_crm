@@ -1,0 +1,60 @@
+<div id="success_message"></div>
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <span class="main-menu-sitecontent">Projects</span>
+          </div>
+          <div class="pull-right">
+            <a href="javascript:void(0)" class="site-content-head-btn" id='project_destroy_all'>Delete</a>
+              <%= link_to new_project_path, class: 'site-content-head-btn', remote: true do %>
+                + Add Project
+              <% end %>
+            <a href="javascript:void(0)" class="dropdown-toggle site-content-head-btn" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <span class="nav-cell blue-font">
+              Action
+              <span class="caret"></span>
+            </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="project-list">
+      <%= render partial: 'list', locals: { projects: @projects, fields: @fields, clients: @clients, object: nil, klass: @klass }%>
+    </div>
+    <div id="modalContainer" class='modal-right'></div>
+    <div id="importfiled"></div>
+  </div>
+</div>
+<div id="modalContainerIndex" class='modal-right'></div>
+<div id='project-message'></div>
+
+<script>
+  $(document).ready(function() {
+    $(".dropdown-toggle").dropdown();
+
+    $('#project_destroy_all').on('click', function(){
+      var checked = []
+      $("input[name='project_ids[]']:checked").each(function ()
+      {
+        checked.push(parseInt($(this).val()));
+      });
+      $.ajax({
+        url: "<%= destroy_all_projects_path %>",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: 'DELETE',
+        data: {
+          ids: checked
+        },
+        dataType: "script",
+        success: function(result){
+
+        }
+      });
+    });
+  });
+</script>

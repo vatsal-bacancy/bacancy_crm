@@ -1,0 +1,141 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+
+  <div class="site-content">
+    <div class="site-content-head">
+       <div class="row">
+          <div class="col-sm-12">
+            <div class="l-menu">
+              <span class="main-menu-sitecontent"><%= @template_dir.name%> > Email Template</span>
+
+            </div>
+            <div class="pull-right">
+              <% if checked_permission?(current_user, @klass_list['EmailTemplete'], @action_list['delete'])%>
+
+                <a href="javascript:void(0)" class="site-content-head-btn" id='destroy_all_email_temps'>Delete</a>
+              <%end%>
+              <% if checked_permission?(current_user, @klass_list['EmailTemplete'], @action_list['create'])%>
+
+                <%= link_to new_email_templete_path(template_dir_id: @template_dir.id), class: 'site-content-head-btn'  do %>
+                  + Add Email Template
+                <%end%>
+              <%end%>
+              <a href="<%= email_templetes_path %>" class='btn btn-success btn-sm back-btn-margin mt7 l-menu pull-right'>Back</a>
+            </div>
+          </div>
+
+       </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="site-content-data">
+          <div id="email-temp-all" class="table-list">
+            <div class="table-responsive">
+              <table class="common-data-table" id="emailtemps">
+                <thead>
+                  <th>
+                    <div class="radio-lbl">
+                      <label class="check ">
+                        <input type="checkbox"  name="" id="check-all">
+                        <span class="checkmark"></span>
+                      </label>
+                    </div>
+                  </th>
+                  <th> Action </th>
+                  <th> Name </th>
+                  <th> Created At </th>
+                  <th> Added By </th>
+                </thead>
+
+                <tbody class='list-body'>
+                  <% @email_templetes.each do |temp|  %>
+                    <tr>
+                      <td>
+                        <div class="radio-lbl">
+                          <label class="check ">
+                            <%= check_box_tag "temp_ids[]", temp.id , false, class:"check" %>
+                            <span class="checkmark"></span>
+                          </label>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="btn-wrapper">
+                          <div class="action-icon">
+                            <%= link_to edit_email_templete_path(temp), remote: temp.class.name == "TemplateDir"  do %>
+                              <i class="fa fa-pencil" aria-hidden="true"></i>
+                            <% end %>
+                          </div>
+                          <div class="action-icon">
+                            <%= link_to email_templete_path(temp),method: :delete, remote: true do %>
+                              <i class="fa fa-trash " aria-hidden="true"></i>
+                            <% end %>
+                          </div>
+                       </div>
+                      </td>
+                      <td> <%= temp.name %> </td>
+                      <td> <%= temp.created_at.strftime("%m/%d/%Y") %> </td>
+                      <td><%= temp.user.fullname %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script>
+  $(document).ready(function(){
+
+    if ( $.fn.DataTable.isDataTable('#emailtemps') ) {
+      $('#emailtemps').DataTable().destroy();
+    }
+
+    $('#emailtemps').DataTable({
+      sDom: 'lfrtip',
+      scrollX: false,
+      autoWidth: false,
+      paging: true,
+      pageLength: 50,
+      searching: true,
+      lengthMenu: [50, 100],
+      columnDefs: [
+        {orderable: false, targets: [0,1]},
+        {width: "30px", targets: [0] },
+        {className: "dt-center", targets: "_all"}
+      ],
+      order: []
+    });
+
+    $('#check-all').on('change', function(){
+      $('.list-body .check').prop('checked',$(this).prop('checked'));
+    });
+
+    $('#destroy_all_email_temps').on('click', function(){
+      var checked = []
+      $("input[name='temp_ids[]']:checked").each(function ()
+      {
+          checked.push(parseInt($(this).val()));
+      });
+      if(checked == 0){
+        confirm("Please select any email template.");
+      }else{
+        $.ajax({
+          url: "<%= destroy_all_email_templetes_path %>",
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          type: 'DELETE',
+          data: {
+            ids: checked
+          },
+          dataType: "script",
+          success: function(result){
+          }
+        });
+      }
+    });
+  });
+</script>

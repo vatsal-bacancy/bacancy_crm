@@ -1,0 +1,118 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <%= link_to settings_path, class: "heading common-link"  do %> CRM Customization Settings <% end %>
+            <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> </span>
+            <%= link_to roles_path, class:"sub-menu-sitecontent common-link"  do %> User Settings <% end %>
+            <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> </span>
+            <span class="sub-menu-sitecontent">User Permissions</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-sm-12'>
+        <div class="site-content-data">
+          <%= form_for @user_permission, class: 'form-inline' do |f| %>
+            <div class='form-group col-md-6 col-sm-12'>
+              <label for='name'>User Name : </label>
+              <%= @user.fullname %>
+            </div>
+            <div class='form-group col-md-6 col-sm-12 '>
+              <span class=pull-right>
+                <label for=''>Role : </label>
+                <%= @user.roles.first.name.titleize %>
+              </span>
+            </div>
+            <table class='table'>
+              <thead>
+                <tr class="role-table-header">
+                  <th>Name</th>
+                  <th>Create</th>
+                  <th>Read</th>
+                  <th>Update</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="">
+                  <td>Select All</td>
+                  <td>
+                    <label class='check'>
+                      <%= check_box_tag :create, true, false, class: "create-all" %>
+                      <span class='checkmark'></span>
+                    </label>
+                  </td>
+                  <td>
+                    <label class='check'>
+                      <%= check_box_tag :read, true, false, class: "read-all" %>
+                      <span class='checkmark'></span>
+                    </label>
+                  </td>
+                  <td>
+                    <label class='check'>
+                      <%= check_box_tag :update, true, false, class: "update-all" %>
+                      <span class='checkmark'></span>
+                    </label>
+                  </td>
+                  <td>
+                    <label class='check'>
+                      <%= check_box_tag :delete , true, false, class: "delete-all" %>
+                      <span class='checkmark'></span>
+                    </label>
+                  </td>
+                </tr>
+                <% @klasses.each do |klass| %>
+                  <tr>
+                    <td><%= klass.label %></td>
+                    <% @actions.each do |action| %>
+                      <% if UserPermission.is_disabled?(klass, action) %>
+                        <td>N/A</td>
+                      <% else %>
+                        <%#= hidden_field_tag "role[permissions][#{klass.id}][#{action.id}]", false %>
+                        <td>
+                          <label class='check'>
+                            <%= check_box_tag "user_permission[permissions][#{klass.id}][#{action.id}]", true, checked_permission?(@user, klass.id, action.id), class: "#{action.name}" %>
+                            <span class='checkmark'></span>
+                          </label>
+                        </td>
+                      <% end %>
+                    <% end %>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+            <%= f.submit class: 'btn btn-success' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function(){
+    //used to check whether mark select all or not
+    let markSelectAllAccordingly = function () {
+      ['create', 'read', 'update', 'delete'].forEach(function (type) {
+        if (!$(`.${type}:not(:checked)`).length) {
+          $(`.${type}-all`).prop('checked', true);
+          return;
+        }
+        $(`.${type}-all`).prop('checked', false);
+      });
+    };
+    ['create', 'read', 'update', 'delete'].forEach(function(type) {
+      $(`.${type}-all`).on('click', function(){
+        $(`.${type}`).prop('checked', $(this).prop('checked'));
+      });
+    });
+    $('.create, .read, .update, .delete').on('click', function(e) {
+      markSelectAllAccordingly();
+    });
+    markSelectAllAccordingly();
+  });
+</script>

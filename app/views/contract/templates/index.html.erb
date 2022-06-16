@@ -1,0 +1,76 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar' %>
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <span class= "main-menu-sitecontent">Settings</span>
+            <span class="sub-menu-sitecontent m-x-10"><i class="fa fa-angle-right"></i></span>
+            <span class="sub-menu-sitecontent">Contract Templates</span>
+          </div>
+          <div class="pull-right">
+            <%= link_to new_contract_template_path, class: 'site-content-head-btn' do %>
+              + Add Template
+            <% end %>
+            <%= link_to 'Back', settings_path, class: 'btn btn-success' %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="site-content-data">
+            <div class="table-list">
+              <div class="table-responsive">
+                <table class="common-data-table table-bordered" data-contract-template-table>
+                  <thead>
+                  <th class="action">Action</th>
+                  <th>Name</th>
+                  <th>Title</th>
+                  <th>Created At</th>
+                  </thead>
+                  <tbody>
+                  <% @contract_templates.each do |contract_template| %>
+                    <tr>
+                      <td>
+                        <div class="btn-wrapper">
+                          <div class="action-icon">
+                            <%= link_to edit_contract_template_path(contract_template) do %>
+                              <i class="fa fa-pencil" aria-hidden="true"></i>
+                            <% end %>
+                          </div>
+                          <div class="action-icon">
+                            <%= link_to contract_template_path(contract_template), method: :delete, data: { confirm: "Are you sure you want to Delete this Contract Template?" } do %>
+                              <i class="fa fa-trash" aria-hidden="true"></i>
+                            <% end %>
+                          </div>
+                        </div>
+                      </td>
+                      <td><%= contract_template.name %></td>
+                      <td><%= contract_template.title %></td>
+                      <td><%= pretty_date contract_template.created_at %></td>
+                    </tr>
+                  <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function() {
+    $('[data-contract-template-table]').DataTable({
+      sDom: 'lfrtip',
+      paging: true,
+      pageLength: 50,
+      searching: true,
+      lengthMenu: [50, 100]
+    });
+  });
+</script>

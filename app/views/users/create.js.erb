@@ -1,0 +1,7 @@
+<% if @user.errors.any? %>
+  $("#flash_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>")
+<%else%>
+  $("#success_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");
+  $("#users_list").html("<%= escape_javascript(render partial: 'users_list', locals: {users: @users}) %>")
+  $("#modal").modal('hide');
+<%end%>

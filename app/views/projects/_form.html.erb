@@ -1,0 +1,83 @@
+<% @groups.each do |group|%>
+  <div class='row block-ui-box m-t-5 m-r-5'>
+    <div class="col-sm-12">
+    <p class="title">
+      <h3 class="title  p-b-5"><%= group.label%></h3>
+    </p>
+
+    <%group.fields.each do |field|%>
+    <div class= <%= ["Text Area HTML", "File"].include?(field.column_type)   ? 'col-md-12' : 'col-md-6' %>>
+        <div class="form-group ">
+          <%= render partial: 'forms/field', locals: { f: f, field_name: field.name, field_label: field.label, column_type: field.column_type, custom: field.custom, have_custom_value: field.have_custom_value, data: @data, field: field, value: field.column_type == 'File' ? '' : project.send(field.name)} %>
+        </div>
+      </div>
+    <%end%>
+  </div>
+</div>
+<%end%>
+<div class='row block-ui-box m-t-5 m-r-5 project-modal-check'>
+  <div class="col-sm-12">
+    <span class="title  p-b-5"><%= @company.name %>'s users
+      <div class="radio-lbl d-inline-block">
+        <label class="check ">Select All
+          <input type="checkbox"  name="" id="check-all-user">
+          <span class="checkmark"></span>
+        </label>
+      </div>
+    </span>
+    <% current_user.all_user_of_related_company.each do |user|%>
+        <div class="radio-lbl">
+          <label class="check ">
+            <%= check_box_tag "user_ids[]", user.id , false, class:"check user-checkbox" %>
+            <span class="checkmark"></span>
+            <%= user.fullname%>
+          </label>
+        </div>
+    <%end%>
+    <%= "No users " if current_user.all_user_of_related_company.blank? %>
+  </div>
+</div>
+
+
+<div class='' id='user-list'>
+</div>
+<script>
+  $(document).ready(function()
+  {
+    $('.datepicker').datepicker({format: 'mm/dd/yyyy', todayHighlight: true, autoclose: true});
+    $('#start_date').datepicker().on('changeDate',function(e)
+    {
+      $('#end_date').datepicker('setStartDate',e.date);
+    });
+    $('#end_date').datepicker().on('changeDate',function(e)
+    {
+      $('#start_date').datepicker('setEndDate',e.date);
+    });
+
+    $('#check-all-user').on('change', function(){
+      if($(this).is(':checked')){
+        $('.user-checkbox').each(function(){
+          $(this).prop('checked', true);
+        });
+      }
+      else{
+        $('.user-checkbox').each(function(){
+          $(this).prop('checked', false);
+        });
+      }
+    });
+
+    $('#project_client_id').on('change',function()
+    {
+      $.ajax({
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        url: "<%= user_list_projects_path %>",
+        data: {
+          client_id: $(this).val(),
+          project_id: '<%= project.id %>'
+        }
+      });
+    });
+    $('#project_client_id').trigger('change');
+  });
+</script>

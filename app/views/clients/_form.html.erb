@@ -1,0 +1,112 @@
+<div id='client-fields'>
+  <% @groups.each do |group| %>
+    <% if group.fields.quick_creatable.any? %>
+      <div class = 'row block-ui-box m-t-5 m-r-5'>
+        <p class="title">
+        <h3 class="title m-l-10 p-b-5"><%= group.label %></h3>
+        </p>
+        <% group.fields.quick_creatable.each do |field| %>
+          <div class= <%= ["Text Area HTML", "File"].include?(field.column_type)   ? 'col-md-12' : 'col-md-6' %>>
+            <div class="form-group">
+              <%= render partial: 'forms/field', locals: {f: f, field_name: field.name.to_underscore, field_label: field.label, column_type: field.column_type, custom: field.custom, have_custom_value: field.have_custom_value,data: @data, field: field, value: field.column_type == 'File' ? '' : client.send(field.name)}  %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+
+</div>
+<% if  f.object.persisted? %>
+<%else%>
+  <% if checked_permission?(current_user, @klass_list['Contact'], @action_list['create'])%>
+    <div class = 'row block-ui-box m-t-5 m-r-5'>
+      <p class="title">
+        <h3 class="title m-l-10 p-b-5">
+          Contacts
+          <%= link_to_add_association 'Add Contacts', f, :contacts, render_options: {locals: {}}, class: 'site-content-head-btn pull-right', data: {"association-insertion-node" => ".contact_field_list", "association-insertion-method" => "prepend" }%>
+        </h3>
+      </p>
+
+      <div class='col-md-12 contact_field_list' id='contacts-container'>
+        <div class="invoice-btn">
+          <%= f.fields_for :contacts do |contact| %>
+            <%= render 'contact_fields', f: contact %>
+            <%= contact.hidden_field :is_primary, value: true %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <%end%>
+<%end%>
+
+
+
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    var location = document.getElementById("client-fields").getElementsByClassName("street_address");
+    var options = {
+    };
+    var autocomplete = new google.maps.places.Autocomplete(location[location.length-1], options);
+    google.maps.event.addListener(autocomplete, 'place_changed', function() {
+      var place = autocomplete.getPlace();
+
+      var componentForm = {
+        street_number: 'short_name',
+        address1: 'short_name',
+        route: 'long_name',
+        locality: 'long_name',
+        administrative_area_level_1: 'long_name',
+        country: 'long_name',
+        postal_code: 'short_name'
+      };
+      var streetAddress = ""
+      place.address_components.forEach(function(e) {
+        let placeType = e.types[0];
+        let addressTypeArr = componentForm[placeType];
+        if (placeType == "locality") {
+          $("#client-fields .city").val(e[addressTypeArr]);
+        } else if (placeType == "postal_code") {
+          $("#client-fields .zip_code").val(e[addressTypeArr])
+        } else if (placeType == "administrative_area_level_1") {
+          $("#client-fields .state").val(e[addressTypeArr])
+        }
+        else{
+          if (e[addressTypeArr] != undefined){
+            if(streetAddress == ""){
+              streetAddress = e[addressTypeArr];
+            }else{
+              streetAddress += ", " + e[addressTypeArr];
+            }
+          }
+        }
+
+      });
+    });
+
+    var pacContainerInitialized = false;
+    $('#client-fields .street_address').on('keyup keypress keydown', function() {
+      if (!pacContainerInitialized) {
+        $('.pac-container').css('z-index', '9999');
+        pacContainerInitialized = true;
+      }
+    });
+    $('#client-fields .street_address').on('keyup keypress keydown', function(event) {
+      var keyCode = event.keyCode || event.which;
+      if (keyCode === 13) {
+        event.preventDefault();
+        return false;
+      }
+    });
+    $(".remove_fields").remove();
+
+    $('#contacts-container').on('change', '.contact-checkbox', function(){
+      if($(this).is(':checked')){
+        $(this).closest('.nested-fields').find('.contact-email').attr('required', true);
+      }else{
+        $(this).closest('.nested-fields').find('.contact-email').attr('required', false);
+      }
+    });
+  });
+</script>

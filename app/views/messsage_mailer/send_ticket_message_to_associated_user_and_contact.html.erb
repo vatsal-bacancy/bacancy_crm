@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>iPos</title>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+  <style>
+    *{ padding:0; margin:0; box-sizing: border-box;}
+    body{ font-family: 'Poppins', sans-serif; font-size:14px; color:#2b2b2b; font-weight:normal; margin:0; padding:0;}
+    table{ border:0 none; border-spacing:0;}
+    th, td{ font-weight:normal;}
+    img{ max-width:100%;}
+  </style>
+</head>
+
+<body>
+<div style="background:#f2f2f2;">
+  <table cellpadding="0" cellspacing="0" style="max-width:640px; margin:0 auto;">
+    <tbody>
+    <tr>
+      <td>
+        <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#fff;">
+          <tbody>
+          <tr>
+            <td style="text-align:center; padding:50px 20px;">
+              <div style="margin-bottom: 20px;">
+                <% attachments.inline['iPos-logo.png'] = File.read("#{Rails.root}/app/assets/images/iPos-logo.png") %>
+                <%= image_tag(attachments['iPos-logo.png'].url) %>
+              </div>
+              <h2 style="font-family: 'Poppins', sans-serif; font-size:28px; color: #111111; font-weight:600; margin-bottom: 20px;">iPos support</h2>
+              <p style="font-family: 'Poppins', sans-serif; font-size:18px; color: #888888; margin-bottom: 20px;"><%= @ticket.ticketable.company_name %> ⋅ <%= @ticket.ticketable.merchant_id %> ⋅ <a href="tel:<%= @ticket.ticketable.phone_no %>" target="_blank" style="color: #007aff;"><%= @ticket.ticketable.phone_no %></a></p>
+              <p style="font-family: 'Poppins', sans-serif; font-size:18px; color: #888888;">Thanks for contacting iPos. Below is information on your request for your records.</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:20px;">
+              <h4 style="margin-bottom: 20px;">Notes:</h4>
+              <% @messages.each do |message| %>
+                <div style="font-family: 'Poppins', sans-serif;  font-size:14px; color: #111111; margin-bottom: 20px; font-weight: bold;"><%= message.resourcable.fullname %> on <%= message.created_at.strftime('%m/%d/%Y @ %I:%M %p') %> commented:</div>
+                <div style="font-family: 'Poppins', sans-serif;  font-size:14px; color: #111111; margin-bottom: 20px;"><%= message.description.html_safe %></div>
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <td style="font-family: 'Poppins', sans-serif;  font-size:14px; color: #111111; padding:20px;">
+              <table width="100%" border="1" cellpadding="0" cellspacing="0">
+                <tbody>
+                <tr>
+                  <td style="font-weight: 600; padding: 10px;">Case number</td>
+                  <td style="padding: 10px; text-align: right;"><%= link_to @ticket.ticket_no, ticket_url(@ticket), target: '_blank' %></td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600; padding: 10px;">Case created</td>
+                  <td style="padding: 10px; text-align: right;"><%= @ticket.created_at.strftime('%m/%d/%Y @ %I:%M %p') %></td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600; padding: 10px;">Case updated</td>
+                  <td style="padding: 10px; text-align: right;"><%= @ticket.updated_at.strftime('%m/%d/%Y @ %I:%M %p') %></td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600; padding: 10px;">Reason</td>
+                  <td style="padding: 10px; text-align: right;"><%= @ticket.category %></td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600; padding: 10px;">Status</td>
+                  <td style="padding: 10px; text-align: right;">Your request is <%= @ticket.status %>.</td>
+                </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="background-color: #111111; padding:15px; text-align:center;">
+        <p style="font-family: 'SF Pro Display'; font-size:14px; color: #fff;">iPos © 2021 All rights reserved.</p>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

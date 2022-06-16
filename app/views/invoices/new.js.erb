@@ -1,0 +1,14 @@
+$("#modalContainer").html("<%= escape_javascript(render partial: 'modal', locals: {invoice: @invoice, users: @users, data: @data, groups: @groups}) %>")
+$("#modal").modal('show');
+$(document).ready(function()
+{
+  $('.datepicker').datepicker({format: 'mm/dd/yyyy', todayHighlight: true, autoclose: true});
+  $('#start_date').datepicker().on('changeDate',function(e)
+  {
+    $('#end_date').datepicker('setStartDate',e.date);
+  });
+  $('#end_date').datepicker().on('changeDate',function(e)
+  {
+    $('#start_date').datepicker('setEndDate',e.date);
+  });
+});

@@ -1,0 +1,31 @@
+<div class="dynmic-tab-div pad-top-0">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="dynmic-tab-div-header">
+        <span class="heading">Comments</span>
+      </div>
+      <%= form_for [object, object.comments.build], remote: true do |f| %>
+        <div class="dynmic-tab-div-data">
+          <%= render partial: "comments/form", locals: {f: f} %>
+          <%= f.submit "Comment", class: 'btn btn-success' %>
+          <!-- </div> -->
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <div class="dynmic-tab-div-header">
+      <span class="heading">Recent Comments</span>
+        <% path = object.class == Client ? client_comments_path(object) : lead_comments_path(object) %>
+        <%= link_to "view More", path, class: "site-content-head-btn pull-right"  if object.comments.count > 5 %>
+    </div>
+    <div class="dynmic-tab-div-data ">
+      <% object.comments.reorder(created_at: :asc).last(5).each do |comment| %>
+        <%= render partial: "comments/comment", locals: {comment: comment} %>
+      <%end%>
+      <%#= link_to "View more", client_comments_path(@client) if @client.comments.count > 10 %>
+    </div>
+  </div>
+</div>

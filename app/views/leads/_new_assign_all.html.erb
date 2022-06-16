@@ -1,0 +1,26 @@
+<div class="modal fade" id="modal" role="dialog">
+  <div class="modal-dialog">
+
+    <%= form_tag assign_all_leads_path, method: :post, class: "form-inline", remote: true do %>
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Assign leads</h4>
+        </div>
+        <div class="modal-body">
+          <div id='flash_message'></div>
+          <label>Assign selected items to this owner:</label>
+          <%= select_tag :assign_to, options_for_select(users_array), {prompt: 'Select lead owner', class: 'form-control'} %>
+          <% params[:ids].each do |id| %>
+            <%= hidden_field_tag 'ids[]', id %>
+          <% end %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <%= submit_tag "Save", class: 'btn btn-success' %>
+        </div>
+      </div>
+    <%end%>
+
+  </div>
+</div>

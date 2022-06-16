@@ -1,0 +1,58 @@
+<div class="modal fade" id="companyModal" role="dialog">
+  <div class="modal-dialog">
+
+    <%= form_for company,url: contacts_contact_company_update_path, remote: true, class: "form-inline" do |f| %>
+      <div id='flash_message'></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Company</h4>
+        </div>
+        <div class="modal-body">
+          <div class = 'row block-ui-box m-t-5 m-r-5'>
+            <p class="title">
+              <h3 class="title m-l-10 p-b-5">Company Details</h3>
+            </p>
+            <div class= 'col-md-12 mt15'>
+              <div class="form-group">
+              <%#= render 'form', f: f, user: user, groups: groups, data: data %>
+              <%= f.label :company_name %>
+              <%= f.text_field :company_name, class: "form-control",required: true %>
+              <%= f.label :company_email %>
+              <%= f.text_field :company_email, class: "form-control" %>
+              <%= f.label :phone_no %>
+              <%= f.text_field :phone_no, class: "form-control" %>
+              <%= f.label :company_url %>
+              <%= f.text_field :company_url, class: "form-control" %>
+              </div>
+            </div>
+          </div>
+
+          <div class = 'row block-ui-box m-t-5 m-r-5'>
+            <p class="title">
+              <h3 class="title m-l-10 p-b-5">Company Address</h3>
+            </p>
+            <div class= 'col-md-12 mt15'>
+              <div class="form-group">
+                <%= f.label :street_address %>
+                <%= f.text_field :street_address, class: "form-control" %>
+                <%= f.label :city %>
+                <%= f.text_field :city, class: "form-control" %>
+                <%= f.label :state %>
+                <%= f.text_field :state, class: "form-control" %>
+                <%= f.label :zip_code %>
+                <%= f.text_field :zip_code, class: "form-control" %>
+              </div>
+            </div>
+          </div>
+          <%= hidden_field_tag :company_id, "#{company.id}" %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <%= f.submit "Save", class: 'btn btn-success' %>
+        </div>
+      </div>
+    <%end%>
+
+  </div>
+</div>

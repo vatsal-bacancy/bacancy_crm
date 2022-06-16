@@ -1,0 +1,191 @@
+<div class="table-responsive">
+  <!-- <table class="common-data-table" id="projects">
+    <thead>
+      <th>
+        <div class="radio-lbl">
+          <label class="check ">
+            <input type="checkbox"  name="" id="check-all">
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      </th>
+
+      <th>Action</th>
+      <% fields.each do |field|%>
+        <th data-id="<%=field.id%>"><%=field.label%></th>
+      <%end%>
+
+    </thead>
+
+    <tbody class='list-body'>
+      <% projects.each do |project|  %>
+        <tr>
+          <td>
+            <div class="radio-lbl">
+              <label class="check ">
+                <%= check_box_tag "project_ids[]", project.id , false, class:"check" %>
+                <span class="checkmark"></span>
+              </label>
+            </div>
+          </td>
+          <td>
+           <div class="btn-wrapper">
+              <div class="action-icon">
+               <%= link_to project_path(project) do %>
+                 <i class="fa  fa-eye" aria-hidden="true"></i>
+               <% end %>
+             </div>
+             <div class="action-icon">
+              <%# if can? :update, lead %>
+                <%= link_to edit_project_path(project),remote: true do %>
+                  <i class="fa fa-pencil" aria-hidden="true"></i>
+                <% end %>
+
+              <%# end %>
+             </div>
+             <div class="action-icon">
+              <%# if can? :update, lead %>
+                <%= link_to project_path(project),method: :delete, remote: true do %>
+                  <i class="fa fa-trash " aria-hidden="true"></i>
+                <%# end %>
+              <% end %>
+             </div>
+             <div class="action-icon">
+              <%= link_to edit_project_path(project, assign_project: true), remote: true, title: 'Assign & Invite' do %>
+                  <i class="fa fa-user" aria-hidden="true"></i>
+              <% end %>
+             </div>
+           </div>
+          </td>
+          <% fields.each do |field|%>
+            <td data-id="<%= project.id %>" data-klass='Project' data-field="<%= field.name%>" data-deletable="<%= field.deletable%>" class="editable" >
+               <span>
+               <% case field.name %>
+               <% when "user_id" %>
+                <%= project.user.fullname %>
+               <% when "description" %>
+                  <%= project.send(field.name).html_safe %>
+               <% else %>
+                  <%= project.send(field.name) %>
+               <% end %>
+               <span>
+            </td>
+          <%end%>
+
+        </tr>
+      <% end %>
+    </tbody>
+  </table> -->
+
+</div>
+<div class="col-md-8">
+  <% projects.each do |project|%>
+    <div class="dynmic-tab-div directory-structure">
+      <div class="row">
+
+        <div class="dynmic-tab-div-header">
+          <%= link_to project.name, project_path(project), class: "no-decoration"%>
+          <div class="pull-right">
+            <%= link_to new_project_message_path(project_id: project.id), remote: true, class: "site-content-head-btn", title: 'Add message' do %>
+              New Message
+
+            <%end%>
+            <!-- <a href="javascript:void(0)" class="site-content-head-btn" id='destroy_all_documents'>
+            </a> -->
+            <%#= link_to new_document_path(documentable_type: object.class, documentable_id: object.id), remote: true, class: "site-content-head-btn", title: 'Upload Files' do %>
+            <%#end%>
+            <%#= link_to "Customize", actions_settings_path(klass_id: ticket_klass.id, url: tickets_path(ticketable_type: object.class, ticketable_id: object.id)), class: 'site-content-head-btn', remote: true%>
+          </div>
+        </div>
+        <div class="dynmic-tab-div-data ">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="site-content-data">
+                <div id="document-list" class="table-list">
+                  <% project.messages.last(10).each do |message|%>
+                    <div class="col-md-12">
+                      <span class="m-r-20">message</span> <%= link_to message.title, project_message_path(project, message)%><span class="m-l-20"><%message.status%></span>
+
+                      <span class="pull-right"> posted_by : <%= message.user.fullname%></span>
+                    </div>
+
+                  <% end %>
+                  <%#= render partial: "documents/list_document", locals: { object: object }%>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <%end%>
+</div>
+<div class="col-md-4">
+  <div class="dynmic-tab-div directory-structure">
+    <div class="row">
+      <center><h2> My Projects </h2> </center>
+      <% clients = Client.where(id: projects.pluck(:client_id)) %>
+      <% clients.each do |client|%>
+        <div class="col-md-12">
+          <%= client.company_name %>
+          <% client.projects.each do |project| %>
+            <div class="col-md-12">
+              <%= link_to project.name, project_path(project)%>
+            </div>
+          <%end%>
+        </div>
+      <%end%>
+    </div>
+  </div>
+</div>
+<div id='project-message'></div>
+
+<script>
+$(document).ready(function(){
+    var table = $('#projects').DataTable({
+      sDom: 'lfrtip',
+      scrollX: false,
+      autoWidth: false,
+      paging: true,
+      pageLength: 50,
+      // bLengthChange: false,
+      searching: true,
+      lengthMenu: [50, 100],
+      // colReorder: {
+      //   fixedColumnsLeft: 1
+      // },
+      columnDefs: [
+        {orderable: false, targets: [0, 1]},
+        //{width: "20px", targets: [1] },
+        {className: "dt-center", targets: "_all"}
+      ],
+
+      order: []
+    });
+
+    $('#check-all').on('change', function(){
+      $('.list-body .check').prop('checked',$(this).prop('checked'));
+    });
+
+    $('#project_destroy_all').on('click', function(){
+      var checked = []
+      $("input[name='project_ids[]']:checked").each(function ()
+      {
+        checked.push(parseInt($(this).val()));
+      });
+      $.ajax({
+        url: "<%= destroy_all_projects_path %>",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: 'DELETE',
+        data: {
+          ids: checked
+        },
+        dataType: "script",
+        success: function(result){
+
+        }
+      });
+    });
+
+  });
+</script>

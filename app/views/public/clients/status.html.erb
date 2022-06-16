@@ -1,0 +1,15 @@
+<div class="site-main">
+  <div class="site-content">
+    <div class="site-content-data">
+      <div class="block-ui-box-wrapper">
+        <div class="m-t-50">
+          <% flash.each do |name, msg| %>
+            <div class="text-center alert alert-<%= name %>">
+              <%= msg %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

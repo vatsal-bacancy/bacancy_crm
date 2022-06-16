@@ -1,0 +1,17 @@
+<%= form_for client, method: :post, skip_enforcing_utf8: true, html: { 'data-status-board-datatable-field-form' => true } do |f| %>
+  <div data-status-board-datatable-field-value>
+    <%= pretty_value(field, client) %>
+  </div>
+  <div style="display: none;" data-status-board-datatable-field-editor>
+    <%= render partial: 'forms/field', locals: { f: f,
+                                                 field: field,
+                                                 field_name: field.name,
+                                                 field_label: nil,
+                                                 column_type: field.column_type,
+                                                 custom: field.custom,
+                                                 have_custom_value: field.have_custom_value,
+                                                 data: {field.name => field.field_picklist_values.pluck(:value)}.with_indifferent_access,
+                                                 value: client.send(field.name) } %>
+  </div>
+  <%= hidden_field_tag 'client_id', client.id %>
+<% end %>

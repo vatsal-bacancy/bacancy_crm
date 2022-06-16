@@ -1,0 +1,2 @@
+$("#uploadContainer").html("<%= escape_javascript(render partial: 'new_image', locals: {  user: @user , user_company: @user_company ,field: @field }) %>")
+$("#Uploadmodal").modal('show');

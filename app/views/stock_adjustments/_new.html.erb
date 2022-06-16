@@ -1,0 +1,208 @@
+<div class="modal fade" id="myModal" role="dialog">
+  <div class="modal-dialog">
+    <%= form_for stock_adjustment, remote: true, class: 'form-inline' do |f| %>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" id="modalProjectTitle">Adjust Stocks</h4>
+      </div>
+      <div class="modal-body Adjust-stocks-body">
+        <div class="block-ui-box">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="radio-lbl">
+              <label class="radio">Quantity Adjustment
+              <%= f.radio_button :adjustment_type, 0, checked: stock_adjustment.adjustment_type.eql?('Quantity'), class: 'adjustmentType' %>
+              <span class="checkround"></span> </label>
+              <label class="radio">Value Adjustment
+              <%= f.radio_button :adjustment_type, 1, checked: stock_adjustment.adjustment_type.eql?('Value'), class: 'adjustmentType' %>
+              <span class="checkround"></span> </label>
+            </div>
+          </div>
+        </div>
+        <div class="row mt10">
+          <div class="col-sm-6">
+            <div class="form-group ">
+              <label for="Company_Name">Date</label>
+              <span class="required"> * </span>
+              <%= f.hidden_field :inventory_id %>
+              <%= f.text_field :date, class: 'datepicker form-control', placeholder: 'Date', required: true %>
+            </div>
+          </div>
+   <!--        <div class="col-sm-4">
+            <div class="form-group ">
+              <label for="Status">Account</label>
+              <span class="required"> * </span>
+              <select class="form-control" required="required" name="lead[lead_status]" id="lead_lead_status">
+                <option value="">Status</option>
+                <option selected="selected" value="Cost of Goods Sold">Cost of Goods Sold</option>
+                <option value="Telephone Expense">Telephone Expense</option>
+                <option value="Repairs and Maintenance">Repairs and Maintenance</option>
+              </select>
+            </div>
+          </div> -->
+          <div class="col-sm-6">
+            <div class="form-group ">
+              <label for="Company_Name">Reference#</label>
+              <%= f.text_field :reference_no, placeholder: 'Reference No', class: 'form-control' %>
+            </div>
+          </div>
+        </div>
+        <div class="row mt10">
+          <div class="col-sm-12">
+            <table class="table table-bordered" id="quantityDetailsTable" style="<%= stock_adjustment.adjustment_type == "Quantity" ? nil : 'display: none;' %>">
+              <tbody> 
+                <tr>
+                  <td>
+                    <label class="control-label">Quantity Available</label>  
+                    <span class="pull-right"> 
+                      <%= f.text_field :new_quantity_on_hand, steps: :any, class: "form-control ember-text-field  ember-view onlyDigits" %>
+                    <span class="font-sm pull-right adjusted-quantity-lbl"><%= stock_adjustment.inventory.unit_label %></span></span>
+                  </td>
+                </tr> 
+                <tr>
+                  <td>
+                    <label class="control-label">New Quantity on Hand</label>
+                    <span class="pull-right"> 
+                      <%= f.text_field :current_quantity, steps: :any, value: stock_adjustment.inventory.available_quantity, disabled: true, class: "form-control ember-text-field  ember-view onlyDigits" %>
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <label class="control-label">Quantity Adjusted</label>
+                    <span class="pull-right" id="adjusted-qty">
+                      <%= f.text_field :quantity_adjusted, steps: :any, placeholder: "Eg. +10, -10", class: "form-control ember-text-field  ember-view onlyDigits" %>
+                    </span> 
+                  </td>
+                </tr> 
+              </tbody>
+            </table>
+
+            <table class="table table-bordered" id="valueDetailsTable" style="<%= stock_adjustment.adjustment_type == "Value" ? nil : 'display: none;' %>">
+              <tbody> 
+                <tr>
+                  <td>
+                    <span class="pull-right"> 
+                     <%= f.text_field :current_value, steps: :any, value: stock_adjustment.inventory.available_value, disabled: true, class: "form-control ember-text-field  ember-view onlyDigits" %>
+                    </span> 
+                    <label class="control-label">Current Value</label>  
+                  </td>
+                </tr> 
+                <tr>
+                  <td>
+                    <span class="pull-right"> 
+                      <%= f.text_field :new_value, steps: :any, class: "form-control ember-text-field text-right ember-view onlyDigits" %>
+                    </span> 
+                    <label class="control-label">Changed Value</label>
+                  </td>
+                </tr> 
+                <tr>
+                  <td>
+                    <span class="pull-right" id="adjusted-qty"> <!---->
+                      <%= f.text_field :value_adjusted, steps: :any, class: "form-control ember-text-field text-right ember-view onlyDigits"  %>
+                    </span> 
+                    <label class="control-label">Adjusted Value</label>
+                  </td>
+                </tr> 
+              </tbody>
+            </table>
+          </div>
+         </div>
+         <div class="row">
+          <div class="col-sm-12">
+            <label for="Reason">Reason</label>
+              <span class="required"> * </span>
+              <%= f.select :stock_adjustment_reason_id, StockAdjustmentReason.all_active.pluck(:reason, :id).push(['+ Add New and select', '+ Add New and select']), {prompt: 'Select Reason'}, class: 'form-control', required: true %> 
+          </div>
+
+         </div>
+         <div class="row mt15">
+          <div class="col-sm-12">
+            <div class="form-group">
+      <label for="Description">Description</label>
+        <%= f.text_area :description, class: "form-control", rows: "3", placeholder: "Max 500 Characters" %>
+    </div>
+          </div>
+         </div>
+      </div>
+    </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <%= f.submit class: "btn btn-success" %>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>
+<script type="text/javascript">
+  $('.datepicker').datepicker({format: 'mm/dd/yyyy', todayHighlight: true, autoclose: true});
+  $('.adjustmentType').on('change', function(){
+    if($('#stock_adjustment_adjustment_type_0').is(":checked")){
+      $('#valueDetailsTable').hide();
+      $('#quantityDetailsTable').show();
+    }
+    else{
+      $('#valueDetailsTable').show();
+      $('#quantityDetailsTable').hide();
+    }
+  });
+
+  $('.onlyDigits').on('keypress', function(event){
+    return [45, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57].includes(event.keyCode) ;
+  });
+
+  $("#stock_adjustment_stock_adjustment_reason_id").selectpicker();
+  $(".bootstrap-select").click(function () { $(this).addClass("open"); });
+
+  // calculation for quantity
+  $('#stock_adjustment_new_quantity_on_hand').on('keyup blur', function(){
+    var this_value = $(this).val();
+    if(this_value != ''){
+      $('#stock_adjustment_quantity_adjusted').val((parseFloat(this_value) - parseFloat($('#stock_adjustment_current_quantity').val())).toFixed(2));
+    }
+    else{
+      $('#stock_adjustment_quantity_adjusted').val('');
+    }
+  });
+
+  $('#stock_adjustment_quantity_adjusted').on('keyup blur', function(){
+    var this_value = $(this).val();
+    if(this_value != ''){
+      $('#stock_adjustment_new_quantity_on_hand').val((parseFloat(this_value) + parseFloat($('#stock_adjustment_current_quantity').val())).toFixed(2));
+    }
+    else{
+      $('#stock_adjustment_new_quantity_on_hand').val('');
+    }
+  });
+
+  // calculations for value
+  $('#stock_adjustment_new_value').on('keyup blur', function(){
+    var this_value = $(this).val();
+    if(this_value != ''){
+      $('#stock_adjustment_value_adjusted').val((parseFloat(this_value) - parseFloat($('#stock_adjustment_current_value').val())).toFixed(2));
+    }
+    else{
+      $('#stock_adjustment_value_adjusted').val('');
+    }
+  });
+
+  $('#stock_adjustment_value_adjusted').on('keyup blur', function(){
+    var this_value = $(this).val();
+    if(this_value != ''){
+      $('#stock_adjustment_new_value').val((parseFloat(this_value) + parseFloat($('#stock_adjustment_current_value').val())).toFixed(2));
+    }
+    else{
+      $('#stock_adjustment_new_value').val('');
+    }
+  });
+
+  $('#stock_adjustment_stock_adjustment_reason_id').on('changed.bs.select', function(){
+    if('+ Add New and select' == $(this).selectpicker('val')){
+
+    }
+    else{
+      
+    }
+  });
+</script>

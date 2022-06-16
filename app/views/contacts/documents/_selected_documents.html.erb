@@ -1,0 +1,20 @@
+<% documents.each do |document|%>
+  <div class="col-md-8 m-t-10">
+    <%= link_to document.attachment.url, target: "_blank", title: document.attachment.file.filename, class: 'common-link' do%>
+      <i class="fa fa-file"> </i> <%= document.attachment.file.filename.truncate(20) %>
+    <% end %>
+    <i class="fa fa-times remove-document" aria-hidden="true" data-id="<%= document.id %>"></i>
+  </div>
+<%end%>
+<script>
+  $(document).ready(function(){
+    $('.remove-document').on('click', function(){
+      var ele = $(this);
+      $document_ids = jQuery.grep($document_ids, function(value) {
+        return value != ele.attr("data-id");
+      });
+      ele.parent().remove();
+      $('.document_ids').val($document_ids);
+    });
+  });
+</script>

@@ -1,0 +1,167 @@
+<div class="row d-flex flex-center">
+  <div class="col-sm-2 col-xs-2">
+    <label class="pull-right">To</label>
+     </div>
+     <div class="col-sm-10 col-xs-10">
+    <%#= text_field_tag :to, User.pluck(:email), class: 'form-control emails' %>
+    <%#= select_tag :email, options_for_select(User.pluck(:email)), class: 'email form-control', multiple: true %>
+      <% email_data = get_email(object) %>
+      <% value = object.try(:class).try(:name) == "MailManager::Message" ? object.to_email_address.split(",") :  object.try(:company_email) %>
+      <%= select_tag 'email', options_for_select(email_data, value), {multiple: true, class: 'multi_select form-control email_to email', id: "email" } %>
+      <%#= text_field_tag :email, object.try(:company_email), class: "email form-control tagableinput email_to", id: "email", required: true%>
+  </div>
+</div>
+<div class="row d-flex flex-center cc m-t-5">
+  <div class="col-sm-2 col-xs-2">
+    <label class="pull-right">Cc</label>
+     </div>
+     <div class="col-sm-10 col-xs-10">
+    <%#= text_field_tag :to, User.pluck(:email), class: 'form-control emails' %>
+    <%= text_field_tag :cc_email, object.try(:cc_email_address), class: 'email form-control tagableinput', multiple: true %>
+  </div>
+</div>
+<div class="row d-flex flex-center bcc m-t-5">
+  <div class="col-sm-2 col-xs-2">
+    <label class="pull-right">Bcc</label>
+     </div>
+     <div class="col-sm-10 col-xs-10">
+    <%#= text_field_tag :to, User.pluck(:email), class: 'form-control emails' %>
+    <%= text_field_tag :bcc_email, object.try(:bcc_email_address), class: 'email form-control tagableinput', multiple: true %>
+  </div>
+</div>
+<div class="row d-flex flex-center m-t-5">
+  <div class="col-sm-2 col-xs-2">
+    <label class="pull-right">Form</label>
+     </div>
+     <div class="col-sm-8 col-xs-8">
+    <%= text_field_tag :form, current_user.google_email, class: 'form-control emails', readonly: true %>
+  </div>
+
+  <!--  cc and bcc -->
+  <div class="col-sm-2 col-xs-2">
+  	<div class="email-link-cc-bcc">
+      <%= link_to 'Cc', "javascript:void(0)", id: 'cc', class: 'email-links' %> <%= link_to 'Bcc', "javascript:void(0)", id: 'bcc', class: 'email-links'%>
+    </div>
+  </div>
+
+</div>
+<div class="custom-hr-input">
+<hr/>
+</div>
+<div class="row d-flex flex-center">
+  <div class="col-sm-2 col-xs-3">
+    <label class="pull-right">Subject</label>
+   </div>
+   <div class="col-sm-10 col-xs-9">
+    <%= text_field_tag :subject, object.try(:subject).to_s, class: 'form-control emails' %>
+  </div>
+</div>
+<div class="custom-hr-input">
+  <hr/>
+</div>
+<div class="row d-flex flex-center">
+  <div class="col-sm-12">
+    <%= cktext_area_tag :message_body,  object.try(:body).try(:html_safe) ||  "<br/>" +  current_user.signature.to_s, :size =>"60x5", class: 'form-control ckeditor', id: "email_content"  %>
+  </div>
+</div>
+<div class="row d-flex flex-center">
+  <div class="col-sm-12">
+    <%= f.label "Attachment"%>
+    <br/>
+    <input type="file" name="attachments[]" id="file5" class="inputfile" multiple />
+    <label for="file5" title='Upload Local Files' class="btn btn-default">Upload Files</label>
+    <div class= 'row' id="file-upload-filename"></div>
+    <%= hidden_field_tag :document_ids, [], class: 'document_ids'%>
+    <div class="row m-t-15">
+
+      <div class="col-md-12 ">
+        <div class='selected_documents'>
+          <%= render partial: 'documents/selected_documents', locals: { documents: [] } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function(){
+    // $(".email").select2();
+    $('.multi_select').select2({theme: 'bootstrap', tags: true, tokenSeparators: ',', multiple: true});
+    $('.tagableinput').tagsinput();
+    $("#email-save").attr('disabled', true);
+    if( "<%=object.try(:cc_email_address)&.present?%>" != "true"){
+      $('.cc').hide();
+    }
+    if( "<%=object.try(:bcc_email_address)&.present?%>" != "true"){
+      $('.bcc').hide();
+    }
+
+    $('#cc').on('click',function(){
+      $('.cc').toggle();
+    });
+
+    $('#bcc').on('click',function(){
+      $('.bcc').toggle();
+    });
+
+    $(".email_to").on('change',function(){
+      if($(".email_to").val() == ""){
+        $("#email-save").attr('disabled', true)
+      }
+      else{
+        $("#email-save").attr('disabled', false)
+      }
+    });
+
+    // $('.email-links').on('click', function(){
+    //   txt_id = $(this).attr('id')
+    //   if(txt_id == 'cc'){
+    //     $("#"+txt_id).hide()
+    //     $("#"+txt_id+'_email').removeAttr('disabled')
+    //     $("."+txt_id).removeClass('hide')
+    //   }else{
+    //     $("#"+txt_id).hide()
+    //     $("."+txt_id).removeClass('hide')
+    //     $("#"+txt_id+'_email').removeAttr('disabled')
+    //   }
+    // });
+    $('#file5').on('change', function (e) {
+      if(!e.target.files) return;
+      var files = e.target.files;
+      for(var i=0; i<files.length; i++) {
+        var f = files[i];
+        var datafile = new FormData();
+        datafile.append('resourcable_type', "<%= current_user.class.name %>");
+        datafile.append('resourcable_id', "<%= current_user.id %>" );
+        datafile.append('documentable_type', "<%= @system_directory.class.name %>");
+        datafile.append('documentable_id', "<%= @system_directory.id %>" );
+        datafile.append('attachment', f);
+        $.ajax({
+          url: "<%= uploadfiles_url %>",
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          type: 'POST',
+          contentType: false,
+          cache: false,
+          processData: false,
+          data: datafile,
+          success: function(res, file){
+            documentId = res["d_id"];
+            $document_ids.push(documentId);
+            $.ajax({
+              url: "<%= selected_documents_documents_path %>",
+              beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+              type: 'GET',
+              data: {
+                document_ids: $document_ids
+              },
+              dataType: "script",
+              success: function(result){
+              }
+            });
+            $('.document_ids').val($document_ids);
+          }
+        });
+      }
+    });
+  });
+
+</script>

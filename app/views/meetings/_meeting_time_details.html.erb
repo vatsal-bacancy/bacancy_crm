@@ -1,0 +1,29 @@
+<% if grouped_responses.present? %>
+  <% grouped_responses.each do |start_time, meetings| %>
+    <div class="row mt-25 d-flex align-items-stretch">
+      <div class="col-sm-2 d-flex align-items-stretch">
+        <p class=" time_schedule fs-14 p-0"><%= start_time %></p>
+      </div>
+      <div class="col-sm-10 d-flex align-items-stretch">
+        <div class="row w-100">
+          <% total_meetings = meetings.count %>
+          <% meetings.each_with_index do |meeting, i| %>
+            <% if meeting[:category] == 'sales_and_marketing' %>
+              <%= render partial: 'sales_and_marketing_meeting', locals: { meeting: meeting, total_meetings: total_meetings, index: i } %>
+            <% elsif meeting[:category] == 'technology' %>
+                <%= render partial: 'technology_meeting', locals: { meeting: meeting, total_meetings: total_meetings, index: i } %>
+            <% elsif meeting[:category] == 'finance' %>
+              <%= render partial: 'finance_meeting', locals: { meeting: meeting, total_meetings: total_meetings, index: i } %>
+            <% else %>
+              <%= render partial: 'publicity_meeting', locals: { meeting: meeting, total_meetings: total_meetings, index: i } %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% else %>
+  <div class="row mt-25 d-flex align-items-stretch d-flex justify-content-center">
+    <div class="text-center"><p>No Data available</p></div>
+  </div>
+<% end %>

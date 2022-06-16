@@ -1,0 +1,67 @@
+<div class="col-sm-12 mt15">
+  <div class="d-flex d-flex-wrap ">
+    <label>Company Name: </label>
+    <span class="info-dynamic-data value"><%= company.company_name.present? ? company.company_name : "N/A" %></span>
+  </div>
+</div>
+
+<div class="col-sm-12 mt15">
+  <div class="d-flex d-flex-wrap" >
+    <label>Company Email:  </label>
+    <span class="info-dynamic-data value"><%=  company.company_email.present? ? company.company_email : "N/A" %></span>
+  </div>
+</div>
+
+<div class="col-sm-12 mt15">
+  <div class="d-flex d-flex-wrap" >
+    <label>Phone Number: </label>
+    <span class="info-dynamic-data value"><%= company.phone_no.present? ? company.phone_no : "N/A" %></span>
+  </div>
+</div>
+
+<div class="col-sm-12 mt15">
+  <div class="d-flex d-flex-wrap" >
+    <label>Company Url: </label>
+    <span class="info-dynamic-data value"><%= company.company_url.present? ? company.company_url : "N/A" %></span>
+  </div>
+</div>
+
+<div class="col-sm-12 mt15">
+  <div class="dynmic-tab-div-header mt20">
+    <p class="heading">Company Address</p>
+  </div>
+</div>
+
+
+<div class="col-sm-12 mt15">
+  <div class="d-flex d-flex-wrap" >
+    <label>Street Address: </label>
+    <span class="info-dynamic-data value"><%= company.street_address.present? ? company.street_address : "N/A" %></span>
+    
+  </div>
+</div>
+
+
+<div class="col-sm-12 mt15">
+  <div class="d-flex d-flex-wrap" >
+    <label>City:</label>
+    <span class="info-dynamic-data value"><%= company.city.present? ? company.city : "N/A" %></span>
+    
+  </div>
+</div>
+
+
+<div class="col-sm-12 mt15">
+  <div class="d-flex d-flex-wrap" >
+    <label>State: </label>
+    <span class="info-dynamic-data value"><%= company.state.present? ? company.state : "N/A" %></span>
+  </div>
+</div>
+
+
+<div class="col-sm-12 mt15">
+  <div class="d-flex d-flex-wrap" >
+    <label>Zip Code: </label>
+    <span class="info-dynamic-data value"><%= company.zip_code.present? ? company.zip_code : "N/A" %></span>
+  </div>
+</div>

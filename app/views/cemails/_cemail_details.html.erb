@@ -1,0 +1,59 @@
+<div class='filter-middle-wrapper w99-50  message_id_<%= cemail.id %>' id='message'>
+  <%= link_to 'javascript:void(0)', class: 'common-link back-messages m-l-5' do %>
+    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+  <% end %>
+  <%= link_to cemail_path(cemail), data: {id: cemail.id}, method: :delete, remote: true, class: 'common-link delete-message m-l-10' do %>
+    <i class='fa fa-trash' aria-hidden='true'></i>
+  <% end %>
+  <div class='email-hr m-b-5'>
+    <hr/>
+  </div>
+  <div class='messages-list'>
+    <div class='accordion' id='accordionExample'>
+      <div class='card'>
+          <div class='card-header' id='heading<%#= ind %>'>
+          <div class='btn btn-link btn-collapse' type='button' data-toggle='collapse' data-target='#collapse<%#= ind %>' aria-expanded='true'>
+            <div class='filter-middle-body'>
+              <div class='filter-middle-main'>
+                <div class='profile-circle-wrapper'>
+                  <div class='profile-circle m-t-10'>
+                    <%#= message.from_name.try(:first) || message.from_email_address.split("@").first.first  %>
+                  </div>
+                </div>
+                <div class='message'>
+                  <div class='row'>
+                    <b class='pull-left'><%= cemail.cemailable.company_email %></b>
+                  </div>
+                  <div class='row'>
+                    <p class='pull-left'><%= cemail.subject&.truncate(90) %></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class='card-body'>
+          <div class='message-content'>
+            <%= cemail.content.html_safe %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr/>
+</div>
+<script>
+  $(document).ready(function() {
+    $(".back-messages").on('click', function() {
+      $("#messages_container").removeClass('hidden');
+      $("#message_container").addClass('hidden');
+    });
+    $('#message').on('ajax:success', function(e) {
+      if($(e.target).data('method') === 'delete'){
+        $("#messages_container").removeClass('hidden');
+        $("#message_container").addClass('hidden');
+        $('.message_id_' + $(e.target).data('id')).remove();
+      }
+    });
+  });
+</script>

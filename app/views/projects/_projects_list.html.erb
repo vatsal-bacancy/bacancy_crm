@@ -1,0 +1,133 @@
+<div class="col-lg-8 col-md-12">
+    <div class="dynmic-tab-div">
+
+      <div class="cmn-tab-div">
+        <% if projects.present? %>
+          <% projects.each do |project|%>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="dynmic-tab-div-header dynmic-tab-sub-header project-dashboard-head">
+                  <div class="d-flex">
+                    <div class="heading-wrapper">
+                      <p class="heading"><%= link_to project.name, project_path(project), class: "no-decoration"%> <span class="white-font"> - <%= project.client.company_name %> <%#= project.client.last_name%></span></p>
+                    </div>
+                    <div class="new-msg-div">
+                      <%= link_to new_project_message_path(project_id: project.id), remote: true, class: "", title: 'Add message' do %>
+                        New Message
+
+                      <%end%>
+                      <!-- <span>New Message</span> -->
+                    </div>
+                  </div>
+                </div>
+                <div class="cmn-tab-div cmn-tab-div1">
+                  <div class="row">
+                    <div class="col-sm-12 m-t-5">
+                      <div class="table-responsive">
+                        <table width="100%" class="sub-table">
+
+                          <%# project.messages.limit(5).each do |message|%>
+                          <% recent_messages(project).each do |message| %>
+                            <% message_text = message.messageable_type == "Project" ? "Message" : "Comment" %>
+                            <% re_text = message.messageable_type == "Project" ? message.title : "Re: #{message.messageable.title}" %>
+                            <tr>
+                              <% if message.messageable_type == "Project" %>
+                                <td style="padding:5px 0px;" width="5%"><a href="" class="msg-com-btn msg-btn"><%= message_text %></a></td>
+                              <% else %>
+                                <td style="padding:5px 0px;" width="5%"><a href="" class="msg-com-btn com-btn"><%= message_text %></a></td>
+                              <% end %>
+                              <% if message.messageable_type == "Project" %>
+                                <td width="60%">
+                                  <span class=""><%= link_to re_text, project_message_path(project, message), class: "msg-link" %> -
+                                    <% if message.status == "Todo"%>
+                                      <span class="Todo-text"><%=message.status%></span>
+                                    <% else %>
+                                      <span class="inprogress-text"><%=message.status%></span>
+                                    <% end %>
+                                  </span>
+                                </td>
+                              <% else %>
+                                <td width=60%>
+                                  <span class="">
+                                    <%=  link_to re_text, project_message_path(project, Message.find(message.messageable_id)), class: "msg-link" %> -
+                                    <% if message.status == "Todo"%>
+                                        <span class="Todo-text"><%=message.status%></span>
+                                    <% else %>
+                                        <span class="inprogress-text"><%=message.status%></span>
+                                    <% end %>
+                                  </span>
+                                </td>
+                              <% end %>
+                              <td class="text-right" width="35%">
+                                <span class="posted-by">Posted by</span>
+                                <span class="posted-by-name"><%= message.resourcable.fullname%></span>
+                              </td>
+                            </tr>
+                          <% end %>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          <% end %>
+        <% else %>
+          No Project
+        <% end %>
+      </div>
+    </div>
+</div>
+<div class="col-lg-4 col-md-12">
+  <% if checked_permission?(current_user, @klass_list['Project'], @action_list['create'])%>
+    <div class="dynmic-tab-div">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="dynmic-tab-div-header mb0">
+            <span class="heading"> Quick Action </span>
+          </div>
+        </div>
+      </div>
+      <div class="cmn-tab-div">
+        <div class="row">
+          <div class="col-sm-12 text-center">
+            <%= link_to new_project_path, class: 'cr-project', remote: true do %>
+              Create Project
+            <%end%>
+            <p class="mt15 new-project-text">Start new project here by clicking Create Project</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <div class="dynmic-tab-div">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="dynmic-tab-div-header mb0">
+          <span class="heading"> My Projects </span>
+        </div>
+      </div>
+    </div>
+    <div class="cmn-tab-div cmn-tab-div1">
+      <div class="row">
+        <div class="col-sm-12 text-center pl15 pr15">
+          <% if projects.present? %>
+            <% projects.all.group_by(&:client_id).each do |client, projects| %>
+              <div class="dynmic-tab-div-header mb5 sub-div-header inner-header">
+                <p class="heading1 text-left w-100"><%= find_client(client) %></p>
+              </div>
+              <div class="back-data text-left">
+                <ul>
+                  <% projects.each do |project| %>
+                    <li><%= link_to project.name, project_path(project) %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

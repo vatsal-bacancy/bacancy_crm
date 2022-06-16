@@ -1,0 +1,25 @@
+<div class='row block-ui-box m-t-5 m-r-5 project-modal-check'>
+
+  <p class="title">
+    <h3 class="title m-l-10 p-b-5">
+      <%if client.present?%>
+        <%= client.try(:company_name) %>'s contacts
+      <% end %>
+
+    </h3>
+  </p>
+  <% contacts.each do |user| %>
+    <div class='col-md-6'>
+    	<div class="radio-lbl">
+    	  <label class="check ">
+    	    <%= check_box_tag "contact_ids[]", user.id , false, class:"check" %>
+    	    <span class="checkmark"></span>
+    	    <%= user.fullname%>
+    	  </label>
+    	</div>
+    </div>
+
+  <% end %>
+
+  <%= "No contacts" if contacts.blank? && client.present? %>
+</div>

@@ -1,0 +1,3 @@
+$("#ticket .list").html("<%= escape_javascript(render partial: 'ticket_details', locals: { ticket: @ticket, klass: @klass }) %>"); // on lead and client show page 
+$("#show-index").html("<%= escape_javascript(render partial: 'show', locals: { ticket: @ticket, klass: @klass }) %>"); // on index page of ticket
+

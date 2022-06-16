@@ -1,0 +1,305 @@
+<div class="col-sm-12 mt15" >
+  <div class="d-md-flex d-flex-wrap editable" data-id="<%= company.id %>" data-klass='Company' data-field="name">
+    <label>Company Name: </label>
+    <span class="info-dynamic-data value"><%= company.name.present? ? company.name : "N/A" %></span>
+    <div class="form-group field hidden ml10">
+      <%= f.text_field :name, class: "form-control name",placeholder: "Enter company name", required: true,  value: "#{company.name}" %>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-12 mt15" >
+  <div class="d-flex d-flex-wrap editable" data-id="<%= company.id %>" data-klass='Company' data-field="email">
+    <label>Company Email:  </label>
+    <span class="info-dynamic-data value"><%=  company.email.present? ?  company.email : "N/A" %></span>
+    <div class="form-group field hidden ml10">
+      <%= f.text_field :email, class: "form-control email",placeholder: "Enter email", required: true,  value: "#{company.email}" %>
+    </div>
+  </div>
+</div>
+
+
+<div class="col-sm-12 mt15" >
+  <div class="d-flex d-flex-wrap editable" data-id="<%= company.id %>" data-klass='Company' data-field="website_url" >
+    <label>Website Url: </label>
+    <span class="info-dynamic-data value"><%= company.website_url.present? ? company.website_url : "N/A" %></span>
+    <div class="form-group field hidden ml10">
+      <%= f.text_field :website_url, class: "form-control website_url", placeholder: "Enter website url", required: true,  value: "#{company.website_url}" %>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-12 mt15 " >
+  <div class="d-flex d-flex-wrap editable" data-id="<%= company.id %>" data-klass='Company' data-field="work_phone">
+    <label>Phone Number: </label>
+    <span class="info-dynamic-data value"><%= company.work_phone.present? ? company.work_phone : "N/A" %></span>
+    <div class="form-group field hidden ml10">
+      <%= f.text_field :work_phone, class: "form-control work_phone",placeholder: "Enter phone number", required: true,  value: "#{company.work_phone}" %>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-12 mt15 d-flex d-flex-wrap" >
+  <label> Big Logo: </label>
+  <% big = company.big_image %>
+
+  <div class=" container-logo" data-id="<%= company.id %>" data-klass='Company' data-field="big_logo">
+    <%= image_tag big, class: "logo-image" %>
+  
+    <div class="middle-image">
+      <div class="text-image action-icon-btn">
+        <%= link_to company_remove_logo_path(company,user_id: user.id,image: :big_logo), data: { confirm: "Are you sure you want to Delete this Logo?" }, method: :delete, remote: true do %> 
+          <i class="fa fa-trash " aria-hidden="true"></i>
+        <% end  if company.big_logo.present?%>
+        <%= link_to new_image_settings_path(company_id: company.id,user_id: user.id,image: 'big_logo'), remote: true  do%>
+          <i class="fa fa-cloud-upload " aria-hidden="true"></i>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-12 mt15 d-flex d-flex-wrap" >
+  <label> Small Logo: </label>
+  <% small = company.small_image %>
+
+  <div class=" container-logo" data-id="<%= company.id %>" data-klass='Company' data-field="small_logo">
+    <%= image_tag small, class: "logo-image" %>
+
+    <div class="middle-image">
+      <div class="text-image action-icon-btn">
+        <%= link_to company_remove_logo_path(company,user_id: user.id, image: :small_logo), data: { confirm: "Are you sure you want to Delete this Logo?" }, method: :delete, remote: true do %> 
+          <i class="fa fa-trash " aria-hidden="true"></i>
+        <% end  if company.small_logo.present?%>
+        <%= link_to new_image_settings_path(company_id: company.id,user_id: user.id,image: 'small_logo'), remote: true  do%>
+          <i class="fa fa-cloud-upload " aria-hidden="true"></i>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+<div class="col-sm-12 mt15 d-flex d-flex-wrap" >
+  <label> Fevicon Logo: </label>
+  <% fevicon = company.fevicon_image %>
+
+  <div class=" container-logo" data-id="<%= company.id %>" data-klass='Company' data-field="fevicon_logo">
+    <%= image_tag fevicon, class: "logo-image"%>
+  
+    <div class="middle-image">
+      <div class="text-image action-icon-btn">
+        <%= link_to company_remove_logo_path(company,user_id: user.id,image: :fevicon_logo), data: { confirm: "Are you sure you want to Delete this Logo?" }, method: :delete, remote: true do %> 
+          <i class="fa fa-trash " aria-hidden="true"></i>
+        <% end  if company.fevicon_logo.present?%>
+        <%= link_to new_image_settings_path(company_id: company.id,user_id: user.id,image: 'fevicon_logo'), remote: true  do%>
+          <i class="fa fa-cloud-upload " aria-hidden="true"></i>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="col-sm-12 mt15 " >
+  <div class="d-flex d-flex-wrap editable" data-id="<%= company.id %>" data-klass='Company' data-field="description">
+    <label> Description: </label>
+    <%# document = company.big_image %>
+    <span class="info-dynamic-data value" style="width: 145px;heigth: 45px"><%=  company.description.present? ? company.description : 'N/A' %></span>
+    <div class="form-group field hidden ml10">
+      <%= f.text_area :description, class: "form-control description",placeholder: "Enter description", required: true,  value: "#{company.description}" %>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="col-sm-12 mt15">
+  <div class="dynmic-tab-div-header mt20">
+    <p class="heading">Company Address</p>
+  </div>
+</div>
+
+
+<div class="col-sm-12 mt15 "> 
+  <div class="d-md-flex d-flex-wrap editable" data-id="<%= company.id %>" data-klass='Company' data-field="street_address" >
+    <label>Street Address: </label>
+    <span class="info-dynamic-data value"><%= company.street_address.present? ? company.street_address : "N/A" %></span>
+    <div class="form-group field hidden ml10">
+      <%= f.text_field :street_address, class: "form-control street_address",placeholder: "Enter street address", required: true, id: "street_address", value: "#{company.street_address}" %>
+    </div>
+  </div>
+</div>
+
+
+<div class="col-sm-12 mt15" >
+  <div class="d-flex d-flex-wrap editable" data-id="<%= company.id %>" data-klass='Company' data-field="city">
+    <label>City:</label>
+    <span class="info-dynamic-data value"><%= company.city.present? ? company.city : "N/A" %></span>
+    <div class="form-group field hidden ml10">
+      <%= f.text_field :city, class: "form-control city",placeholder: "Enter city", required: true,id: "city",  value: "#{company.city}" %>
+    </div>
+  </div>
+</div>
+
+
+<div class="col-sm-12 mt15" >
+  <div class="d-flex d-flex-wrap editable" data-id="<%= company.id %>" data-klass='Company' data-field="state">
+    <label>State: </label>
+    <span class="info-dynamic-data value"><%= company.state.present? ? company.state : "N/A"%></span>
+    <div class="form-group field hidden ml10">
+      <%= f.text_field :state, class: "form-control state",placeholder: "Enter state", required: true,id: "state", value: "#{company.state}" %>
+    </div>
+  </div>
+</div>
+
+
+<div class="col-sm-12 mt15" >
+  <div class="d-flex d-flex-wrap editable" data-id="<%= company.id %>" data-klass='Company' data-field="zip_code" >
+    <label>Zip Code: </label>
+    <span class="info-dynamic-data value"><%= company.zip_code.present? ? company.zip_code : "N/A" %></span>
+    <div class="form-group field hidden ml10">
+      <%= f.text_field :zip_code, class: "form-control zip_code",placeholder: "Enter zip code", required: true,id: "zip_code",  value: "#{company.zip_code}" %>
+    </div>
+  </div>
+</div>
+
+
+
+
+<script>
+  $(document).ready(function(){
+    $('[data-field="fevicon_logo"] img').css('width','60px');
+    $('[data-field="fevicon_logo"]').find('.middle-image').css('left','5%');
+    $('[data-field="fevicon_logo"]').find('.middle-image').children('.text-image').css('font-size','17px');
+    $(".container-logo .logo-image").mouseover(function() {
+      logo = $(this).parent('.container-logo')
+      logo.children('.middle-image').children('.text-image').mouseover(function(){ 
+        //logo.children('.middle-image').css('text-align','center');
+        //logo.children('.middle-image').children('.text-image').css('text-align','center');
+        logo.children('.middle-image').css('opacity','1'); 
+        logo.find(".logo-image").css('opacity','0.2');
+      });
+      logo.children('.middle-image').css('opacity','1');
+      logo.find('.logo-image').css('opacity','0.2');
+    }).mouseout(function() {
+      logo.children('.middle-image').css('opacity','0');
+      logo.find('.logo-image').css('opacity','1');
+    });
+
+    $('.editable span').on('click', function(e){
+      var text = $.trim($(this).text());
+      var dataId = $(this).parent().data('id');
+      var field = $(this).parent().data('field');
+      var klass = $(this).parent().data('klass');
+      var user_id = "<%= user.id %>";
+      if(klass=='Company')
+      {
+        
+        element = $(this).siblings( ".field");
+        element.removeClass('hidden');
+        $(this).addClass('hidden');
+
+        if(field == "street_address")
+        {
+          //var location = document.getElementById("lead-fields").getElementsByClassName("street_address");
+          var location = document.getElementById("street_address")
+          var options = {
+          };
+          var autocomplete = new google.maps.places.Autocomplete(location, options);
+          google.maps.event.addListener(autocomplete, 'place_changed', function() 
+          {
+            var place = autocomplete.getPlace();
+            var componentForm = {
+              street_number: 'short_name',
+              address1: 'short_name',
+              route: 'long_name',
+              locality: 'long_name',
+              administrative_area_level_1: 'long_name',
+              country: 'long_name',
+              postal_code: 'short_name'
+            };
+
+            var streetAddress = ""
+            place.address_components.forEach(function(e) {
+              let placeType = e.types[0];
+              let addressTypeArr = componentForm[placeType];
+              if (placeType == "locality") {
+                $("#city").val(e[addressTypeArr]);
+              } else if (placeType == "postal_code") {
+                $("#zip_code").val(e[addressTypeArr])
+              } else if (placeType == "administrative_area_level_1") {
+                $("#state").val(e[addressTypeArr])
+              }
+              else{
+                if (e[addressTypeArr] != undefined){
+                  if(streetAddress == ""){
+                    streetAddress = e[addressTypeArr];
+                  }else{
+                    streetAddress += ", " + e[addressTypeArr];
+                  }
+                }
+              }
+              // if (addressTypeArr) {
+              //  // toggleFull($(".shipping-" + addressTypeArr[1])[0]);
+              // }
+
+            });
+            $("#street_address").val(streetAddress);
+          });
+
+          var pacContainerInitialized = false;
+          $('#street_address').on('keyup keypress keydown', function() {
+            if (!pacContainerInitialized) {
+              $('.pac-container').css('z-index', '9999');
+              pacContainerInitialized = true;
+            }
+          });
+          $('#street_address').on('keyup keypress keydown', function(event) {
+            var keyCode = event.keyCode || event.which;
+            if (keyCode === 13) {
+              event.preventDefault();
+              return false;
+            }
+          });
+          $(".remove_fields").remove();
+
+        }
+        
+        element.children('.form-control').on('blur', function(e){
+        
+          data = {}
+          data["user_id"] = user_id;
+          if(field == "street_address")
+          {
+            data['street_address'] = $("#street_address").val();
+            data['city'] = $("#city").val();
+            data['state'] = $("#state").val();
+            data['zip_code'] = $("#zip_code").val();
+          }
+          else
+          {
+            data[field] = $(this).val();
+          }
+          $.ajax({
+            url: "/companies/" + dataId,
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            type: 'patch',
+            data: {
+              company: data
+            },
+            dataType: "script",
+            success: function(result){
+              element.addClass('hidden');
+              element.siblings('.value').html(element.children('.form-control').val())
+              element.siblings('.value').removeClass('hidden');
+            }
+          });
+          
+        });
+        
+      } 
+    });
+  });
+</script>

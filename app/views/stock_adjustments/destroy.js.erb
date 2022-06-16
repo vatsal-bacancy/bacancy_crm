@@ -1,0 +1,4 @@
+$("#tableBodyAdjustment").html("<%= escape_javascript(render 'inventories/table_body_adjustments', inventory: @inventory) %>");
+$(".flash-messages").show();
+$(".flash-messages").html("<%= escape_javascript(render partial: 'layouts/flash')%>");
+

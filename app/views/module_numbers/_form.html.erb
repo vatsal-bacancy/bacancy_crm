@@ -1,0 +1,18 @@
+<div class="block-ui-box">
+  <%= form_with model: @module_number do |f| %>
+    <div class="block-ui-box m-t-5">
+      <%= f.hidden_field :klass_id, value: klass_id%>  
+      <div class="form-group">
+        <%= f.label :module_prefix %>
+        <%= f.text_field :module_prefix, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :sequence_start %>
+        <%= f.text_field :sequence_start, class: "form-control" %><br><br>
+      </div>
+      <div class="form-group">
+        <%= f.submit "Save",  class: 'btn btn-success' %>
+      </div>
+    </div>
+  <% end %>
+<div>

@@ -1,0 +1,6 @@
+<% if params[:edit_name].present? %>
+  $("#modalContainer").html("<%= escape_javascript(render partial: 'edit_name', locals: {user: @user, company: @company}) %>")
+<% else %>
+  $("#modalContainer").html("<%= escape_javascript(render partial: 'modal', locals: {user: @user, groups: @groups, data: @data}) %>")
+<% end %>
+$("#modal").modal('show');

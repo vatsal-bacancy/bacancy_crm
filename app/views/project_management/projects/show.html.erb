@@ -1,0 +1,108 @@
+<%= render 'components/site_content' do %>
+  <% content_for :head do %>
+    <div class="l-menu">
+      <span class="main-menu-sitecontent">
+        <%= link_to 'Project Dashboard', project_management_projects_path, class: 'common-link' %>
+      </span>
+      <span class="sub-menu-sitecontent m-x-10"><i class="fa fa-angle-right"></i></span>
+      <span class="sub-menu-sitecontent"><%= @project.name %> - <%= @project.client.company_name %></span>
+    </div>
+    <div class="pull-right">
+      <%= link_to 'Edit', edit_project_management_project_path(@project), remote: true, class: 'site-content-head-btn' %>
+      <a href="<%= project_management_projects_path %>" class='btn btn-success'>Back</a>
+    </div>
+  <% end %>
+  <% content_for :body do %>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="dynmic-tab-div">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="dynmic-tab-div-header mb0">
+                <span class="heading"><%= @project.name %></span>
+                <span class="pull-right"><%= link_to '+Add Task', new_project_management_project_task_path(@project), remote: true, class: 'site-content-head-btn' %></span>
+              </div>
+            </div>
+          </div>
+          <div class="cmn-tab-div">
+            <div class="row">
+              <div class="col-md-12">
+                <ul id="myTabs" class="nav nav-pills nav-justified bpro-tab" role="tablist" data-tabs="tabs">
+                  <% ProjectManagement::Project::Task.valid_statuses.pluck(:value).each_with_index do |status, index| %>
+                    <li class="<%= 'active' if index == 0 %>">
+                      <a href="#tasks-<%= status.to_underscore %>" data-toggle="tab"><%= status %></a></li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+            <div class="row">
+              <div class="tab-content">
+                <% ProjectManagement::Project::Task.valid_statuses.pluck(:value).each_with_index do |status, index| %>
+                  <div role="tabpanel" class="tab-pane fade <%= 'in active' if index == 0 %>" id="tasks-<%= status.to_underscore %>">
+                  <div class="col-sm-12 mt15">
+                    <div class="table-responsive">
+                      <table class="table-bordered common-data-table" data-simple-datatable data-simple-datatable-options="<%= {dom: 'lrtip', paging: false}.to_json %>">
+                        <thead>
+                        <tr>
+                          <th>Actions</th>
+                          <th>Created Date/Time</th>
+                          <th data-simple-datatable-column-type="Text">Title</th>
+                          <th data-simple-datatable-column-type="Picklist">Priority</th>
+                          <th data-simple-datatable-column-type="Picklist">Assigned To</th>
+                          <th data-simple-datatable-column-type="Date">Start Date</th>
+                          <th data-simple-datatable-column-type="Date">Due Date</th>
+                          <th>Life Of Task</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <% @project.tasks.where(status: status).each do |task| %>
+                          <tr>
+                            <td>
+                              <div class="btn-wrapper">
+                                <div class="action-icon">
+                                  <%= link_to project_management_project_task_path(id: task, project_id: task.project.id), remote: true do %>
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                  <% end %>
+                                </div>
+                                <div class="action-icon">
+                                  <%= link_to edit_project_management_project_task_path(id: task, project_id: task.project.id), remote: true do %>
+                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                  <% end %>
+                                </div>
+                                <div class="action-icon">
+                                  <%= link_to project_management_project_task_path(id: task, project_id: task.project.id), method: :delete, remote: true, data: { confirm: "Are you sure you want to Delete this Task?" } do %>
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                  <% end %>
+                                </div>
+                              </div>
+                            </td>
+                            <td><%= pretty_date_time task.created_at %></td>
+                            <td><%= task.title %></td>
+                            <td><%= task.priority %></td>
+                            <td><%= task.assigned_to_fullname %></td>
+                            <td><%= pretty_date task.start_date %></td>
+                            <td><%= pretty_date task.due_date %></td>
+                            <td>0 Days</td>
+                          </tr>
+                        <% end %>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+<div id="modalContainer" class="modal-right"></div>
+
+<script>
+  $(document).ready(function() {
+    $(document).trigger('simple-datatable:reload');
+  });
+</script>

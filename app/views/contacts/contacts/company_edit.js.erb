@@ -1,0 +1,2 @@
+$("#companyContainer").html("<%= escape_javascript(render partial: 'company_modal', locals: {company: @company}) %>");
+$('#companyModal').modal('show');

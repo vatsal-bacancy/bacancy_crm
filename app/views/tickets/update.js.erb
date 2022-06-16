@@ -1,0 +1,9 @@
+<% if @ticket.errors.any? %>
+  $("#flash_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");
+<% else %>
+ $("#success_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>"); 
+  <% if @object.present?%>
+    $("#ticket .list").html("<%= escape_javascript(render partial: 'index', locals: {object: @object, ticket_fields: @ticket_fields, ticket_klass: @ticket_klass, data: @ticket_data }) %>"); //on client and lead show page
+  <%end%>
+  $('#ticketModal').modal('hide');
+<% end %>

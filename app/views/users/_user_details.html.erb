@@ -1,0 +1,77 @@
+<div class="col-sm-12 mt10">
+  <div class="d-flex d-flex-wrap editable" data-id="<%=current_user.id %>" data-klass='User' data-field="first_name" >
+    <label>First Name: </label>
+    <span class="info-dynamic-data value"><%= current_user.first_name.present? ? current_user.first_name : "N/A" %></span>
+    <div class="form-group field hidden ml10">
+      <%= f.text_field :first_name, class: "form-control first_name",placeholder: "Enter first name", required: true,  value: "#{current_user.first_name}" %>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-12 mt15 ">
+  <div class="d-flex d-flex-wrap editable" data-id="<%=current_user.id %>" data-klass='User' data-field="last_name" >
+    <label>Last Name: </label>
+    <span class="info-dynamic-data value"><%= current_user.last_name.present? ? current_user.last_name : "N/A" %></span>
+    <div class="form-group field hidden ml10 ">
+      <%= f.text_field :last_name, class: "form-control last_name",placeholder: "Enter last name", required: true,  value: "#{current_user.last_name}" %>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-12 mt15 ">
+  <div class="d-flex d-flex-wrap editable" data-id="<%=current_user.id %>" data-klass='User' data-field="email">
+    <label>Email: </label>
+    <span class="info-dynamic-data value" data-confirm-before-ajax="true" data-name="email"><%= current_user.email.present? ? current_user.email : "N/A" %></span>
+    <div class="form-group field hidden ml10">
+      <%= f.text_field :email, class: "form-control email",placeholder: "Enter Email", required: true,  value: "#{current_user.email}" %>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-12 mt15">
+  <div class="d-flex d-flex-wrap editable" data-id="<%=current_user.id %>" data-klass='User' data-field="phone_no">
+    <label>Phone Number: </label>
+    <span class="info-dynamic-data value"><%= current_user.phone_no.present? ? current_user.phone_no : "N/A" %></span>
+    <div class="form-group field hidden ml10">
+      <%= f.text_field :phone_no, class: "form-control phone_no",placeholder: "Enter Phone No",  value: "#{current_user.phone_no}" %>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $('.editable span').on('click', function(e){
+      if($(this).data('confirmBeforeAjax')) {
+        if(!confirm(`Do you want to edit ${$(this).data('name')} ?`)) { return; }
+      }
+      var text = $.trim($(this).text());
+      var dataId = $(this).parent().data('id');
+      var field = $(this).parent().data('field');
+      var userklass = $(this).parent().data('klass');
+      if(userklass=='User') {
+        element = $(this).siblings( ".field");
+        element.removeClass('hidden');
+        $(this).addClass('hidden');
+        element.children('.form-control').on('blur', function(e){
+            data = {}
+            data[field] = $(this).val();
+            $.ajax({
+              url: "/settings/users/" + dataId,
+              beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+              type: 'patch',
+              data: {
+                user: data,
+                edit_name: 'edit_name'
+              },
+              dataType: "script",
+              success: function(result){
+                element.addClass('hidden');
+                element.siblings('.value').html(element.children('.form-control').val())
+                element.siblings('.value').removeClass('hidden');
+              }
+            });
+        });
+      }
+    });
+  });
+</script>

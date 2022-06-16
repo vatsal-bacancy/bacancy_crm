@@ -1,0 +1,19 @@
+<% if payment.successful? %>
+  <div class='flash-messages alert'>
+    <div class='row'>
+      <div class='col-sm-12'>
+        <strong>Payment Successful!</strong>
+        <p>Thank you! Your payment of $<%= payment.invoice.amount_with_tax %> has been received.</p>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <div class='flash-messages flash-danger alert'>
+    <div class='row'>
+      <div class='col-sm-12'>
+        <strong>Payment Failed</strong>
+        <p>Transaction id: <%= payment.id %></p>
+      </div>
+    </div>
+  </div>
+<% end %>

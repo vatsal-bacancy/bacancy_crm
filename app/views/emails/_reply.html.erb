@@ -1,0 +1,36 @@
+<div class='card'>
+  <div class='card-header' id='reply_id_<%= reply.id %>'>
+    <div class='btn btn-link btn-collapse' type='button' data-toggle='collapse' data-target='#collapse_id_<%= reply.id %>' aria-expanded='true'>
+      <div class='filter-middle-body'>
+        <div class='filter-middle-main'>
+          <div class='profile-circle-wrapper'>
+            <div class='profile-circle m-t-10'>
+              <%= reply.display_name.first  %>
+            </div>
+          </div>
+          <div class='message'>
+            <div class='row'>
+              <b class='pull-left'><%= reply.subject&.truncate(90) %></b>
+              <sup class='pull-right mt18 m-r-5'>
+                <%= reply.received_date_time %>
+              </sup>
+            </div>
+            <div class='row'>
+              <p class='pull-left'><%= reply.display_name %> </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id='collapse_id_<%= reply.id %>' class='collapse' aria-labelledby='reply_id_<%= reply.id %>' data-parent='#accordionExample'>
+    <div class='card-body'>
+      <div class='message-content'>
+        <iframe class='' srcdoc='<%= reply.body %>'></iframe>
+        <% reply.attachments.each do |cid, file| %>
+          <a href="<%= file[:content] %>" download="<%= file[:filename] %>"><%= file[:filename] %></a>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,106 @@
+<div class="modal fade" id="modalCenter" role="dialog" data-file-association-modal>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">File Upload</h4>
+      </div>
+      <div class="modal-body">
+        <form data-file-association-form>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <%= label_tag :title %>
+                <%= text_field_tag :title, file_association.title,class: 'form-control' %>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <%= label_tag :field %><span class="required">*</span>
+                <%= select_tag :field_id, options_for_select(file_association.associable.file_fields.pluck(:label, :id), file_association.field_id), { prompt: 'Select A Field', required: true, class: 'form-control' } %>
+              </div>
+            </div>
+          </div>
+          <%= hidden_field_tag :file_ids, file_association.file_id, 'data-file-association-file-ids' => true %>
+          <%= hidden_field_tag :associable, file_association.associable.to_polymorphic %>
+        </form>
+
+        <form data-file-form>
+          <label>Attachments</label><span class="required">*</span><br/>
+          <label for="file" class="btn btn-default">Upload Files</label>
+          <input type="file" id="file" name="attachments[]" class="inputfile" <%= 'required multiple' unless action_name == 'edit' %>>
+        </form>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class='fs-12' data-selected-files>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <%= submit_tag 'Save', class: 'btn btn-success', 'data-file-association-submit' => true %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $('[data-file-association-submit]').on('click', function() {
+      let fileAssociationForm = $('[data-file-association-form]');
+      let fileForm = $('[data-file-form]');
+      Bpro.utils.formValidator(fileAssociationForm[0], function() {
+        Bpro.utils.formValidator(fileForm[0], function() {
+          $.ajax({
+            <% unless action_name == 'edit' %>
+            url: Routes.bulk_create_file_manager_file_associations_path(),
+            method: 'POST',
+            <% else %>
+            url: Routes.file_manager_file_association_path(<%= file_association.id %>),
+            method: 'PUT',
+            <% end %>
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            data: fileAssociationForm.serializeArray()
+          });
+        });
+      });
+    });
+
+    $('#file').on('change', function() {
+      let fileForm = $(this).closest('[data-file-form]');
+      let formData = new FormData(fileForm[0]);
+      $.ajax({
+        url: Routes.bulk_create_file_manager_files_path(),
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        method: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+          $('[data-file-association-file-ids]').val(response.file_ids).trigger('change');
+        }
+      });
+    });
+
+    $('[data-file-association-file-ids]').on('change', function() {
+      $.ajax({
+        url: Routes.selected_files_file_manager_files_path(),
+        method: 'GET',
+        data: {
+          file_ids: $(this).val().split(',')
+        }
+      });
+    });
+
+    $.ajax({
+      url: Routes.selected_files_file_manager_files_path(),
+      method: 'GET',
+      data: {
+        file_ids: $('[data-file-association-file-ids]').val().split(',')
+      }
+    });
+  })
+</script>

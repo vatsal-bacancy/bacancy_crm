@@ -1,0 +1,38 @@
+<%= render 'components/site_content' do %>
+  <% content_for :head do %>
+    <div class="l-menu">
+      <span class="main-menu-sitecontent">Clients</span>
+      <span class="sub-menu-sitecontent m-x-10"><i class="fa fa-angle-right"></i></span>
+      <span class="sub-menu-sitecontent"><%= link_to @client.company_name, client_path(@client), class: 'common-link' %></span>
+      <span class="sub-menu-sitecontent m-x-10"><i class="fa fa-angle-right"></i></span>
+      <span class="sub-menu-sitecontent">Logs</span>
+    </div>
+  <% end %>
+  <% content_for :body do %>
+    <div class="table-responsive">
+      <table class="table table-bordered common-data-table">
+        <thead>
+        <tr>
+          <th>Date/Time</th>
+          <th>Created By</th>
+          <th>Field</th>
+          <th>Field Changed From</th>
+          <th>Field Changed To</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @client.logs.records.each do |audit| %>
+          <tr>
+            <td><%= pretty_date_time audit.created_at %></td>
+            <td><%= audit.user&.fullname %></td>
+            <% change = audit.audited_changes.first %>
+            <td><%= @client.logs.fields_label_map[change.first] %></td>
+            <td><%= change.last.first %></td>
+            <td><%= change.last.last %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+<% end %>

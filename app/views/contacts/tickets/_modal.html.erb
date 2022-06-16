@@ -1,0 +1,48 @@
+<div class="modal fade" id="ticketModal" role="dialog">
+  <div class="modal-dialog">
+  <%= form_for ticket, remote: true, class: 'form-inline', html: { multipart: true } do |f|  %>
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Tickets</h4>
+      </div>
+      <div class="modal-body">
+        <%if ticketable.present? %>
+          <%= f.hidden_field :ticketable, value: "#{ticketable.class.name}:#{ticketable.id}"%>
+
+        <%else%>
+          <div class='row block-ui-box m-t-5 m-r-5'>
+            <p class="title">
+              <h3 class="title m-l-10 p-b-5"></h3>
+            </p>
+
+            <div class='col-md-12 '>
+              <div class="form-group ">
+                <%= f.label :company_name %>
+                <%= f.select :ticketable, grouped_options_for_select(grouped_options, "#{f.object.ticketable_type}:#{f.object.ticketable_id}" ),
+                    {:prompt => 'Select Company Name'}, {:class=>"form-control select_modules",:style=>"width:100%;",  "data-live-search" => "true", :id=>"selectData"} %>
+              </div>
+            </div>
+          </div>
+        <%end%>
+        <%= render 'form', ticket: ticket, users: users, f: f %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <%= f.submit class: 'btn btn-success' %>
+      </div>
+    </div>
+  <% end %>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $('#selectData').selectpicker();
+    $('.btn.dropdown-toggle.btn-default').on('click', function(){
+        $(".btn-group.bootstrap-select.form-control.select_modules").addClass('open');
+    });
+  });
+</script>

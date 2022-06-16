@@ -1,0 +1,67 @@
+<%= render 'components/site_content_2' do %>
+  <% content_for :head_title do %>
+    <h2 class="admin-main-title text-darkgray1 mb-0 pr-2 m-0 dark-gray-font text-capitalize">Project Dashboard</h2>
+  <% end %>
+  <% content_for :body do %>
+    <div class="row">
+      <div class="col-lg-8 col-md-12">
+        <div class="dynmic-tab-div">
+          <div class="cmn-tab-div">
+            <% @projects.each do |project| %>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="dynmic-tab-div-header dynmic-tab-sub-header project-dashboard-head">
+                    <div class="d-flex">
+                      <div class="heading-wrapper">
+                        <p class="heading"><%= link_to "#{project.name} - #{project.client.company_name}", project_management_project_path(project), class: "no-decoration" %></p>
+                      </div>
+                      <div class="new-msg-div">
+                        <%= link_to edit_project_management_project_path(project), remote: true do %>
+                          Edit
+                        <% end %>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="cmn-tab-div cmn-tab-div1">
+                    <div class="row">
+                      <div class="col-sm-12 m-t-5">
+                        <!--recent tasks-->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+            <% unless @projects.present? %>
+              No Projects!
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-12">
+        <% if checked_permission?(current_user, @klass_list['ProjectManagement::Project'], @action_list['create']) %>
+          <div class="dynmic-tab-div">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="dynmic-tab-div-header mb0">
+                  <span class="heading">Quick Action</span>
+                </div>
+              </div>
+            </div>
+            <div class="cmn-tab-div">
+              <div class="row">
+                <div class="col-sm-12 text-center">
+                  <%= link_to new_project_management_project_path, class: 'cr-project', remote: true do %>
+                    Create Project
+                  <% end %>
+                  <p class="mt15 new-project-text">Start new project here by clicking Create Project</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+<div id="modalContainer" class="modal-right"></div>

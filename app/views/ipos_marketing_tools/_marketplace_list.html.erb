@@ -1,0 +1,71 @@
+<div class="admin-table bg-white table-responsive p-4">
+  <% if @error.blank? %>
+    <table class="common-data-table table table-bordered text-center lead_table" id="marketplace_list">
+      <thead>
+        <th>
+          <%# <div class="radio-lbl">
+            <label class="check ">
+              <input type="checkbox"  name="" id="check-all">
+              <span class="checkmark"></span>
+            </label>
+          </div> %>
+        </th>
+        <th> Title </th>
+        <th width="20%"> Description </th>
+        <th> Web URL </th>
+        <th> Review Rating URL </th>
+        <th> Average Ratings </th>
+        <th> Image </th>
+      </thead>
+      <tbody class="list-body">
+        <% counter = 0 %>
+        <% marketplaces.each do |marketplace| %>
+          <tr>
+            <td>
+              <!-- <div class="radio-lbl">
+                <label class="check ">
+                  <% check_box_tag "marketplace_ids[]", marketplace['id'] , false, class:"check" %>
+                  <span class="checkmark"></span>
+                </label>
+              </div> -->
+              <%= counter+=1 %>
+            </td>
+            <td><%= marketplace['title'] %></td>    
+            <td><%= marketplace['description'] %></td>
+            <td><%= link_to marketplace['web_url'], url_simplifier(marketplace['web_url']), target: '_blank' %></td> 
+            <td><%= link_to marketplace['review_rating_url'], url_simplifier(marketplace['review_rating_url']), target: '_blank' %></td>
+            <td><%= marketplace['average_ratings'] %></td> 
+            <td><%= image_tag(marketplace['image_url'], width: 100, height: 100) if marketplace['image_url'].present? %></td> 
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <div class="text-center">Something went wrong</div>
+  <% end %>
+</div>
+
+<script>
+  $(document).ready(function(){
+    if ( $.fn.DataTable.isDataTable('#marketplace_list') ) {
+      $('#marketplace_list').DataTable().destroy();
+    }
+    $('#marketplace_list').DataTable({
+      sDom: 'lfrtip',
+      scrollX: false,
+      autoWidth: false,
+      paging: true,
+      searching: true,
+      lengthMenu: [50, 100],
+      // colReorder: {
+      //   fixedColumnsLeft: 1
+      // },
+      columnDefs: [
+        {orderable: false, targets: [0,1]},
+        {width: "30px", targets: [0] },
+        {className: "dt-center", targets: "_all"}
+      ],
+      order: []
+    });
+  });
+</script>

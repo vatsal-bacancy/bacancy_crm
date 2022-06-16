@@ -1,0 +1,67 @@
+<div class="dynmic-tab-div directory-structure">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="dynmic-tab-div-header">
+        <span class="heading">Employees</span>
+        <div class="pull-right">
+          <%= link_to new_client_employee_path(employer), class: "site-content-head-btn", remote: true do %>
+            + New Employee
+          <% end %>
+        </div>
+      </div>
+      <div class="dynmic-tab-div-data ">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="site-content-data">
+              <div class="table-list">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="site-content-data">
+                      <div class="table-list">
+                        <div class="table-responsive">
+                          <table class="common-data-table">
+                            <thead>
+                              <th class="action">Action</th>
+                              <th>Name</th>
+                              <th>Contact</th>
+                              <th width="10%">Feedback Submitted?</th>
+                              <th width="10%">Retraining Needed?</th>
+                            </thead>
+                            <tbody>
+                            <% employer.employees.each do |employee| %>
+                              <tr>
+                                <td>
+                                  <div class="btn-wrapper">
+                                    <div class="action-icon">
+                                      <%= link_to edit_client_employee_path(employer, employee), remote: true do %>
+                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                      <% end %>
+                                    </div>
+                                    <div class="action-icon">
+                                      <%= link_to client_employee_path(employer, employee), method: :delete, remote: true, data: { confirm: "Are you sure you want to Delete this employee?" }, local: false do %>
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                      <% end %>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td><%= employee.full_name %></td>
+                                <td><%= "#{employee.country_code} #{employee.phone_number}" %></td>
+                                <td><%= pretty_checkbox(employee.feedback_submitted) %></td>
+                                <td><%= link_to pretty_checkbox(employee.retraining), feedback_client_employee_path(employer, employee), remote: true %></td>
+                              </tr>
+                            <% end %>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

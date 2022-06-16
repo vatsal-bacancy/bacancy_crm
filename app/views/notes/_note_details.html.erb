@@ -1,0 +1,78 @@
+<% klass.groups.each do |group|%>
+  <div class="dynmic-tab-div">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="dynmic-tab-div-header">
+          <span class="heading"><%= group.label %></span>
+
+        </div>
+        <div class="dynmic-tab-div-data">
+          <div class="row">
+            <% group.fields.each do |field|%>
+              <div class="col-sm-6 border-right">
+                <div class="row">
+                  <div class="col-md-4">
+                    <span class="info-title "><%= field.name=="attachment" ? "Attachment" : field.label %></span>
+                  </div>
+                  <div class="col-md-6 editable" data-id="<%= note.id %>" data-klass='Note' data-field="<%= field.name %>" data-deletable="<%= field.deletable%>" >
+                    <span class="info-dynamic-data value">
+                    <%#=  field.name == "user_id" ? note.user.fullname : note.send(field.name) %>
+                      <% if field.column_type == 'Multi-Select Check Box' %>
+                        <%= parse_multi_select(note.send(field.name)) %>
+                      <% else %>
+                        <% case field.name %>
+                        <% when "content" %>
+                          <%= note.send(field.name).html_safe %>
+                        <% when "attachment" %>
+                          <% if note.documents.present? %>
+                            <% note.documents.each do |attach| %>
+                              <%= link_to attach.attachment.url, target: 'blank', title: attach.attachment.file.filename, class: 'm-t-5 common-link' do %>
+                                <i class="fa fa-file" aria-hidden="true"></i>
+                                <%= attach.attachment.file.filename.truncate(20) %>
+                              <%end%>
+                              <br/>
+                            <% end %>
+                          <% else %>
+                            No Attachment Added
+                          <% end %>
+                        <%else%>
+                          <%= note.send(field.name) %>
+                        <% end %>
+                      <% end %>
+                    </span>
+                    <div class="form-group field hidden">
+                      <%#= render partial: 'forms/field', locals: { f: f, field_name: field.name, field_label: nil, column_type: field.column_type, custom: field.custom, have_custom_value: field.have_custom_value, data: data, field: field, value: lead.send(field.name), disp_lable: false } %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <%end%>
+            <div class="col-sm-6 border-right">
+              <div class="row">
+                <div class="col-md-4">
+                  <span class="info-title "> Assign By</span>
+                </div>
+                <div class="col-md-6">
+                  <span class="info-dynamic-data value"> <%= note.user.fullname %> </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 border-right">
+              <div class="row">
+                <div class="col-md-4">
+                  <span class="info-title "> Created At</span>
+                </div>
+                <div class="col-md-6">
+                  <span class="info-dynamic-data value"> <%= note.updated_at.strftime("%m/%d/%Y, %I:%M %p")  %> </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <%#= link_to "Back", back_to_note_path(note), remote: true , class: 'btn btn-success m-t-10'%>
+        </div>
+      </div>
+    </div>
+  </div>
+<%end%>

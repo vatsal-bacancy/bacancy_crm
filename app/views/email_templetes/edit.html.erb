@@ -1,0 +1,24 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <span class="main-menu-sitecontent">Email Template</span>
+          </div>
+          <div class="pull-right">
+          </div>
+          <span class='l-menu pull-right'><a href="<%= email_templetes_path	 %>" class='btn btn-success btn-sm back-btn-margin'>Back</a></span>
+        </div>
+      </div>
+    </div>
+    <div class="site-content-data white-body-wrapper">
+      <%= render partial: "form", locals: { email_templete: @email_templete, emailable_type: @emailable_type, emailable_id: @emailable_id } %>
+    </div>
+  </div>
+</div>
+
+<script>
+  $document_ids =[];
+</script>

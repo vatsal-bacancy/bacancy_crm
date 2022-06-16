@@ -1,0 +1,124 @@
+<!--   <h1> Project Description </h1>
+  <div class="">
+    <p><%= @project.description.html_safe%></p>
+  </div>
+  <br/>
+  <h1> Project Overview</h1> -->
+<div role="tabpanel" class="tab-pane fade in active" id="tab1">
+  <div class="col-md-12">
+    <div class="dynmic-tab-div-header dynmic-tab-sub-header inner-header mt15">
+      <div class="d-flex">
+        <div class="heading-wrapper">
+          <p class="heading">Project Overview</p>
+        </div>
+        <div class="new-msg-div">
+
+          <%#= link_to "New Message", new_project_message_path(project_id: @project.id), remote: true %>
+        </div>
+      </div>
+    </div>
+    <div class="site-content-data pr15 pl15">
+    <div class="row cl-both" >
+      <div class="col-sm-5">
+        <!--<div class="d-flex flex-align-center cm-dasboard-serach">
+          <label class="blue-font">Show </label><select name="leads_length" aria-controls="leads" class="form-control"><option value="50">50</option><option value="100">100</option></select> <label>entries</label>
+        </div>-->
+      </div>
+      <div class="col-sm-7">
+        <div class="d-flex flex-align-center cm-dasboard-serach pull-right">
+          <label class="">Search</label>
+          <input type="search" class="form-control" placeholder="Search here" aria-controls="leads" id="search-view">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 p-mr-20 mt20">
+       <%= project.description.html_safe %>
+      </div>
+    </div>
+
+
+    <div id="overview-data">
+      <% pro_over =  project_overview(project) %>
+      <% pro_over.each do |date, data|%>
+        <div id="myTable">
+          <div class="row">
+            <div class="col-sm-12">
+              <h2 class="date-heading mt15">
+                <span>
+                  <%#= project.created_at.strftime("%m/%d/%Y") %>
+                  <%= date == Date.today ? "Today" : date&.strftime("%m/%d/%Y")%>
+                </span>
+              </h2>
+            </div>
+          </div>
+
+          <div class="project-overview table-responsive">
+            <table width="100%" class="sub-table">
+              <% data.each do |message_doc| %>
+                <tr>
+                  <%if message_doc.class.name == 'Message'%>
+                    <% message_text = (message_doc.messageable_type && message_doc.messageable_type == "Project") ? "Message" : "Comment" %>
+                    <% re_text = message_doc.messageable_type == "Project" ? message_doc.title : "Re: #{message_doc.messageable.title}" %>
+                      <% if message_doc.messageable_type && message_doc.messageable_type == "Project" %>
+                        <td style="padding:5px 0px;" width="5%"><a href="" class="msg-com-btn msg-btn"><%= message_text %></a></td>
+                      <% else %>
+                        <td style="padding:5px 0px;" width="5%"><a href="" class="msg-com-btn com-btn"><%= message_text %></a></td>
+                      <% end %>
+                      <% if message_doc.messageable_type == "Project" %>
+                        <td class="project-overview-link" width="45%">
+                          <span ><%= link_to re_text, contacts_project_message_path(project, message_doc), class: "msg-link" %> -
+                            <% if message_doc.status == "Todo"%>
+                              <span class="Todo-text"><%=message_doc.status%></span>
+                            <% else %>
+                              <span class="inprogress-text"><%=message_doc.status%></span>
+                            <% end %>
+                          </span>
+                        </td>
+                      <% else %>
+                        <td width="45%" class="project-overview-link">
+                          <span>
+                            <%=  link_to re_text, contacts_project_message_path(project, Message.find(message_doc.messageable_id)), class: "msg-link" %> -
+                            <% if message_doc.status == "Todo"%>
+                                <span class="Todo-text"><%=message_doc.status%></span>
+                            <% else %>
+                                <span class="inprogress-text"><%=message_doc.status%></span>
+                            <% end %>
+                          </span>
+                        </td>
+                      <% end %>
+                      <td class="text-right" width="50%" class="project-overview-link">
+                        <span class="posted-by">Posted by</span>
+                        <span class="posted-by-name"><%= message_doc.resourcable.fullname%> at <%= message_doc.created_at.strftime("%I:%M %p") %></span>
+                      </td>
+               
+                  <% elsif message_doc.class.name == 'DocumentDocumentable'%>
+                    <td style="padding:5px 0px;" width="5%"><a href="" class="msg-com-btn doc-btn">Document</a></td>
+                    <td class="project-overview-link" width="45%"><span class=""><%= link_to message_doc.document.attachment.file.filename, message_doc.document.attachment.url %> </span>
+                    </td>
+                    <td class="text-right" width="50%">
+                      <span class="posted-by">Posted by</span>
+                      <span class="posted-by-name"><%= message_doc.document.resourcable.fullname%> at <%= message_doc.created_at.strftime("%I:%M %p") %></span>
+                    </td>
+                  <%end%>
+                </tr>
+              <%end%>
+            </table>
+          </div>
+        </div>
+      <%end%>
+    </div>
+  </div>
+
+</div>
+</div>
+<script>
+$(document).ready(function(){
+  $("#search-view").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#overview-data #myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>

@@ -1,0 +1,133 @@
+<div id='directory_content'>
+  <%= render partial: 'directories/directory_content', locals: {directory: directory}%>
+</div>
+<%if directory.name != 'system' %>
+  <% if checked_permission?(current_user, @klass_list["Document"], @action_list["create"]) %>
+    <div class="row m-t-20">
+      <div class="col-sm-12 mobile-center">
+        <%= form_for Document.new, url: uploadfiles_path, html: {multipart: true, class: 'dropzone', id: 'dir-dropzone', method: :post} do |f| %>
+          <div id='flash_message'></div>
+
+          <div id='content'>
+            <div class="dz-message needsclick">
+              <h3> Add new file here </h3> or
+              <strong> Click </strong> to upload
+            </div>
+            <div class="fallback">
+              <%= f.file_field :attachment %>
+              <%= f.submit 'Upload Document'%>
+            </div>
+
+          </div>
+        <%end%>
+      </div>
+    </div>
+  <%end%>
+<%end%>
+
+
+<script type="text/javascript">
+
+  $(document).ready(function(){
+    $('#destroy_all').on('click', function(){
+
+      //if document destroy then remove selected document
+      $('.remove-document').trigger('click');
+      
+      var checkedDir = [];
+      var checkedDoc = [];
+      $("input[name='directory_id[]']:checked").each(function (){
+        checkedDir.push(parseInt($(this).val()));
+      });
+      $("input[name='document_ids[]']:checked").each(function (){
+        checkedDoc.push(parseInt($(this).val()));
+      });
+      if(checkedDir == 0 && checkedDoc == 0){
+        confirm("Please select Directory Or Document.");
+      }else{
+        if(checkedDir != 0){
+          $.ajax({
+            url: "<%= destroy_all_directories_path %>",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            type: 'DELETE',
+            data: {
+              ids: checkedDir
+            },
+            dataType: "script",
+            success: function(result){
+            }
+          });
+        }
+        if(checkedDoc != 0){
+          $.ajax({
+            url: "<%= destroy_all_documents_path %>",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            type: 'DELETE',
+            data: {
+              ids: checkedDoc
+            },
+            dataType: "script",
+            success: function(result){
+            }
+          });
+        }
+      }
+    });
+    $('.document-checkbox').change(function(){
+      if($(this).prop('checked')){
+        // $(".directory-checkbox").attr("disabled", true);
+      }else{
+        if($('.document-checkbox').filter(':checked').length == 0){
+          $(".directory-checkbox").attr("disabled", false);
+        }
+      }
+    });
+    $('.directory-checkbox').change(function(){
+      if($(this).prop('checked')){
+        // $(".document-checkbox").attr("disabled", true);
+      }else{
+        if($('.directory-checkbox').filter(':checked').length == 0){
+          $(".document-checkbox").attr("disabled", false);
+        }
+      }
+    });
+
+    $('#check-all').on('change', function(){
+      $('#directory_content .check').prop('checked', $(this).prop('checked'));
+      checked_checkbox_count()
+    });
+    resourcable_type = "<%= current_user.class.name %>";
+    resourcable_id = "<%= current_user.id %>";
+    documentable_type = "<%= @directory.class.name %>";
+    documentable_id = "<%= @directory.id %>";
+    $(function(){
+      Dropzone.autoDiscover = false;
+      myDropzone = $('#dir-dropzone').dropzone({
+        maxFileSize: 10,
+        addRemoveLinks: true,
+        paramName: 'document[attachment]',
+        init: function() {
+          this.on("sending", function(file, xhr, formData) {
+            formData.append("document[resourcable_type]", resourcable_type);
+            formData.append("document[resourcable_id]", resourcable_id);
+            formData.append("documentable_type", documentable_type);
+            formData.append("documentable_id", documentable_id);
+            console.log(formData)
+          });
+          this.on("success", function(file,res){
+            this.removeFile(file);
+          });
+          this.on("complete", function (file) {
+            $.ajax({
+              url: "<%= update_documents_documents_url %>",
+              data: {
+                directory_id: documentable_id
+              }
+            })
+          });
+        }
+      });
+    });
+  });
+
+</script>

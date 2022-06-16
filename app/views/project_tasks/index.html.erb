@@ -1,0 +1,111 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+            <div class="l-menu">
+              <span class="main-menu-sitecontent">Project Task</span>
+              <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> </span>
+              <span class="sub-menu-sitecontent"> My Project Task</span>
+            </div>
+            <div class="pull-right">
+              <a href="" class="site-content-head-btn">Delete</a>
+              <%= link_to new_project_task_path,class: 'site-content-head-btn', remote: true do %>
+                + Add Project Task
+              <%end%>
+              <!-- <a href="" class="site-content-head-btn">Import Ticket</a>
+              <a href="" class="site-content-head-btn">Export To Excel</a> -->
+              <a href="" class="site-content-head-btn">Actions</a>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+          <div class="site-content-data">
+            <div class="table-responsive">
+              <table class="common-data-table" id='projet_tasks'>
+                <thead>
+                  <th>
+                    <div class="radio-lbl">
+                      <label class="check ">
+                      <input type="checkbox"  name="remember_me">
+                      <span class="checkmark"></span> </label>
+                    </div>
+                  </th>
+                  <th>Title</th>
+                  <th>Status</th>
+                  <th>Assigned To</th>
+                  <th>Assigned By</th>
+                  <th>Priority</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Description</th>
+                </thead>
+                <tbody>
+                  <% @project_tasks.each do |task| %>
+                    <tr>
+                      <td>
+                        <div class="radio-lbl">
+                          <label class="check ">
+                            <input type="checkbox"  name="remember_me">
+                            <span class="checkmark"></span> </label>
+                          </div>
+                      </td>
+                      <td><%= task.title %></td>
+                      <td><%= task.status %></td>
+                      <td><%= task.assigned_to.first_name %></td>
+                      <td><%= task.assigned_by.first_name %></td>
+                      <td><%= task.priority %></td>
+                      <td><%= task.start_date&.strftime("%m/%d/%Y, %I:%M %p") %></td>
+                      <td><%= task.end_date&.strftime("%m/%d/%Y, %I:%M %p") %></td>
+                      <td><%= task.description %></td>
+                      <!--<td>
+                        <% if can? :update, task %>
+                          <%= link_to edit_task_path(task), remote: true do %>
+                            <span class="glyphicon glyphicon-edit"></span>
+                          <%end%>
+                        <% end %>
+                        <%= link_to task_path(task) do %>
+                          <span class="glyphicon glyphicon-eye-open"></span>
+                        <%end%>
+                        <% if can? :update, task %>
+                          <%= link_to task_path(task), method: :delete do%>
+                            <span class="glyphicon glyphicon-trash"></span>
+                          <%end%>
+                        <% end %>
+                      </td>-->
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div id="newProjectTask"></div>
+<% provide :script do %>
+  $(document).ready(function(){
+    if ( $.fn.DataTable.isDataTable('#projet_tasks') ) {
+      $('#projet_tasks').DataTable().destroy();
+    }
+    $('#projet_tasks').DataTable({
+      scrollX: false,
+      searching: false,
+      paging: false,
+      autoWidth: false,
+      columnDefs: [{
+        targets: 8,
+        render: function(data, type, row){
+          return data.length > 10 ? data.substr(0,10)+"..." : data;
+        }
+      }]
+    });
+  });
+<% end %>

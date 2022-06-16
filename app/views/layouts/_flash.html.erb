@@ -1,0 +1,14 @@
+<% flash.each do |name,msg| %>
+  <div class='flash-messages' id="flash-msg">
+    <%= content_tag :div, class: "alert alert-#{name}" do %>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <%= msg %>
+    <% end %>
+  </div>
+<% end %>
+
+<script>
+  $(document).ready(function(){
+    $(".flash-messages").delay(2000).slideUp(1000).fadeOut();
+  });
+</script>

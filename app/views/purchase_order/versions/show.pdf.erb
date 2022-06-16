@@ -1,0 +1,203 @@
+<%= wicked_pdf_stylesheet_link_tag "style" -%>
+<%= wicked_pdf_stylesheet_link_tag "bootstrap" -%>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-container">
+        <div class="form-wrapper">
+          <div class="form-header text-center">
+            <%= wicked_pdf_image_tag "iPos-logo.png" %>
+            <h1 class="mb-30 mt-10 header">
+              <center>iPos Purchase Order</center>
+            </h1>
+          </div>
+          <div class="form-body">
+            <div class="table-responsive cmn-table-wrapper cotation_table">
+              <table class='cmn-table-total' width="100%">
+                <tr>
+                  <td width="25%" class="blue-back small-text"><b>Company Name:</b></td>
+                  <td width="25%"><%= @purchase_order.purchase_orderable.company_name %></td>
+                  <td width="25%" class="blue-back"><b>Website URL:</b></td>
+                  <td width="25%"><%= @purchase_order.purchase_orderable.try(:company_url) %></td>
+                </tr>
+                <tr>
+                  <td class="blue-back"><b>Company Email:</b></td>
+                  <td><%= @purchase_order.purchase_orderable.company_email %></td>
+                  <td class="blue-back"><b>Client phone:</b></td>
+                  <td><%= @purchase_order.purchase_orderable.phone_no %></td>
+                </tr>
+                <tr>
+                  <td class="blue-back"><b>Address:</b></td>
+                  <td colspan="3"><%= @purchase_order.purchase_orderable.full_address %></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="site-content-data">
+        <div class="table-responsive cmn-table-wrapper cotation_table">
+          <table class='common-data-table cmn-table-total pdf-cmn-table ' width="100%">
+            <!-- <thead class="headerContent" style="display:none"> -->
+            <tr class="blue-back">
+              <th></th>
+              <th><b>iPos Products / Services</b></th>
+              <th><b>Specification </b></th>
+              <th><b>Price</b></th>
+              <th><b>Quantity</b></th>
+              <th><b>Payment Options</b></th>
+              <th><b>Total</b></th>
+            </tr>
+            <!-- </thead> -->
+            <tbody>
+            <% @purchase_order.devices_with_category.each do |category, devices| %>
+              <tr>
+                <td rowspan="<%= devices.count + 1 %>"><b><%= category %></b></td>
+              </tr>
+              <% devices.each do |device| %>
+                <tr>
+                  <td><%= device.name %></td>
+                  <td><%= device.products.map{|product| product.name}.join('<br/>').html_safe %></td>
+                  <td><%= pretty_amount device.products_price %></td>
+                  <td>
+                    <center><%= device.quantity %></center>
+                  </td>
+                  <td>
+                    <center><%= device.payment_options %></center>
+                  </td>
+                  <td>$<%= display_two_digit(device.total) %></td>
+                </tr>
+              <% end %>
+            <% end %>
+            <!-- Financed Payement Term -->
+            <tr class="total-header">
+              <td colspan="7"><b>Payment Terms if Hardware is Financed</b></td>
+            </tr>
+            <tr>
+              <td colspan="6" class="text-right">
+                <b>Hardware Total: </b>
+              </td>
+              <td>
+                <div>
+                  $<%= display_two_digit(@purchase_order.financed_hardware_total) %>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6" class="text-right">
+                <b>*iPos Promotional Discount: </b>
+              </td>
+              <td>
+                <div>
+                  $<%= display_two_digit(@purchase_order.financed_promotional_discount) %>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6" class="text-right">
+                <b>iPos Client Financing Total: </b>
+              </td>
+              <td>
+                <div>
+                  $<%= display_two_digit(@purchase_order.financed_total) %>
+                </div>
+              </td>
+            </tr>
+            <!-- Up front Payement Term -->
+            <tr class="total-header">
+              <td colspan="7"><b>Payment Terms if Hardware is Purchased</b></td>
+            </tr>
+            <tr>
+              <td colspan="6" class="text-right">
+                <b>Hardware Total: </b>
+              </td>
+              <td>
+                <div>
+                  $<%= display_two_digit(@purchase_order.upfront_hardware_total) %>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6" class="text-right">
+                <b>*iPos Promotional Discount Code: </b>
+              </td>
+              <td width="10%">
+                <div>
+                  <%= @purchase_order.upfront_promotional_discount_code %>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6" class="text-right">
+                <b>Due From iPos Client:</b>
+              </td>
+              <td width="10%">
+                <div>
+                  $<%= display_two_digit(@purchase_order.upfront_due_from_client) %>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6" class="text-right">
+                <b>Due From iPos Agent:</b>
+              </td>
+              <td width="10%">
+                <div>
+                  $<%= display_two_digit(@purchase_order.upfront_due_from_agent) %>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6" class="text-right">
+                <b>Final Total:</b>
+              </td>
+              <td width="10%">
+                <div>
+                  $<%= display_two_digit(@purchase_order.upfront_total) %>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<style type="text/css">
+  .pdf-cmn-table{margin:20px 0px;}
+  .pdf-cmn-table tr td{text-align: center;}
+  .pdf-cmn-table tr th{text-align: center;}
+  .cmn-btn{ border-radius: 10px; padding:12px 40px;display:inline-block;color:#fff;font-size:24px;font-weight: normal !important;text-decoration: none;margin-bottom: 10px;cursor:pointer; text-align: center;}
+  .cmn-btn:hover,.cmn-btn:active,.cmn-btn:focus{text-decoration:none;color:#fff;}
+  .gray-back-btn{background-color:#C1C1C1;}
+  .mt-20{margin-top:20px;}
+  .btn-right{text-align:right !important;}
+  .blue-back{background: black;color:#fff;text-transform: capitalize;}
+  .small-text{text-transform: none !important;}
+  .pdf-cmn-table .blue-back{background: black;color:#fff;text-transform: none;}
+  .cmn-table-total{border: 1px solid #000;border-collapse: collapse;margin:0px 0px 30px 0px;}
+  .cmn-table-total-style{float:left;width:50%;}
+  .cmn-table-total tr td{border: 1px solid #000;padding: 5px;}
+  .cmn-table-total tr th{border: 1px solid #000;padding:5px;}
+  .form-header h2{text-decoration:underline;}
+  .border-none-tr td{border:none !important;}
+  .total {text-align: right !important;}
+  .mb-30{margin-bottom: 30px !important;}
+  .mt-10{ margin-top: 10px !important; }
+  .header{ font-size: 25px !important; }
+  td.text-right{ text-align: right !important; }
+  td.text-right b{font-size: 15px !important;}
+  td.text-left {text-align: left !important;}
+  .set-doller{ margin-right: 5px; margin-top: 7px; font-size: 15px;}
+  .total-header{ background-color: black; color: white; }
+  tr.total-header td{font-size: 16px; }
+  .font-size-15px{font-size: 15px;}
+  .footer {position: fixed; left: 0; height: 30px; bottom: 0;  width: 100%;  color: white;  text-align: center;}
+  .footer a{text-decoration: none;}
+  .page-break { display:block; clear:both; page-break-after:always; }
+</style>

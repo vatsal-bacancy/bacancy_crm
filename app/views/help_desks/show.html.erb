@@ -1,0 +1,44 @@
+<style>.cke_inner .cke_top { display: none; }</style>
+<div class="site-main">
+  <%= render 'layouts/sidebar' %>
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <%= link_to help_desks_path, class: "main-menu-sitecontent common-link" do %>
+              Help Desk
+            <% end %>
+            <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> </span>
+            <span class="sub-menu-sitecontent"><%= @help_desk.title %></span>
+          </div>
+          <div class="pull-right">
+            <%= link_to edit_help_desk_path(@help_desk), class: 'site-content-head-btn' do %>
+              Edit
+            <% end %>
+            <%= link_to help_desk_path(@help_desk), method: :delete, data: { confirm: "Are you sure you want to Delete this Help Desk Article?" }, class: 'site-content-head-btn' do %>
+              Delete
+            <% end %>
+            <%= link_to 'Back', help_desks_path, class: 'btn btn-success back-btn-margin' %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="site-content-data">
+          <div class="white-body-wrapper">
+            <div class="row">
+              <div class="col-sm-12">
+              <%= cktext_area_tag 'help_desk_description', @help_desk.description,
+                  ckeditor: {removeButtons: 'HorizontalRule,NumberedList,Copy,BulletedList,Bold,Underline,Italic,Paste,Cut,Image,Table,Blockquote,Format,Styles,Undo,Redo,List,Menu',
+                  readOnly:true,resize_enabled:false, removePlugins: "elementspath,sourcearea"} %>
+                 <%#= @help_desk.description.html_safe %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

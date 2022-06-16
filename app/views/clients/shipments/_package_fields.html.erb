@@ -1,0 +1,13 @@
+<tr class="nested-fields">
+  <td>
+    <%= f.text_field :description, required: true, placeholder: 'Description', class: 'form-control' %>
+  </td>
+  <td>
+    <%= f.number_field :weight, step: '.01', required: true, placeholder: 'Weight (lbs)', class: 'form-control' %>
+  </td>
+  <td>
+    <%= link_to_remove_association f do %>
+      <i class='glyphicon glyphicon-trash'></i>
+    <% end %>
+  </td>
+</tr>

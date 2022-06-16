@@ -1,0 +1,9 @@
+<%if @object.present?%>
+$('#email-list').html("<%= escape_javascript(render partial: 'cemails/cemail_list', locals: { object: @object }) %>");
+<%end%>
+$("#modal").modal('hide');
+$("#flash_container").html("<%= escape_javascript(render partial: 'layouts/flash') %>");
+
+<% if params[:email_id].present? %>
+  $("." + "message_id_<%= params[:email_id] %>").remove();
+<%end%>

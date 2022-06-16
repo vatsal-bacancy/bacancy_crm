@@ -1,0 +1,7 @@
+<% if @error %>
+  $("#flash_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>"); 
+<% else %>
+  $("#success_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>"); 
+  $("#client-list").html("<%= escape_javascript(render partial: 'client_list', locals: {clients: @clients, fields: @fields, data: @data}) %>")
+  $('#clientModal').modal('hide');
+<% end %>

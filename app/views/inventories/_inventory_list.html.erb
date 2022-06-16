@@ -1,0 +1,110 @@
+<% action_delete =  checked_permission?(current_user, @klass_list['Inventory'], @action_list['delete']) %>
+<% action_update =  checked_permission?(current_user, @klass_list['Inventory'], @action_list['update']) %>
+<% action_create =  checked_permission?(current_user, @klass_list['Inventory'], @action_list['create']) %>
+<% action_read =  checked_permission?(current_user, @klass_list['Inventory'], @action_list['read']) %>
+<table class="common-data-table inv-table">
+  <thead>
+  <tr>
+    <th>
+      <div class="radio-lbl">
+        <label class="check ">
+          <input type="checkbox" name="name" id='check-all-inventory'>
+          <span class="checkmark mt3"></span>
+        </label>
+      </div>
+    </th>
+    <th>Action</th>
+    <% @fields.each do |field|%>
+      <th><%=field.label%></th>
+    <%end%>
+  </tr>
+  </thead>
+  <tbody class='list-body'>
+  <% @inventories.each do |inventory|%>
+    <tr>
+      <td>
+        <div class="radio-lbl">
+          <label class="check">
+            <%= check_box_tag "inventory_ids[]", inventory.id , false, class:"check", data: {id: inventory.id} %>
+            <span class="checkmark"></span> </label>
+        </div>
+      </td>
+      <td>
+        <div class="btn-wrapper">
+          <% if action_read%>
+            <div class="action-icon">
+              <%= link_to inventory_path(inventory) do %>
+                <i class="fa fa-eye" aria-hidden="true"></i>
+              <% end %>
+            </div>
+          <%end%>
+          <% if action_update%>
+            <div class="action-icon">
+              <%= link_to edit_inventory_path(inventory) do %>
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+              <% end %>
+            </div>
+          <% end %>
+          <% if action_delete%>
+            <div class="action-icon">
+              <%= link_to inventory_path(inventory),data: { confirm: "Are you sure you want to Delete this Inventory?" }, method: :delete, remote: true do %>
+                <i class="fa fa-trash " aria-hidden="true"></i>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </td>
+      <% @fields.each do |field|%>
+        <td>
+          <%= pretty_value(field, inventory) %>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<script>
+  $(document).ready(function() {
+    $(".dropdown-toggle").dropdown();
+    $('[data-toggle="tooltip"]').tooltip();
+
+    $('.inv-table').DataTable({
+      sDom: 'lfrtip',
+      scrollX: false,
+      autoWidth: false,
+      paging: true,
+      pageLength: 50,
+      searching: true,
+      lengthMenu: [50, 100],
+      columnDefs: [
+        {orderable: false, targets: [0]},
+        {className: "dt-center", targets: "_all"}
+      ],
+      order: []
+    });
+  });
+
+  $('#check-all-inventory').on('change', function(){
+    $('.list-body .check').prop('checked',$(this).prop('checked'));
+  });
+  $('#destroy_all').on('click', function(){
+    var checked = [];
+    $("input[name='inventory_ids[]']:checked").each(function (){
+      checked.push(parseInt($(this).val()));
+    });
+    if(checked == 0){
+      confirm("Please select any inventory.");
+    }else{
+      $.ajax({
+        url: "<%= destroy_all_inventories_path %>",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: 'DELETE',
+        data: {
+          ids: checked
+        },
+        dataType: "script"
+      });
+    }
+  });
+</script>

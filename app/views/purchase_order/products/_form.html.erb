@@ -1,0 +1,59 @@
+<%= form_for product do |f| %>
+  <div class="col-sm-8">
+    <div class="col-sm-2">
+      <label>Product Name</label>
+      <span class="required">*</span>
+    </div>
+    <div class="col-sm-10">
+      <div class="form-group">
+        <%= f.text_field :name, placeholder: 'Product Name', class: 'form-control', required: true %>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <label>Price</label>
+      <span class="required">*</span>
+    </div>
+    <div class="col-sm-10">
+      <div class="form-group">
+        <%= f.number_field :price, placeholder: 'Price', class: 'form-control', required: true %>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <label>Available</label>
+    </div>
+    <div class="col-sm-10">
+      <div class="form-group">
+        <div class="radio-lbl radio-oneline">
+          <label class="radio">Yes
+            <%= f.radio_button :available, true, checked: product.available %>
+            <span class="checkround"></span>
+          </label>
+          <label class="radio">No
+            <%= f.radio_button :available, true, checked: !product.available %>
+            <span class="checkround"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <label>Product Type</label>
+    </div>
+    <div class="col-sm-10">
+      <div class="form-group">
+        <div class="radio-lbl radio-oneline">
+          <label class="radio">Hardware
+            <%= f.radio_button :product_type, 'hardware', checked: product.hardware? %>
+            <span class="checkround"></span>
+          </label>
+          <label class="radio">Software Service
+            <%= f.radio_button :product_type, 'software', checked: product.software? %>
+            <span class="checkround"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <%= f.submit class: 'site-content-head-btn' %>
+    </div>
+  </div>
+<% end %>

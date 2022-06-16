@@ -1,0 +1,36 @@
+<h1>project_task#Show</h1>
+
+<div class='form-group'>
+  <%= label_tag "Title" %>
+  <%= @project_task.title %>
+</div>
+<div class='form-group'>
+  <%= label_tag "Status" %>
+  <%= @project_task.status %>
+</div>
+<div class='form-group'>
+  <%= label_tag "Assigned to" %>
+  <%= @project_task.assigned_to.first_name %>
+</div>
+<div class='form-group'>
+  <%= label_tag "Assigned by" %>
+  <%= @project_task.assigned_by.first_name %>
+</div>
+<div class='form-group'>
+  <%= label_tag "Priority"%>
+  <%= @project_task.priority %>
+</div>
+<div class='form-group'>
+  <%= label_tag "Start date" %>
+  <%= @project_task.start_date %>
+</div>
+<div class='form-group'>
+  <%= label_tag "End date" %>
+  <%= @project_task.end_date %>
+</div>
+<div class='form-group'>
+  <%= label_tag "Description" %>
+  <%= @project_task.description %>
+</div>
+
+<%= link_to 'Back', project_tasks_path, class: 'btn btn-success' %>

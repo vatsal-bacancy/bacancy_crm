@@ -1,0 +1,15 @@
+<div class="form-group">
+  <%= label_tag :subcategories %>
+  <%= select_tag nil, options_for_select(category.subcategories.pluck(:title, :id)), prompt: 'Select Subcategory', class: 'form-control multi_select', data: { "subcategory-change": true } %>
+</div>
+<script>
+  $(document).ready(function() {
+    $('[data-subcategory-change]').on('change', function() {
+      $.ajax({
+        url: '<%= inventory_groups_client_inventory_associations_path %>',
+        type: 'GET',
+        data: { subcategory_id: $(this).val() }
+      });
+    });
+  });
+</script>

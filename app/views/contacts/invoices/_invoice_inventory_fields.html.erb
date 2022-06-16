@@ -1,0 +1,14 @@
+<tr class='nested-fields'>
+  <td><%= f.index + 1 if f.index.class == Integer %></td>
+  <td><%= f.select :inventory_id, options_for_select(inventories_array, f.object.inventory_id), {prompt: 'Select inventory'}, :class=>"inventory_select", "data-live-search" => "true" %></td>
+  <td><%= f.text_field :description, class: 'form-control' %></td>
+  <td><%= f.number_field :qty, class: 'form-control qty' %></td>
+  <td><%= f.number_field :rate, class: 'form-control rate', step: ".01" %></td>
+  <td><%= f.number_field :amount, class: 'form-control amount', step: ".01" %></td>
+  <td><%= f.number_field :tax, class: 'form-control tax' %></td>
+  <td>
+    <%= link_to_remove_association f do %>
+      <i class="fa fa-trash-o" aria-hidden="true"></i>
+    <% end %>
+  </td>
+</tr>

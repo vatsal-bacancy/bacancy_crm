@@ -1,0 +1,62 @@
+<%= render 'components/site_content_2' do %>
+  <% content_for :head_title do %>
+    <div class="">
+      <h2 class="admin-main-title text-darkgray1 mb-0 pr-2 m-0 dark-gray-font text-capitalize">
+        <%= link_to 'Projects', project_management_projects_path, class: 'common-link' %>
+      </h2>
+    </div>
+  <% end %>
+  <% content_for :body do %>
+    <div class="admin-table bg-white table-responsive p-4">
+      <table class="common-data-table table table-bordered text-center lead_table" data-simple-datatable>
+        <thead>
+        <tr>
+          <th>Actions</th>
+          <th data-simple-datatable-column-type="Text">Project Name</th>
+          <th data-simple-datatable-column-type="Picklist">Project Status</th>
+          <th data-simple-datatable-column-type="Date">Start Date</th>
+          <th data-simple-datatable-column-type="Date">End Date</th>
+          <th data-simple-datatable-column-type="Picklist">Created By</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @projects.each do |project| %>
+          <tr>
+            <td>
+              <div class="btn-wrapper">
+                <div class="action-icon">
+                  <%= link_to project_management_project_path(project) do %>
+                    <i class="fa fa-eye" aria-hidden="true"></i>
+                  <% end %>
+                </div>
+                <div class="action-icon">
+                  <%= link_to edit_project_management_project_path(project), remote: true do %>
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                  <% end %>
+                </div>
+                <div class="action-icon">
+                  <%= link_to project_management_project_path(project), method: :delete, remote: true, data: { confirm: "Are you sure you want to Delete this Project?" } do %>
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                  <% end %>
+                </div>
+              </div>
+            </td>
+            <td><%= project.name %></td>
+            <td><%= project.status %></td>
+            <td><%= pretty_date project.start_date %></td>
+            <td><%= pretty_date project.end_date %></td>
+            <td><%= project.created_by.fullname %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+<% end %>
+<div id="modalContainer" class="modal-right"></div>
+
+<script>
+  $(document).ready(function() {
+    $(document).trigger('simple-datatable:reload');
+  });
+</script>

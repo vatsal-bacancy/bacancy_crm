@@ -1,0 +1,51 @@
+<div id="success_message"></div>
+<div class="site-main">
+  <%= render 'layouts/contacts_sidebar'%>
+
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-md-12">
+
+          <div class="dynmic-tab-div">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="l-menu">
+                  <% if @directory.directoriable_type != "Client"%>
+                    <%= link_to contacts_directories_path, class: "heading common-link" do%>File Drive<% end %>
+                    <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> </span>
+                    <span class="sub-menu-sitecontent"> <%= @directory.directory_on_index(params[:directory_id]) %></span>
+                  <% else %>
+                    <span class="heading">File Drive</span>
+                  <% end %>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="site-content-data">
+                <div class="row">
+                  <div class="col-sm-12 mobile-center" id='dir_list'>
+                    <%= render partial: 'contacts/directories/list', locals: {directory: @directory, directories: @directories, documents: @documents}%>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <div id="modal-dir" class="modal-right"></div>
+    <div id="importfiled"></div>
+  </div>
+</div>
+<script>
+  $(document).ready(function() {
+    $(".dropdown-toggle").dropdown();
+  });
+</script>

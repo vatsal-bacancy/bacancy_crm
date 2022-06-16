@@ -1,0 +1,4 @@
+<% if @object.present?%>
+  $("#ticket .list").html(" <%= escape_javascript(render partial: 'index', locals: {object: @object, ticket_klass: @ticket_klass, ticket_fields: @ticket_fields}) %> ");
+<%end%>
+$("#ticket-all").html(" <%= escape_javascript(render partial: 'ticket_list', locals: { tickets: @tickets, ticket_fields: @ticket_fields, object: nil }) %> ");

@@ -1,0 +1,2 @@
+module TicketDocumentsHelper
+end

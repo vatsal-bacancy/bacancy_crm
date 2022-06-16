@@ -1,0 +1,35 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar' %>
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <span class= "main-menu-sitecontent">Settings</span>
+            <span class="sub-menu-sitecontent m-x-10"><i class="fa fa-angle-right"></i></span>
+            <span class="sub-menu-sitecontent">Contract Templates</span>
+          </div>
+          <div class="pull-right">
+            <%= link_to 'Back', contract_templates_path, class: 'btn btn-success' %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="site-content-data">
+          <div class="white-body-wrapper">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="Inventory-header">
+                  <h1>Edit Contract Template</h1>
+                </div>
+              </div>
+            </div>
+            <%= render 'form', contract_template: @contract_template %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

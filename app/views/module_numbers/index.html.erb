@@ -1,0 +1,71 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <%= link_to settings_path, class: "heading common-link"  do %> CRM Customization Settings <% end %>
+            <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> </span>
+            <%= link_to module_numbers_path	, class:"sub-menu-sitecontent"  do %> Module Number <% end %>
+            <span class="sub-menu-sitecontent">  </span>
+          </div>
+          <span class='pull-right'><a href="<%= settings_index_path %>" class='btn btn-success btn-sm back-btn-margin mt7'>Back</a></span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="site-content-data">
+          <div class="block-ui-box-wrapper">
+            <div  class="block-ui-box m-t-20">
+              <div class='row'>
+                <div class="col-sm-12 text-center">
+                  <div class="form-group">
+                    <%= label_tag "Select Module Name","Select Module Name", class:'select-module-set' %>
+                    <%= select_tag "module_name", options_for_select(@klass_names), {prompt: "Select Module", class: "form-control"}%>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <%#= select_tag "module_name", options_for_select(@klass_names), {prompt: "Select Module", class: "form-control"}%>
+        <div class='row'>
+          <div class="col-md-12 m-t-30">
+            <div class="block-ui-box-wrapper">
+              <div id='module-number'>
+                <%#= render "form", locals: {module_number: @module_number} %>
+              </div>
+             </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+  $(document).ready(function(){
+    $("#module_name").on('change', function(){
+      $.ajax({
+          url: "<%= get_module_name_path %>",
+          type: "get",
+          data: {
+            klass_id: $(this).val()
+          },
+          success: function(res){
+
+          }
+      });
+    });
+  })
+
+</script>

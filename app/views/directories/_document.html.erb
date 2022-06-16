@@ -1,0 +1,13 @@
+<div class="block-ui-box m-t-5">
+  <div class="col-md-12">
+    <%= link_to "Add Directory", new_directory_path(directoriable_type: lead.class, directoriable_id: lead.id),  remote: true %>
+    <%= link_to "Add Document", new_document_path(documentable: lead),  remote: true %>
+  </div>
+  <%lead.directories.each do |dir|%>
+    <%= render partial: 'directories/list_directory', locals: {dir: dir}%>
+  <%end%>
+  <%lead.documents.each do |document|%>
+    <%= render partial: 'documents/list_document', locals: {document: document}%>
+  <%end%>
+</div>
+<div id='directories'></div>

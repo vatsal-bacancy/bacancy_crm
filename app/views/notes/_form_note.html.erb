@@ -1,0 +1,67 @@
+<div class="row">
+  <div class="col-sm-12">
+    <%= f.cktext_area :content, class: "ckeditor w-100", id: "content#{id}" %>
+  </div>
+</div>
+
+<div class='row m-t-10 m-l-5'>
+  <%= f.label "Attachment"%>
+  <br/>
+  <input type="file" name="attachments[]" id="file<%= id %>" class="inputfile" multiple />
+  <label for="file<%= id %>" title='Upload Local Files' class="btn btn-default">Upload Files</label>
+  <div class= 'row' id="file-upload-filename"></div>
+  <%= hidden_field_tag :document_ids, [], class: 'document_ids'%>
+  <div class="row m-t-15">
+
+    <div class="col-md-12 ">
+      <div class='selected_documents'>
+        <%= render partial: 'documents/selected_documents', locals: { documents: [] } %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+
+    $('#file' + "<%= id %>").on('change', function (e) {
+      if(!e.target.files) return;
+      var files = e.target.files;
+      for(var i=0; i<files.length; i++) {
+        var f = files[i];
+        var datafile = new FormData();
+        datafile.append('resourcable_type', "<%= current_user.class.name %>");
+        datafile.append('resourcable_id', "<%= current_user.id %>" );
+        datafile.append('documentable_type', "<%= @system_directory.class.name %>");
+        datafile.append('documentable_id', "<%= @system_directory.id %>" );
+        datafile.append('attachment', f);
+        $.ajax({
+          url: "<%= uploadfiles_url %>",
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          type: 'POST',
+          contentType: false,
+          cache: false,
+          processData: false,
+          data: datafile,
+          success: function(res, file){
+            documentId = res["d_id"];
+            $document_ids.push(documentId);
+            $.ajax({
+              url: "<%= selected_documents_documents_path %>",
+              beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+              type: 'GET',
+              data: {
+                document_ids: $document_ids
+              },
+              dataType: "script",
+              success: function(result){
+              }
+            });
+            $('.document_ids').val($document_ids);
+          }
+        });
+      }
+    });
+
+  });
+</script>

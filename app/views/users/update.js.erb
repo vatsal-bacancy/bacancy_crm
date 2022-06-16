@@ -1,0 +1,19 @@
+<% if @user.errors.any? %>
+  $("#flash_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");
+<% else %>
+  <% if params[:edit_name].present? %>
+    $("#success_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");
+    $("#fullname_user").html("<%= @user.fullname %>");
+    $("#fullname_header").html("<%= @user.fullname %>");
+    $("#user_email_id").html("<%= @user.email %>");
+    $("#user-details").html("<%= escape_javascript(render partial: 'user_summary', locals: { current_user: @user }) %>")
+    <% if params['edit_company'] %>
+      $("#company-details").html("<%= escape_javascript(render partial: 'company_summary', locals: {company: @company, user: @user}) %>");
+    <% end %>
+  <% else %>
+    $("#success_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");
+    $("#users_list").html("<%= escape_javascript(render partial: 'users_list', locals: {users: @users}) %>")
+  <% end %>
+  $("#modal").modal('hide');
+  $("#signature").modal('hide');
+<% end %>

@@ -1,0 +1,33 @@
+ $("#modal-dir").html("<%= escape_javascript(render partial: 'contacts/directories/new', locals: {directory: @directory}) %>")
+ $('#newDir').modal('show');
+$('#new_dir_field').html("<span class=''><i class='fa fa-folder'></i> <input style='border:1px;border-color:#fff;display:inline-block;' placeholder='New directory' type='text' name='directory[name]' id='dir_name' required='required'/> <a href='javascript:void(0)', class='save m-l-5' > Save </a> </span> <input type='hidden' value=<%=@directory.directoriable_type%> id='directoriable_type'/> <input type='hidden' value=<%=@directory.directoriable_id%> id='directoriable_id'/> ");
+$('#new_dir_field').removeClass('hidden');
+$('#new-directory').addClass('hidden');
+$('#dir_name').focus();
+$('.save').on('click', function(){
+  if($('#dir_name').val()=="")
+  {
+    $(".save").attr('disabled','disabled')
+  }
+  else
+  { 
+    $.ajax({
+      url: "/contacts/directories/",
+      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+      type: 'post',
+      data: {
+        directory: {
+          name: $('#dir_name').val(),
+          directoriable_type: $('#directoriable_type').val(),
+          directoriable_id: $('#directoriable_id').val()
+        }
+      },
+      dataType: "script",
+      success: function(result){
+        $.ajax({
+          url: '/contacts'
+        });
+      }
+    });
+  }
+});

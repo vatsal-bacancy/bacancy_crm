@@ -1,0 +1,7 @@
+<% if @vendor.errors.present? %>
+  $("#flash_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");
+<% else %>
+  $("#success_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");
+  $('#modal').modal('hide');
+  $(document).trigger('ajax-datatable:reload');
+<% end %>

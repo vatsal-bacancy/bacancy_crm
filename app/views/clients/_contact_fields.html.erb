@@ -1,0 +1,69 @@
+<div class = 'nested-fields row block-ui-box m-t-5 m-r-5'>
+
+  <p class="title col-md-12">
+    <%#= f.hidden_field :_destroy %>
+
+    <%= link_to_remove_association f, class: "pull-right" do %>
+      <i class="fa fa-trash" aria-hidden="true"></i>
+    <% end %>
+  </p>
+  <div class= 'col-md-6'>
+    <div class="form-group">
+      <%= f.label :first_name %>
+      <%= f.text_field :first_name, class: 'form-control', placeholder: "First Name" %>
+    </div>
+  </div>
+  <div class= 'col-md-6'>
+    <div class="form-group">
+      <%= f.label :last_name %>
+      <%= f.text_field :last_name, class: 'form-control', placeholder: "Last Name" %>
+    </div>
+  </div>
+  <div class= 'col-md-6'>
+    <div class="form-group">
+      <%= f.label :email %>
+      <%= f.email_field :email, class: 'form-control mb10 contact-email', placeholder: "Primary Email" %>
+    </div>
+  </div>
+  <div class= 'col-md-6'>
+    <div class="form-group">
+      <%= f.label :phone_no %>
+      <%= f.text_field :phone_no, class: 'form-control', placeholder: "Phone Number" %>
+    </div>
+  </div>
+
+  <div class= 'col-md-6'>
+    <div class="form-group">
+      <%= f.label "Send Portal Invitation" %>
+      <%= f.check_box :portal_invitation, class: 'form-control contact-checkbox' %>
+    </div>
+  </div>
+
+<hr/>
+</div>
+<script type="text/javascript">
+  $(".contact-email").on('change', function(){
+    ele = $(this).attr('id');
+    $.ajax({
+        url: "<%= check_email_contacts_url %>",
+        type: 'get',
+        data: {
+          email: $(this).val()
+        },
+        dataType: "script",
+      success: function(result){
+        if(result == 'true'){
+          $("#" + ele).siblings("p").remove();
+          $("#" + ele).after("<p class='error-msg'>This email already present.</p>");
+          $('input[type="submit"]').attr('disabled','disabled');
+          $("#" + ele).blur().focus();
+        } else {
+          $("#" + ele).siblings("p").remove();
+          $("#" + ele).attr('title', '');
+          $("#" + ele).blur().focus();
+          $('input[type="submit"]').removeAttr('disabled');
+        }
+      }
+    });
+  });
+</script>

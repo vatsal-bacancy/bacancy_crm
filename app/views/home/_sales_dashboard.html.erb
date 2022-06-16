@@ -1,0 +1,179 @@
+<div class="row sales-dashboard dashboard-tab">
+  <div class="col-sm-12">
+    <div class="setting-icon-wrapper">
+      <% if @error.blank? %>
+        <div class="row">
+          <h1 class="lead" style="margin-bottom: 0px; font-size: 1.9rem;color:gray;font-weight: 400;">Recent Activity</h1>
+          <h6 style="margin-top: 0px">Last 30 Days | <%= "#{@start_date} - #{@end_date}" %></h6>
+        </div>
+        <div class="row d-flex">
+          <div class="col-md-8 col-lg-9 col-sm-9 col-xs-12 chart-scrolling">
+              <%= column_chart @chart_data, messages: {empty: "No Records available."},
+                  prefix: "$ ",
+                  donut: true,
+                  round: 2,
+                  zeros: true,
+                  library: {
+                    animation: {
+                      easing: 'easeOutQuart'
+                    },
+                  } %>
+          </div>
+          <div class="col-md-3 col-sm-3 processing-div">
+            <p class="head"><%= @last_month %> Processing Volume</p>
+            <p class="damount">$<%= display_two_digit(@last_month_amount_collection) %></p>
+            <p class="head">Last 30 Days Processing Volume</p>
+            <p class="damount">$<%= display_two_digit(@last_30_days_amount_collection) %></p>
+          </div>
+        </div>
+      <% else %>
+        <%= @error %>
+      <% end %>
+    </div>
+  </div>
+  <div class="col-sm-12 section-2">
+    <div class="setting-icon-wrapper">
+      <div class="row">
+        <div class="col-md-6 col-lg-4 box-shadow">
+          <h1 class="lead head-1">Recently Enrolled</h1>
+          <h6 class="head-6">Latest Submission</h6>
+          <div class="sub-section">
+            <% @clients.each do |client| %>
+              <div class="row merchant-data">
+                  <div class="col-md-6 col-sm-6">
+                    <p class="merchant-name"><%= client.company_name %></p>
+                    <p class="merchant-id detail-size"><%= client.nab_merchant_id_mid_ %></p>
+                  </div>
+                  <div class="col-md-6 text-right col-sm-6">
+                    <p class="merchant-received detail-size">Received on <%= client.user_assigned_at.strftime("%m/%d") %></p>
+                    <p class="detail-size">(<%= client.lead_status %>)</p>
+                  </div>
+              </div>
+            <% end %>
+            <% if @clients.blank? %>
+              <div class="no-data">No Records available</div>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 box-shadow">
+          <h1 class="lead head-1">Deployments</h1>
+          <h6 class="head-6">Last 30 Days | <%= "#{@start_date} - #{@today}" %></h6>
+          <div class="sub-section">
+            <% @deployments.each do |deployment| %>
+              <div class="row merchant-data">
+                  <div class="col-md-6 col-sm-6">
+                    <p class="merchant-name"><%= deployment.meetingable.company_name %></p>
+                    <p class="merchant-id detail-size"><%= deployment.meetingable.nab_merchant_id_mid_ %></p>
+                  </div>
+                  <div class="col-md-6 text-right col-sm-6">
+                    <p class="merchant-received detail-size">Shipped on <%= deployment.start_date_time.strftime("%m/%d") %> <i class="fa fa-truck fa-flip-horizontal fa-lg"></i></p>
+                  </div>
+              </div>
+            <% end %>
+            <% if @deployments.blank? %>
+              <div class="no-data">No Records available</div>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 box-shadow">
+          <h1 class="lead head-1">Tickets</h1>
+          <h6 class="head-6">Last 30 Days | <%= "#{@start_date} - #{@today}" %></h6>
+          <div class="sub-section">
+            <div class="row merchant-data">
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <p class="merchant-name">Closed</p>
+              </div>
+              <div class="col-md-6 text-right col-sm-6">
+                <p class="merchant-received detail-size"><%= @tickets.where(status: 'Close').count %></p>
+              </div>
+            </div>
+            <div class="row merchant-data">
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <p class="merchant-name">Created</p>
+              </div>
+              <div class="col-md-6 text-right col-sm-6">
+                <p class="merchant-received detail-size"><%= @tickets.count %></p>
+              </div>
+            </div>
+            <div class="row merchant-data">
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <p class="merchant-name">Open</p>
+              </div>
+              <div class="col-md-6 text-right col-sm-6">
+                <p class="merchant-received detail-size"><%= @tickets.where(status: 'Open').count %></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row sales-dashboard merchant-tab">
+  <div class="col-sm-12">
+    <div class="setting-icon-wrapper">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="site-content-data">
+            <div id="merchant-list" class="table-list">
+              <div class="table-responsive">
+              <table id="merchant-table" class="display common-data-table no-footer dataTable">
+                <thead>
+                    <tr>
+                      <th>Merchant Id</th>
+                      <th width="30%">DBA Name</th>
+                      <th>Account Status</th>
+                      <th>Received Date</th>
+                      <th>Sales Partner</th>
+                      <th>Last 30 days Collection</th>
+                      <th>Last Ticket Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <% @clients.each do |client| %>
+                    <tr>
+                      <td><%= client.nab_merchant_id_mid_ || '-' %></td>
+                      <td><%= client.company_name %></td>
+                      <td><div class="status_background <%= account_status_color(client.lead_status) %>"><%= client.lead_status %></div></td>
+                      <td><%= client.user_assigned_at.strftime("%Y/%m/%d") %></td>
+                      <td><%= client.ipos_agent_name_ || 'N/A' %></td>
+                      <td>
+                        <% if @amount_by_merchant_id[client.nab_merchant_id_mid_].present? %>
+                          <%= "$#{display_two_digit(@amount_by_merchant_id[client.nab_merchant_id_mid_]['last_30_days'].to_f)}" %>
+                        <% else %>
+                          N/A
+                        <% end %>
+                      </td>
+                      <td><%= client.tickets.order('created_at DESC').first&.created_at&.strftime("%Y/%m/%d") || 'N/A' %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $('.dashboard_toggle').addClass('active');
+    $('.merchant-tab').hide();
+    $('.merchant_toggle').on('click', function(){
+      $('.merchant-tab').show();
+      $('.dashboard-tab').hide();
+      $('.merchant_toggle').addClass('active');
+      $('.dashboard_toggle').removeClass('active');
+    })
+    $('.dashboard_toggle').on('click', function(){
+      $('.merchant-tab').hide();
+      $('.dashboard-tab').show();
+      $('.dashboard_toggle').addClass('active');
+      $('.merchant_toggle').removeClass('active');
+    })
+    var merchant_table = $('#merchant-table').dataTable();
+  })
+</script>

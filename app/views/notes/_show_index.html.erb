@@ -1,0 +1,51 @@
+<% klass.groups.each do |group|%>
+  <div class="dynmic-tab-div">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="dynmic-tab-div-header">
+          <span class="heading"><%= group.label %></span>
+          <div class="pull-right">
+
+          </div>
+        </div>
+        <div class="dynmic-tab-div-data">
+          <div class="row">
+           <% group.fields.each do |field|%>
+             <div class="col-sm-6 border-right">
+               <div class="row">
+                 <div class="col-md-4">
+                   <span class="info-title "><%= field.label %></span>
+                   <span class="info-title "> Assign By </span>
+                   <span class="info-title "> Created At </span>
+
+                 </div>
+                 <div class="col-md-6 editable" data-id="<%= note.id %>" data-klass='Lead' data-field="<%= field.name %>" data-deletable="<%= field.deletable%>" >
+                  <span class="info-dynamic-data value">
+                    <%#=  field.name == "user_id" ? note.user.fullname : note.send(field.name) %>
+                    <% case field.name %>
+                    <% when "user_id" %>
+                      <%= note.user.fullname %>
+                    <% when "content" %>
+                      <%= note.send(field.name).html_safe %>
+                    <% else %>
+                      <%= note.send(field.name) %>
+                    <% end %>
+                  </span>
+                  <span class="info-dynamic-data value"> <%= note.user.fullname %>  </span>
+                  <span class="info-dynamic-data value"> <%= note.updated_at.strftime("%m/%d/%Y, %I:%M %p") %>  </span>
+                   <div class="form-group field hidden">
+                       <%#= render partial: 'forms/field', locals: { f: f, field_name: field.name, field_label: nil, column_type: field.column_type, custom: field.custom, have_custom_value: field.have_custom_value, data: data, field: field, value: lead.send(field.name), disp_lable: false } %>
+                   </div>
+                 </div>
+               </div>
+
+             </div>
+            <%end%>
+          </div>
+          <%= link_to "Back",  notes_path(noteable_type: note.noteable_type , noteable_id: note.noteable_id), class: 'btn btn-success'%>
+        </div>
+
+      </div>
+    </div>
+  </div>
+<%end%>

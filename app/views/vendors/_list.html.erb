@@ -1,0 +1,11 @@
+<%= ::Renderer::AjaxDatatable.new.render(id: 'ajax-datatable-vendors', url: vendors_path, fields: fields.as_json, default_search: {}) %>
+
+<script>
+  $(document).ready(function() {
+    $(document).trigger('ajax-datatable:reload');
+
+    $('#check-all').on('change', function() {
+      $('.list-body .check').prop('checked',$(this).prop('checked'));
+    });
+  });
+</script>

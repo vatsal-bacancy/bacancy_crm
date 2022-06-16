@@ -1,0 +1,40 @@
+<% ProjectManagement::Project.klass.groups.each do |group| %>
+  <div class='row block-ui-box m-t-5 m-r-5'>
+    <div class="col-sm-12">
+      <p class="title">
+      <h3 class="title p-b-5"><%= group.label %></h3></p>
+      <% group.fields.each do |field| %>
+        <div class=<%= ["Text Area HTML", "File"].include?(field.column_type) ? 'col-md-12' : 'col-md-6' %>>
+          <div class="form-group">
+            <%= render partial: 'forms/field', locals: {f: f, field_name: field.name, field_label: field.label, column_type: field.column_type, custom: field.custom, have_custom_value: field.have_custom_value, data: @fields_picklist_data, field: field, value: field.column_type == 'File' ? '' : project.send(field.name)} %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+<div data-project-users-form>
+  <div class='row block-ui-box m-t-5 m-r-5 project-modal-check'>
+    <div class="col-sm-12">
+      <div class="title p-b-5"><%= @company.name %>'s users
+        <div class="radio-lbl d-inline-block">
+          <label class="check ">Select All
+            <input type="checkbox" data-project-users-check-all>
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      </div>
+      <% current_user.all_user_of_related_company.each do |user| %>
+        <div class="radio-lbl">
+          <label class="check">
+            <%= check_box_tag 'user_ids[]', user.id, project.users.include?(user), class: 'check', 'data-project-user-checkbox' => true %>
+            <span class="checkmark"></span>
+            <%= user.fullname %>
+          </label>
+        </div>
+      <% end %>
+      <%= "No users" if current_user.all_user_of_related_company.blank? %>
+    </div>
+  </div>
+</div>
+<div data-project-contacts-form></div>

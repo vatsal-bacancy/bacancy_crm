@@ -1,0 +1,22 @@
+<table class="table common-data-table user-list">
+  <thead>
+  <tr>
+    <th width="15%">Inventory Item Name<span class="required">*</span></th>
+    <th width="10%">SKU</th>
+    <th width="10%">MAC ID</th>
+    <th width="10%">Inventory Item Status</th>
+    <th width="10%">Purchase Price</th>
+    <th width="10%">Selling Price</th>
+    <th width="10%">Purchase Date</th>
+    <th width="10%">Vendor</th>
+    <th width="10%">Purchase Order Number</th>
+    <th width="5%"></th>
+    <th style="display: none;"></th><!--Used searching only-->
+  </tr>
+  </thead>
+  <tbody id="inventory_group_table">
+    <%= f.fields_for :inventories, f.object.inventories do |inventory| %>
+      <%= render 'inventory_fields_tr', f: inventory %>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,100 @@
+<% action_delete =  checked_permission?(current_user, @klass_list['Contact'], @action_list['delete']) %>
+<% action_update =  checked_permission?(current_user, @klass_list['Contact'], @action_list['update']) %>
+<% action_create =  checked_permission?(current_user, @klass_list['Contact'], @action_list['create']) %>
+<% action_read =  checked_permission?(current_user, @klass_list['Contact'], @action_list['read']) %>
+<div class="admin-table bg-white table-responsive p-4">
+  <table class='common-data-table table table-bordered text-center lead_table display' data-simple-datatable>
+    <thead>
+      <th>
+        <div class="radio-lbl">
+          <label class="check ">
+            <input type="checkbox" name="" id="check-all">
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      </th>
+      <th>Actions</th>
+      <th data-simple-datatable-column-type="Text">Full name</th>
+      <th data-simple-datatable-column-type="Text">Primary Email</th>
+      <th data-simple-datatable-column-type="Text">Phone No</th>
+    </thead>
+    <tbody class="list-body">
+      <% contacts.each do |contact| %>
+        <tr>
+          <td>
+            <div class="radio-lbl">
+              <label class="check ">
+                <%= check_box_tag "contact_ids[]", contact.id , false, class:"check contact-checkbox", data: {id: contact.id} %>
+                <span class="checkmark"></span>
+              </label>
+            </div>
+          </td>
+          <td>
+            <div class="btn-wrapper">
+              <% if action_update %>
+                <div class='action-icon'>
+                  <%= link_to edit_contact_path(contact, contactable_type: contact.lead_client_contact.contactable.class.name), remote: true do %>
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                  <% end %>
+                </div>
+              <% end %>
+              <% if action_delete %>
+                <div class='action-icon'>
+                  <%= link_to contact_path(contact), method: :delete, remote: true, data: { confirm: "Are you sure you want to Delete this Contact?" } do %>
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                  <% end %>
+                </div>
+              <% end %>
+
+              <% if action_create && contact.lead_client_contact.contactable.class.name == 'Client' && !contact.active? %>
+                <div class='action-icon'>
+                  <%= link_to resend_invitation_contacts_path(contact_id: contact.id), remote: true do %>
+                    <i class="mr-2">
+                      <%= image_tag asset_path('assign.svg'), title: 'Resend Invitation' %>
+                    </i>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </td>
+          <td><%= contact.fullname %></td>
+          <td><%= contact.email %></td>
+          <td><%= contact.phone_no %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<script>
+$(document).ready(function(){
+  $(document).trigger('simple-datatable:reload');
+
+  $('#check-all').on('change', function(){
+    $('.list-body .check').prop('checked',$(this).prop('checked'));
+  });
+
+  $('#destroy-contact').on('click', function(){
+    var checked = []
+      $("input[name='contact_ids[]']:checked").each(function ()
+      {
+          checked.push(parseInt($(this).val()));
+      });
+      if(checked == 0){
+        confirm("Please select any client.");
+      }else{
+        $.ajax({
+          url: "<%= destroy_all_contacts_path %>",
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          type: 'DELETE',
+          data: {
+            ids: checked
+          },
+          dataType: "script",
+          success: function(result){
+          }
+        });
+      }
+  });
+
+});
+</script>

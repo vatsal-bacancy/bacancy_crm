@@ -1,0 +1,179 @@
+<div class="site -main">
+  <%= render 'layouts/contacts_sidebar'%>
+  <div class="site-content site-content-data">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <span class="main-menu-sitecontent">dashboard</span>
+            <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> Project Communication Dashboard</span>
+            <span class="sub-menu-sitecontent"> </span>
+          </div>
+          <div class="pull-right">
+            <div id='modalContainer' class='modal-right'></div>
+
+              <!--<a class="site-content-head-btn" data-remote="true" href="">+Add Customer</a>
+               <a class="site-content-head-btn" data-remote="true" href="">Import Customer</a>
+              <a class="site-content-head-btn" href="">Filter</a>
+              <a href="javascript:void(0)" class="dropdown-toggle site-content-head-btn" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <span class="nav-cell blue-font"> Action
+              <span class="caret"></span>
+              </span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" data-remote="true" href="">Edit Column</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="">Edit Properties</a>
+                </li>
+              </ul>-->
+              <!-- <a href="" class="site-content-head-btn">Actions</a> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" id= 'project-all'>
+      <div class="col-lg-8 col-md-12">
+        <div class="dynmic-tab-div">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="dynmic-tab-div-header mb0">
+                <span class="heading"><%= @project.name%> - Dashboard </span>
+                <span class='pull-right'><a href="<%= projects_path %>" class='btn btn-success btn-sm'>Back</a></span>
+              </div>
+            </div>
+          </div>
+          <div class="cmn-tab-div">
+            <div class="row">
+              <div class="col-md-12">
+                <ul id="myTabs" class="nav nav-pills nav-justified bpro-tab" role="tablist" data-tabs="tabs">
+                  <li class= "<%= params[:message] ? '' : 'open active' %> reload" >  <%= link_to "Project Overview", overview_contacts_project_path(@project), remote: true  %></li>
+                  <li class= "<%= params[:message] ? 'open active' : '' %> reload" > <%= link_to "Message", contacts_project_messages_path(@project), remote: true  %></li>
+
+                  <!-- <li><a href="#tab4" data-toggle="tab">Email</a></li> -->
+                  <li class=""><%= link_to "Files", contacts_project_project_documents_path(@project), remote: true  %></li>
+                  <li class=""><%= link_to "New Message", new_contacts_project_message_path(project_id: @project.id), remote: true %></li>
+                </ul>
+              </div>
+            </div>
+            <div class="row">
+              <div class="tab-content">
+
+                <div class="row">
+                  <div class="col-sm-12" id="project-detail" data-cable-manager="true" data-channel="ResourceChannel" data-resource-klass="Project" data-resource-id="<%= @project.id %>">
+                    <% if params[:message] %>
+                      <%= render partial: 'contacts/messages/messages', locals: { object: @project }%>
+                    <% else %>
+                      <%= render partial: 'overview', locals: {klass: @klass, project: @project, overviews: @overviews}%>
+
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-lg-4 col-md-12">
+        <div class="dynmic-tab-div">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="dynmic-tab-div-header mb0">
+                <span class="heading"> <%= @project.name%></span>
+              </div>
+            </div>
+          </div>
+          <div class="cmn-tab-div" style="padding:10px 15px;">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+
+                <div class="dynmic-tab-div-header bg-blue  mb0">
+                  <p class="heading text-left white-font w-100">PEOPLE ON THIS PROJECT</p>
+                </div>
+
+                <% users = @project.project_users %>
+                <%# users.each do | user | %>
+                  <div class="dynmic-tab-div-header mb5 sub-div-header inner-header">
+                    <p class="heading1 text-left w-100"><%= @company.name %></p>
+                  </div>
+                  <%# pro_user = @project.project_users.where(client_id: client) %>
+                  <div class="back-data text-left">
+                    <ul>
+                      <% users.each do | pro_user | %>
+                        <% u = pro_user.user %>
+                          <li title="<%= u.try(:user).try(:email) %>">
+                            <% if pro_user.status == true %>
+                              <%= u.first_name %> <%= u.last_name %>
+                            <% else %>
+                              <%= u.try(:email).truncate(25)+" - Pending" %>
+                            <% end %>
+                          </li>
+                      <% end %>
+                    </ul>
+                  </div>
+                <%# end %>
+
+                <% contacts = @project.project_contacts %>
+                <%# users.each do | user | %>
+                  <div class="dynmic-tab-div-header mb5 sub-div-header inner-header">
+                    <p class="heading1 text-left w-100"><%= @project.client.company_name %></p>
+                  </div>
+                  <%# pro_user = @project.project_users.where(client_id: client) %>
+                  <div class="back-data text-left">
+                    <ul>
+                      <% contacts.each do | pro_cont | %>
+                        <% u = pro_cont.contact %>
+                          <li title="<%= u.try(:email) %>">
+                            <% if pro_cont.status == true %>
+                              <%= u.first_name %> <%= u.last_name %>
+                            <% else %>
+                              <%= u.try(:email).truncate(25)+" - Pending" %>
+                            <% end %>
+                          </li>
+                      <% end %>
+                    </ul>
+                  </div>
+                <%# end %>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div id='project-message'></div>
+
+<script>
+$(document).ready(function(){
+  $('.nav li').on('click',function(){
+    $('.nav li').removeClass('active');
+    var $this = $(this);
+    if (!$this.hasClass('active')) {
+        $this.addClass('active');
+    }
+  });
+
+  $('#project-detail').on('cableManager:received', function(e, data){
+    if(data === 'reload_messages'){
+      $.ajax({
+        url: $('#myTabs').find('.active.reload').find('a').attr('href'),
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+        },
+        type: 'GET',
+        dataType: 'script'
+      });
+    }
+  });
+});
+
+</script>

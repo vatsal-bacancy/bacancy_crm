@@ -1,0 +1,2 @@
+$('#project-message').html("<%= escape_javascript(render partial: 'form', locals: {object: @project, document: @document})%>")
+$('#documentModal').modal('show');

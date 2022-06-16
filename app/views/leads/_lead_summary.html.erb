@@ -1,0 +1,3 @@
+<%= form_for lead, local: true, class: "form-inline" do |f| %>
+  <%= render partial: 'lead_details', locals: { lead: lead, klass: klass, f: f, data: data } %>
+<%end%>

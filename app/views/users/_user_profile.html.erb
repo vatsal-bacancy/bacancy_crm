@@ -1,0 +1,25 @@
+<% if current_user.profile_picture.present? %>
+  <%= image_tag "#{current_user.profile_picture.url}?_=#{Time.now.to_i}", { id: 'profile_image', class: 'profile-circle-main dropdown-toggle', 'data-toggle'=>  "dropdown", 'role'=>"button",  'aria-haspopup'=>"true", 'aria-expanded'=>"false" }  %>
+<% else %>
+  <%= image_tag asset_path('small_demo_img.jpg'),{ id: 'profile_image', class: 'profile-circle-main dropdown-toggle', 'data-toggle'=>  "dropdown", 'role'=>"button",  'aria-haspopup'=>"true", 'aria-expanded'=>"false" } %>
+<% end %>
+<ul class="dropdown-menu">
+  <li class= 'dropdown-item'> 
+    <!-- Remove Image (delete call) -->
+    <%= link_to "Remove Image", user_remove_image_path(current_user), method: :delete, remote: true %>
+  </li>
+  <li class= 'dropdown-item'>
+    <!-- upload image ( upadte call) --> 
+    <%= link_to "Upload Image", new_image_settings_path(user_id: current_user.id,image: 'profile_picture'), remote: true %>
+  </li>
+</ul>
+
+<script>
+ $(document).ready(function() {
+    $(".dropdown-toggle").dropdown();
+    $('[data-toggle="tooltip"]').tooltip();
+    $('.dropdown-menu .dropdown-item').on('click',function(){
+      $('.dropdown .open').removeClass('open');
+    });
+  });
+</script>

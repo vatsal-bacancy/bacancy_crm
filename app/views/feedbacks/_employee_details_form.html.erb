@@ -1,0 +1,43 @@
+<%= form_for :employee_otp, url: "send_otp", remote: true, html: { id: "employee_details" } do |form| %>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group col-md-4 col-sm-12">
+        <div class="input-group">
+          <div class="input-group-addon">
+            <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+          </div>
+          <%= select_tag :country_code, options_for_select([['US (+1)', '+1'],['India (+91)', '+91']], selected: '+1'), include_blank: 'Please select country code', required: true, class: 'form-control fs-18' %>
+        </div>
+      </div>
+      <div class="form-group col-md-8 col-sm-12">
+        <div class="input-group">
+          <div class="input-group-addon pass-addon">
+            <i class="fa fa-phone" aria-hidden="true"></i>
+          </div>
+          <%= text_field_tag 'phone_number', '', required: true, class: "form-control ip-input phone-validation fs-18", pattern: Field::PATTERNS["Phone".to_sym], maxlength: 14, autocomplete: "off", onPaste: "return false" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 col-xs-12">
+    </div>
+    <div class="col-sm-6 col-xs-12 fp-right">
+      <%#= link_to "Forgot password?", new_password_path(resource_name), class: 'forgot-link' %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 clearfix">
+      <%= form.submit "Send OTP", class: "login-btn" %>
+    </div>
+  </div>
+<% end %>
+<script>
+  var phone_number_with_pattern = '';
+  $("#employee_details").submit(function( event ) {
+    let phone_number = $('#phone_number').val();
+    phone_number_with_pattern = $('#phone_number').val();
+    only_digits = phone_number.replace(/\D/g,'');
+    $('#phone_number').val(only_digits);
+  });
+</script>

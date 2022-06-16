@@ -1,0 +1,6 @@
+<option value>Select Subcategory</option>
+<% if category %>
+  <% category.subcategories.each do |subcategory| %>
+    <option value="<%= subcategory.id %>"><%= subcategory.title %></option>
+  <% end %>
+<% end %>

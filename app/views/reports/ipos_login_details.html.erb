@@ -1,0 +1,102 @@
+<%= render 'components/site_content' do %>
+  <% content_for :head do %>
+    <div class="l-menu">
+      <span class="main-menu-sitecontent">Reports</span>
+      <span class="sub-menu-sitecontent m-x-10"><i class="fa fa-angle-right"></i></span>
+      <span class="sub-menu-sitecontent">iPos Login Details</span>
+    </div>
+  <% end %>
+  <% content_for :body do %>
+    <div class="table-responsive">
+      <table class="common-data-table table-bordered"
+             id="status-board-ipos-login-details-datatable"
+             data-status-board-datatable="true">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th data-status-board-datatable-column-type="Text">Client Company Name</th>
+          <th data-status-board-datatable-column-type="Picklist">Account Manager</th>
+          <th data-status-board-datatable-column-type="Text">iPos Username</th>
+          <th data-status-board-datatable-column-type="Text">iPos Password</th>
+          <th data-status-board-datatable-column-type="Text">EPX Account Number</th>
+          <th data-status-board-datatable-column-type="Text">EPX Password</th>
+          <th data-status-board-datatable-column-type="Text">Magtek 4 Part Key</th>
+          <th data-status-board-datatable-column-type="Text">Batch Close Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+<% end %>
+<script>
+  $(document).ready(function() {
+    let table = $('#status-board-ipos-login-details-datatable');
+    let dataTable = table.DataTable({
+      sDom: 'lrtip',
+      paging: false,
+      order: [[1, 'asc']],
+      stateSave: true,
+      stateDuration: -1,
+      serverSide: true,
+      processing: true,
+      ajax: Routes.ipos_login_details_reports_path(),
+      columnDefs: [
+        { orderable: false, targets: '_all' },
+      ],
+      columns: [
+        { data: 'index' },
+        { data: 'client_company_name' },
+        { data: 'client_user_fullname' },
+        { data: 'client_ipos_username' },
+        { data: 'client_ipos_password' },
+        { data: 'client_epx_account_number' },
+        { data: 'client_exp_password' },
+        { data: 'client_4_part_key' },
+        { data: 'client_batch_close_time' }
+      ],
+      drawCallback: function() {
+        this.find('[data-status-board-datatable-field-value]').on('click', function() {
+          $(this).hide();
+          $(this).closest('[data-status-board-datatable-field-form]').find('[data-status-board-datatable-field-editor]').show();
+        });
+        this.find('[data-status-board-datatable-field-editor]').on('blur change.select2', function() {
+          let form = $(this).closest('[data-status-board-datatable-field-form]');
+          $.ajax({
+            url: Routes.update_status_board_clients_path(),
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            type: 'POST',
+            data: form.serializeArray(),
+            success: function() {
+              dataTable.ajax.reload();
+            }
+          });
+        });
+      }
+    });
+    yadcf.init(dataTable, [{
+      column_selector: '[data-status-board-datatable-column-type="Picklist"]',
+      filter_type: 'multi_select',
+      select_type: 'select2',
+      sort_as: 'none',
+      select_type_options: { theme: 'bootstrap', width: 'resolve', dropdownAutoWidth: true }
+    }, {
+      column_selector: '[data-status-board-datatable-column-type="Text"]',
+      filter_type: 'text',
+      filter_delay: 500
+    }, {
+      column_selector: '[data-status-board-datatable-column-type="Checkbox"]',
+      filter_type: 'select',
+      select_type: 'select2',
+      select_type_options: { theme: 'bootstrap', width: 'resolve', dropdownAutoWidth: true },
+      data: [{
+        value: 'Yes',
+        label: 'Yes'
+      }, {
+        value: 'No',
+        label: 'No'
+      }],
+    }]);
+  });
+</script>

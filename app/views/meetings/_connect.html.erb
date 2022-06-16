@@ -1,0 +1,44 @@
+<div class="dynmic-tab-div directory-structure" id="meetings">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="dynmic-tab-div-header">
+        <span class="heading">Meetings</span>
+      </div>
+      <div class="dynmic-tab-div-data ">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="site-content-data">
+              <div class="table-list">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <center>
+                      <div class="col-md-12">
+                        <h3>Connect your account with the Google calendar</h3>
+                      </div>
+                      <div class="site-content-data">
+                        <div class="email-connect-icons">
+                          <div class="setting-icon-wrapper">
+                            <%= link_to google_login_url(state: request.url) do  %>
+                              <div class="setting-icon">
+                                <div class="setting-icon-main">
+                                  <%= image_tag 'google-calendar.png'%>
+                                </div>
+                                <div class="setting-icon-title">
+                                  <p>Connect to Google Calendar</p>
+                                </div>
+                              </div>
+                            <%end%>
+                          </div>
+                        </div>
+                      </div>
+                    </center>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

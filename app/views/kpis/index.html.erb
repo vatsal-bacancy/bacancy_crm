@@ -1,0 +1,72 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar' %>
+  <div class="site-content">
+    <div class="dynmic-tab-div">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="dynmic-tab-div-header">
+            <span class="heading">KPI</span>
+          </div>
+          <div class="dynmic-tab-div-data">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="setting-icon-wrapper">
+                  <%= link_to sales_kpis_path do %>
+                    <div class="setting-icon">
+                      <div class="setting-icon-main">
+                        <i class="fa fa-line-chart" aria-hidden="true"></i>
+                      </div>
+                      <div class="setting-icon-title">
+                        <p>Sales KPI</p>
+                      </div>
+                    </div>
+                  <% end %>
+                  <%= link_to marketing_kpis_path do %>
+                    <div class="setting-icon">
+                      <div class="setting-icon-main">
+                        <i class="fa fa-line-chart" aria-hidden="true"></i>
+                      </div>
+                      <div class="setting-icon-title">
+                        <p>Marketing KPI</p>
+                      </div>
+                    </div>
+                  <% end %>
+                  <%= link_to status_board_clients_path do %>
+                    <div class="setting-icon">
+                      <div class="setting-icon-main">
+                        <i class="fa fa-line-chart" aria-hidden="true"></i>
+                      </div>
+                      <div class="setting-icon-title">
+                        <p>Product Support KPI</p>
+                      </div>
+                    </div>
+                  <% end %>
+                  <%= link_to reports_tickets_path do %>
+                    <div class="setting-icon">
+                      <div class="setting-icon-main">
+                        <i class="fa fa-file-text" aria-hidden="true"></i>
+                      </div>
+                      <div class="setting-icon-title">
+                        <p>Ticket Report</p>
+                      </div>
+                    </div>
+                  <% end %>
+                  <%= link_to account_manager_performance_kpis_path do %>
+                    <div class="setting-icon">
+                      <div class="setting-icon-main">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                      </div>
+                      <div class="setting-icon-title">
+                        <p>Account Manager Performance</p>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

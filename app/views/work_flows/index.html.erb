@@ -1,0 +1,78 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+  <div class="site-content">
+    <div class="dynmic-tab-div">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="dynmic-tab-div-header">
+            <span class="heading">CRM Settings > Workflow</span>
+            <div class="pull-right">
+              <%= link_to new_work_flow_path, class: 'site-content-head-btn' do %>
+                + Add Workflow
+              <% end %>
+            </div>
+          </div>
+          <div class="dynmic-tab-div-data">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="site-content-data">
+                  <div class="table-list">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <div class="site-content-data">
+                          <div class="table-list">
+                            <div class="table-responsive">
+                              <table class="common-data-table">
+                                <thead>
+                                <tr>
+                                  <th class="action">Action</th>
+                                  <th>Name</th>
+                                  <th>Module Name</th>
+                                  <th>Run on</th>
+                                </tr>
+                                </thead>
+                                <tbody class='list-body'>
+                                <% @work_flows.each do |work_flow| %>
+                                  <tr>
+                                    <td>
+                                      <div class="btn-wrapper">
+                                        <div class="action-icon">
+                                          <%= link_to edit_work_flow_path(work_flow) do %>
+                                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                                          <% end %>
+                                        </div>
+                                        <div class="action-icon">
+                                          <%= link_to work_flow_path(work_flow), method: :delete, data: { confirm: "Are you sure you want to Delete this Work Flow?" } do %>
+                                            <i class="fa fa-trash " aria-hidden="true"></i>
+                                          <% end %>
+                                        </div>
+                                      </div>
+                                    </td>
+                                    <td><%= work_flow.name %></td>
+                                    <td><%= work_flow.klass.label %></td>
+                                    <td><%= work_flow.on %></td>
+                                  </tr>
+                                <% end %>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function () {
+    //TODO: Remove this script when we fixes the callback issue
+    $('body').attr('data-turbolinks', false);
+  });
+</script>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>iPos CRM</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="turbolinks-cache-control" content="no-cache">
+    <% favicon = @company.fevicon_image %>
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag Ckeditor.cdn_url %>
+  </head>
+  <body class="layout-header-fixed layout-left-sidebar-fixed layout-left-sidebar-collapsed">
+    <div class="custom-overlay-main modal-custom-overlay">
+      <%= render 'layouts/feedback_header'%>
+      <%= yield %>
+    
+    </div>
+  </body>
+</html>

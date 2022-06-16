@@ -1,0 +1,3 @@
+$("#message_container").html("<%= escape_javascript(render partial: 'cemail_details', locals: { cemail: @cemail } ) %>")
+$("#message_container").removeClass('hidden');
+$("#messages_container").addClass('hidden');

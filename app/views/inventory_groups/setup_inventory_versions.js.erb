@@ -1,0 +1,5 @@
+var partial_html = ("<%= escape_javascript(render partial: 'inventory_fields_temp', locals: {inventory_group: @inventory_group}) %>");
+partial_html = partial_html.substring(partial_html.lastIndexOf(">>>>>>") + 1, 
+    partial_html.lastIndexOf("<<<<<<"));
+partial_html = partial_html.replace('>>>>>', '');
+$('#inventory_group_list').html(partial_html);

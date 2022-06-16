@@ -1,0 +1,243 @@
+<%action_delete =  checked_permission?(current_user, @klass_list['Task'], @action_list['delete']) %>
+<%action_update =  checked_permission?(current_user, @klass_list['Task'], @action_list['update']) %>
+<%action_create =  checked_permission?(current_user, @klass_list['Task'], @action_list['create']) %>
+<%action_read =  checked_permission?(current_user, @klass_list['Task'], @action_list['read']) %>
+<div class="table-responsive">
+  <table class="common-data-table" id="tasks">
+    <thead>
+      <th>
+        <div class="radio-lbl">
+          <label class="check ">
+            <input type="checkbox"  name="" id="task-check-all">
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      </th>
+      <th>Action</th>
+      <% task_fields.each do |field|%>
+        <th data-id="<%=field.id%>"><%=field.label %></th>
+      <%end%>
+    </thead>
+
+    <tbody class="list-body">
+      <% if object.present? %>
+        <% task_all = object.tasks  %>
+      <% else %>
+        <% task_all = @tasks %>
+      <% end %>
+
+      <% task_all.each do |task| %>
+        <tr>
+          <td>
+            <div class="radio-lbl">
+              <label class="check ">
+                <%= check_box_tag "task_ids[]", task.id , false, class:"task-check" %>
+                <span class="checkmark"></span>
+              </label>
+            </div>
+          </td>
+          <td>
+            <div class="btn-wrapper">
+              <% if action_read %>
+                <div class="action-icon">
+                  <%= link_to ( object.present? ? task_path(task,object: object) : task_path(task)) do %>
+                    <i class="fa  fa-eye" aria-hidden="true"></i>
+                  <% end %>
+                </div>
+              <% end %>
+              <% if action_update %>
+                <div class="action-icon">
+                  <%= link_to edit_task_path(task),remote: true do %>
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                  <% end %>
+                </div>
+              <% end %>
+              <% if action_delete %>
+                <div class="action-icon">
+                  <%= link_to task_path(task),data: { confirm: "Are you sure you want to Delete this Task?" }, method: :delete, remote: true do %>
+                    <i class="fa fa-trash " aria-hidden="true"></i>
+                  <% end %>
+                </div>
+              <%end%>
+              <% if action_update %>
+                <div class="action-icon">
+                  <%= link_to task_mark_as_completed_path(task, completed: !task.completed?), method: :post, remote: true do %>
+                    <% if task.completed? %><i class="fa fa-check-circle" aria-hidden="true"></i><% else %><i class="fa fa-check-circle-o" aria-hidden="true"></i><% end %>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </td>
+          <% task_fields.each do |field| %>
+            <td data-id="<%= task.id %>" data-klass='Task' data-field="<%= field.name%>" data-deletable="<%= field.deletable%>" class="<%= action_update ?  'task-editable' : '' %>" >
+              <span> <%#= field.name == "user_id" ? task.user.fullname : task.send(field.name) %>
+                <% if field.column_type == 'Multi-Select Check Box' %>
+                  <%= parse_multi_select(task.send(field.name)) %>
+                <% else %>
+                  <% case field.name %>
+                  <% when 'title' %>
+                  <% if task.completed? %><del><%= task.title %></del><% else %><%= task.title %><% end %>
+                  <% when  "user_id" %>
+                    <%= task.user.fullname %>
+                  <% when  "due_to" %>
+                    <%= task.send(field.name)&.strftime("%m/%d/%Y, %I:%M %p") %>
+                  <% when  "email_reminder" %>
+                    <%= task.send(field.name)&.strftime("%m/%d/%Y, %I:%M %p") %>
+                  <% when "attachment"%>
+                    <%= link_to task&.send(field.name)&.file&.filename, task.send(field.name)&.url, target: 'blank' %>
+                  <% when "note" %>
+                    <%= task.send(field.name).html_safe %>
+                  <% else %>
+                    <%= task.send(field.name) %>
+                <% end %>
+                <% end %>
+              </span>
+            </td>
+          <% end  %>
+
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  $(document).ready(function(){
+    if ( $.fn.DataTable.isDataTable('#tasks') ) {
+      $('#tasks').DataTable().destroy();
+    }
+    $('#tasks').DataTable({
+      sDom: 'lfrtip',
+      scrollX: false,
+      autoWidth: false,
+      paging: true,
+      // pageLength: 50,
+      // bLengthChange: false,
+      lengthMenu: [50, 100],
+      searching: true,
+
+      columnDefs: [
+        {orderable: false, targets: [0,1]},
+        {width: "30px", targets: [0] },
+        {className: "dt-center", targets: "_all"}
+      ],
+      order: []
+    });
+
+    $('#task-check-all').on('change', function(){
+      $('.list-body .task-check').prop('checked',$(this).prop('checked'));
+    });
+
+    $('#destroy_all_tasks').on('click', function(){
+
+      var checked = []
+      $("input[name='task_ids[]']:checked").each(function ()
+      {
+          checked.push(parseInt($(this).val()));
+      });
+      if(checked == 0){
+        confirm("Please select any task");
+      }else{
+        $.ajax({
+          url: "<%= object ? destroy_all_tasks_path(taskable_type: object.class, taskable_id: object.id) : destroy_all_tasks_path %>",
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          type: 'DELETE',
+          data: {
+            ids: checked
+          },
+          dataType: "script",
+          success: function(result){
+          }
+        });
+      }
+    });
+
+    $('.task-editable span').on('click', function(){
+      if('<%= @from_page%>' == 'index'){
+        var text = $.trim($(this).text());
+        var dataId = $(this).parent().data('id');
+        var field = $(this).parent().data('field');
+        // var editable = $(this).parent().data('editable');
+        // if(editable==true){
+        $(this).parent().html("<input class='task-update-"+dataId+" form-control' value='"+text+"' data-id = '"+ dataId +"' data-klass='"+$(this).parent().data('klass')+"'  style= 'width:"+$(this).parent().width()+"px;'  />");
+        $('.task-update-'+dataId).on('keypress', function(e){
+          var key = e.which;
+          if(key == 13 || key ==9)  // the enter key code
+          {
+            data = {}
+            data[field] = $(this).val();
+            $.ajax({
+              url: "/tasks/" + dataId,
+              beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+              type: 'patch',
+              data: {
+                task: data
+              },
+              dataType: "script",
+              success: function(result){
+              }
+            });
+          }
+        });
+      }
+      // }
+    });
+
+    $('.custom-editable span').on('click', function(){
+      var text = $.trim($(this).text());
+      var dataId = $(this).parent().data('id');
+      $(this).parent().html("<input class='custom-update-"+dataId+" form-control' value='"+text+"' data-id = '"+ dataId +"' data-klass='"+$(this).parent().data('klass')+"'   />");
+      $('.custom-update-'+dataId).on('blur', function(){
+        data = {value: $(this).val()};
+        $.ajax({
+          url: "/custom_values/" + dataId,
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          type: 'patch',
+          data: {
+            custom_value: data
+          },
+          dataType: "script",
+          success: function(result){
+            $.ajax({url: "/tasks/",
+              type: 'get',
+              data: {
+              },
+              dataType: "script",
+            });
+          }
+        });
+      });
+    });
+
+    $('.custom-create span').on('click', function(){
+      var text = $.trim($(this).text());
+      var dataId = $(this).parent().data('id');
+      var fieldId = $(this).parent().data('field-id');
+      var dataKlassId = $(this).parent().data('klass-id');
+      var dataKlass = $(this).parent().data('klass');
+      $(this).parent().html("<input class='custom-update-"+dataId+" form-control' value='"+text+"' data-id = '"+ dataId +"' data-klass='"+$(this).parent().data('klass')+"'   />");
+      $('.custom-update-'+dataId).on('blur', function(){
+        data = {value: $(this).val(), field_id: fieldId, valuable_id: dataKlassId, valuable_type: dataKlass };
+        $.ajax({
+          url: "/custom_values/" + dataId,
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          type: 'patch',
+          data: {
+            custom_value: data
+          },
+          dataType: "script",
+          success: function(result){
+            $.ajax({url: "/tasks/",
+              type: 'get',
+              data: {
+              },
+              dataType: "script",
+            });
+          }
+        });
+      });
+    });
+
+  });
+
+</script>

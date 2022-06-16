@@ -1,0 +1,30 @@
+<div class="modal fade" id="myModal" role="dialog">
+  <div class="modal-dialog">
+
+  <%= form_for project, remote: true, class: 'form-inline' do |f| %>
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"  id="modalProjectTitle">Projects</h4>
+      </div>
+      <div class="modal-body" style="position: relative;">
+        <div class="row modal-body-scroll">
+            <%= f.fields_for :project_assignees do |project_assignee| %>
+              <%= render 'project_assignee_fields', f: project_assignee %>
+            <% end %>
+        </div>
+         <div class="links add-person-link">
+          <%= link_to_add_association f, :project_assignees, data: {association_insertion_node: ''} do %>
+           <input type="submit" name="commit" value="Add Other Person" class="btn btn-success" data-disable-with="Add onother Person"></input>
+           <% end %>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <%= f.submit class: "btn btn-success" %>
+      </div>
+    </div>
+  <% end %>
+  </div>
+</div>

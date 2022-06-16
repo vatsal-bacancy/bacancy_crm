@@ -1,0 +1,34 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+  <div class="site-content">
+    <div class="dynmic-tab-div">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="dynmic-tab-div-header">
+            <span class="heading common-link">Mail settings</span>
+          </div>
+          <div class="dynmic-tab-div-data">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="setting-icon-wrapper">
+                  <% if current_user.ms_azure_token || current_user.google_access_token %>
+                    <div class="col-md-12">
+                    You are logged in as <strong><%= current_user.google_email %> </strong>.
+                    <!-- Please click below button to remove your account. -->
+                    </div>
+                    <br/>
+
+                    <%= link_to "Revoke Access", revoke_mail_access_settings_path, class: 'site-content-head-btn' %>
+                  <% else %>
+                    Please connect your account  &nbsp;<%= link_to "here", emails_path %>.
+                  <% end %>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

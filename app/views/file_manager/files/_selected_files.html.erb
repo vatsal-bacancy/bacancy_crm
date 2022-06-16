@@ -1,0 +1,23 @@
+<% files.each do |file| %>
+  <div class="col-md-8 m-t-10">
+    <%= link_to file.attachment.url, target: :_blank, title: file.attachment.file.filename, class: 'common-link' do %>
+      <i class="fa fa-file"></i>
+      <%= file.attachment.file.filename.truncate(20) %>
+    <% end %>
+    <i class="fa fa-times" aria-hidden="true" data-file-id="<%= file.id %>"></i>
+  </div>
+<% end %>
+<script>
+  $(document).ready(function() {
+    $('[data-file-id]').on('click', function() {
+      let element = $(this);
+      let file_ids = $('[data-file-association-file-ids]').val().split(',');
+      file_ids = jQuery.grep(file_ids, function(value) {
+        return value != element.attr("data-file-id");
+      });
+      element.parent().remove();
+      $('[data-file-association-file-ids]').val(file_ids);
+      $('#file').attr('required', true)
+    });
+  });
+</script>

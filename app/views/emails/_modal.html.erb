@@ -1,0 +1,88 @@
+<div class="modal fade" id="modal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <%= form_for email, remote: true, class: "form-inline", html: { multipart: true } do |f| %>
+
+      <div class="modal-content">
+        <div class="modal-header">
+         <div class="pull-right">
+          <a class="cmn-modal-btn minimized-btn" >&#95;</a>
+
+          <button type="button" class="close" data-dismiss="modal">&#x2715;</button>
+        </div>
+
+          <h4 class="modal-title">Email</h4>
+        </div>
+        <div class="modal-body">
+          <!-- <div class="email-link-wrapper">
+         <ul>
+          <li><a href="">Templates</a></li>
+          <li><a href="">Sequences</a></li>
+           <li><a href="">Documents</a></li>
+            <li><a href="">Meetings</a></li>
+            <li><a href="">Quotes</a></li>
+             </ul>
+
+          </div> -->
+          <div class="email-link-wrapper">
+            <div class="col-md-12">
+              <%= select_tag 'template',options_for_select(current_user.email_templetes.pluck(:name,:id)), { :prompt=> "Template", :class=> "form-control" } %>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12 p-l-r-0">
+          <div class="custom-hr">
+            <hr/>
+          </div>
+        </div>
+      </div>
+
+          <%= render partial: 'emails/form', locals: { f: f, object: object} %>
+          <%if object%>
+            <% if object.class.name == 'MailManager::Message' %>
+              <%=  hidden_field_tag :email_id ,"#{object.id}"%>
+              <%=  hidden_field_tag :ind ,"#{params[:ind]}"%>
+
+            <%else%>
+              <%= hidden_field_tag :emailable_type ,"#{object.class.name}" %>
+              <%= hidden_field_tag :emailable_id , "#{object.id}" %>
+            <%end%>
+
+          <%end%>
+          <div id="cemail_file" class="col-sm-12 mb10"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <%= f.submit "Send", id: 'email-save', class: 'btn btn-success' %>
+        </div>
+      </div>
+    <%end%>
+  </div>
+</div>
+<script>
+  $(document).ready(function(){
+    $('#template').change(function(){
+      var id = this.value;
+      $.ajax({
+        url: "<%= get_template_path	 %>",
+        method: "get",
+        data:{
+          id: id
+        },
+        success: function(result){
+          $('#subject').val(result['subject']);
+          CKEDITOR.instances['email_content'].setData(result['content'] + '<br/>' +result['signature']);
+          if(result['attachment'])
+          {
+            $.each(result['attachment'], function(key , value)
+            {
+              $('#cemail_file').append("<a class='m/r/10' herf=" + value[1] + ">" + value[0] + "</a><br> ");
+            });
+          }
+        }
+      });
+    });
+  });
+</script>

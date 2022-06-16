@@ -1,0 +1,5 @@
+<% if current_user.profile_picture.present? %>
+  <%= image_tag "#{current_user.profile_picture.url}?_=#{Time.now.to_i}", class: 'img-circle', width: '32px', height: '32px' %>
+<% else %>
+  <%= image_tag asset_path('small_demo_img.jpg'),class: 'img-circle', width: '32px', height: '32px' %>
+<% end %>

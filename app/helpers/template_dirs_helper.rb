@@ -1,0 +1,2 @@
+module TemplateDirsHelper
+end

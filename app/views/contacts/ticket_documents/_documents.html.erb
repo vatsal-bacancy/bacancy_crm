@@ -1,0 +1,234 @@
+<div role="tabpanel" class="tab-pane fade in active" id="tab1">
+  <div class="col-md-12">
+    <div class="dynmic-tab-div-header dynmic-tab-sub-header inner-header mt15">
+      <div class="d-flex">
+        <div class="heading-wrapper">
+          <p class="heading">Files for this Ticket</p>
+        </div>
+        <div class="pull-right">
+          <a href="javascript:void(0)" class="m-r-10" id="list-view-link">List View</a>
+          <a href="javascript:void(0)" class="" id="grid-view-link"> Image-grid view</a>
+          <%#= link_to "New Message", new_project_message_path(project_id: @project.id), remote: true %>
+        </div>
+      </div>
+    </div>
+    <div class="site-content-data pr15 pl15 list-view">
+      <div class="row cl-both" >
+        <div class="col-sm-5">
+          <div class="d-flex flex-align-center cm-dasboard-serach">
+            <!--<label class="blue-font">Show </label><select name="leads_length" aria-controls="leads" class="form-control"><option value="50">50</option><option value="100">100</option></select> <label>entries</label>-->
+          </div>
+        </div>
+        <div class="col-sm-7">
+          <div class="d-flex flex-align-center cm-dasboard-serach pull-right">
+            <label class="">Search</label>
+            <input type="search" class="form-control" placeholder="Search here" aria-controls="leads" id="search-document">
+          </div>
+        </div>
+      </div>
+
+
+      <div id="file-display">
+        <% documents.each do |date,data| %>
+          <div id="file-search">
+            <div class="row mt10">
+              <div class="col-sm-12">
+                <h2 class="date-heading mt15">
+                  <span>
+                    <%= date == Date.today ? "Today" : date&.strftime("%m/%d/%Y") %>
+                  </span>
+                </h2>
+              </div>
+            </div>
+
+            <% data.each do |msg| %>
+
+              <!-- message documents type is ticket  -->
+              <% msg.document_documentables.each do |doc| %>
+                <% document = doc.document %>
+                <div class="row mt15">
+                  <div class="col-sm-12">
+
+                    <div class="d-flex d-flex-wrap">
+                      <div class="file-img">
+                        <% extension = document.attachment.try(:file).try(:extension).try(:downcase) %>
+                        <% if extension == "jpg" || extension == "png" || extension == "jpeg"  %>
+                          <%= image_tag document.attachment.url, :size => "35x35" %>
+                        <% elsif extension == "pdf" %>
+                          <img src="/assets/icon_PDF_big.png" class="file-icon" width="35" height="35">
+                        <% else %>
+                          <img src="/assets/icon_Generic_big.png" class="file-icon" width="35" height="35">
+                        <% end %>
+                      </div>
+                      <div class="file-data">
+                        <h1><%= link_to document.attachment.file.filename, document.attachment.url, target: '_blank' %> </h1>
+                        <div>
+                          <%# documentable = document.document_documentables.where(documentable_type: 'Message').first %>
+                          <% documentable = doc %>
+
+                          <%= link_to  "#{documentable.documentable.title}", contacts_ticket_message_path( documentable.documentable.messageable.id , documentable.documentable_id), class: "message_title msg-link"  %>
+
+                          <span class="dash">—</span>
+                            <span class="wordbreak inlinep">
+                              <%= truncate(documentable.documentable.description, :length=>45, escape: false) %>
+                              <%#= document.message.description.html_safe  %>
+                            </span>
+                        </div>
+                        <h3> by <%= document.resourcable.fullname  %> on <%= document.created_at.strftime("%m/%d/%Y, %I:%M %p") %></h3>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+
+
+              <!-- message's comment documents type is message -->
+              <% msg.messages.each do |comment| %>
+                <% comment.document_documentables.each do |doc| %>
+                  <% document = doc.document %>
+
+                  <div class="row mt15">
+                    <div class="col-sm-12">
+
+                      <div class="d-flex d-flex-wrap">
+                        <div class="file-img">
+                          <% extension = document.attachment.try(:file).try(:extension).try(:downcase) %>
+                          <% if extension == "jpg" || extension == "png" || extension == "jpeg"  %>
+                            <%= image_tag document.attachment.url, :size => "35x35" %>
+                          <% elsif extension == "pdf" %>
+                            <img src="/assets/icon_PDF_big.png" class="file-icon" width="35" height="35">
+                          <% else %>
+                            <img src="/assets/icon_Generic_big.png" class="file-icon" width="35" height="35">
+                          <% end %>
+                        </div>
+                        <div class="file-data">
+                          <h1><%= link_to document.attachment.file.filename, document.attachment.url, target: '_blank' %> </h1>
+                          <div>
+                            <%# documentable = document.document_documentables.where(documentable_type: 'Message').first %>
+                            <% documentable = doc %>
+
+                            <%= link_to  "Re:#{documentable.documentable.messageable.title}",  contacts_ticket_message_path( documentable.documentable.messageable.messageable.id , documentable.documentable.messageable.id), class: "message_title msg-link"  %>
+
+                            <span class="dash">—</span>
+
+                            <span class="wordbreak inlinep">
+                              <%= truncate(documentable.documentable.messageable.description, :length=>45, escape: false) %>
+                              <%#= Message.find(document.message.messageable_id).description.html_safe %>
+                            </span>
+
+                          </div>
+                          <h3> by <%= document.resourcable.fullname  %> on <%= document.created_at.strftime("%m/%d/%Y, %I:%M %p") %></h3>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="site-content-data pr15 pl15 grid-view hidden">
+      <%if object.documents.any?%>
+
+        <% documents.each do |date,data| %>
+          <div id="" class="col-md-12">
+
+            <% data.each do |msg| %>
+              <% msg.document_documentables.each do |doc| %>
+                  <% document = doc.document %>
+                  <% extension = document.attachment.try(:file).try(:extension).try(:downcase) %>
+
+                  <% if extension == "jpg" || extension == "png" || extension == "jpeg"  %>
+
+
+                      <!-- message documents type is ticket  -->
+
+                    <div class=" mt15">
+                      <div class="col-md-3 file-grid">
+                        <center>
+
+                          <div class="d-flex d-flex-wrap text-center">
+                            <div class="file-img-grid">
+
+                                <%= image_tag document.attachment.url, :size => "" %>
+
+                            </div>
+                            <div class="file-data-grid">
+
+
+                              <h1 class="document-name"><%= link_to document.attachment.file.filename, document.attachment.url, target: '_blank', class: "common-link" %> </h1>
+                              <div class="document-detail">
+                                <%# documentable = document.document_documentables.where(documentable_type: 'Message').first %>
+                                <% documentable = doc %>
+
+                                <%# if documentable.documentable_type == "Message" %>
+                                  <%#= link_to  "#{documentable.documentable.messageable.title}",  ticket_message_path( documentable.documentable.messageable.id , documentable.documentable_id), class: "message_title"  %>
+                                <%# elsif documentable.documentable.messageable_type == "Ticket"  %>
+                                  <%= link_to  "#{object.title}", ticket_path( object.id), class: "message_title msg-link"  %>
+                                <%# end %>
+                                <span class="dash">—</span>
+                                <%# if documentable.documentable.messageable_type == "Message" %>
+
+                                  <!-- <span class="wordbreak inlinep">
+                                    <%#= truncate(documentable.documentable.messageable.description, :length=>45, escape: false) %>
+                                    <%#= Message.find(document.message.messageable_id).description.html_safe %>
+                                  </span>-->
+                                <%# elsif documentable.documentable.messageable_type == "Ticket"  %>
+                                  <span class="wordbreak inlinep">
+                                    <%= truncate(documentable.documentable.description, :length=>45, escape: false) %>
+                                    <%#= document.message.description.html_safe  %>
+                                  </span>
+                                <%# end %>
+                              </div>
+                              <h3 class="document-detail"> by <%= document.resourcable.fullname  %> on <%= document.created_at.strftime("%m/%d/%Y, %I:%M %p") %></h3>
+                            </div>
+                          </div>
+                        </center>
+
+                      </div>
+                    </div>
+
+
+                      <!-- message's comment documents type is message -->
+                  <% end %>
+              <% end %>
+            <% end %>
+          </div>
+        <%end%>
+      <%else%>
+        <h3> Document is not available for this ticket</h3>
+      <%end%>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $view = '';
+
+    $("#search-document").on("keyup", function() {
+      var value = $(this).val().toLowerCase();
+      $("#file-display #file-search").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+    $('#grid-view-link').on('click', function(){
+      $('.grid-view').removeClass('hidden');
+      $('.list-view').addClass('hidden');
+      $view = 'grid-view-link';
+    });
+    $('#list-view-link').on('click', function(){
+      $('.list-view').removeClass('hidden');
+      $('.grid-view').addClass('hidden');
+      $view = 'list-view-link';
+    });
+    if($view == 'grid-view-link'){
+      $('.grid-view').removeClass('hidden');
+      $('.list-view').addClass('hidden');
+    }
+  });
+</script>

@@ -1,0 +1,144 @@
+<%= render partial: "clients/status_board/location_modal" %>
+<%= render 'components/site_content' do %>
+  <% content_for :body do %>
+    <p class="heading">Total Accounts In Production Mode: <span data-status-board-count></span></p>
+    <div class="production-summary-table table-responsive">
+      <table class="table table-bordered"
+             id="status-board-department-details-datatable"
+             data-status-board-datatable="true"
+             data-status-board-datatable-url="<%= department_details_clients_path %>"
+             data-status-board-datatable-options="<%= @datatable_options.to_json %>">
+        <thead>
+        <tr>
+          <th data-status-board-datatable-column-type="Text"><h3 class="head-title">Client<br/>Details</h3></th>
+          <th data-status-board-datatable-column-type="Picklist"><h3 class="head-title">Sales<br/>Agent</h3></th>
+          <th data-status-board-datatable-column-type="Picklist"><h3 class="head-title">Account<br/>Manager</h3></th>
+          <th data-status-board-datatable-column-type="Picklist"><h3 class="head-title">Boarding</h3></th>
+          <th data-status-board-datatable-column-type="Picklist"><h3 class="head-title">Due Diligence</h3></th>
+          <th data-status-board-datatable-column-type="Picklist"><h3 class="head-title">Inventory<br/>Allocation Station</h3></th>
+          <th data-status-board-datatable-column-type="Picklist"><h3 class="head-title">Menu Creation & Approval from India</h3></th>
+          <th data-status-board-datatable-column-type="Picklist"><h3 class="head-title">Menu Creation & Approval from USA</h3></th>
+          <th data-status-board-datatable-column-type="Picklist"><h3 class="head-title">QR Code for URL/Menu order taking </h3></th>
+          <th data-status-board-datatable-column-type="Picklist"><h3 class="head-title"> Setting up Eats Web for online ordering & Delivery </h3></th>
+          <th data-status-board-datatable-column-type="Picklist"><h3 class="head-title"> Setting up the iPos Eats App for ordering </h3></th>
+          <th data-status-board-datatable-column-type="Picklist"><h3 class="head-title">Scheduling on site install </h3></th>
+          <th data-status-board-datatable-column-type="Picklist"><h3 class="head-title">HQ PO Check List<br/>To be completed in iPos HQ</h3></th>
+          <th data-status-board-datatable-column-type="Picklist"><h3 class="head-title">Pre-install Check List<br/>To be completed at the client's location</h3></th>
+          <th data-status-board-datatable-column-type="Picklist"><h3 class="head-title">Pre-Training Check List<br/>To be completed at the client's location</h3></th>
+          <th data-status-board-datatable-column-type="Picklist"><h3 class="head-title">Employee Training Check List<br/>To be completed at the client's location</h3></th>
+          <th data-status-board-datatable-column-type="Picklist"><h3 class="head-title">Owner/Manager iPos back office<br/>Training Check List<br/>To be completed at the client's location</h3></th>
+          <th data-status-board-datatable-column-type="Picklist"><h3 class="head-title">QA To be completed by Pos Management</h3></th>
+          <th><h3 class="head-title">Performance<br/>Indicator</h3></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+<% end %>
+<script>
+  $(document).ready(function() {
+    let table = $('#status-board-department-details-datatable');
+    let options = Object.assign({
+      sDom: 'rtlp',
+      lengthMenu: [50, 100],
+      order: [],
+      stateSave: true,
+      stateDuration: -1,
+      serverSide: true,
+      processing: true,
+      ajax: table.attr('data-status-board-datatable-url'),
+      columnDefs: [
+        { orderable: false, targets: '_all' }
+      ],
+      columns: [
+        { data: 'client_company_details' },
+        { data: 'client_ipos_agent_name' },
+        { data: 'client_user_fullname' },
+        { data: 'client_boarding_qa' },
+        { data: 'client_due_diligence' },
+        { data: 'client_inventory_allocation' },
+        { data: 'client_menu_india' },
+        { data: 'client_menu_usa' },
+        { data: 'qr_code_for_order_taking' },
+        { data: 'eats_business_website_setup' },
+        { data: 'eats_app_setup' },
+        { data: 'client_deployment' },
+        { data: 'hq_po' },
+        { data: 'client_pre_install' },
+        { data: 'client_pre_training' },
+        { data: 'client_employee_training' },
+        { data: 'client_owner_backoffice_training' },
+        { data: 'qa_by_pos_management' },
+        { data: 'time_taken_by_department' }
+      ],
+      drawCallback: function() {
+        $('[data-status-board-count]').html(dataTable.page.info().recordsTotal);
+        this.find('[data-status-board-datatable-field-value]').on('click', function() {
+          $(this).closest('[data-status-board-datatable-field-form]').find('[data-status-board-datatable-field-value]').hide();
+          $(this).closest('[data-status-board-datatable-field-form]').find('[data-status-board-datatable-field-editor]').show();
+        });
+        this.find('[data-status-board-datatable-field-editor]').on('blur change.select2', function() {
+          let form = $(this).closest('[data-status-board-datatable-field-form]');
+          $.ajax({
+            url: Routes.update_status_board_clients_path(),
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            type: 'POST',
+            data: form.serializeArray(),
+            success: function() {
+              dataTable.ajax.reload();
+            }
+          });
+        });
+      }
+    }, table.attr('data-status-board-datatable-options').deserialize);
+    let dataTable = table.DataTable(options);
+    yadcf.init(dataTable, [{
+      column_selector: '[data-status-board-datatable-column-type="Picklist"]',
+      filter_type: 'multi_select',
+      select_type: 'select2',
+      sort_as: 'none',
+      select_type_options: { theme: 'bootstrap', width: 'resolve', dropdownAutoWidth: true }
+    }, {
+      column_selector: '[data-status-board-datatable-column-type="Text"]',
+      filter_type: 'text',
+      filter_delay: 500
+    }, {
+      column_selector: '[data-status-board-datatable-column-type="Date"]',
+      filter_type: 'range_date',
+      datepicker_type: 'bootstrap-datepicker'
+    }, {
+      column_selector: '[data-status-board-datatable-column-type="Checkbox"]',
+      filter_type: 'select',
+      select_type: 'select2',
+      select_type_options: { theme: 'bootstrap', width: 'resolve', dropdownAutoWidth: true },
+      data: [{
+        value: 'Yes',
+        label: 'Yes'
+      }, {
+        value: 'No',
+        label: 'No'
+      }],
+    }]);
+    let interval;
+    if((interval = table.attr('data-status-board-datatable-options').deserialize.autoCycleThroughPageInterval)) {
+      setInterval(function() {
+        var info = dataTable.page.info();
+        var pageNum = (info.page < info.pages - 1) ? info.page + 1 : 0;
+        dataTable.page(pageNum).draw(false);
+      }, interval);
+      $('body').attr('data-turbolinks', false); // Disable turbolinks on this specific page because we dont want to `setInterval` to be persist due to turbolinks clicks
+    }
+    $(document).on('click', '.show_location_modal', function(){
+      $('.location_name').text($(this).attr('data-location'));
+      $('#locationModal').modal('show');
+    })
+  });
+</script>
+<style>
+  #status-board-department-details-datatable_wrapper{overflow-y: auto; height: 88vh;}
+  #status-board-department-details-datatable_wrapper table thead tr th{position: sticky; top: 0;}
+  table{border-collapse: collapse; width: 100%; position: relative}
+  body::-webkit-scrollbar { display: none; }
+</style>

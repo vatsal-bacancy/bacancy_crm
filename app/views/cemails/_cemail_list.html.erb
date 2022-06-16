@@ -1,0 +1,37 @@
+<%action_delete =  checked_permission?(current_user, @klass_list['cEmail'], @action_list['delete']) %>
+<%action_update =  checked_permission?(current_user, @klass_list['cEmail'], @action_list['update']) %>
+<%action_create =  checked_permission?(current_user, @klass_list['cEmail'], @action_list['create']) %>
+<%action_read =  checked_permission?(current_user, @klass_list['cEmail'], @action_list['read']) %>
+
+
+<div id='messages_container'>
+  <% object.cemails.each do |email| %>
+    <div class="radio-lbl email-checkbox message_id_<%= email.id %>">
+      <label class="check">
+        <a href="<%= cemail_path(email.id) %>" class="message-data" data-remote="true">
+          <div class="email-data">
+            <span class="dis-inlineblock m-r-10 msg-from">
+              <%= email.cemailable.company_email.try :truncate, 22 %>
+            </span>
+            <span class="dis-inlineblock msg-subject">
+              <% size = email.subject.size rescue 0%>
+              <strong><%= email.subject&.truncate(75)%></strong> -
+              <%= strip_tags(email.content)&.truncate(75-size).html_safe%>
+            </span>
+          </div>
+        </a>
+        <input type="checkbox" name="email_ids[]" class='chk-msg' value=<%= email.id %>  >
+        <span class="checkmark"></span>
+        <div class="email-remove">
+          <span class="date-time"><%= time_date(email.created_at.to_datetime) %></span>
+          <div class="action-icon pull-right">
+            <%= link_to cemail_path(email.id), data: {id: email.id}, method: :delete, remote: true do %>
+              <i class="fa fa-trash" aria-hidden="true"></i>
+            <% end %>
+          </div>
+        </div>
+      </label>
+    </div>
+  <%end%>
+</div>
+

@@ -1,0 +1,26 @@
+<div class="modal fade" id="taxModal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <%= form_for invoice_tax, class: "form-inline", remote: true do |f| %>
+      <div id='flash_message'></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Tax</h4>
+        </div>
+        <div class="modal-body">
+          <!-- name and rate -->
+          <%= f.label :name %><span class="required">*</span>
+          <%= f.text_field :name, class: "form-control", placeholder: "Enter Tax Name", required: true %>
+          <%= f.label :tax_rate %><span class="required">*</span>
+          <%= f.text_field :tax_rate, class: "form-control", placeholder: "Enter Tax Rate", required: true %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <%= f.submit class: 'btn btn-success' %>
+        </div>
+      </div>
+    <%end%>
+  </div>
+</div>

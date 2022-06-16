@@ -1,0 +1,3 @@
+$("#ticket-detail").html("<%= escape_javascript(render partial: 'contacts/ticket_documents/documents', locals: {documetns: @documents, object: @object})%>");
+$("#success_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");
+$('#doc-<%=params[:id]%>').remove();

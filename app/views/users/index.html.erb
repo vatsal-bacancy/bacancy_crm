@@ -1,0 +1,41 @@
+
+<div id="success_message"></div>
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <%= link_to settings_path, class: "heading common-link"  do %> CRM Customization Settings <% end %>
+            <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> </span>
+            <%= link_to users_settings_path, class:"sub-menu-sitecontent common-link"  do %> User Settings <% end %>
+            <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> </span>
+            <span class="sub-menu-sitecontent"> Manage Users </span>
+            <!-- <%= link_to users_path, class:"sub-menu-sitecontent"  do %> Manage Users <% end %> -->
+          </div>
+           <div class='pull-right'><a href="<%= users_settings_path %>" class='btn btn-success back-btn-users mt7'>Back</a></div>
+          <div class="pull-right">
+            <% if checked_permission?(current_user, @klass_list['User'], @action_list['create'])%>
+              <%= link_to new_user_path, class: 'site-content-head-btn mt7', remote: true do %>
+                + New User
+              <%end%>
+            <%end%>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="max-width-userlist">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="site-content-data">
+          <div class="table-list" id='users_list'>
+            <%= render 'users_list', users: @users %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <div id='modalContainer' class='modal-right'></div>
+  </div>
+</div>

@@ -1,0 +1,4 @@
+$("#modalContainer").html("<%= escape_javascript(render partial: 'modal', locals: { task: @task, users: @users, taskable: @taskable, grouped_options: @grouped_options }) %>"); //on show of client and lead
+$("#modalContainerIndex").html("<%= escape_javascript(render partial: 'modal', locals: { task: @task, users: @users, taskable: @taskable, grouped_options: @grouped_options }) %>"); //on show of client and lead
+$("#task_modal").modal('show');
+$document_ids =[];

@@ -1,0 +1,43 @@
+<div class="dynmic-tab-div directory-structure">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="dynmic-tab-div-header">
+
+        <% if object.class.name == 'Directory' %>
+          <% path = object.directoriable.class.name == 'Directory' ? directory_path(object.directoriable) : directory_path(dir_id: object.id, id: object.id)  %>
+          <%= link_to path, remote: true, class: "m-l-10" do%>
+            <i class="fa fa-arrow-left"></i>
+          <% end %>
+        <%end%>
+        <span class="heading"><%= object.class.name == 'Directory' ? object.name : "" %></span>
+          <div class="pull-right">
+
+          <%#= link_to new_directory_path(directoriable_type: object.class, directoriable_id: object.id), remote: true, class: " pull-right m-r-10", title: 'Add Directory' do %>
+            <!-- <i class="fa fa-plus" aria-hidden="true"></i> -->
+            <!-- <i class="fa fa-folder" aria-hidden="true"></i> -->
+          <%# end %>
+          <%= link_to new_document_path(documentable_type: object.class, documentable_id: object.id), remote: true, class: "m-r-10  pull-right", title: 'Add File' do %>
+            <i class="fa fa-plus" aria-hidden="true"></i>
+
+            <i class="fa fa-file" aria-hidden="true"></i>
+          <%end%>
+
+        </div>
+      </div>
+      <div class="dynmic-tab-div-data ">
+        <div class="row">
+          <div class="col-md-12 ">
+          </div>
+          <%= render partial: 'documents/list_document', locals: {object: object}%>
+          <%
+=begin%>
+ <%object.documents.each do |document|%>
+            <%= render partial: 'documents/list_document', locals: {document: document}%>
+          <%end%>
+<%
+=end%>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,94 @@
+<div class="modal fade" id="UploadModal" role="dialog">
+  <div class="modal-dialog">
+
+    <%#= form_for contact,url: contacts_contact_upload_image_path,remote: true, class: "form-inline" do |f| %>
+      <div id='flash_message'></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Contact</h4>
+        </div>
+        <div class="modal-body">
+
+          <div class="placeholder-inv d-flex flex-justify-center">
+            <div id='inventory-carousel' class="carousel slide" data-ride="carousel">
+              <div class="carousel-inner inventory-carousel" id='contact_images'>
+                <%= image_tag asset_path('inv-placeholder.png') %>
+              </div>
+            </div>
+            <%#= image_tag inventory.image_path_for_image_tag, class: "img-responsive", id: 'contact_images' %>
+            <%= file_field_tag 'profile_picture', id: :contact_images_field, class: 'actionUpload hidden', multiple: true  %>
+            <div id="main-cropper" class="hidden"></div>
+          </div>
+
+          <%#= render 'form', f: f, user: user, groups: groups, data: data %>
+          <%#= f.label :upload_image %>
+          <%#= f.file_field :profile_picture, class: "form-control", required: true %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success" id="save">Save</button>
+          <%#= f.submit "Save", class: 'btn btn-success' %>
+        </div>
+      </div>
+    <%#end%>
+  </div>
+</div>
+
+
+<script>
+$(document).ready(function() {
+  var contact_id = <%= contact.id %>;
+
+  var $basic = $('#main-cropper').croppie({
+        viewport: { width: 250, height: 250, type: 'circle'  },
+        boundary: { width: 300, height: 300 },
+        enforceBoundary: true,
+        showZoomer: false,
+        //url: srcData
+
+      });
+
+  $('#contact_images').on('click', function(){
+    document.getElementById('contact_images_field').click();
+  });
+
+  $('#contact_images_field').on('change', function(){
+    $('#contact_images').addClass('hidden');
+    $('#main-cropper').removeClass('hidden');
+
+    var reader = new FileReader();
+    reader.onload = function (e) {
+    	$basic.croppie('bind', {
+    		url: e.target.result
+    	}).then(function(){
+    		//jQuery bind complete
+    	});
+    	
+    }
+    reader.readAsDataURL(this.files[0]);
+  });
+
+  $('#save').on('click', function(ev){
+    $basic.croppie('result', {
+		  type: 'canvas',
+		  size: 'viewport'
+	    }).then(function (resp) {
+
+      $.ajax({
+        url: "/contacts/contacts/" + contact_id  + "/upload_image",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+
+        type: "PATCH",
+        dataType: "script",
+        data: {image: resp},
+        success: function (data) {
+         
+        }
+      });
+	  });
+
+  });
+ 
+});
+</script>

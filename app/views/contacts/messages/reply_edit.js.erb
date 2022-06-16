@@ -1,0 +1,3 @@
+//$('#reply-ticket').html("<%= escape_javascript(render partial: 'contacts/tickets/ticket_reply', locals: {message: @message, ticket: @ticket}) %>");
+$('#ticket-message').html("<%= escape_javascript(render partial: 'contacts/messages/ticket_modal', locals: {message: @message, ticket: @ticket}) %>");
+$('#ticketModal').modal('show');

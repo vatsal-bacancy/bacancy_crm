@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en" >
+	<head>
+		<meta charset="UTF-8">
+			<!-- <title>Responsive Email Template</title> -->
+		<style type="text/css">
+		@charset "utf-8";
+		/* CSS Document */
+
+		/* Client-specific Styles */
+		div, p, a, li, td {
+		 -webkit-text-size-adjust:none;
+		}
+		#outlook a {
+		 padding:0;
+		} /* Force Outlook to provide a "view in browser" menu link. */
+		html {
+		 width: 100%;
+		}
+		body {
+		 width:100% !important;
+		 -webkit-text-size-adjust:100%;
+		 -ms-text-size-adjust:100%;
+		 margin:0;
+		 padding:0;
+		}
+		body, td, input, textarea, select {
+			 margin: 0;
+			 font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+		}
+		/* Prevent Webkit and Windows Mobile platforms from changing default font sizes, while not breaking desktop design. */
+		.ExternalClass {
+		 width:100%;
+		} /* Force Hotmail to display emails at full width */
+		.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {
+		 line-height: 100%;
+		} /* Force Hotmail to display normal line spacing. */
+		#backgroundTable {
+		 margin:0;
+		 padding:0;
+		 width:100% !important;
+		 line-height: 100% !important;
+		}
+		img {
+		 outline:none;
+		 text-decoration:none;
+		 border:none;
+		 -ms-interpolation-mode: bicubic;
+		}
+		a img {
+		 border:none;
+		}
+		.image_fix {
+		 display:block;
+		}
+		p {
+		 margin: 0px 0px;
+		}
+		table td {
+		 border-collapse: collapse;
+		}
+		table {
+		 border-collapse:collapse;
+		 mso-table-lspace:0pt;
+		 mso-table-rspace:0pt;
+		}
+		a {
+		 color: #33b9ff;
+		 text-decoration: none;
+		 text-decoration:none!important;
+		}
+
+		.join-btn{
+			 border: 1px solid #1D5379;
+			 background-color:#1D5379;
+			 border-top-left-radius: 3px;
+			 border-top-right-radius: 3px;
+			 border-bottom-right-radius: 3px;
+			 border-bottom-left-radius: 3px;
+			 color: #ffffff !important;
+			 display: inline-block;
+			 font-size: 14px;
+			 font-weight: 500;
+			 line-height: 1;
+			 padding: 12px 20px;
+			 text-decoration: none;
+			 width: auto;
+			 min-width: 170px;
+			 white-space: nowrap;
+			 margin-top:20px;
+			 margin-bottom: 40px;
+		}
+
+		/*.ii a[href] {
+			 color: #fff !important;
+		}
+		*/
+		/*STYLES*/
+		table[class=full] {
+		 width: 100%;
+		 clear: both;
+		}
+		/*IPAD STYLES*/
+		@media only screen and (max-width: 640px) {
+		a[href^="tel"], a[href^="sms"] {
+		text-decoration: none;
+		color: #33b9ff; /* or whatever your want */
+		pointer-events: none;
+		cursor: default;
+		}
+		.mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
+		text-decoration: default;
+		color: #33b9ff !important;
+		pointer-events: auto;
+		cursor: default;
+		}
+		table[class=devicewidth] {
+		width: 440px!important;
+		text-align:center!important;
+		}
+		table[class=devicewidthinner] {
+		width: 420px!important;
+		text-align:center!important;
+		}
+		img[class=banner] {
+		width: 440px!important;
+		height:220px!important;
+		}
+		img[class=col2img] {
+		width: 440px!important;
+		height:220px!important;
+		}
+		}
+		/*IPHONE STYLES*/
+		@media only screen and (max-width: 480px) {
+		a[href^="tel"], a[href^="sms"] {
+		text-decoration: none;
+		color: #33b9ff; /* or whatever your want */
+		pointer-events: none;
+		cursor: default;
+		}
+		.mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
+		text-decoration: default;
+		color: #33b9ff !important;
+		pointer-events: auto;
+		cursor: default;
+		}
+		table[class=devicewidth] {
+		width: 280px!important;
+		text-align:center!important;
+		}
+		table[class=devicewidthinner] {
+		width: 260px!important;
+		text-align:center!important;
+		}
+		img[class=banner] {
+		width: 280px!important;
+		height:140px!important;
+		}
+		img[class=col2img] {
+		width: 280px!important;
+		height:140px!important;
+		}
+		}
+	</style>
+	</head>
+	<body>
+	<!-- Start of header -->
+	<table width="100%" bgcolor="#f6f6f6" cellpadding="0" cellspacing="0" border="0" id="backgroundTable" st-sortable="header">
+		<tbody>
+			<tr>
+	 			<td>
+		 			<table width="600" cellpadding="0" cellspacing="0" border="0" align="center" class="devicewidth">
+		 				<tbody>
+		 					<tr>
+			 					<td width="100%">
+				 					<table width="600" bgcolor="#0f305b" cellpadding="0" cellspacing="0" border="0" align="center" class="devicewidth">
+				 						<tbody>
+				 							<tr>
+												<td style="text-align:center;padding:10px;">
+													<% attachments.inline['logo.png'] = File.read("#{Rails.root}/app/assets/images/iPos-logo-white.png") %>
+													<%= image_tag(attachments['logo.png'].url) %>
+												</td>
+				 							</tr>
+				 						</tbody>
+				 					</table>
+			 					</td>
+			 				</tr>
+		 				</tbody>
+		 			</table>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<!-- End of Header -->
+
+	<!-- Start of main-banner -->
+	<table width="100%" bgcolor="#f6f6f6" cellpadding="0" cellspacing="0" border="0" id="backgroundTable" st-sortable="banner">
+		<tbody>
+			<tr>
+	 			<td>
+		 			<table width="600" cellpadding="0" cellspacing="0" border="0" align="center" class="devicewidth">
+		 				<tbody>
+		 					<tr>
+		 						<% if @message.messageable_type == 'Project' %>
+				 					<td width="100%" style="background-color:#fff;padding:30px 20px;text-align: center;">
+					 					<p style="color:#0f305b;margin-top:40px; font-size: 16px" >Hey, <b><%= @contact.fullname.present? ? @contact.fullname : @contact.email %></b></p>
+					 					<p style="color:#0f305b;margin-top:40px; font-size: 16px;"><%= @user_contatct.fullname %> has added new message on <b><%= @project.name %></b> project</p>
+                    <p style="color:#0f305b;margin-top:20px; font-size: 16px;margin-bottom: 10px;">Message: <%= @message.description.html_safe %></p>
+					 					<%= link_to 'View Message', contacts_project_message_url(project_id: @project, id: @message), class: 'join-btn', style: "border: 1px solid #0f305b; background-color:#0f305b;
+											 border-top-left-radius: 3px;
+											 border-top-right-radius: 3px;
+											 border-bottom-right-radius: 3px;
+											 border-bottom-left-radius: 3px;
+											 color: #ffffff !important;
+											 display: inline-block;
+											 font-size: 14px;
+											 font-weight: 500;
+											 line-height: 1;
+											 padding: 12px 20px;
+											 text-decoration: none;
+											 width: auto;
+											 min-width: 170px;
+											 white-space: nowrap;
+											 margin-top:20px;
+											 margin-bottom: 40px;"%>
+				 					</td>
+				 				<% else %>
+				 					<td width="100%" style="background-color:#fff;padding:30px 20px;text-align: center;">
+					 					<p style="color:#0f305b;margin-top:40px; font-size: 16px" >Hey, <b><%= @contact.fullname.present? ? @contact.fullname : @contact.email %></b></p>
+					 					<p style="color:#0f305b;margin-top:40px; font-size: 16px;"><%= @user_contatct.fullname %> has added new comment on <b><%= @project.name %></b> project</p>
+                    <p style="color:#0f305b;margin-top:20px; font-size: 16px;margin-bottom: 10px;">Comment: <%= @message.description.html_safe %></p>
+					 					<%= link_to 'View Comment', contacts_project_message_url(project_id: @project, id: @message.messageable ), class: 'join-btn', style: "border: 1px solid #0f305b; background-color:#0f305b;
+											 border-top-left-radius: 3px;
+											 border-top-right-radius: 3px;
+											 border-bottom-right-radius: 3px;
+											 border-bottom-left-radius: 3px;
+											 color: #ffffff !important;
+											 display: inline-block;
+											 font-size: 14px;
+											 font-weight: 500;
+											 line-height: 1;
+											 padding: 12px 20px;
+											 text-decoration: none;
+											 width: auto;
+											 min-width: 170px;
+											 white-space: nowrap;
+											 margin-top:20px;
+											 margin-bottom: 40px;"%>
+				 					</td>
+				 				<% end %>
+		 					</tr>
+		 				</tbody>
+		 			</table>
+	 			</td>
+			</tr>
+		</tbody>
+ 	</table>
+	<!-- End of main-banner -->
+
+	<table width="100%" bgcolor="#f6f6f6" cellpadding="0" cellspacing="0" border="0" id="backgroundTable" st-sortable="banner">
+  	<tbody>
+    	<tr>
+      	<td>
+        	<table width="600" cellpadding="0" cellspacing="0" border="0" align="center" class="devicewidth"  style="margin-top:20px;margin-bottom:20px;">
+          	<tbody>
+            	<tr>
+              	<td width="100%">
+	                <p style="text-align:center; line-height:normal; font-size: 14px; margin-bottom: 20px;">
+	                  We're committed to your privacy. iPos CRM uses the information you provide to us to contact you about our relevant content, products, and services. You may unsubscribe from these communications at any time. For more information, check out our Privacy Policy.
+	                </p>
+	                <p style="text-align:center; line-height:normal; font-size: 14px;">
+	                  By creating a iPos CRM account, you're agreeing to accept the iPos CRM Terms of Service.
+	                </p>
+              	</td>
+            	</tr>
+          	</tbody>
+        	</table>
+      	</td>
+			</tr>
+		</tbody>
+	</table>
+	</body>
+</html>

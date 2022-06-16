@@ -1,0 +1,65 @@
+<%action_delete =  checked_permission?(current_user, @klass_list['User'], @action_list['delete']) %>
+<%action_update =  checked_permission?(current_user, @klass_list['User'], @action_list['update']) %>
+<%action_create =  checked_permission?(current_user, @klass_list['User'], @action_list['create']) %>
+<%action_read =  checked_permission?(current_user, @klass_list['User'], @action_list['read']) %>
+<div class="table-responsive">
+  <table class='common-data-table' data-simple-datatable>
+    <thead>
+      <tr>
+        <th data-simple-datatable-column-type="Text">User Full name</th>
+        <th data-simple-datatable-column-type="Text">User Email</th>
+        <th>Status</th>
+        <th data-simple-datatable-column-type="Picklist">Role</th>
+        <th class="action">Actions</th>
+      </tr>
+    </thead>
+    <tbody class='list-body'>
+      <% users.each do |user| %>
+        <tr>
+          <td><%= user.fullname %></td>
+          <td><%= user.email %></td>
+          <td><%= user.encrypted_password == "" ? "Pending" : "Active" %></td>
+          <td> <%= user.roles.first.name.titleize %></td>
+          <td>
+            <div class="btn-wrapper user-setting-btn-wrapper">
+              <%if action_update %>
+                <div class='action-icon'>
+                  <%= link_to edit_user_path(user), remote: true do %>
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                  <% end %>
+                </div>
+              <%end%>
+              <% if action_delete %>
+                <div class='action-icon'>
+                  <%= link_to user_path(user), method: :delete, remote: true, data: { confirm: "Are you sure you want to delete this user and transfer all data to #{@company.user.fullname}?" } do %>
+                    <i class="fa fa-trash " aria-hidden="true"></i>
+                  <% end %>
+                </div>
+              <% end %>
+              <% if action_update %>
+                <div class='action-icon'>
+                  <%= link_to edit_user_permission_path(user) do %>
+                    <i class="fa fa-lock " aria-hidden="true"></i>
+                  <% end %>
+                </div>
+              <% end %>
+              <div class="action-icon">
+                <%= link_to user_resend_invitation_path(user), class: 'confirm_before_ajax', data: {user_email: user.email}, remote: true do %>
+                  <i class="fa fa-user-plus" aria-hidden="true"></i>
+                <% end %>
+              </div>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<script>
+  $(document).ready(function(){
+    $(".confirm_before_ajax").on("ajax:before", function(e) {
+      return confirm(`Do you want to send invitation to ${ $(e.target).data("userEmail") }`);
+    });
+    $(document).trigger('simple-datatable:reload');
+  });
+</script>

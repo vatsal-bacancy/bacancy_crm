@@ -1,0 +1,114 @@
+<% action_delete =  checked_permission?(current_user, @klass_list['Document'], @action_list['delete']) %>
+<% action_update =  checked_permission?(current_user, @klass_list['Document'], @action_list['update']) %>
+<% action_create =  checked_permission?(current_user, @klass_list['Document'], @action_list['create']) %>
+<% action_read =  checked_permission?(current_user, @klass_list['Document'], @action_list['read']) %>
+<div class="table-responsive">
+  <table class="common-data-table" id ='listDoc'>
+    <thead>
+      <tr>
+        <th>
+          <div class="radio-lbl">
+            <label class="check ">
+              <input type="checkbox"  name="" id="check-all-doc">
+              <span class="checkmark"></span>
+            </label>
+          </div>
+        </th>
+        <th> Action </th>
+        <th> Title </th>
+        <th> Name </th>
+        <th> Assign To</th>
+        <th> Created At</th>
+        <th> Directory</th>
+      </tr>
+    </thead>
+    <tbody class="doc-list-body">
+      <% object.documents.each do |document|%>
+        <tr>
+          <td>
+            <div class="radio-lbl">
+              <label class="check ">
+                <%= check_box_tag "document_ids[]", document.id , false, class:"check" %>
+                <span class="checkmark"></span>
+              </label>
+            </div>
+          </td>
+          <td>
+            <% if action_delete %>
+              <%= link_to document_path(document, documentable_type: object.class.name, documentable_id: object.id), data: { confirm: "Are you sure you want to Delete this Document?" }, method: :delete, remote: true do%>
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              <% end %>
+            <% end %>
+          </td>
+
+          <td>
+          <%= document.title_to_dipslay %>
+          </td>
+
+          <td>
+            <%= link_to document.attachment.url, target: 'blank', title: document.attachment.file.filename do%>
+              <i class="fa fa-file" aria-hidden="true"></i>
+              <%= document.attachment.file.filename.truncate(23) %>
+            <%end%>
+          </td>
+          <td>
+            <%= document.try(:resourcable).try(:fullname) %>
+          </td>
+          <td>
+            <%= document.created_at&.strftime("%m/%d/%Y, %I:%M %p")%>
+          </td>
+          <td>
+              <%directory = document.document_documentables.where(documentable_type: 'Directory').first.try(:documentable).try(:name) %>
+              <%= directory.present? ? directory : "Default"%>
+          </td>
+        </tr>
+      <%end%>
+    </tbody>
+  </table>
+</div>
+<script>
+  $(document).ready(function(){
+    var table = $('#listDoc').DataTable({
+      sDom: 'lfrtip',
+      scrollX: false,
+      autoWidth: false,
+      paging: true,
+      pageLength: 50,
+      // bLengthChange: false,
+      searching: true,
+      lengthMenu: [50, 100],
+      // colReorder: {
+      //   fixedColumnsLeft: 1
+      // },
+      columnDefs: [
+        {orderable: false, targets: [0,1]},
+        {width: "25px", targets: [0] },
+        {className: "dt-center", targets: "_all"}
+      ],
+      order: []
+    });
+
+    $('#check-all-doc').on('change', function(){
+      $('.doc-list-body .check').prop('checked',$(this).prop('checked'));
+    });
+
+    $('#destroy_all_documents').on('click', function(){
+      var checked = []
+      $("input[name='document_ids[]']:checked").each(function ()
+      {
+          checked.push(parseInt($(this).val()));
+      });
+      $.ajax({
+        url: "<%= object ? destroy_all_documents_path(documentable_type: object.class, documentable_id: object.id) : destroy_all_documents_path %>",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: 'DELETE',
+        data: {
+          ids: checked
+        },
+        dataType: "script",
+        success: function(result){
+        }
+      });
+    });
+  });
+</script>

@@ -1,0 +1,366 @@
+<div class="row dashboard_page">
+  <div class="col-sm-12">
+    <div class="setting-icon-wrapper">
+      <div class="d-flex row">
+
+        <% if checked_permission?(current_user, @klass_list["Lead"], @action_list["read"]) %>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+          <%= link_to leads_path do  %>
+          <div class="setting-icon">
+            <div class="setting-icon-main">
+              <%= image_tag asset_path('icon1.png') %>
+              <div class="badge badge-count blue_badge"><%= @lead_count %></div>
+              <div class="setting-icon-title mb-0">
+                <p class="fw-600 fs-14">Lead <br />Company</p>
+              </div>
+              <div class="text-right">
+                <%= image_tag asset_path('arrow.png'), class: 'arrow' %>
+              </div>
+            </div>
+          </div>
+          <% end %>
+        </div>
+        <% end %>
+
+        <% if checked_permission?(current_user, @klass_list["Contact"], @action_list["read"]) %>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+          <%= link_to lead_contacts_contacts_path do %>
+          <div class="setting-icon">
+            <div class="setting-icon-main">
+              <%= image_tag asset_path('icon2.png') %>
+              <div class="badge badge-count blue_badge"><%= @lead_contact %></div>
+              <div class="setting-icon-title mb-0">
+                <p class="fw-600 fs-14">Lead <br />Contact</p>
+              </div>
+              <div class="text-right">
+                <%= image_tag asset_path('arrow.png'), class: 'arrow' %>
+              </div>
+            </div>
+          </div>
+          <% end %>
+        </div>
+        <% end %>
+
+        <% if checked_permission?(current_user, @klass_list["Client"], @action_list["read"]) %>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+          <%= link_to clients_path do %>
+          <div class="setting-icon">
+            <div class="setting-icon-main">
+              <%= image_tag asset_path('icon3.png') %>
+              <div class="badge badge-count blue_badge"><%= @client_count %></div>
+              <div class="setting-icon-title mb-0">
+                <p class="fw-600 fs-14">Client <br />Company</p>
+              </div>
+              <div class="text-right">
+                <%= image_tag asset_path('arrow.png'), class: 'arrow' %>
+              </div>
+            </div>
+          </div>
+          <% end %>
+        </div>
+        <% end %>
+
+
+        <% if checked_permission?(current_user, @klass_list["Contact"], @action_list["read"]) %>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+          <%= link_to client_contacts_contacts_path do %>
+          <div class="setting-icon">
+            <div class="setting-icon-main">
+              <%= image_tag asset_path('icon4.png') %>
+              <div class="badge badge-count blue_badge"><%= @client_contact %></div>
+              <div class="setting-icon-title mb-0">
+                <p class="fw-600 fs-14">Client <br />Contact</p>
+              </div>
+              <div class="text-right">
+                <%= image_tag asset_path('arrow.png'), class: 'arrow' %>
+              </div>
+            </div>
+          </div>
+          <% end %>
+        </div>
+        <% end %>
+
+        <% if checked_permission?(current_user, @klass_list["Client"], @action_list["read"]) %>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+          <%= link_to status_board_clients_path do %>
+          <div class="setting-icon">
+            <div class="setting-icon-main">
+              <%= image_tag asset_path('icon5.png') %>
+              <div class="setting-icon-title mb-0">
+                <p class="fw-600 fs-14">Production <br />Summary</p>
+              </div>
+              <div class="text-right"> <%= image_tag asset_path('arrow.png'), class: 'arrow' %></div>
+            </div>
+          </div>
+          <% end %>
+        </div>
+        <% end %>
+
+
+        <% if checked_permission?(current_user, @klass_list["Task"], @action_list["read"]) %>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+          <%= link_to tasks_path  do %>
+          <div class="setting-icon">
+            <div class="setting-icon-main">
+              <%= image_tag asset_path('icon6.png') %>
+              <div class="badge badge-count blue_badge"><%= @task_count %></div>
+              <div class="setting-icon-title mb-0">
+                <p class="fw-600 fs-14">Tasks</p>
+              </div>
+              <div class="text-right">
+                <%= image_tag asset_path('arrow.png'), class: 'arrow' %>
+              </div>
+            </div>
+          </div>
+          <% end %>
+        </div>
+        <% end %>
+
+
+        <% if checked_permission?(current_user, @klass_list["Ticket"], @action_list["read"]) %>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+          <%= link_to tickets_path  do %>
+          <div class="setting-icon">
+            <div class="setting-icon-main">
+              <%= image_tag asset_path('icon7.png') %>
+              <div class="badge badge-count red_badge"><%= @associated_tickets_count %></div>
+              <div class="badge badge-count blue_badge"><%= @owned_tickets_count %></div>
+              <div class="setting-icon-title mb-0">
+                <p class="fw-600 fs-14">Tickets</p>
+              </div>
+              <div class="text-right">
+                <%= image_tag asset_path('arrow.png'), class: 'arrow' %>
+              </div>
+            </div>
+          </div>
+          <% end %>
+        </div>
+        <% end %>
+
+        <% if checked_permission?(current_user, @klass_list[ProjectManagement::Project.klass_name], @action_list["read"]) %>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+          <%= link_to project_management_projects_path  do %>
+          <div class="setting-icon">
+            <div class="setting-icon-main">
+              <%= image_tag asset_path('icon8.png') %>
+              <div class="badge badge-count red_badge"><%= @project_unread_count %></div>
+              <div class="badge badge-count blue_badge"><%= @project_count %></div>
+              <div class="setting-icon-title mb-0">
+                <p class="fw-600 fs-14">Projects</p>
+              </div>
+              <div class="text-right"> <%= image_tag asset_path('arrow.png'), class: 'arrow' %></div>
+            </div>
+          </div>
+          <% end %>
+        </div>
+        <% end %>
+
+        <% if checked_permission?(current_user, @klass_list["Invoice"], @action_list["read"]) %>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+        <%= link_to invoices_path do %>
+            <div class="setting-icon">
+              <div class="setting-icon-main">
+                <%= image_tag asset_path('icon9.png') %>
+                <div class="badge badge-count blue_badge"><%= @invoice_count %></div>
+
+
+                <div class="setting-icon-title mb-0">
+                  <p class="fw-600 fs-14">Invoice </p>
+                </div>
+                <div class="text-right"> <%= image_tag asset_path('arrow.png'), class: 'arrow' %></div>
+              </div>
+            </div>
+            <% end %>
+        </div>
+        <% end %>
+
+        <% if checked_permission?(current_user, @klass_list["Inventory"], @action_list["read"]) %>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+          <%= link_to inventory_groups_path do %>
+          <div class="setting-icon">
+            <div class="setting-icon-main">
+              <%= image_tag asset_path('icon10.png') %>
+              <div class="badge badge-count blue_badge"><%= @inventory_count %></div>
+              <div class="setting-icon-title mb-0">
+                <p class="fw-600 fs-14">Inventories </p>
+              </div>
+              <div class="text-right"> <%= image_tag asset_path('arrow.png'), class: 'arrow' %></div>
+            </div>
+          </div>
+          <% end %>
+        </div>
+        <% end %>
+
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+          <%= link_to help_desks_path do %>
+          <div class="setting-icon">
+            <div class="setting-icon-main">
+              <%= image_tag asset_path('icon11.png') %>
+              <div class="badge badge-count blue_badge"><%= @help_desk_count %></div>
+              <div class="setting-icon-title mb-0">
+                <p class="fw-600 fs-14">Help <br />Desk</p>
+              </div>
+              <div class="text-right"> <%= image_tag asset_path('arrow.png'), class: 'arrow' %></div>
+            </div>
+          </div>
+          <% end %>
+        </div>
+
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+          <%= link_to contract_contracts_path do %>
+          <div class="setting-icon">
+            <div class="setting-icon-main">
+              <%= image_tag asset_path('icon12.png') %>
+              <div class="badge badge-count blue_badge"><%= @contract_count %></div>
+              <div class="setting-icon-title mb-0">
+                <p class="fw-600 fs-14"> Lead/Client <br />Contacts</p>
+              </div>
+              <div class="text-right"> <%= image_tag asset_path('arrow.png'), class: 'arrow' %></div>
+            </div>
+          </div>
+          <% end %>
+        </div>
+
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+          <%= link_to kpis_path do %>
+          <div class="setting-icon">
+            <div class="setting-icon-main">
+              <%= image_tag asset_path('icon13.png') %>
+              <div class="setting-icon-title mb-0">
+                <p class="fw-600 fs-14"> KPI</p>
+              </div>
+              <div class="text-right"> <%= image_tag asset_path('arrow.png'), class: 'arrow' %></div>
+            </div>
+          </div>
+          <% end %>
+        </div>
+
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+          <%= link_to calendar_meetings_path do %>
+          <div class="setting-icon">
+            <div class="setting-icon-main">
+              <%= image_tag asset_path('icon14.png') %>
+              <div class="setting-icon-title mb-0">
+                <p class="fw-600 fs-14"> Deployment <br />Calendar</p>
+              </div>
+              <div class="text-right"> <%= image_tag asset_path('arrow.png'), class: 'arrow' %></div>
+            </div>
+          </div>
+          <% end %>
+        </div>
+
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+          <%= link_to reports_path do %>
+          <div class="setting-icon">
+            <div class="setting-icon-main">
+
+              <%= image_tag asset_path('icon15.png') %>
+
+              <div class="setting-icon-title mb-0">
+                <p class="fw-600 fs-14"> Reports</p>
+              </div>
+              <div class="text-right"> <%= image_tag asset_path('arrow.png'), class: 'arrow' %></div>
+            </div>
+          </div>
+          <% end %>
+        </div>
+
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+          <%= link_to time_sheet_logs_all_users_users_path do %>
+          <div class="setting-icon">
+            <div class="setting-icon-main">
+              <%= image_tag asset_path('icon16.png') %>
+              <div class="setting-icon-title mb-0">
+                <p class="fw-600 fs-14"> User <br />Timesheet</p>
+              </div>
+              <div class="text-right"> <%= image_tag asset_path('arrow.png'), class: 'arrow' %></div>
+            </div>
+          </div>
+          <% end %>
+        </div>
+
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+          <%= link_to settings_path do %>
+          <div class="setting-icon">
+            <div class="setting-icon-main">
+              <%= image_tag asset_path('icon17.png') %>
+              <div class="setting-icon-title mb-0">
+                <p class="fw-600 fs-14"> CRM <br />Settings</p>
+              </div>
+              <div class="text-right"> <%= image_tag asset_path('arrow.png'), class: 'arrow' %></div>
+            </div>
+          </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .dashboard_page .setting-icon-main {
+    width: 100%;
+    height: auto;
+    padding: 15px 10px;
+    display: block;
+    text-align: left;
+    min-height: 174px;
+    margin-bottom: 20px;
+  }
+
+  .setting-icon {
+    margin-right: unset;
+  }
+
+  .dashboard_page .setting-icon-wrapper {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .dashboard_page .badge-count {
+    float: right;
+    border-radius: 50%;
+    position: unset;
+  }
+
+  .dashboard_page .setting-icon-title {
+    margin-bottom: 0;
+  }
+
+  .dashboard_page .blue_badge {
+    background-color: #007aff;
+  }
+
+  .dashboard_page .red_badge {
+    background-color: #fe2d55;
+    margin-left: 5px;
+  }
+
+  .dashboard_page .setting-icon p {
+    max-width: 102px;
+    margin-bottom: 0px;
+    min-height: 33px;
+  }
+
+  .dashboard_page .setting-icon-main {
+    box-shadow: unset;
+    border: 1px solid #f1f1f1;
+    border-radius: 12px;
+  }
+
+  .dashboard_page .setting-icon-main:hover {
+    box-shadow: 0px 0px 7px 0px rgb(105 105 105 / 20%);
+  }
+
+  .dashboard_page .arrow {
+    opacity: 0.65;
+  }
+
+  .dashboard_page .setting-icon-main:hover .arrow {
+    opacity: 1;
+  }
+
+  .dashboard_page .setting-icon-wrapper {
+    display: unset;
+  }
+</style>

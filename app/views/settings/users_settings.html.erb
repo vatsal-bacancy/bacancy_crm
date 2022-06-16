@@ -1,0 +1,57 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+  <div class="site-content">
+    <div class="dynmic-tab-div">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="dynmic-tab-div-header">
+            <%= link_to settings_path, class: "heading common-link"  do %> CRM Customization Settings <% end %>
+            <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> </span>
+            <span class="sub-menu-sitecontent" > User Settings </span>
+            <!--<%= link_to users_settings_path, class:"sub-menu-sitecontent"  do %> User Settings <% end %>-->
+          </div>
+          <div class="dynmic-tab-div-data">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="setting-icon-wrapper">
+                  <%= link_to users_path do %>
+                    <div class="setting-icon">
+                      <div class="setting-icon-main">
+                        <i class="fa fa-user-o" aria-hidden="true"></i>
+                      </div>
+                      <div class="setting-icon-title">
+                        <p>Manage Users</p>
+                      </div>
+                    </div>
+                  <%end%>
+                  <% if current_user.is_super_admin? %>
+                    <%= link_to roles_path do  %>
+                      <div class="setting-icon">
+                        <div class="setting-icon-main">
+                          <i class="fa fa-wpforms" aria-hidden="true"></i>
+                        </div>
+                        <div class="setting-icon-title">
+                          <p>User Role & Permissions</p>
+                        </div>
+                      </div>
+                    <% end %>
+                  <% end %>
+                  <%= link_to time_sheet_logs_all_users_users_path do %>
+                    <div class="setting-icon">
+                      <div class="setting-icon-main">
+                        <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                      </div>
+                      <div class="setting-icon-title">
+                        <p>User Timesheet</p>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

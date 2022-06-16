@@ -1,0 +1,45 @@
+<div class='row block-ui-box m-t-5 m-r-5 project-modal-check'>
+
+  <p class="title">
+    <h3 class="title m-l-10 p-b-5">
+      <%if client.present?%>
+        <%= client.try(:company_name) %>'s contacts
+        <div class="radio-lbl d-inline-block">
+          <label class="check">Select All
+            <input type="checkbox"  name="" id="check-all-contact">
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      <% end %>
+    </h3>
+  </p>
+  <% contacts.each do |contact| %>
+    <div class='col-md-6'>
+    	<div class="radio-lbl">
+    	  <label class="check ">
+    	    <%= check_box_tag "contact_ids[]", contact.id , project_contact_ids.include?(contact.id), class:"check contact-checkbox" %>
+    	    <span class="checkmark"></span>
+    	    <%= contact.fullname%>
+    	  </label>
+    	</div>
+    </div>
+  <% end %>
+  <%= "No contacts" if contacts.blank? && client.present? %>
+
+</div>
+<script>
+  $(document).ready(function(){
+    $('#check-all-contact').on('change', function(){
+      if($(this).is(':checked')){
+        $('.contact-checkbox').each(function(){
+          $(this).prop('checked', true);
+        });
+      }
+      else{
+        $('.contact-checkbox').each(function(){
+          $(this).prop('checked', false);
+        });
+      }
+    });
+  });
+</script>

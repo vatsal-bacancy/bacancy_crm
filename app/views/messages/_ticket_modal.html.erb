@@ -1,0 +1,143 @@
+<div class="modal fade" id="ticketModal" role="dialog">
+  <div class="modal-dialog">
+
+
+    <!-- Modal content-->
+    <%= form_for message,url: ticket_message_reply_update_path, class: 'form-inline', html: { multipart: true } do |f|%>
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Message</h4>
+        </div>
+        <div class="modal-body">
+          <div id='flash_message'></div>
+          <div class=" pl15 pr15">
+            <div class="row">
+
+              <div class="col-md-12 mb10">
+                <%= f.label "Comment"%>
+                <%= f.cktext_area :description, class: 'form-control', style: "width:85%", id: '4' %>
+              </div>
+              <%= hidden_field_tag :ticket_id, ticket.id %>
+              <%#= f.hidden_field :taskable_id, value: f.object.taskable_id %>
+              <div class="col-md-12 mb10">
+
+                <%= f.label "Attachment"%>
+                <br/>
+                <input type="file" name="attachments[]" id="file1" class="inputfile" multiple />
+                <label for="file1" title='Upload Local Files' class="btn btn-default">Upload Files</label>
+                <%= link_to "Add File", upload_document_documents_path, remote: true, class: 'btn btn-default', title: 'Upload From File Drive' %>
+
+                
+
+                <div class= 'row' id="file-upload-filename"></div>
+                <%= hidden_field_tag :document_ids, [], class: 'document_ids'%>
+
+                <% if f.object.persisted?%>
+                  <%  f.object.documents.each do |attach| %>
+                    <span class="file-name">
+                      <%= link_to attach.attachment.url, target: 'blank', class: 'file-name', title: attach.attachment.file.filename do %>
+                        <i class="fa fa-file" aria-hidden="true"></i>
+                        <%= attach.attachment.file.filename.truncate(20) %>
+                      <%end%>
+                      <span class="remove-file" data-klass="<%= f.object.messageable.class %>" data-id="<%= attach.id %>"><i class="fa fa-close" ></i></span>
+                      <br/>
+                    </span>
+                  <% end %>
+                <% end %>
+
+                <div class="row m-t-15">
+
+                  <div class="col-md-12 ">
+                    <div class='selected_documents'>
+                      <%= render partial: 'documents/selected_documents', locals: { documents: [] } %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <%= f.submit "Edit Reply", class: 'btn btn-success' %>
+              </div>
+             
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+          
+    <%end%>
+  </div>
+</div>
+
+
+
+
+
+<script>
+  $(document).ready(function(){
+    console.log("out of remove");
+    $(".remove-file").on('click', function(){
+      var id = $(this).data('id');
+      var object_id = "<%= message.id %>"
+      var object_type = "<%= message.class.name %>"
+      $.ajax({
+        url: "/documents/" + id + "?object_id=" + object_id + ";object_type=" + object_type,
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: 'delete',
+        data: {
+          id: id,
+          file_remove: true
+        },
+        dataType: "script",
+        success: function(result){
+
+        }
+      });
+      $(this).siblings(".file-name").addClass("hidden");
+      $(this).addClass("hidden");
+    });
+    
+    $('#file1').on('change', function (e) {
+      if(!e.target.files) return;
+      var files = e.target.files;
+      for(var i=0; i<files.length; i++) {
+        var f = files[i];
+        var datafile = new FormData();
+        datafile.append('resourcable_type', "<%= current_user.class.name %>");
+        datafile.append('resourcable_id', "<%= current_user.id %>" );
+        datafile.append('documentable_type', "<%= @system_directory.class.name %>");
+        datafile.append('documentable_id', "<%= @system_directory.id %>" );
+        datafile.append('attachment', f);
+        $.ajax({
+          url: "<%= uploadfiles_url %>",
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          type: 'POST',
+          contentType: false,
+          cache: false,
+          processData: false,
+          data: datafile,
+          success: function(res, file){
+            documentId = res["d_id"];
+            $document_ids.push(documentId);
+            $.ajax({
+              url: "<%= selected_documents_documents_path %>",
+              beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+              type: 'GET',
+              data: {
+                document_ids: $document_ids
+              },
+              dataType: "script",
+              success: function(result){
+              }
+            });
+            $('.document_ids').val($document_ids);
+          }
+        });
+      }
+    });
+
+  });
+</script>

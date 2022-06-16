@@ -1,0 +1,178 @@
+<div class="modal fade" id="modal" role="dialog">
+  <div class="modal-dialog">
+
+    <%= form_for contact,url: contacts_contact_company_update_path(contact.id), remote: true, class: "form-inline" do |f| %>
+      <div id='flash_message'></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Contact</h4>
+        </div>
+        <div class="modal-body">
+          <div class = 'row block-ui-box m-t-5 m-r-5'>
+            <p class="title">
+              <h3 class="title m-l-10 p-b-5">Contact Details</h3>
+            </p>
+            <div class= 'col-md-6 mt15'>
+              <div class="form-group">
+                <%#= render 'form', f: f, user: user, groups: groups, data: data %>
+                <%= f.label :first_name %>
+                <%= f.text_field :first_name, class: "form-control",required: true %>
+              </div>
+            </div>
+            <div class= 'col-md-6 mt15'>
+              <div class="form-group">
+                <%= f.label :last_name %>
+                <%= f.text_field :last_name, class: "form-control" %>
+              </div>
+            </div>
+            <div class= 'col-md-6 mt15'>
+              <div class="form-group">
+                <%= f.label :email %>
+                <%= f.text_field :email, class: "form-control" %>
+              </div>
+            </div>
+            <div class= 'col-md-6 mt15'>
+              <div class="form-group">
+                <%= f.label :phone_no %>
+                <%= f.text_field :phone_no, class: "form-control" %>
+              </div>
+            </div>
+          </div>
+
+          <% if contact.is_primary.present? %>
+            <% company = contact.lead_client_contact.contactable %>
+            <div class = 'row block-ui-box m-t-5 m-r-5' id="company-fields">
+              <p class="title">
+                <h3 class="title m-l-10 p-b-5">Company Details</h3>
+              </p>
+              <div class= 'col-md-6 mt15'>
+                <div class="form-group">
+                  <label> Company Email </label>
+                  <%= text_field_tag "company_name", "#{company.company_name}", class: "form-control",required: true %>
+                </div>
+              </div>
+              <div class= 'col-md-6 mt15'>
+                <div class="form-group">
+                  <label> Company Email </label>
+                  <%= text_field_tag "company_email", "#{company.company_email}", class: "form-control" %>
+                </div>
+              </div>
+              <div class= 'col-md-6 mt15'>
+                <div class="form-group">
+                  <label> Phone Number </label>
+                  <%= text_field_tag "phone_no", "#{company.phone_no}", class: "form-control" %>
+                </div>
+              </div>
+              <div class= 'col-md-6 mt15'>
+                <div class="form-group">
+                  <label> Company Url </label>
+                  <%= text_field_tag "company_url", "#{company.company_url}", class: "form-control" %>
+                </div>
+              </div>
+              <div class= 'col-md-6 mt15'>
+                <div class="form-group">
+                  <label> Street Address </label>
+                  <%= text_field_tag "street_address", "#{company.street_address}", class: "form-control street_address" %>
+                </div>
+              </div>
+              <div class= 'col-md-6 mt15'>
+                <div class="form-group">
+                  <label> City </label>
+                  <%= text_field_tag "city","#{company.city}", class: "form-control city" %>
+                </div>
+              </div>
+              <div class= 'col-md-6 mt15'>
+                <div class="form-group">
+                  <label> State </label>
+                  <%= text_field_tag "state","#{company.state}", class: "form-control state" %>
+                </div>
+              </div>
+              <div class= 'col-md-6 mt15'>
+                <div class="form-group">
+                  <label> Zip Code </label>
+                  <%= text_field_tag "zip_code","#{company.zip_code}", class: "form-control zip_code" %>
+                  <%= hidden_field_tag "company_id", "#{company.id}" %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <%= f.submit "Save", class: 'btn btn-success' %>
+        </div>
+      </div>
+    <%end%>
+
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready( function () {
+    var data = '<%= contact.is_primary.present? %>';
+    if(data == 'true')
+    {
+      var location = document.getElementById("company-fields").getElementsByClassName("street_address");
+      var options = {};
+      var autocomplete = new google.maps.places.Autocomplete(location[location.length-1], options);
+      google.maps.event.addListener(autocomplete, 'place_changed', function() {
+        var place = autocomplete.getPlace();
+
+        var componentForm = {
+          street_number: 'short_name',
+          address1: 'short_name',
+          route: 'long_name',
+          locality: 'long_name',
+          administrative_area_level_1: 'long_name',
+          country: 'long_name',
+          postal_code: 'short_name'
+        };
+        var streetAddress = ""
+
+        place.address_components.forEach(function(e) {
+          let placeType = e.types[0];
+          let addressTypeArr = componentForm[placeType];
+          if (placeType == "locality") {
+            $("#company-fields .city").val(e[addressTypeArr]);
+          } else if (placeType == "postal_code") {
+            $("#company-fields .zip_code").val(e[addressTypeArr])
+          } else if (placeType == "administrative_area_level_1") {
+            $("#company-fields .state").val(e[addressTypeArr])
+          }
+          else{
+            if (e[addressTypeArr] != undefined){
+              if(streetAddress == ""){
+                streetAddress = e[addressTypeArr];
+              }else{
+                streetAddress += ", " + e[addressTypeArr];
+              }
+            }
+          }
+          // if (addressTypeArr) {
+          //  // toggleFull($(".shipping-" + addressTypeArr[1])[0]);
+          // }
+
+        });
+        $("#company-fields .street_address").val(streetAddress);
+      });
+
+      var pacContainerInitialized = false;
+      $('#company-fields .street_address').on('keyup keypress keydown', function() {
+        if (!pacContainerInitialized) {
+          $('.pac-container').css('z-index', '9999');
+          pacContainerInitialized = true;
+        }
+      });
+      $('#company-fields .street_address').on('keyup keypress keydown', function(event) {
+        var keyCode = event.keyCode || event.which;
+        if (keyCode === 13) {
+          event.preventDefault();
+          return false;
+        }
+      });
+      // $(".remove_fields").remove();
+    }
+  });
+</script>

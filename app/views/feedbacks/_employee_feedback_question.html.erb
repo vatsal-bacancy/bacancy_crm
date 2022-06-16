@@ -1,0 +1,20 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class=" col-md-6 col-sm-12">
+      <div class="input-group text-left" style=" border: none;">
+        <p class="text-align-justify"><b><%= "#{counter}." %></b> <%= question.title %></p>
+      </div>
+    </div>
+    <div class="form-group col-md-5 col-sm-12">
+      <div class="input-group" style=" border: none; margin-left: 1rem">
+        <div class="radio-lbl radio-oneline">
+          <%= hidden_field_tag "questions[#{question.id}][employee_id]", employee.id %>
+          <%= hidden_field_tag "questions[#{question.id}][feedback_question_id]", question.id %>
+          <label class="radio no-wrap"><%= radio_button_tag("questions[#{question.id}][retraining]", true, retraining) %> Need extra training <span class="checkround"></span></label>
+          <label class="radio no-wrap"><%= radio_button_tag("questions[#{question.id}][retraining]", false, !retraining) %> Not needed <span class="checkround"></span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <hr/>

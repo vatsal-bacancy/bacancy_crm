@@ -1,0 +1,2 @@
+module PurchaseOrder::DevicesHelper
+end

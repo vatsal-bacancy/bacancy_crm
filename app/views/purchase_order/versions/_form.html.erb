@@ -1,0 +1,179 @@
+<%= form_for purchase_order_version do |f| %>
+  <table class="table table-bordered common-data-table">
+    <thead>
+    <tr>
+      <th>Device Category</th>
+      <th>iPos Products / Services</th>
+      <th>Specification</th>
+      <th>Price</th>
+      <th width="10%">Qty</th>
+      <th width="5%">Payment Options</th>
+      <th width="15%">Total</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% PurchaseOrder::Device.sort_by_order_with_category.each do |category, devices| %>
+      <tr>
+        <td rowspan="<%= devices.count + 1 %>"><%= category %></td>
+      </tr>
+      <% devices.each do |device| %>
+        <tr data-po-device>
+          <td><%= device.name %></td>
+          <td><%= device.products.map{|product| product.name}.join('<br/>').html_safe %></td>
+          <td>
+            <%= pretty_amount device.products_price %>
+            <%= hidden_field_tag "purchase_order_version[devices][#{device.id}][products_price]", device.products_price %>
+          </td>
+          <td>
+            <%= number_field_tag "purchase_order_version[devices][#{device.id}][quantity]",
+                                 nil,
+                                 min: 0,
+                                 'data-po-device-hardware-price' => device.hardware_products_price,
+                                 'data-po-device-software-price' => device.software_products_price,
+                                 'data-po-device-quantity' => true,
+                                 class: 'form-control' %>
+          </td>
+          <td class="text-center"><%= device.payment_options.pluck(:payment_type).join(' ') %></td>
+          <td>
+            <div style="display: flex">
+              <span class="fs-14 mr5 mt7">$</span>
+              <%= number_field_tag "purchase_order_version[devices][#{device.id}][total]",
+                                   '0.00',
+                                   'data-po-device-total' => true,
+                                   readonly: true,
+                                   class: 'form-control' %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+    <tr class="bg-black">
+      <td colspan="7" class="text-center bold"> Payment Terms if Hardware is Financed</td>
+    </tr>
+    <tr>
+      <td colspan="6" class="text-right"><b>Hardware Total</b></td>
+      <td>
+        <div style="display: flex">
+          <span class="fs-14 mr5 mt7">$</span>
+          <%= f.text_field :financed_hardware_total, class: 'form-control', 'data-po-financed-hardware-total' => true %>
+        </div>
+      </td>
+    </tr>
+    <%= f.hidden_field :financed_software_total, class: 'form-control', 'data-po-financed-software-total' => true %>
+    <tr>
+      <td colspan="6" class="text-right"><b>*iPos Promotional Discount</b></td>
+      <td>
+        <div style="display: flex">
+          <span class="fs-14 mr5 mt7">$</span>
+          <%= f.text_field :financed_promotional_discount, class: 'form-control', 'data-po-financed-promotional-discount' => true %>
+        </div>
+      </td>
+    </tr>
+    <%= f.hidden_field :financed_due_from_agent, class: 'form-control', 'data-po-financed-due-from-agent' => true %>
+    <tr>
+      <td colspan="6" class="text-right"><b>iPos Client Financing Total </b></td>
+      <td>
+        <div style="display: flex">
+          <span class="fs-14 mr5 mt7">$</span>
+          <%= f.text_field :financed_total, class: 'form-control', 'data-po-financed-total' => true %>
+        </div>
+      </td>
+    </tr>
+    <%= f.hidden_field :financed_monthly_total, class: 'form-control', 'data-po-financed-monthly-total' => true %>
+    <tr class="bg-black">
+      <td colspan="7" class="text-center bold">Payment Terms if Hardware is Purchased</td>
+    </tr>
+    <tr>
+      <td colspan="6" class="text-right"><b>Hardware Total</b></td>
+      <td>
+        <div style="display: flex">
+          <span class="fs-14 mr5 mt7">$</span>
+          <%= f.text_field :upfront_hardware_total, class: 'form-control', 'data-po-upfront-hardware-total' => true %>
+        </div>
+      </td>
+    </tr>
+     <%= f.hidden_field :upfront_promotional_discount, class: 'form-control', 'data-po-upfront-promotional-discount' => true %>
+    <tr>
+      <td colspan="6" class="text-right"><b>*iPos Promotional Discount Code - ()</b></td>
+      <td>
+        <div style="display: flex">
+          <span class="fs-14 mr5 mt7"></span>
+          <%= f.text_field :upfront_promotional_discount_code, class: 'form-control', 'data-po-upfront-promotional-discount-code' => true %>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="6" class="text-right"><b>Due From iPos Client</b></td>
+      <td>
+        <div style="display: flex">
+          <span class="fs-14 mr5 mt7">$</span>
+          <%= f.text_field :upfront_due_from_client, class: 'form-control', 'data-po-upfront-due-from-client' => true %>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="6" class="text-right"><b>Due From iPos Agent</b></td>
+      <td>
+        <div style="display: flex">
+          <span class="fs-14 mr5 mt7">$</span>
+          <%= f.text_field :upfront_due_from_agent, class: 'form-control', 'data-po-upfront-due-from-agent' => true %>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="6" class="text-right"><b>Final Total</b></td>
+      <td>
+        <div style="display: flex">
+          <span class="fs-14 mr5 mt7">$</span>
+          <%= f.text_field :upfront_total, class: 'form-control', 'data-po-upfront-total' => true %>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="7">
+        <div class="col-sm-12">
+          <div class="pull-right">
+            <%= f.hidden_field :purchase_orderable_type %>
+            <%= f.hidden_field :purchase_orderable_id %>
+            <%= f.submit 'Save', class: 'btn btn-primary' %>
+          </div>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+<% end %>
+<script>
+  $(document).ready(function() {
+    function refreshTotal() {
+      let hardwareTotal = 0.0;
+      let softwareTotal = 0.0;
+      let total = 0.0;
+      let planMonths = $('[data-po-year-plan]:checked').val() * 12;
+      $('[data-po-device-quantity]').each(function() {
+        let deviceHardwarePrice = $(this).attr('data-po-device-hardware-price') * $(this).val();
+        let deviceSoftwarePrice = $(this).attr('data-po-device-software-price') * $(this).val();
+        let deviceTotal = deviceHardwarePrice + deviceSoftwarePrice;
+        hardwareTotal += deviceHardwarePrice;
+        softwareTotal += deviceSoftwarePrice;
+        total += deviceTotal;
+        $(this).closest('[data-po-device]').find('[data-po-device-total]').val(deviceTotal.toFixed(2));
+      });
+      let financedTotal = total - $('[data-po-financed-promotional-discount]').val() - $('[data-po-financed-due-from-agent]').val();
+      let upfrontTotal = total - $('[data-po-upfront-promotional-discount]').val() - $('[data-po-upfront-due-from-agent]').val();
+
+      $('[data-po-financed-hardware-total]').val(hardwareTotal.toFixed(2));
+      $('[data-po-financed-software-total]').val(softwareTotal.toFixed(2));
+      $('[data-po-financed-total]').val(financedTotal.toFixed(2));
+      $('[data-po-financed-monthly-total]').val((financedTotal/planMonths).toFixed(2));
+
+      $('[data-po-upfront-hardware-total]').val(hardwareTotal.toFixed(2));
+      $('[data-po-upfront-total]').val(upfrontTotal.toFixed(2));
+    }
+
+    $('[data-po-device-quantity], [data-po-financed-promotional-discount], [data-po-upfront-promotional-discount], [data-po-financed-due-from-agent], [data-po-upfront-due-from-agent], [data-po-year-plan]').on('keyup change', function() {
+      refreshTotal();
+    });
+    refreshTotal();
+  })
+</script>

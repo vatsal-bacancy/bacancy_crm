@@ -1,0 +1,42 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar' %>
+  <div class="site-content">
+    <div class="dynmic-tab-div">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="dynmic-tab-div-header">
+            <span class="heading">Reports</span>
+          </div>
+          <div class="dynmic-tab-div-data">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="setting-icon-wrapper">
+                  <%= link_to ipos_login_details_reports_path do %>
+                    <div class="setting-icon">
+                      <div class="setting-icon-main">
+                        <i class="fa fa-file-text" aria-hidden="true"></i>
+                      </div>
+                      <div class="setting-icon-title">
+                        <p>iPos Login Details</p>
+                      </div>
+                    </div>
+                  <% end %>
+                  <%= link_to deployment_reports_path do %>
+                    <div class="setting-icon">
+                      <div class="setting-icon-main">
+                        <i class="fa fa-file-text" aria-hidden="true"></i>
+                      </div>
+                      <div class="setting-icon-title">
+                        <p>Deployment Reports</p>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

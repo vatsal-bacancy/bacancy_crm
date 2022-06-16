@@ -1,0 +1,22 @@
+<%= form_for document, local: true, class: "form-inline", remote: true,  html: { multipart: true }  do |f| %>
+  <div class="modal fade" id="newDoc" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"> Document<%#= document.documentable_type %></h4>
+        </div>
+        <div class="modal-body">
+          <div id='flash_message'></div>
+          <%= render 'form', f: f, users: users %>
+          <%= hidden_field_tag 'documentable_type', documentable_type%>
+          <%= hidden_field_tag 'documentable_id', documentable_id%>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <%= f.submit class: 'btn btn-success' %>
+        </div>
+      </div>
+    </div>
+  </div>
+<%end%>

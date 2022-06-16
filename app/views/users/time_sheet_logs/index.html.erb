@@ -1,0 +1,85 @@
+<%= render 'components/site_content' do %>
+  <% content_for :head do %>
+    <div class="l-menu">
+      <span class="sub-menu-sitecontent"><%= link_to 'CRM Customization Settings', settings_path, class: 'common-link' %></span>
+      <span class="sub-menu-sitecontent m-x-10"><i class="fa fa-angle-right"></i></span>
+      <span class="sub-menu-sitecontent"><%= link_to 'User Settings', users_settings_path, class: 'common-link' %></span>
+      <span class="sub-menu-sitecontent m-x-10"><i class="fa fa-angle-right"></i></span>
+      <span class="sub-menu-sitecontent"><%= link_to 'User Timesheet', time_sheet_logs_all_users_users_path, class: 'common-link' %></span>
+      <span class="sub-menu-sitecontent m-x-10"><i class="fa fa-angle-right"></i></span>
+      <span class="sub-menu-sitecontent"><%= @time_sheet_log_data.user.fullname %></span>
+    </div>
+    <div class="pull-right">
+      <%= link_to 'Back', time_sheet_logs_all_users_users_path, class: 'btn btn-success' %>
+    </div>
+  <% end %>
+  <% content_for :body do %>
+    <%= render 'components/white_body' do %>
+      <h1 class="heading">Filter By</h1>
+      <hr class="mt5"/>
+      <div class="row">
+        <%= form_tag user_time_sheet_logs_path(@time_sheet_log_data.user), method: :get do %>
+          <div class="col-sm-4">
+            <div class="form-group">
+              <label>From Date</label>
+              <input name="start_date" class="form-control bootstrapdatepicker" value="<%= pretty_date @time_sheet_log_data.start_date %>" data-user-time-sheet-logs-filter>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="form-group">
+              <label>To Date</label>
+              <input name="end_date" class="form-control bootstrapdatepicker" value="<%= pretty_date @time_sheet_log_data.end_date %>" data-user-time-sheet-logs-filter>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Date</th>
+          <th>Clock In</th>
+          <th>Date</th>
+          <th>Clock Out</th>
+          <th>Break Hours</th>
+          <th>Working Hours</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @time_sheet_log_data.records.each.with_index(1) do |(date, time_sheet_log), index| %>
+          <tr>
+            <td><%= index %></td>
+            <td><%= pretty_date(time_sheet_log.base_date) %></td>
+            <td><%= pretty_time(time_sheet_log.clock_in_datetime) || '- -' %></td>
+            <td><%= pretty_date(time_sheet_log.clock_out_datetime) || '- -' %></td>
+            <td><%= pretty_time(time_sheet_log.clock_out_datetime) || '- -' %></td>
+            <td><%= pretty_hours_from_number(time_sheet_log.total_break_hours) || '- -' %></td>
+            <td><%= pretty_hours_from_number(time_sheet_log.total_work_hours) || '- -' %></td>
+            <td>
+              <div class="btn-wrapper">
+                <div class="action-icon">
+                  <% url = time_sheet_log.new_record? ? new_user_time_sheet_log_path(time_sheet_log.user, base_date: time_sheet_log.base_date) : edit_user_time_sheet_log_path(time_sheet_log.user, time_sheet_log) %>
+                  <%= link_to url do %>
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                  <% end %>
+                </div>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+<% end %>
+
+<script>
+  $(document).ready(function() {
+    $('[data-user-time-sheet-logs-filter]').on('change', function() {
+      $(this).closest('form').submit();
+    });
+  });
+</script>

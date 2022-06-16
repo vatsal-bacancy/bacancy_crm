@@ -1,0 +1,79 @@
+ <div class="site-main">
+  <%= render 'layouts/sidebar'%>
+
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+            <div class="l-menu">
+              <span class="main-menu-sitecontent"><%= @object.company_name %> </span>
+              <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> </span>
+              <span class="sub-menu-sitecontent"> My Comments</span>
+            </div>
+            
+          </div>
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+          <div class="site-content-data">
+            <div class="table-responsive">
+              <table class="common-data-table" id='tasks'>
+                <thead>
+                  <th>
+                      <div class="radio-lbl">
+                          <label class="check ">
+                          <input type="checkbox"  name="remember_me">
+                          <span class="checkmark"></span> </label>
+                      </div>
+                    </th>
+                    <th> Content </th>
+                    <th> Attachment </th>
+                    <th> Comment By </th>
+                    <th> Date </th>
+                </thead>
+                <tbody>
+                  <% @comments.each do |comment| %>
+                    <tr>
+                    <td>
+                        <div class="radio-lbl">
+                          <label class="check ">
+                            <input type="checkbox"  name="remember_me">
+                            <span class="checkmark"></span> </label>
+                          </div>
+                      </td>
+                      <td><%= comment.content %></td>
+                      <td><%= comment.attachment.present? ? (link_to "Attachment", comment.attachment.url) : "No Attachment Added" %>
+                      <td><%= comment.get_user_name(comment.user_id) %></td>
+                      <td><%= comment.updated_at.strftime("%m/%d/%Y, %I:%M %p") %></td>
+                      
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+        
+<div id="newTask"></div>
+<% provide :script do %>
+  $(document).ready(function()
+  {
+    $('#tasks').DataTable({
+      scrollX: false,
+      searching: false,
+      paging: false,
+      autoWidth: false,
+      columnDefs: [{
+        targets: 8,
+        render: function(data, type, row){
+          return data.length > 10 ? data.substr(0,10)+"..." : data;
+        }
+      }]
+    });
+  });
+<% end %> 

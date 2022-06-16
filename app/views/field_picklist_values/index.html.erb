@@ -1,0 +1,81 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <%= link_to settings_path, class: "heading common-link"  do %> CRM Customization Settings <% end %>
+            <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> </span>
+            <span class="main-menu-sitecontent"> Picklist Value </span>
+            <!-- <%= link_to field_picklist_values_path, class: "main-menu-sitecontent" do %> Picklist Value <% end %> -->
+            <span class="sub-menu-sitecontent"></span>
+          </div>
+          <span class='pull-right'><a href="<%= settings_index_path %>" class='btn btn-success btn-sm back-btn-margin mt7'>Back</a></span>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <%= form_tag field_picklist_values_path, method: :post, class: "form-inline" do %>
+          <div class="site-content-data">
+            <div class="block-ui-box-wrapper">
+              <div  class="block-ui-box m-t-20">
+                <div class='row'>
+                  <div class="col-sm-12 text-center">
+                    <div class="form-group mb10">
+                    <%= label_tag "Select Module", "Select Module", class:'select-module-set' %>
+                    <%= select_tag "klasses", options_for_select(@klasses, @field&.klass_id), { class: 'form-control', prompt: "Select Module"}%>
+                    </div>
+                  </div>
+                </div>
+                <div class='row'>
+                  <div class="col-sm-12 text-center">
+                   <div class='form-group mb10' id ='select_field'>
+                   <%= label_tag "Select Field", "Select Field", class:'select-module-set'  %>
+                    <%= select_tag "field_name", options_for_select(@field_names, @field&.id), { class: 'form-control', prompt: "Select Field"}%>
+                  </div>
+                </div>
+              </div>
+              </div>
+            </div>
+        <%end%>
+    <div class='row'>
+        <div class="col-md-12 m-t-30">
+          <div class="block-ui-box-wrapper">
+            <div id='picklist-values'>
+              <%if @field_picklist_values.present? %>
+                <%= render partial: 'picklist_value', locals: {field_picklist_values: @field_picklist_values, field: @field }%>
+              <%end%>
+            </div>
+          </div>
+        </div>
+
+    </div>
+  </div>
+</div>
+</div>
+<div id='modal'></div>
+<script>
+  $(document).ready(function(){
+    $("#klasses").on('change', function(){
+      $.ajax({
+        url: "<%= change_klass_field_picklist_values_url %>",
+        type: 'GET',
+        data: {
+          klass_id: $(this).val()
+        },
+        dataType: "script",
+        success: function(result){
+
+        }
+      });
+    });
+
+
+
+  });
+</script>

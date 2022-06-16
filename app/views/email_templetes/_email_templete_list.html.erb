@@ -1,0 +1,113 @@
+<div class="table-responsive">
+  <table class="common-data-table" id="emailtemps">
+    <thead>
+      <th>
+        <div class="radio-lbl">
+          <label class="check ">
+            <input type="checkbox"  name="" id="check-all">
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      </th>
+      <th> Action </th>
+      <th> Name </th>
+      <th> Created At </th>
+      <th> Added By </th>
+    </thead>
+
+    <tbody class='list-body'>
+      <% list.each do |temp|  %>
+        <tr>
+          <td>
+            <div class="radio-lbl">
+              <label class="check ">
+                <%= check_box_tag "temp_ids[]", temp.id , false, class:"check" %>
+                <span class="checkmark"></span>
+              </label>
+            </div>
+          </td>
+          <td>
+            <div class="btn-wrapper">
+              <div class="action-icon">
+                <%path = temp.class.name == "EmailTemplete" ? edit_email_templete_path(temp,email_temp: "email_temp") : edit_template_dir_path(temp) %>
+                <%= link_to path, remote: temp.class.name == "TemplateDir"  do %>
+                  <i class="fa fa-pencil" aria-hidden="true"></i>
+                <% end %>
+              </div>
+              <div class="action-icon">
+                <%= link_to email_templete_path(temp),data: { confirm: "Are you sure you want to Delete this Email Template?" },method: :delete, remote: true do %>
+                  <i class="fa fa-trash " aria-hidden="true"></i>
+                <% end %>
+              </div>
+           </div>
+          </td>
+          <td>
+            <% if temp.class.name == "TemplateDir" %>
+              <%= link_to template_dir_path(temp) do%>
+                <i class= 'fa fa-folder'></i>
+                <%= temp.name %>
+              <%end%>
+            <%else%>
+            <%= temp.name %>
+            <%end%>
+          </td>
+          <td> <%= temp.created_at.strftime("%m/%d/%Y") %> </td>
+          <td><%= temp.user.fullname %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  $(document).ready(function(){
+
+    if ( $.fn.DataTable.isDataTable('#emailtemps') ) {
+      $('#emailtemps').DataTable().destroy();
+    }
+
+    $('#emailtemps').DataTable({
+      sDom: 'lfrtip',
+      scrollX: false,
+      autoWidth: false,
+      paging: true,
+      pageLength: 50,
+      searching: true,
+      lengthMenu: [50, 100],
+      columnDefs: [
+        {orderable: false, targets: [0,1]},
+        {width: "30px", targets: [0] },
+        {className: "dt-center", targets: "_all"},
+        {className: "dt-body-left", targets: [2]}
+      ],
+      order: []
+    });
+
+    $('#check-all').on('change', function(){
+      $('.list-body .check').prop('checked',$(this).prop('checked'));
+    });
+
+    $('#destroy_all_email_temps').on('click', function(){
+      var checked = []
+      $("input[name='temp_ids[]']:checked").each(function ()
+      {
+          checked.push(parseInt($(this).val()));
+      });
+      if(checked == 0){
+        confirm("Please select any email template.");
+      }else{
+        $.ajax({
+          url: "<%= destroy_all_email_templetes_path %>",
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          type: 'DELETE',
+          data: {
+            ids: checked
+          },
+          dataType: "script",
+          success: function(result){
+          }
+        });
+      }
+    });
+  });
+</script>

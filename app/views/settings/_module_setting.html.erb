@@ -1,0 +1,87 @@
+<div class="dynmic-tab-div">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="dynmic-tab-div-header">
+        <p class="heading">
+          <%= klass.label %> Fields
+        </p>
+        <%= link_to new_group_path(klass_id: klass.id), remote: true, class: 'pull-right common-link' do %>
+           Add Group
+           <i class="fa fa-plus m-l-10" aria-hidden="true"></i>
+        <% end %>
+      </div>
+      <div class="group-sortable" data-klass-id="<%= klass.id %>">
+        <%= render partial: 'groups/group', collection: groups, locals: { klass: klass } %>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function(){
+
+    $(".fields-sortable, .group-sortable").disableSelection()
+
+    $( ".group-sortable" ).sortable({
+      stop: function(event, ui) {
+        let klassId = $(this).attr('data-klass-id');
+        let groupIds = $(this).sortable('toArray', {attribute: "data-group-id"});
+        $.ajax({
+          url: "<%= change_position_groups_url %>",
+          type: 'GET',
+          data: {
+            klass_id: klassId,
+            group_ids: groupIds,
+          },
+          dataType: "script"
+        });
+      }
+    });
+
+    $( ".fields-sortable" ).sortable({
+      items: '> li:not(.pin)',
+      connectWith: ".connectedSortable<%= klass.name.snakecase %>",
+      start: function(e, ui){
+        ui.placeholder.height(ui.item.height()); // Fixes placeholder not visible due to height issues
+      },
+      stop: function(event, ui) {
+        let klassId = $(this).attr('data-klass-id');
+        let groupId = $(this).attr('data-group-id');
+        let fieldIds = $(this).sortable('toArray', {attribute: "data-field-id"});
+        $.ajax({
+          url: "<%= change_position_fields_url %>",
+          type: 'GET',
+          data: {
+            klass_id: klassId,
+            group_id: groupId,
+            field_ids: fieldIds
+          },
+          dataType: "script"
+        });
+      },
+      receive: function(event, ui) {
+        let klassId = $(this).attr('data-klass-id');
+        let groupId = $(this).attr('data-group-id');
+        let fieldIds = $(this).sortable('toArray', {attribute: "data-field-id"});
+        $.ajax({
+          url: "<%= change_position_fields_url %>",
+          type: 'GET',
+          data: {
+            klass_id: klassId,
+            group_id: groupId,
+            field_ids: fieldIds
+          },
+          dataType: "script"
+        });
+      }
+    });
+
+    $('.module-link').on('click', function(){
+       $(document).ajaxStart($.blockUI()).ajaxStop($.unblockUI());
+      if ($(this).hasClass('active')){
+        $(this).removeClass('active');
+      }else{
+        $(this).addClass('active');
+      }
+    });
+  });
+</script>

@@ -1,0 +1,9 @@
+<% if @project.errors.any? %>
+  $("#flash_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");
+<% else %>
+  $("#success_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>"); 
+  $("#project-list").html(" <%= escape_javascript(render partial: 'list', locals: { projects: @projects, fields: @fields, clients: @clients, object: @object, klass: @klass }) %> ");
+  $("#project-all").html(" <%= escape_javascript(render partial: 'projects_list', locals: { projects: @projects, fields: @fields, clients: @clients, object: @object, klass: @klass }) %> ");
+
+  $("#myModal").modal('hide');
+<% end %>

@@ -1,0 +1,2 @@
+$("#user_pro").html("<%=  escape_javascript( render partial: 'user_profile', locals: { current_user: @user } )  %>");
+$("#user_pro_pic").html("<%=  escape_javascript( render partial: 'layouts/user_header_profile', locals: { current_user: @user } )  %>");  

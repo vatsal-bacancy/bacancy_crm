@@ -1,0 +1,5 @@
+$("#flash_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");
+<% if @meeting.errors.blank? %>
+  $("#meetings").html("<%= escape_javascript(render partial: 'index', locals: { meetingable: @meeting.meetingable }) %>");
+  $("#modal").modal('hide');
+<% end %>

@@ -1,0 +1,5 @@
+$('#project-message').html("<%= escape_javascript(render partial: 'modal', locals: {object: @object, message: @message, users: @users, client: @client})%>")
+$('#project-show-message').html("<%= escape_javascript(render partial: 'modal', locals: {object: @object, message: @message, users: @users, client: @client})%>")
+$('#ticket-message').html("<%= escape_javascript(render partial: 'modal', locals: {object: @object, message: @message, users: @users, client: @client})%>")
+$('#messageModal').modal('show');
+$document_ids =[];

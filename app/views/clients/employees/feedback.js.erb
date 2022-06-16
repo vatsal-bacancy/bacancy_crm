@@ -1,0 +1,2 @@
+$('#actions').html("<%= escape_javascript(render partial: 'modal_feedback', locals: {questions_answers: @questions_answers}) %>")
+$("#actionModal").modal('show');

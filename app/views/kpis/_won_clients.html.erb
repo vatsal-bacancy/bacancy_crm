@@ -1,0 +1,33 @@
+<div class="col-sm-12 m-b-20">
+  <div class="site-content-data">
+    <div class="table-list">
+      <div class="table-responsive">
+        <table class="common-data-table table-bordered table-hover" data-simple-datatable>
+          <thead>
+            <tr>
+              <th data-simple-datatable-column-type="Text">Client Company</th>
+              <th data-simple-datatable-column-type="Picklist">Marketing Manager</th>
+              <th data-simple-datatable-column-type="Picklist">iPos Sales Agent Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% won_clients.each do |client| %>
+            <tr>
+              <td>
+                <%= link_to client.company_name, client_path(client), target: :_blank, class: 'common-link' %>
+              </td>
+              <td><%= client.marketing__assign__to %></td>
+              <td><%= client.ipos_agent_name_ %></td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function() {
+    $(document).trigger('simple-datatable:reload');
+  });
+</script>

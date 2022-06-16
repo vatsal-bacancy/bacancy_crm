@@ -1,0 +1,6 @@
+<% if @object.present?%>
+
+  $("#task .list").html("<%= escape_javascript(render partial: 'index', locals: {task_klass: @task_klass, object: @object, task_fields: @task_fields }) %>");
+<%end%>
+$("#task-all").html("<%= escape_javascript(render partial: 'task_list', locals: {tasks: @tasks, task_fields: @task_fields, object: nil }) %>")
+ $("#success_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");

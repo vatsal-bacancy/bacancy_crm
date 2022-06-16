@@ -1,0 +1,120 @@
+<%= form_for device do |f| %>
+  <div class="col-sm-8">
+    <div class="col-sm-2">
+      <label>Device Name<span class="required">*</span></label>
+    </div>
+    <div class="col-sm-10">
+      <div class="form-group">
+        <%= f.text_field :name, placeholder: 'Device Name', class: 'form-control', required: true %>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <label>Description</label>
+    </div>
+    <div class="col-sm-10">
+      <div class="form-group">
+        <%= f.text_area :description, placeholder: 'Write Description', rows: 4, class: 'form-control' %>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <label>Category<span class="required">*</span></label>
+    </div>
+    <div class="col-sm-10">
+      <div class="form-group">
+        <%= f.text_field :category, placeholder: 'Category', class: 'form-control', list: 'device_category_datalist', required: true %>
+        <datalist id="device_category_datalist">
+          <% PurchaseOrder::Device.all_categories.each do |category| %>
+            <option value="<%= category %>"></option>
+          <% end %>
+        </datalist>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <label>Order</label>
+    </div>
+    <div class="col-sm-10">
+      <div class="form-group">
+        <%= f.number_field :order, min: 1, placeholder: 'Order of device in list', class: 'form-control' %>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <label>Payment Options</label>
+    </div>
+    <div class="col-sm-10">
+      <div class="form-group">
+        <%= select_tag 'payment_options[]', options_for_select(PurchaseOrder::PaymentOption.all.map { |s| [s.payment_type, s.id] }, f.object.device_payment_options.pluck(:payment_option_id)), multiple: true, title: 'Select Payment Options', class: 'form-control select_picker' %>
+      </div>
+    </div>
+    <div class="col-sm-12 mb20">
+      <div class="col-sm-7">
+        <label>Specification:</label>
+      </div>
+      <div class="col-sm-3">
+        <div class="pull-right">
+          <div class="add-more-link">
+            <%= link_to_add_association f, :device_products, data: {association_insertion_node: '[data-device-product-fields]', association_insertion_method: :append}, partial: 'device_product_fields' do %>
+              <i class="fa fa-plus" aria-hidden="true"></i>
+              Add Product Item
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <div data-device-product-fields>
+        <%= f.fields_for :device_products do |device_product| %>
+          <%= render 'device_product_fields', f: device_product %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12">
+    <div class="col-sm-6">
+      <%= f.submit class: 'site-content-head-btn' %>
+    </div>
+    <div class="col-sm-6">
+      <div class="pull-right">
+        Total: $ <b data-device-price></b>
+      </div>
+    </div>
+  </div>
+<% end %>
+<script>
+  $(document).ready(function() {
+    function refreshTotal() {
+      let sum = 0.0;
+      $('[data-device-product-field]:visible').find('option:selected').each(function() {
+        let productPrice = (parseFloat($(this).attr('data-product-price')) || 0.0);
+        $(this).closest('[data-device-product-field]').find('[data-device-product-price]').val(productPrice.toFixed(2));
+        sum += productPrice;
+      });
+      $('[data-device-price]').html(sum.toFixed(2));
+    }
+    function applySelect2() {
+      $('[data-device-product-select]').select2({ theme: 'bootstrap', dropdownAutoWidth: true });
+    }
+
+    $(document).on('change', '[data-device-product-select]', function() {
+      refreshTotal();
+    });
+    $('[data-device-product-fields]').on('cocoon:after-remove', function (e, item) {
+      refreshTotal();
+    });
+    $('[data-device-product-fields]').on('cocoon:after-insert', function(e, item) {
+      applySelect2();
+    });
+
+    refreshTotal();
+    applySelect2();
+
+    // `open` class is not being added on `click` of `select_picker`. So, Create logic for the same.
+    // $('.select_picker button span').on('click', function(){
+    //   $(this).closest('.select_picker').addClass('open')
+    // })
+    $(".select_picker").selectpicker();
+    //This fixes the issues with selectpicker (not opening while click on it)
+    $('.btn.dropdown-toggle.btn-default').on('click', function() {
+      $(".btn-group.bootstrap-select.form-control.select_picker").toggleClass('open');
+    });
+  });
+</script>

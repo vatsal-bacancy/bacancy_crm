@@ -1,0 +1,59 @@
+<div class="modal fade" id="projectInvitaionModal" role="dialog">
+  <div class="modal-dialog">
+    <%= form_tag send_project_invitaiton_projects_path(project_id: @project.id), remote: true, class: "form-inline" do %>
+      <div id='flash_message'></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"> Assign users & contacts <%= @project.try(:name) %></h4>
+        </div>
+        <div class="modal-body Project-user-body">
+          <h3><%@company.name %> User's</h3>
+
+          <div class='row block-ui-box m-t-5 m-r-5'>
+            <%@users.each do |user|%>
+              <% unless user.encrypted_password == '' %>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <%= check_box_tag "user_ids[]", user.id , @project.users.include?(user), class:"check" %>
+                  <%= user.fullname%>
+                </div>
+              </div>
+              <% end %>
+            <%end%>
+
+          </div>
+          <!--<div class='text m-t-10 m-r-5'>
+            <p class="m-b-10">Company: <b><%= @project.try(:client).try(:company_name) %></b> </p>
+          </div>-->
+
+          <h3 class="m-t-20"><%= @project.client.company_name %>'s Contacts</h3>
+
+          <div class='row block-ui-box m-t-5 m-r-5'>
+            <%@contacts.each do |contact|%>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <%= check_box_tag "contact_ids[]", contact.id , @project.contacts.include?(contact), class:"check" %>
+                  <%= contact.fullname%>
+                </div>
+              </div>
+            <%end%>
+
+          </div>
+          <!--<div class='text m-t-10 m-r-5'>
+            <p class="m-b-10">Company: <b><%= @project.try(:client).try(:company_name) %></b> </p>
+          </div>-->
+        </div>
+         <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <%= submit_tag "Assign", class: 'btn btn-success' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $('.tagableinput').tagsinput();
+</script>

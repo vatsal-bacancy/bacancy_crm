@@ -1,0 +1,3 @@
+$('#newDoc').modal('hide');
+$('#DocumentUpload').modal('hide');
+$("#documentList .list").html("<%= escape_javascript(render partial: 'index', locals: {object: @object }) %>");

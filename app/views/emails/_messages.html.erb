@@ -1,0 +1,59 @@
+<% if messages.any? %>
+  <div class="filter-middle m-t-0" id='messages'>
+    <% messages.each_with_index do|message, ind| %>
+      <div class="radio-lbl email-checkbox message_id_<%= message.id %>">
+        <%= render partial: 'emails/list_message', locals: {message: message, ind: ind}%>
+      </div>
+    <%end%>
+  </div>
+<% else %>
+  <div class="filter-middle" id='messages'>
+    <div class="col-md-12 text-center">
+      No Emails to display
+    </div>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#search-msg").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#messages .email-checkbox").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+    $('.message-data .filter-middle-main').on('click', function(){
+      $.blockUI({
+        message: "<h3> Please wait... </h3>",
+        css: {
+          border: 'none',
+          padding: '15px',
+          backgroundColor: '#000',
+          '-webkit-border-radius': '10px',
+          '-moz-border-radius': '10px',
+          opacity: .5,
+          color: '#fff'
+        }
+      });
+    });
+  });
+  $('#check-all').on('change', function(){
+    if($(this).prop('checked')){
+      $('.delete-all').removeClass('hidden');
+    }else{
+      $('.delete-all').addClass('hidden');
+    }
+    $('.chk-msg').prop('checked', $(this).prop('checked'));
+
+  });
+  $('#messages_container').on('ajax:success', function(e){
+    let element = $(e.target);
+    $('.message_id_' + element.data('id')).remove();
+  });
+});
+
+// $(".email-checkbox").hover(function(){
+//     $('.remove-btn').show();
+// },function(){
+//     $('.date-time').hide();
+// });
+</script>

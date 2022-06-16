@@ -1,0 +1,10 @@
+<div class="row">
+  <div class="col-sm-12">
+    <%= f.text_area :content, class: "form-control", placeholder: "Add a comment", rows: 5, required: true %>
+  </div>
+</div>
+<%= f.hidden_field :commentable_type, value: f.object.commentable_type %>
+<%= f.hidden_field :commentable_id, value: f.object.commentable_id %>
+<div class='col-md-8'>
+  <%= f.file_field :attachment, class: 'form-control'%>
+</div>

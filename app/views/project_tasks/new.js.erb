@@ -1,0 +1,14 @@
+$("#newProjectTask").html("<%= escape_javascript(render partial: 'modal', locals: {project_task: @project_task, users: @users}) %>")
+$("#myModal").modal('show');
+$(document).ready(function()
+{
+  $('.datepicker').datepicker({format: 'mm/dd/yyyy', todayHighlight: true, autoclose: true});
+  $('#start_date').datepicker().on('changeDate',function(e)
+  {
+    $('#end_date').datepicker('setStartDate',e.date);
+  });
+  $('#end_date').datepicker().on('changeDate',function(e)
+  {
+    $('#start_date').datepicker('setEndDate',e.date);
+  });
+});

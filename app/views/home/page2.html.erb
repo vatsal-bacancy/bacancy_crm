@@ -1,0 +1,504 @@
+<div class="site-main">
+<%= render 'layouts/sidebar'%>
+<div class="site-content">
+   <div class="site-content-head">
+      <div class="row">
+         <div class="col-sm-12">
+            <div class="l-menu">
+               <span class="main-menu-sitecontent">Settings</span>
+               <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> </span>
+               <span class="sub-menu-sitecontent"> General Settings</span>
+            </div>
+            <div class="pull-right">
+               <%= link_to new_lead_path, class: 'site-content-head-btn', remote: true do %>
+               + Add Leads
+               <%end%>
+               <a href="" class="site-content-head-btn">Import Leads</a>
+               <a href="" class="site-content-head-btn">Filter <i class="fa fa-filter"></i></a>
+               <a href="" class="site-content-head-btn">Actions</a>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="site-content-data">
+      <div class="row">
+         <div class="col-lg-8 col-md-12">
+            <ul id="myTabs" class="nav nav-pills nav-justified bpro-tab" role="tablist" data-tabs="tabs">
+               <li class="active"><a href="#tab1" data-toggle="tab">General </a></li>
+               <li><a href="#tab2" data-toggle="tab"> User Management</a></li>
+               <li><a href="#tab3" data-toggle="tab">Module Management</a></li>
+               <li><a href="#tab4" data-toggle="tab">Configuration</a></li>
+               <li><a href="#tab5" data-toggle="tab">Master</a></li>
+               <li><a href="#tab6" data-toggle="tab">Template Management</a></li>
+
+                                                      
+            </ul>
+            <div class="tab-content">
+               <div role="tabpanel" class="tab-pane fade in active" id="tab1">
+                  
+                        <div class="dynmic-tab-div">
+                           <div class="row">
+                              <div class="col-sm-12">
+                                 <div class="dynmic-tab-div-header">
+                                    <span class="heading">General Settings Form</span>
+                                 </div>
+                                 <div class="dynmic-tab-div-data">
+                                    <div class="row">
+                                       <div class="col-sm-12">
+                                       <h2 class="form-heading">Invoice Number Settings</h2>
+                                       </div>
+
+                                    </div>
+                                    <div class="row">
+                                       <div class="col-sm-6 border-right">
+                                          <div class="row">
+                                             <div class="col-md-5">
+                                                <span class="info-title">Owner Name</span>
+                                             </div>
+                                             <div class="col-md-6">
+                                                <span class="info-dynamic-data">Rohan Ramakant Patange</span>
+                                             </div>
+                                          </div>
+                                          <div class="row">
+                                             <div class="col-md-5">
+                                                <span class="info-title">Department</span>
+                                             </div>
+                                             <div class="col-md-6">
+                                                <span class="info-dynamic-data">Sales</span>
+                                             </div>
+                                          </div>
+                                          <div class="row">
+                                             <div class="col-md-5">
+                                                <span class="info-title">Work</span>
+                                             </div>
+                                             <div class="col-md-6">
+                                                <a href="" class="info-dynamic-data info-dynmic-link">(368) 493-2360</a>
+                                             </div>
+                                          </div>
+                                          <div class="row">
+                                             <div class="col-md-5">
+                                                <span class="info-title">Has Authority</span>
+                                             </div>
+                                             <div class="col-md-6">
+                                                <span class="info-dynamic-data"> No</span>
+                                             </div>
+                                          </div>
+                                          <div class="row">
+                                             <div class="col-md-5">
+                                                <span class="info-title">Territory</span>
+                                             </div>
+                                             <div class="col-md-6">
+                                                <span class="info-dynamic-data info-not-avl"> Not available</span>
+                                             </div>
+                                          </div>
+                                          <div class="row">
+                                             <div class="col-md-5">
+                                                <span class="info-title">Address</span>
+                                             </div>
+                                             <div class="col-md-6">
+                                                <span class="info-dynamic-data"> 604-5854 Beckford St.</span>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-6 ">
+                                          <div class="row">
+                                             <div class="col-md-5">
+                                                <span class="info-title">Unqualified Reason</span>
+                                             </div>
+                                             <div class="col-md-6">
+                                                <span class="info-dynamic-data info-not-avl"> Not available</span>
+                                             </div>
+                                          </div>
+                                          <div class="row">
+                                             <div class="col-md-5">
+                                                <span class="info-title">Email</span>
+                                             </div>
+                                             <div class="col-md-6">
+                                                <a href="mailto:janesampleton@gmail.com" class="info-dynmic-link">janesampleton@gmail.com</a>
+                                             </div>
+                                          </div>
+                                          <div class="row">
+                                             <div class="col-md-5">
+                                                <span class="info-title">Mobile</span>
+                                             </div>
+                                             <div class="col-md-6">
+                                                <a href="" class="info-dynamic-data info-dynmic-link">1-926-652-9503</a>
+                                             </div>
+                                          </div>
+                                          <div class="row">
+                                             <div class="col-md-5">
+                                                <span class="info-title">Do not Disturb</span>
+                                             </div>
+                                             <div class="col-md-6">
+                                                <span class="info-dynamic-data"> No</span>
+                                             </div>
+                                          </div>
+                                          <div class="row">
+                                             <div class="col-md-5">
+                                                <span class="info-title">Time Zone</span>
+                                             </div>
+                                             <div class="col-md-6">
+                                                <span class="info-dynamic-data"> (GMT-07:00)Arizona</span>
+                                             </div>
+                                          </div>
+                                          <div class="row">
+                                             <div class="col-md-5">
+                                                <span class="info-title">Zipcode</span>
+                                             </div>
+                                             <div class="col-md-6">
+                                                <span class="info-dynamic-data"> 100652</span>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="dynmic-tab-div">
+                           <div class="row">
+                              <div class="col-sm-12">
+                                 <div class="dynmic-tab-div-header">
+                                    <p class="heading">Calling Agent</p>
+                                 </div>
+                                 <div class="dynmic-tab-div-data">
+                                    <div class="row">
+                                       <div class="col-sm-6 border-right">
+                                          <div class="row">
+                                             <div class="col-md-5">
+                                                <span class="info-title">Calling Agent Name</span>
+                                             </div>
+                                             <div class="col-md-6">
+                                                <span class="info-dynamic-data">Ona Calso</span>
+                                             </div>
+                                          </div>
+                                          <div class="row">
+                                             <div class="col-md-5">
+                                                <span class="info-title">Date Appointment Made</span>
+                                             </div>
+                                             <div class="col-md-6">
+                                                <span class="info-dynamic-data">2/11/2019</span>
+                                             </div>
+                                          </div>
+                                          <div class="row">
+                                             <div class="col-md-5">
+                                                <span class="info-title">Calling Agent Comment</span>
+                                             </div>
+                                             <div class="col-md-6">
+                                                <a href="" class="info-dynamic-data info-dynmic-link">(368) 493-2360</a>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-6 ">
+                                          <div class="row">
+                                             <div class="col-md-5">
+                                                <span class="info-title">Lead Status</span>
+                                             </div>
+                                             <div class="col-md-6">
+                                                <span class="info-dynamic-data info-not-avl"> Appoinment Set</span>
+                                             </div>
+                                          </div>
+                                          <div class="row">
+                                             <div class="col-md-5">
+                                                <span class="info-title">Date of Appointment</span>
+                                             </div>
+                                             <div class="col-md-6">
+                                                <span class="info-dynamic-data"> 2/11/2019 10:30 am</span>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="dynmic-tab-div">
+                           <div class="row">
+                              <div class="col-sm-12">
+                                 <div class="dynmic-tab-div-header">
+                                    <p class="heading">Address Details</p>
+                                 </div>
+                                 <div class="dynmic-tab-div-data">
+                                    <div class="row">
+                                       <div class="col-sm-6 border-right">
+                                          <div class="row">
+                                             <div class="col-md-5">
+                                                <span class="info-title">Street Name</span>
+                                             </div>
+                                             <div class="col-md-6">
+                                                <span class="info-dynamic-data">700 LincoIn Road</span>
+                                             </div>
+                                          </div>
+                                          <div class="row">
+                                             <div class="col-md-5">
+                                                <span class="info-title">City</span>
+                                             </div>
+                                             <div class="col-md-6">
+                                                <span class="info-dynamic-data">Miami Beach</span>
+                                             </div>
+                                          </div>
+                                          <div class="row">
+                                             <div class="col-md-5">
+                                                <span class="info-title">Zip Code</span>
+                                             </div>
+                                             <div class="col-md-6">
+                                                <a href="" class="info-dynamic-data info-dynmic-link">33139</a>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="col-sm-6 ">
+                                          <div class="row">
+                                             <div class="col-md-5">
+                                                <span class="info-title">Country</span>
+                                             </div>
+                                             <div class="col-md-6">
+                                                <span class="info-dynamic-data info-not-avl"> United States</span>
+                                             </div>
+                                          </div>
+                                          <div class="row">
+                                             <div class="col-md-5">
+                                                <span class="info-title">State</span>
+                                             </div>
+                                             <div class="col-md-6">
+                                                <span class="info-dynamic-data"> -</span>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div role="tabpanel" class="tab-pane fade" id="tab2">
+                        <div class="dynmic-tab-div mt-10">
+                           <div class="row">
+                              <div class="col-sm-12">
+                                 <div class="dynmic-tab-div-header contracts-header">
+                                    <span class="heading">List of Contracts</span>
+                                    <div class="pull-right search-wrapper">
+                                       <div class="input-group serch-input">
+                                          <div class="input-group-addon">
+                                             <i class="fa fa-search" aria-hidden="true"></i>
+                                          </div>
+                                          <input autofocus="autofocus" autocomplete="email" class="form-control" placeholder="Search by contract title">
+                                       </div>
+                                       <a href="" class="search-btn">Search</a>
+                                    </div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-sm-12">
+                                       <div class="site-content-data">
+                                          <div class="table-responsive">
+                                             <table class="common-data-table">
+                                                <thead>
+                                                   <th>
+                                                      <div class="radio-lbl">
+                                                         <label class="check ">
+                                                         <input type="checkbox"  name="remember_me">
+                                                         <span class="checkmark"></span> </label>
+                                                      </div>
+                                                   </th>
+                                                   <th>Action</th>
+                                                   <th>Date</th>
+                                                   <th>Contract No</th>
+                                                   <th>Contract</th>
+                                                   <th>Lead</th>
+                                                   <th>Sign</th>
+                                                   <th>Email</th>
+                                                </thead>
+                                                <tbody>
+                                                   <tr>
+                                                      <td>
+                                                         <div class="radio-lbl">
+                                                            <label class="check ">
+                                                            <input type="checkbox"  name="remember_me">
+                                                            <span class="checkmark"></span> </label>
+                                                         </div>
+                                                      </td>
+                                                      <td>
+                                                         <div class="btn-wrapper">
+                                                            <button class="eye-btn"><i class="fa fa-eye"></i></button>
+                                                            <div class="action-icon"> <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></div>
+                                                            <div class="action-icon"> <a href="#"><i class="fa fa-commenting-o" aria-hidden="true"></i></a></div>
+                                                            <div class="action-icon"> <a href="#"><i class="fa fa-envelope-o" aria-hidden="true"></i></a></div>
+                                                         </div>
+                                                      </td>
+                                                      <td >12-Mar-2019</td>
+                                                      <td >CON1238</td>
+                                                      <td class="blue-font">Lead One</td>
+                                                      <td class="blue-font">clair@gmail.com</td>
+                                                      <td><img src="" ></td>
+                                                      <td>clairtest@gmail.com</td>
+                                                   </tr>
+                                                   <tr>
+                                                      <td>
+                                                         <div class="radio-lbl">
+                                                            <label class="check ">
+                                                            <input type="checkbox"  name="remember_me">
+                                                            <span class="checkmark"></span> </label>
+                                                         </div>
+                                                      </td>
+                                                      <td>
+                                                         <div class="btn-wrapper">
+                                                            <button class="eye-btn"><i class="fa fa-eye"></i></button>
+                                                            <div class="action-icon"> <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></div>
+                                                            <div class="action-icon"> <a href="#"><i class="fa fa-commenting-o" aria-hidden="true"></i></a></div>
+                                                            <div class="action-icon"> <a href="#"><i class="fa fa-envelope-o" aria-hidden="true"></i></a></div>
+                                                         </div>
+                                                      </td>
+                                                      <td >12-Mar-2019</td>
+                                                      <td >CON1238</td>
+                                                      <td class="blue-font">Lead One</td>
+                                                      <td class="blue-font">clair@gmail.com</td>
+                                                      <td><img src="" ></td>
+                                                      <td>clairtest@gmail.com</td>
+                                                   </tr>
+                                                   <tr>
+                                                      <td>
+                                                         <div class="radio-lbl">
+                                                            <label class="check ">
+                                                            <input type="checkbox"  name="remember_me">
+                                                            <span class="checkmark"></span> </label>
+                                                         </div>
+                                                      </td>
+                                                      <td>
+                                                         <div class="btn-wrapper">
+                                                            <button class="eye-btn"><i class="fa fa-eye"></i></button>
+                                                            <div class="action-icon"> <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></div>
+                                                            <div class="action-icon"> <a href="#"><i class="fa fa-commenting-o" aria-hidden="true"></i></a></div>
+                                                            <div class="action-icon"> <a href="#"><i class="fa fa-envelope-o" aria-hidden="true"></i></a></div>
+                                                         </div>
+                                                      </td>
+                                                      <td >12-Mar-2019</td>
+                                                      <td >CON1238</td>
+                                                      <td class="blue-font">Lead One</td>
+                                                      <td class="blue-font">clair@gmail.com</td>
+                                                      <td><img src="" ></td>
+                                                      <td>clairtest@gmail.com</td>
+                                                   </tr>
+                                                   <tr>
+                                                      <td>
+                                                         <div class="radio-lbl">
+                                                            <label class="check ">
+                                                            <input type="checkbox"  name="remember_me">
+                                                            <span class="checkmark"></span> </label>
+                                                         </div>
+                                                      </td>
+                                                      <td>
+                                                         <div class="btn-wrapper">
+                                                            <button class="eye-btn"><i class="fa fa-eye"></i></button>
+                                                            <div class="action-icon"> <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></div>
+                                                            <div class="action-icon"> <a href="#"><i class="fa fa-commenting-o" aria-hidden="true"></i></a></div>
+                                                            <div class="action-icon"> <a href="#"><i class="fa fa-envelope-o" aria-hidden="true"></i></a></div>
+                                                         </div>
+                                                      </td>
+                                                      <td >12-Mar-2019</td>
+                                                      <td >CON1238</td>
+                                                      <td class="blue-font">Lead One</td>
+                                                      <td class="blue-font">clair@gmail.com</td>
+                                                      <td><img src="" ></td>
+                                                      <td>clairtest@gmail.com</td>
+                                                   </tr>
+                                                </tbody>
+                                             </table>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div role="tabpanel" class="tab-pane fade" id="tab3">
+                        tab3
+                     </div>
+                     <div role="tabpanel" class="tab-pane fade" id="tab4">
+                        tab4
+                     </div>
+                     <div role="tabpanel" class="tab-pane fade" id="tab5">
+                        tab5
+                     </div>
+                     <div role="tabpanel" class="tab-pane fade" id="tab6">
+                        tab6
+                     </div>
+                  </div>
+               </div>
+               <div class="col-lg-4 col-md-12">
+                  <div class="dynmic-tab-div pad-top-0">
+                     <div class="row">
+                        <div class="col-sm-12">
+                           <div class="dynmic-tab-div-header">
+                              <span class="heading">Company’s lead Details</span>
+                              <a href="#" class="site-content-head-btn pull-right">More</a>
+                           </div>
+                           <div class="dynmic-tab-div-data">
+                              <div class="row">
+                                 <div class="col-sm-12">
+                                    <textarea  rows="6" class="form-control" placeholder="Describe yourself here...">
+                                    </textarea>      
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="dynmic-tab-div">
+                     <div class="row">
+                        <div class="col-sm-12">
+                           <div class="dynmic-tab-div-header">
+                              <span class="heading">Recent Comments</span>
+                              <a href="#" class="site-content-head-btn pull-right">More</a>
+                           </div>
+                           <div class="dynmic-tab-div-data ">
+                              <div class="row md-center">
+                                 <div class="col-lg-3 ">
+                                    <div class="round-small-img">
+                                       <img src="/assets/small_demo_img.jpg">
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-9">
+                                    <div class="recent-comment-data">
+                                       <p class="dark-gray-font">rohan@quicknetsoft</p>
+                                       <p class="light-gray-font">Lorem Ipsum is simply dummy text of the printing and typesetting has been the industry's standard dummy </p>
+                                    </div>
+                                 </div>
+                              </div>
+                              <hr class="recen-cmn-hr" />
+                              <div class="row md-center">
+                                 <div class="col-lg-3">
+                                    <div class="round-small-img">
+                                       <img src="/assets/small_demo_img.jpg">
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-9">
+                                    <div class="recent-comment-data">
+                                       <p class="dark-gray-font">john@quicknetsoft</p>
+                                       <p class="light-gray-font">Lorem Ipsum is simply dummy text of the printing and typesetting </p>
+                                    </div>
+                                 </div>
+                              </div>
+                              <hr class="recen-cmn-hr" />
+                              <div class="row md-center">
+                                 <div class="col-lg-3">
+                                    <div class="round-small-img">
+                                       <img src="/assets/small_demo_img.jpg">
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-9">
+                                    <div class="recent-comment-data">
+                                       <p class="dark-gray-font">will@quicknetsoft</p>
+                                       <p class="light-gray-font">Lorem Ipsum is simply dummy text of the printing and typesetting  has been</p>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

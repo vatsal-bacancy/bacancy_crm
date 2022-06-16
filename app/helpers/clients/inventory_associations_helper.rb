@@ -1,0 +1,2 @@
+module Clients::InventoryAssociationsHelper
+end

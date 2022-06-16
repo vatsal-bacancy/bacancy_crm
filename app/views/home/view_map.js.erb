@@ -1,0 +1,2 @@
+$("#maps").html("<%= escape_javascript(render partial: 'map', locals: {address: @address, lat: @lat, long:@long}) %>")
+$("#myModal").modal('show');

@@ -1,0 +1,5 @@
+$('#showNote').html("<%= escape_javascript(render partial: 'new', locals: { note: @note }) %>"); // at show page oh client and lead
+$('#modalContainer-index').html("<%= escape_javascript(render partial: 'new', locals: { note: @note, object: @object }) %>");//at index page of notes
+
+$('#noteModal').modal('show');
+$document_ids = [];

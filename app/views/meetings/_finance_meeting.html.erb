@@ -1,0 +1,23 @@
+<% time_span = find_time_difference_in_minutes(meeting[:start_time], meeting[:end_time]) %>
+<% size = 12 %>
+<% if total_meetings > 1 && index != total_meetings - 1 %>
+  <% size = 6 %>
+<% elsif index == total_meetings - 1 && total_meetings.even? %>
+  <% size = 6 %>
+<% end %>
+<div class="col-sm-<%= size %> mt-25">
+  <div class="calendar_card blue_gradient_card <%= meeting[:category] %>" data-meeting-title="<%= meeting[:title] %>" data-organizer-role="<%= meeting[:role_of_organizer] %>" data-meeting-time="<%= time_span %> min" data-url="<%= meeting[:url] %>" data-start-time="<%= meeting[:start_time]%>" data-end-time="<%= meeting[:end_time]%>" data-meeting-date="<%= meeting[:start_str].to_datetime.strftime('%a, %b %d, %Y') %>" data-attendees="<%= meeting[:attendees] %>" data-organizer="<%= meeting[:created_by] %>">
+    <div class="d-flex align-items-center justify-content-between">
+      <p class="text-white fw-600 fs-13"><%= meeting[:start_time] %></p>
+      <p class="text-white fw-600 fs-12"><%= time_span %> min</p>
+    </div>
+    <div class="schedule d-flex align-items-start mt-8">
+      <%= image_tag asset_path('clock.png'), class: 'img-fluid', height: "40" %>
+      <%# <img src="./images/clock.png" class="img-fluid" height="40"> %>
+      <div class="pl-12">
+        <p class="text-white fw-600 fs-14 m-0"><%= meeting[:title] %></p>
+        <p class="text-white fw-600 fs-13"><%= meeting[:category]&.titleize %></p>
+      </div>
+    </div>
+  </div>
+</div>

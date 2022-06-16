@@ -1,0 +1,28 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+  <div class="site-content">
+    <div class="dynmic-tab-div">
+      <div class="row dashboard-page">
+        <div class="col-sm-12">
+          <div class="dynmic-tab-div-header">
+            <div class="heading dashboard_toggle cursor-pointer">DASHBOARD</div>
+            <% if current_user.role.try(:name) == 'Sales' %>
+              <div class="heading merchant_toggle cursor-pointer">MERCHANTS</div>
+            <% end %>
+          </div>
+          <div class="dynmic-tab-div-data">
+            <% if current_user.role.try(:name) == 'Sales' %>
+              <%= render partial: 'sales_dashboard' %>
+            <% else %>
+              <%= render partial: 'dashboard_menu' %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .cursor-pointer{cursor: pointer;}
+  .active{border-bottom: 2px solid;}
+</style>

@@ -1,0 +1,55 @@
+<% klass.groups.each do |group|%>
+  <div class="dynmic-tab-div">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="dynmic-tab-div-header">
+          <span class="heading"><%= group.label %></span>
+
+        </div>
+        <div class="dynmic-tab-div-data">
+          <div class="row">
+           <% group.fields.each do |field|%>
+             <div class="col-sm-6">
+               <div class="row">
+                 <div class="col-md-4">
+                   <span class="info-title "><%= field.label %></span>
+                 </div>
+                 <div class="col-md-6 editable" data-id="<%= project.id %>" data-klass='project' data-field="<%= field.name %>" data-deletable="<%= field.deletable%>" >
+                  <span class="info-dynamic-data value">
+                    <%#=  field.name == "user_id" ? note.user.fullname : note.send(field.name) %>
+                    <% if field.reference && field.column_type != "Hidden" %>
+                      <%= field.reference_klass.constantize.find(project.send(field.name)).send(field.reference_key) %>
+                    <%else%>
+                      <% case field.name %>
+                      <% when "description" %>
+                        <%= project.send(field.name).html_safe %>
+                      <% when "attachment" %>
+                        <% if note.attachment.present? %>
+                          <%= link_to "Attachment", note.attachment.url %>
+                        <%else%>
+                          No Attachment Added
+                        <% end %>
+                      <% else %>
+                        <%= project.send(field.name) %>
+                      <% end %>
+                    <%end%>
+                  </span>
+                   <div class="form-group field hidden">
+                       <%#= render partial: 'forms/field', locals: { f: f, field_name: field.name, field_label: nil, column_type: field.column_type, custom: field.custom, have_custom_value: field.have_custom_value, data: data, field: field, value: lead.send(field.name), disp_lable: false } %>
+                   </div>
+                 </div>
+               </div>
+              </div>
+
+            <%end%>
+
+          </div>
+        </div>
+
+          <%= link_to "Back", list_projects_path, class: 'btn btn-success'%>
+
+      </div>
+      
+    </div>
+  </div>
+<%end%>

@@ -1,0 +1,19 @@
+<% unless @error.present? %>
+  $('#employee_country_code').val('<%= @employee.country_code.to_s %>')
+  $('#employee_phone_number').val(<%= @employee.phone_number %>)
+  $('#employee_details').hide();
+  $('#form-header').text('Employee Feedback Form');
+  $(".login-cmn-wrapper").width(975);
+  <% efas = @employee.employee_feedback_answers %>
+  <% counter = 1 %>
+  <% @questions.each do |question| %>
+    <% retraining = efas.select{ |efa| efa.feedback_question_id == question.id }.pluck(:retraining).first || false %>
+    $('#feedback_questions_list').append("<%= escape_javascript(render partial: 'employee_feedback_question', locals:{ question: question, employee: @employee, retraining: retraining, counter: counter }) %>");
+    <% counter = counter + 1 %>
+  <% end %>
+  $('#employee_feedback').show();
+  $('#employee_otp').hide();
+  $('#otp_field_1').focus();
+  window.onbeforeunload = function() { return ""; }
+<% end %>
+$("#flash_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>"); 

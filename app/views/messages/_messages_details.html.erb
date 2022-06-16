@@ -1,0 +1,251 @@
+<div class="tab-content" id="message-details">
+  <div role="tabpanel" class="tab-pane fade in active" id="tab1">
+    <div class="col-md-12">
+      <div class="dynmic-tab-div-header dynmic-tab-sub-header inner-header mt15">
+        <div class="d-flex">
+          <div class="heading-wrapper">
+            <%path = object.class.name == 'Project' ? project_path(object, message: "all") : ticket_path(object, message: "all") %>
+            <p><%= link_to "All Messages", path%></p>
+          </div>
+          <div class="new-msg-div">
+            <%#= link_to "New Message", new_project_message_path(project_id: @project.id), remote: true %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="site-content-data pl15 pr15">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="row cl-both" >
+            <div class="col-sm-5">
+              <div class="d-flex flex-align-center cm-dasboard-serach">
+                <!--  <label class="blue-font">Show </label><select name="leads_length" aria-controls="leads" class="form-control"><option value="50">50</option><option value="100">100</option></select> <label>entries</label> -->
+              </div>
+            </div>
+            <div class="col-sm-7">
+              <div class="d-flex flex-align-center cm-dasboard-serach pull-right">
+                <label class="">Search</label>
+                <input type="search" class="form-control" placeholder="Search here" aria-controls="leads" id="search-details">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dynmic-tab-div pt-0">
+        <div class="pl15 pr15">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="br-btm">
+                <div class="fs-18 mb5 message-description"><b><%= @message.title%></b></div>
+
+                <div class="from">
+                  <span class="date-from"> From : </span>
+                  <span class="msg-div fs-13">  <%= @message.resourcable.first_name%> <%= @message.resourcable.last_name%></span>
+                </div>
+                <div class="date">
+                  <span class="date-from"> Date :  </span>
+                  <span class="msg-div fs-13"> <%= @message.created_at.strftime("%m/%d/%Y, %I:%M %p")%></span>
+                </div>
+              </div>
+
+              <div class="br-btm">
+
+                <div class="row">
+                  <div class="col-sm-12 p-mr-20 mt10">
+                     <span class="dis-inlineblock  msg-font-dis message-description">
+                    <%= @message.description.html_safe %>
+                  </span>
+                  </div>
+                </div>
+                <div class="mb10">
+                  <div class="d-flex d-flex-wrap mb15">
+                    <% if @message.documents %>
+                      <% @message.documents.each do |document|  %>
+                        <div class="col-sm-6 mt15">
+                          <div class="col-sm-12">
+                            <div class="d-flex d-flex-wrap mb15">
+                              <div class="file-img">
+                                <% extension = document.attachment.try(:file).try(:extension).try(:downcase) %>
+                                <% if extension == "jpg" || extension == "png" || extension == "jpeg"  %>
+                                  <%= image_tag document.attachment.url, :size => "35x35" %>
+                                <% elsif extension == "pdf" %>
+                                  <img src="/assets/icon_PDF_big.png" class="file-icon" width="35" height="35">
+                                <% else %>
+                                  <img src="/assets/icon_Generic_big.png" class="file-icon" width="35" height="35">
+                                <% end %>
+                              </div>
+                              <div class="file-data">
+                                <h1><%= link_to document.attachment.file.filename   , document.attachment.url, target: '_blank' %></h1>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      <% end %>
+                    <% end %>
+                  </div>
+
+                </div>
+              </div>
+
+
+
+              <div  id="msg-display">
+                <%@message.messages.each do |msg|%>
+                  <div class="br-btm" id="msg-search">
+                    <div class="d-flex d-flex-wrap mb15">
+                      <div class="cmn1">
+                        <span class="name-msg mt10"><b><%= msg.resourcable.fullname %></b></span> <span class="date-msg mt10">posted this message on <%= msg.created_at.strftime("%m/%d/%Y, %I:%M %p") %></span>
+                          <span class="light-gray fs-12">(<%=msg.status%>)</span>
+                      </div>
+                      <div class="text-right cmn2" >
+                        <div class="btn-wrapper dis-inline">
+                          <!--<div class="action-icon">
+                            <a data-remote="true" href="">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                            </a>
+                          </div>-->
+                          <div class="action-icon">
+                          <% if current_user == msg.resourcable %>
+                            <%= link_to project_message_comment_delete_path(object,@message,msg),method: :delete, remote: true do %>
+                              <i class="fa fa-trash " aria-hidden="true"></i>
+                            <% end %>
+                          <% end %>
+                          </div>
+                        </div>
+                      </div>
+                      <h4 class="msg-link-msg mt10 msg-font"> <%#= link_to  msg.title, project_message_path(object, msg), class: "" %></h4>
+                      <span class="mt10 mb10 msg-font w-100"> <%= msg.title ||= msg.description.html_safe %></span>
+                      <% if msg.documents %>
+                        <% msg.documents.each do |document|  %>
+                          <div class="d-flex d-flex-wrap mb15 col-md-6">
+                            <div class="file-img">
+                              <% if document.attachment.file.extension.downcase == "jpg" || document.attachment.file.extension.downcase == "png" || document.attachment.file.extension.downcase == "jpeg"  %>
+                                <%= image_tag document.attachment.url, :size => "35x35" %>
+                              <% elsif document.attachment.file.extension.downcase == "pdf" %>
+                                <img src="/assets/icon_PDF_big.png" class="file-icon">
+                              <% else %>
+                                <img src="/assets/icon_Generic_big.png" class="file-icon" width="35" height="35">
+                              <% end %>
+                            </div>
+                            <div class="file-data">
+                              <h1><%= link_to document.attachment.file.filename.truncate(30) , document.attachment.url, target: '_blank' %> </h1>
+                            </div>
+                          </div>
+                        <% end %>
+                      <% end %>
+                    </div>
+
+                  </div>
+                <%end%>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="site-content-data mt10">
+        <%= form_for @message.messages.build, method: :post, class: 'form-inline', html: { multipart: true } do |f|%>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="dynmic-tab-div-header dynmic-tab-sub-header inner-header">
+                <div class="d-flex">
+                  <div class="heading-wrapper">
+                    <p>New Comment</p>
+                  </div>
+                  <div class="new-msg-div">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class=" pl15 pr15">
+            <div class="row">
+              <div class="col-md-6 mb10">
+                <%= f.label "Status"%>
+                <%= f.select :status , options_for_select(["Todo", "InProgress", "Completed", "Onhold", "Cancelled"]), {},{class: 'form-control'}%>
+              </div>
+              <div class="col-md-12 mb10">
+                <%= f.label "Description"%>
+                <%= f.cktext_area :description, class: 'form-control', style: "width:85%", id: '3' %>
+              </div>
+              <% if @message.class.name == 'Message'%>
+              <%= hidden_field_tag :message_id, @message.id %>
+              <%end%>
+              <%#= f.hidden_field :taskable_id, value: f.object.taskable_id %>
+              <div class="col-md-12 mb10">
+
+                <%= f.label "Attachment"%>
+                <br/>
+                <input type="file" name="attachments[]" id="file" class="inputfile" multiple />
+                <label for="file" title='Upload Local Files' class="btn btn-default">Upload Files</label>
+                <div class= 'row' id="file-upload-filename"></div>
+                <%= hidden_field_tag :document_ids, [], class: 'document_ids'%>
+                <div class="row m-t-15">
+
+                  <div class="col-md-12 ">
+                    <div class='selected_documents'>
+                      <%= render partial: 'documents/selected_documents', locals: { documents: [] } %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 mb10">
+                <%= f.submit "Post Comment", class: 'btn btn-success' %>
+              </div>
+            </div>
+          </div>
+        <%end%>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $document_ids =[];
+    $("#search-details").on("keyup", function() {
+      var value = $(this).val().toLowerCase();
+      $("#msg-display #msg-search").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+    $('#file').on('change', function (e) {
+      if(!e.target.files) return;
+      var files = e.target.files;
+      for(var i=0; i<files.length; i++) {
+        var f = files[i];
+        var datafile = new FormData();
+        datafile.append('resourcable_type', "<%= current_user.class.name %>");
+        datafile.append('resourcable_id', "<%= current_user.id %>" );
+        datafile.append('documentable_type', "<%= @system_directory.class.name %>");
+        datafile.append('documentable_id', "<%= @system_directory.id %>" );
+        datafile.append('attachment', f);
+        $.ajax({
+          url: "<%= uploadfiles_url %>",
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          type: 'POST',
+          contentType: false,
+          cache: false,
+          processData: false,
+          data: datafile,
+          success: function(res, file){
+            documentId = res["d_id"];
+            $document_ids.push(documentId);
+            $.ajax({
+              url: "<%= selected_documents_documents_path %>",
+              beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+              type: 'GET',
+              data: {
+                document_ids: $document_ids
+              },
+              dataType: "script",
+              success: function(result){
+              }
+            });
+            $('.document_ids').val($document_ids);
+          }
+        });
+      }
+    });
+
+  });
+</script>

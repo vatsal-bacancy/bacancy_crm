@@ -1,0 +1,32 @@
+<div class="modal fade" id="documentModal" role="dialog">
+ <div class="modal-dialog">
+
+   <%= form_for [object, document], method: :post, class: 'form-inline', remote: true do |f|%>
+     <div class="modal-content">
+       <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal">&times;</button>
+         <h4 class="modal-title">Task</h4>
+       </div>
+       <div class="modal-body">
+         <%= f.label "Documents"%>
+         <%= f.file_field :attachment, class: 'form-control', multiple: true%>
+
+         <%#= f.hidden_field :taskable_id, value: f.object.taskable_id %>
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         <%= f.submit class: 'btn btn-success' %>
+       </div>
+     </div>
+
+   <% end %>
+
+ </div>
+</div>
+
+
+<script>
+ $(document).ready(function(){
+
+ });
+</script>

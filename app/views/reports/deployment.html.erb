@@ -1,0 +1,89 @@
+<%= render 'components/site_content' do %>
+  <% content_for :head do %>
+    <div class="l-menu">
+      <span class="main-menu-sitecontent">Reports</span>
+      <span class="sub-menu-sitecontent m-x-10"><i class="fa fa-angle-right"></i></span>
+      <span class="sub-menu-sitecontent">Deployment Report</span>
+    </div>
+  <% end %>
+  <% content_for :body do %>
+    <div class="dynmic-tab-div">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="dynmic-tab-div-data">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="site-content-data">
+                  <div class="table-list">
+                    <div class="table-responsive">
+                      <table class="common-data-table table-bordered"
+                             id="reports-deployment-datatable"
+                             data-reports-datatable-default-search="<%= [[3, {from: pretty_date(Date.today.beginning_of_month), to: pretty_date(Date.today.end_of_month)}]].to_json %>">
+                        <thead>
+                        <tr>
+                          <th data-reports-datatable-column-type="Text">Client Company Name</th>
+                          <th data-reports-datatable-column-type="Picklist">Sales Agent Name</th>
+                          <th data-reports-datatable-column-type="Text">State</th>
+                          <th data-reports-datatable-column-type="DateTime">Deployment Date Time</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+<script>
+  $(document).ready(function() {
+    let table = $('#reports-deployment-datatable');
+    let dataTable = table.DataTable({
+      sDom: 'Brtip',
+      buttons: [
+        {
+          extend: 'csv',
+          text: 'Export To CSV',
+          filename: 'Deployment Report - iPos CRM'
+        }
+      ],
+      lengthMenu: [50, 100],
+      order: [[3, 'desc']],
+      serverSide: true,
+      processing: true,
+      deferLoading: 0,
+      ajax: Routes.deployment_details_clients_path(),
+      columnDefs: [
+        { orderable: false, targets: '_all' },
+      ],
+      columns: [
+        { data: 'client_company_name' },
+        { data: 'client_ipos_agent_name' },
+        { data: 'client_state' },
+        { data: 'client_deployment_date_time' }
+      ]
+    });
+    yadcf.init(dataTable, [{
+      column_selector: '[data-reports-datatable-column-type="Picklist"]',
+      filter_type: 'multi_select',
+      select_type: 'select2',
+      sort_as: 'none',
+      select_type_options: { theme: 'bootstrap', width: 'resolve', dropdownAutoWidth: true }
+    }, {
+      column_selector: '[data-reports-datatable-column-type="Text"]',
+      filter_type: 'text',
+      filter_delay: 500
+    }, {
+      column_selector: '[data-reports-datatable-column-type="DateTime"]',
+      filter_type: 'range_date',
+      datepicker_type: 'bootstrap-datepicker'
+    }]);
+    yadcf.exFilterColumn(dataTable, table.attr('data-reports-datatable-default-search').deserialize, true);
+  });
+</script>

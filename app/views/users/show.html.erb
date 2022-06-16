@@ -1,0 +1,102 @@
+<div id="success_message"></div>
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+  <div class="site-content site-content-data">
+    <div class="row">
+      <!-- <div class="col-md-2">
+        <ul class="profile-tab">
+          <li>Basic Info</li>
+        </ul>
+      </div> -->
+      <div class="col-md-12">
+        <div class="white-bg pl10 pr10 pb10 pt10">
+          <div class="dynmic-tab-div-header">
+            <span class="heading">User Details</span>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="d-md-flex d-flex-wrap sm-justify-center">
+                <div class="dropdown">
+                  <!-- profile image -->
+                  <div id="user_pro">
+                    <%= render partial: 'user_profile', locals: { current_user: current_user } %>
+                  </div>
+                </div>
+                <!-- <div class="profile-circle-main" id="profile_image"></div>  -->
+
+                <div class="profile-circle-title">
+                  <div class="d-flex d-flex-wrap ">
+                    <h3 class="" id="fullname_user"><span><%= current_user.fullname %></span></h3>
+                    <!-- user edit-->
+                    <span style="font-size:13px;display:block;">
+                      <a data-remote="true" href="<%= edit_user_path(current_user, edit_name: 'edit_name', company_id: @company) %>" class="ml10" remote="true">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                      </a>
+                    </span>
+                  </div>
+                  <span style="font-size:13px;display:block;" id="user_email_id"><%= current_user.email  %> </span>
+                  <div class="super-admin-title mt5">
+                    <span><%= current_user.roles.first.name.split("_").collect(&:capitalize).join(" ")%></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mt20">
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <!-- <label for="Company_Address">Language</label>
+                    <i class="fa fa-info-circle pull-right" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Pour l'instant, HubSpot propose un support par téléphone uniquement en anglais, allemand, espagnol et japonais. Des traductions en français, espagnol, allemand et japonais sont disponibles pour certains de nos documents en ligne."></i>
+                    <select class="form-control" required="required" name="" id=""><option value="">English</option>
+                      <option selected="selected" value="Pre qualified">Español</option>
+                      <option value="Follow up">Français</option>
+                    </select> -->
+                  </div>
+                </div>
+                <div id="user-details" class="contact-show edit-user-company">
+                  <%= form_for current_user, remote: true, class: "form-inline" do |f| %>
+                    <%= render partial: 'user_details', locals: { f: f, current_user: current_user, company: @company } %>
+                    <%= hidden_field_tag :edit_name, 'edit_name' %>
+                  <% end %>
+                </div>
+
+                <%#= render partial: 'company_details', locals: { current_user: current_user, company: @company } %>
+                <!-- first name and last name update  -->
+              </div>
+            </div>
+          </div>
+          <div class="dynmic-tab-div-header mt20">
+            <span class="heading">Company Details</span>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div id="company-details" class="contact-show edit-user-company">
+                <div class="row">
+                  <%= form_for  @company, remote: true, class: "form-inline" do |f| %>
+                    <%= render partial: 'user_company_details', locals: { f: f,company: @company, user: current_user } %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="dynmic-tab-div-header mt20">
+            <span class="heading">Signature</span>
+          </div>
+          <div class="row" id="signature-preview">
+            <%= render 'signature_preview' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="modalContainer"></div>
+<div id="uploadContainer"></div>
+<div id="signatureContainer"></div>
+<div id="company_logos"></div>
+<script type="text/javascript">
+ $(document).ready(function() {
+   $(".dropdown-toggle").dropdown();
+    $(".dropdown-toggle").dropdown();
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+</script>

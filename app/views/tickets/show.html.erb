@@ -1,0 +1,222 @@
+<%= render 'components/site_content' do %>
+  <% content_for :head do %>
+    <div class="l-menu">
+      <span class="main-menu-sitecontent">
+        <%= link_to 'Tickets', tickets_path, class: 'common-link' %>
+      </span>
+      <span class="sub-menu-sitecontent m-x-10"><i class="fa fa-angle-right"></i></span>
+      <span class="sub-menu-sitecontent">#<%= @ticket.ticket_no %> - <%= @ticket.ticketable.company_name %></span>
+    </div>
+    <div class="pull-right">
+      <%= link_to 'Edit', edit_ticket_path(@ticket), remote: true, class: 'site-content-head-btn' %>
+      <%= link_to 'Back', tickets_path, class: 'btn btn-success' %>
+    </div>
+  <% end %>
+  <% content_for :body do %>
+    <div class="row">
+      <div class="col-lg-8 col-md-12">
+        <div class="dynmic-tab-div">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="dynmic-tab-div-header mb0">
+                <span class="heading"><%= @ticket.title %></span>
+                <span class="pull-right">
+                  <%= select_tag nil, options_for_select(@ticket.valid_statuses.pluck(:value), selected: @ticket.status), include_blank: 'Select Ticket Status', class: 'form-control', 'data-ticket-status' => true %>
+                </span>
+                <div class="d-flex flex-align-center cm-dasboard-serach m-b-10 pull-right">
+                  <input type="search" class="form-control d-inline-block" placeholder="Search here" aria-controls="leads" id="search-view">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="cmn-tab-div">
+            <div class="row">
+              <div class="tab-content">
+                <div class="row">
+                  <div class="col-sm-12" id="ticket-detail" data-cable-manager="true" data-channel="ResourceChannel" data-resource-klass="Ticket" data-resource-id="<%= @ticket.id %>">
+                    <% if params[:message] %>
+                      <%= render partial: 'messages/messages', locals: { object: @ticket }%>
+                    <% else %>
+                      <%= render partial: 'overview', locals: {klass: @klass, ticket: @ticket, overviews: @overviews}%>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-12">
+        <div class="dynmic-tab-div">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="dynmic-tab-div-header mb0">
+                <span class="heading">Created At - <%= pretty_date_time(@ticket.created_at) %></span>
+              </div>
+            </div>
+          </div>
+          <div class="cmn-tab-div" style="padding:10px 15px;">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <div class="dynmic-tab-div-header bg-blue mb0">
+                  <p class="heading text-left white-font w-100">PEOPLE ON THIS TICKET</p>
+                </div>
+                <div class="dynmic-tab-div-header mb5 sub-div-header inner-header">
+                  <p class="heading1 text-left w-100">Created By</p>
+                </div>
+                <div class="back-data text-left">
+                  <ul>
+                    <li><%= @ticket.owner.fullname %></li>
+                  </ul>
+                </div>
+                <% users = @ticket.ticket_users %>
+                <div class="dynmic-tab-div-header mb5 sub-div-header inner-header">
+                  <p class="heading1 text-left w-100">Assigned To</p>
+                </div>
+                <div class="back-data text-left">
+                  <ul>
+                    <% users.each do | pro_user | %>
+                      <% u = pro_user.user %>
+                      <li title="<%= u.try(:user).try(:email) %>">
+                        <% if pro_user.user.fullname.present? %>
+                          <%= u.first_name %> <%= u.last_name %>
+                        <% else %>
+                          <%= u.try(:email).truncate(25)+" - Pending" %>
+                        <% end %>
+                      </li>
+                    <% end %>
+                  </ul>
+                </div>
+                <% contacts = @ticket.ticket_contacts %>
+                <%# users.each do | user | %>
+                <div class="dynmic-tab-div-header mb5 sub-div-header inner-header">
+                  <p class="heading1 text-left w-100"><%= @ticket.ticketable_company_name %>'s Contacts</p>
+                </div>
+                <%# pro_user = @project.project_users.where(client_id: client) %>
+                <div class="back-data text-left">
+                  <ul>
+                    <% contacts.each do | pro_cont | %>
+                      <% u = pro_cont.contact %>
+                      <li title="<%= u.try(:email) %>">
+                        <% if pro_cont.contact.fullname.present? %>
+                          <%= u.first_name %> <%= u.last_name %>
+                        <% else %>
+                          <%= u.try(:email).truncate(25)+" - Pending" %>
+                        <% end %>
+                      </li>
+                    <% end %>
+                  </ul>
+                </div>
+                <%# end %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="dynmic-tab-div">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="dynmic-tab-div-header mb0">
+                <span class="heading">Files In Ticket</span>
+              </div>
+            </div>
+          </div>
+          <div class="cmn-tab-div " style="padding:10px 15px;">
+            <div class="row">
+              <div class="col-sm-12 text-center attachment-list">
+                <div class="back-data text-left">
+                  <%# document = [ @ticket => @ticket.documents] + @ticket.messages.map{ |msg| {msg => msg.documents} } %>
+                  <% @document.each do |hash| %>
+                    <% hash.each do |object,documentable| %>
+                      <% documentable.each do |doc|%>
+                        <% document = doc.document %>
+                        <div class="d-flex d-flex-wrap m-b-10" id='doc-<%=document.id%>'>
+                          <div class="file-img">
+                            <% extension = document.attachment.try(:file).try(:extension).try(:downcase) %>
+                            <% if extension == "jpg" || extension == "png" || extension == "jpeg"  %>
+                              <%= image_tag document.attachment.url, :size => "35x35" %>
+                            <% elsif extension == "pdf" %>
+                              <img src="/assets/icon_PDF_big.png" class="file-icon" width="35" height="35">
+                            <% else %>
+                              <img src="/assets/icon_Generic_big.png" class="file-icon" width="35" height="35">
+                            <% end %>
+                          </div>
+                          <div class="file-data">
+                            <h1>
+                              <%= link_to document.attachment.file.filename, document.attachment.url, target: '_blank', class: "text-break-word" %> 
+                              <% url = document.attachment.url %>
+                              <% unless url =~ URI::regexp %>
+                                <%= link_to url, download: document.attachment.file.filename, class: 'common-link d-inline-block pull-right' do %>
+                                  <i class="fa fa-download" aria-hidden="true"></i>
+                                <% end %>
+                              <% else %>
+                                <%= link_to download_attachment_tickets_path(url: url, filename: document.attachment.file.filename), method: 'post', class: 'common-link d-inline-block pull-right' do %>
+                                  <i class="fa fa-download" aria-hidden="true"></i>
+                                <% end %>
+                              <% end %>
+                            </h1>
+                            <%if current_user == doc.resourcable && @ticket.status != 'Close' %>
+                              <%= link_to document_path(document, object_type: object.class.name, object_id: object.id), method: :delete, remote: true, class: 'common-link d-inline-block pull-right' do%>
+                                <i class="fa fa-trash " aria-hidden="true"></i>
+                              <%end%>
+                            <%end%>
+                            <h3 > by <%= doc.try(:resourcable).try(:fullname)  %><br/> on <%= doc.created_at.strftime("%m/%d/%Y, %I:%M %p") %></h3>
+                          </div>
+                        </div>
+                      <%end%>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  <% end %>
+<% end %>
+
+<div id="modalContainer" class='modal-right'></div>
+
+<script>
+$(document).ready(function(){
+  $document_ids = [];
+
+  $('.nav li').on('click',function(){
+    $('.nav li').removeClass('active');
+    var $this = $(this);
+    if (!$this.hasClass('active')) {
+        $this.addClass('active');
+    }
+  });
+
+  $('#ticket-detail').on('cableManager:received', function(e, data){
+    if(data === 'reload_messages'){
+      $.ajax({
+        url: '<%= overview_ticket_path(@ticket.id) %>',
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+        },
+        type: 'GET',
+        dataType: 'script'
+      });
+    }
+  });
+
+  $('[data-ticket-status]').change(function() {
+    $.ajax({
+      url: Routes.ticket_path(<%= @ticket.id %>),
+      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+      type: 'PATCH',
+      data: {
+        ticket:{
+          status: $('[data-ticket-status]').val()
+        }
+      }
+    });
+  });
+
+  });
+
+</script>

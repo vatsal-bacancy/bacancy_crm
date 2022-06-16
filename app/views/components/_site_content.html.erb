@@ -1,0 +1,21 @@
+<% yield # Does not do anything, just to load content_for %>
+<div class="site-main">
+  <%= render 'layouts/sidebar' %>
+  <div class="site-content">
+    <% if content_for? :head %>
+      <div class="site-content-head">
+        <div class="row">
+          <div class="col-sm-12">
+            <%= yield :head %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <% if content_for? :body %>
+      <div class="site-content-data">
+        <%= yield :body %>
+      </div>
+    <% end %>
+  </div>
+</div>
+

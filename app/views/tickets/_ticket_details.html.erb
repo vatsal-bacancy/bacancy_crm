@@ -1,0 +1,60 @@
+<% klass.groups.each do |group|%>
+  <div class="dynmic-tab-div">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="dynmic-tab-div-header">
+          <span class="heading"><%= group.label%></span>
+          <div class="pull-right">
+
+          </div>
+        </div>
+        <div class="dynmic-tab-div-data">
+          <div class="row">
+           <% group.fields.each do |field|%>
+             <div class="col-sm-6 border-right">
+               <div class="row">
+                 <div class="col-md-4">
+                   <span class="info-title "><%= field.label%></span>
+
+                 </div>
+                 <div class="col-md-6 editable" data-id="<%= ticket.id %>" data-klass='Ticket' data-field="<%= field.name%>" data-deletable="<%= field.deletable%>" >
+                  <span class="info-dynamic-data value">
+                    <% case field.name %>
+                    <% when  "user_id" %>
+                      <%= ticket.user.fullname %>
+                    <% when "attachment"%>
+                      <% if ticket.documents.present? %>
+                        <% ticket.documents.each do |attach| %>
+                          
+                          <%= link_to attach.attachment.url, target: 'blank', title: attach.attachment.file.filename do %>
+                            <i class="fa fa-file" aria-hidden="true"></i>
+                            <%= attach.attachment.file.filename.truncate(20) %>
+                          <%end%>
+                        <% end %>
+                      <% else %>
+                        No Attachment Added
+                      <% end %>
+                    <% else %>
+                      <% if field.column_type == "Text Area HTML" %>
+                        <%= ticket.send(field.name).html_safe %>
+                      <% else %>
+                       <%= ticket.send(field.name) %>
+                      <% end %>
+                    <% end %>
+                  </span>
+                   <div class="form-group field hidden">
+                       <%#= render partial: 'forms/field', locals: { f: f, field_name: field.name, field_label: nil, column_type: field.column_type, custom: field.custom, have_custom_value: field.have_custom_value, data: data, field: field, value: lead.send(field.name), disp_lable: false } %>
+                   </div>
+                 </div>
+               </div>
+
+             </div>
+            <%end%>
+          </div>
+          <%= link_to "Back", back_to_ticket_path(ticket), remote: true , class: 'btn btn-success m-t-10'%>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+<%end%>

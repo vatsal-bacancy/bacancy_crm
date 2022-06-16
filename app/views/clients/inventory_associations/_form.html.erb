@@ -1,0 +1,62 @@
+<div class='block-ui-box m-t-5 row'>
+  <div class="col-sm-12">
+    <h3 class="title m-t-5">Search By SKU</h3>
+    <div class="col-sm-10">
+      <div class="form-group">
+        <input name="sku" placeholder="Search By SKU" class="form-control" />
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <%= button_tag 'Search', type: 'button', 'data-inventory-association-search-submit' => true, class: 'btn btn-outline-success' %>
+    </div>
+  </div>
+</div>
+<div class='block-ui-box m-t-5 row'>
+  <div class="col-sm-12">
+    <h3 class="title m-t-5">Or Select Category</h3>
+    <div class="col-md-12">
+      <div class="form-group">
+        <%= label_tag :category %>
+        <%= select_tag nil, options_for_select(Category.pluck(:title, :id)), prompt: 'Select Category', class: 'form-control multi_select', data: { "category-change": true } %>
+      </div>
+    </div>
+    <div class="col-md-12" data-sub-category-container></div>
+  </div>
+</div>
+<div class='block-ui-box m-t-5 row'>
+  <div class="col-sm-12">
+    <h3 class="title m-t-5">Or Select Inventory Group</h3>
+    <div class="col-md-12">
+      <div class="form-group">
+        <%= label_tag 'Inventory Group' %>
+        <%= select_tag nil, options_for_select(InventoryGroup.pluck(:name, :id)), prompt: 'Select Inventory Group', class: 'form-control multi_select', data: { "inventory-group-change": true } %>
+      </div>
+    </div>
+  </div>
+</div>
+<div data-inventory-groups-container></div>
+<script>
+  $(document).ready(function() {
+    $('[data-inventory-association-search-submit]').on('click', function() {
+      $.ajax({
+        url: '<%= inventory_groups_by_sku_client_inventory_associations_path %>',
+        type: 'GET',
+        data: $(this).closest('form').serializeArray()
+      });
+    });
+    $('[data-category-change]').on('change', function() {
+      $.ajax({
+        url: '<%= subcategories_client_inventory_associations_path %>',
+        type: 'GET',
+        data: { category_id: $(this).val() }
+      });
+    });
+    $('[data-inventory-group-change]').on('change', function() {
+      $.ajax({
+        url: '<%= inventory_group_client_inventory_associations_path %>',
+        type: 'GET',
+        data: { inventory_group_id: $(this).val() }
+      });
+    })
+  });
+</script>

@@ -1,0 +1,1 @@
+$("#project-list").html(" <%= escape_javascript(render partial: 'list', locals: { projects: @projects, fields: @fields, object: @object, klass: @klass }) %> ");

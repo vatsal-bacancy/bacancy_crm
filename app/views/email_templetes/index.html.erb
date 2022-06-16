@@ -1,0 +1,48 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+
+  <div class="site-content">
+    <div class="site-content-head">
+       <div class="row">
+          <div class="col-sm-12">
+            <div class="l-menu">
+              <%= link_to settings_path, class: "heading common-link"  do %> CRM Customization Settings <% end %>
+              <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> </span>
+              <span class="sub-menu-sitecontent"> Email Template </span>
+              <!-- <%= link_to email_templetes_path	, class:"sub-menu-sitecontent"  do %>Email Template <% end %> -->
+              <span class="sub-menu-sitecontent">  </span>
+            </div>
+            <div class="pull-right">
+              <% if checked_permission?(current_user, @klass_list['EmailTemplete'], @action_list['delete'])%>
+                <a href="javascript:void(0)" class="site-content-head-btn" id='destroy_all_email_temps'>Delete</a>
+              <%end%>
+              <% if checked_permission?(current_user, @klass_list['EmailTemplete'], @action_list['create'])%>
+                <%= link_to new_email_templete_path, class: 'site-content-head-btn'  do %>
+                  + Add Email Template
+                <%end%>
+              <%end%>
+              <%= link_to new_template_dir_path, class: 'site-content-head-btn', remote: true  do %>
+                + Add Folder
+              <%end%>
+              <a href="<%= settings_index_path %>" class='btn btn-success btn-sm back-btn-margin mt7 l-menu pull-right'>Back</a>
+
+            </div>
+          </div>
+
+       </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="site-content-data">
+          <div id="email-temp-all" class="table-list">
+            <%= render partial: "email_templete_list", locals: {email_templetes: @email_templetes, list: @list} %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id='templateDir'></div>

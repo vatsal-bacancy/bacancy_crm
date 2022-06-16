@@ -1,0 +1,11 @@
+daily_ticket_reminder_worker:
+  cron: '0 8,15 * * *'
+  class: 'UserWorker'
+  args:
+    - 'daily_ticket_reminder'
+
+inventory_under_stock_reminder_worker:
+  cron: '0 8 * * 1,3,5'
+  class: 'UserWorker'
+  args:
+    - 'inventory_under_stock_reminder'

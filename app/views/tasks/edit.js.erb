@@ -1,0 +1,5 @@
+$("#modalContainer").html("<%= escape_javascript(render partial: 'modal', locals: {task: @task, users: @users, grouped_options: @grouped_options, taskable: @taskable}) %>"); // on lead and client show page
+$("#modalContainerIndex").html("<%= escape_javascript(render partial: 'modal', locals: {task: @task, users: @users, grouped_options: @grouped_options, taskable: nil}) %>"); //on index page
+$("#task-show").html("<%= escape_javascript(render partial: 'modal', locals: {task: @task, users: @users, grouped_options: @grouped_options, taskable: nil}) %>"); //on index page
+$("#task_modal").modal('show');
+$document_ids = [];

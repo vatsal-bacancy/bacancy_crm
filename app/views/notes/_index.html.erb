@@ -1,0 +1,55 @@
+<%action_delete =  checked_permission?(current_user, @klass_list['Note'], @action_list['delete']) %>
+<%action_update =  checked_permission?(current_user, @klass_list['Note'], @action_list['update']) %>
+<%action_create =  checked_permission?(current_user, @klass_list['Note'], @action_list['create']) %>
+<%action_read =  checked_permission?(current_user, @klass_list['Note'], @action_list['read']) %>
+<div class="dynmic-tab-div directory-structure">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="dynmic-tab-div-header">
+        <span class="heading"><%#= "Note" %></span>
+        <div class="pull-right">
+          <% if checked_permission?(current_user, @klass_list['Note'], @action_list['delete'])%>
+            <a href="javascript:void(0)" class="site-content-head-btn" id='destroy_all_notes'>
+              Delete
+            </a>
+          <%end%>
+          <% if checked_permission?(current_user, @klass_list['Note'], @action_list['create'])%>
+            <%= link_to  new_note_path(noteable_type: object.class,noteable_id: object.id), remote: true, class: "site-content-head-btn" do %>
+              + Add Note
+            <%end%>
+          <%end%>
+          <div class="dropdown action-dropdown">
+            <button class="action-dropdown-btn dropdown-toggle" type="button" data-toggle="dropdown">Action
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+               <%= link_to "Edit Column", actions_settings_path(klass_id: Klass.find_by(name: 'Note').id, url: notes_path(noteable_id: object.id, noteable_type: 'Lead')), class: 'dropdown-item', remote: true%>
+              </li>
+              <li>
+                <%= link_to "Edit Properties", module_settings_path(klass_id: Klass.find_by(name: 'Note').id), class: 'dropdown-item'%>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="dynmic-tab-div-data ">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="site-content-data">
+              <div id="note-list" class="table-list">
+                <%= render partial: 'notes/note_list', locals: { object: object, note_fields: note_fields, list: list } %> <%# object.notes %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $(".dropdown-toggle").dropdown();
+  });
+</script>

@@ -1,0 +1,48 @@
+<div class="col-sm-12 m-b-20">
+  <div class="site-content-data">
+    <div class="table-list">
+      <div class="table-responsive">
+        <table class="common-data-table table-bordered table-hover">
+          <thead>
+            <th>Total Contracts</th>
+            <% contracts_with_users_group.each do |user, contracts| %>
+              <th><%= user.fullname %></th>
+            <% end %>
+          </thead>
+          <tbody>
+          <tr>
+            <td><%= contracts.count %></td>
+            <% contracts_with_users_group.each do |user, contracts| %>
+              <td><%= contracts.count %></td>
+            <% end %>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-sm-12">
+  <div class="site-content-data">
+    <div class="table-list">
+      <div class="table-responsive">
+        <table class="common-data-table table-bordered table-hover">
+          <thead>
+            <th>Date/Time</th>
+            <th>Sales Agent Name (User)</th>
+            <th>Contract Title</th>
+          </thead>
+          <tbody>
+          <% contracts.limit(10).each do |contract| %>
+            <tr>
+              <td><%= pretty_date contract.created_at %></td>
+              <td><%= contract.user.fullname %></td>
+              <td><%= contract.title %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

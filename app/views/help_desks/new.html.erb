@@ -1,0 +1,37 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar' %>
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <%= link_to help_desks_path, class: "main-menu-sitecontent common-link" do %>
+              Help Desk
+            <% end %>
+            <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> </span>
+            <span class="sub-menu-sitecontent">New Help Desk</span>
+          </div>
+          <div class="pull-right">
+            <%= link_to 'Back', help_desks_path, class: 'btn btn-success back-btn-margin' %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+          <div class="site-content-data">
+            <div class="white-body-wrapper">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="Inventory-header">
+                    <h1>New Help Desk</h1>
+                  </div>
+                </div>
+              </div>
+              <%= render 'form', help_desk: @help_desk %>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>

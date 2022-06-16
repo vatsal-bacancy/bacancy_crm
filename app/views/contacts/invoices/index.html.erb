@@ -1,0 +1,29 @@
+<div class="site-main">
+  <%= render 'layouts/contacts_sidebar'%>
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <span class="main-menu-sitecontent">Invoices</span>
+            <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> </span>
+            <span class="sub-menu-sitecontent">My Invoices</span>
+          </div>
+          <div class="pull-right">
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+       <div class="col-sm-12">
+          <div class="site-content-data">
+            <div id="invoice-list">
+              <%= render partial: "invoice_list", locals: {invoices: @invoices}%>
+            </div>
+          </div>
+       </div>
+    </div>
+    <div id="modalContainer" class='modal-right'></div>
+  </div>
+</div>

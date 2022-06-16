@@ -1,0 +1,86 @@
+<div class="site-main">
+  <%= render 'layouts/contacts_sidebar'%>
+  <div class="site-content">
+    <div class="dynmic-tab-div">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="dynmic-tab-div-header">
+            <span class="heading">DASHBOARD</span>
+          </div>
+          <div class="dynmic-tab-div-data">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="setting-icon-wrapper">
+
+                  <%= link_to contacts_projects_path  do %>
+                    <div class="setting-icon">
+                      <div class="setting-icon-main">
+                        <% if @project_unread_count > 0 %>
+                          <div class="badge badge-danger badge-notification"><%= @project_unread_count %></div>
+                        <% end %>
+                        <div class="badge badge-count"><%= @project_count %></div>
+                        <i class="fa fa-sitemap" aria-hidden="true"></i>
+                      </div>
+                      <div class="setting-icon-title">
+                        <p>Projects</p>
+                      </div>
+                    </div>
+                  <%end%>
+                  <%= link_to contacts_invoices_path do %>
+                    <div class="setting-icon">
+                      <div class="setting-icon-main">
+                        <% if @invoice_unread_count > 0 %>
+                          <div class="badge badge-danger badge-notification"><%= @invoice_unread_count %></div>
+                        <% end %>
+                        <div class="badge badge-count"><%= @invoice_count %></div>
+                        <i class="fa fa-file-text" aria-hidden="true"></i>
+                      </div>
+                      <div class="setting-icon-title">
+                        <p>Invoices</p>
+                      </div>
+                    </div>
+                  <%end%>
+                  <%= link_to contacts_inventories_path do %>
+                    <div class="setting-icon">
+                      <div class="setting-icon-main">
+                        <i class="fa fa-clipboard" aria-hidden="true"></i>
+                      </div>
+                      <div class="setting-icon-title">
+                        <p>Inventories</p>
+                      </div>
+                    </div>
+                  <%end%>
+                  <%= link_to contacts_tickets_path  do %>
+                    <div class="setting-icon">
+                      <div class="setting-icon-main">
+                        <% if @ticket_unread_count > 0 %>
+                          <div class="badge badge-danger badge-notification"><%= @ticket_unread_count %></div>
+                        <% end %>
+                        <div class="badge badge-count"><%= @ticket_count %></div>
+                        <i class="fa fa-ticket" aria-hidden="true"></i>
+                      </div>
+                      <div class="setting-icon-title">
+                        <p>Tickets</p>
+                      </div>
+                    </div>
+                  <%end%>
+                  <!--<%#= link_to contacts_contacts_path do %>
+                    <div class="setting-icon">
+                      <div class="setting-icon-main">
+                        <i class="fa fa-phone-square" aria-hidden="true"></i>
+                      </div>
+                      <div class="setting-icon-title">
+                        <p>Contact</p>
+                      </div>
+                      </div>
+                    </div>
+                  <%# end %>-->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

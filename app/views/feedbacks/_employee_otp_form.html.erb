@@ -1,0 +1,81 @@
+<%= form_for :employee_otp, url: "verify_otp", remote: true, html: { id: "employee_otp" } do |form| %>
+  <%= link_to 'Back', 'javascript:(0)', class: 'pull-right cn-login back_to_number fs-17' %>
+  <div class="row">
+    <div class="col-sm-12 d-flex jc-center">
+      <div class="form-group col-md-2 col-sm-2 col-lg-2 col-xs-2">
+        <div class="input-group">
+          <%= text_field_tag 'otp_field_1', nil, max: 9, maxlength: 1, step: 1, required: true, onkeyup: "movetoNext(this, 'otp_field_2')", oninput: "this.value=this.value.replace(/[^0-9]/g,'');", class: 'form-control text-center otp-text' %>
+        </div>
+      </div>
+      <div class="form-group col-md-2 col-sm-2 col-lg-2 col-xs-2">
+        <div class="input-group">
+          <%= text_field_tag 'otp_field_2', nil, max: 9, maxlength: 1, step: 2, required: true, onkeyup: "movetoNext(this, 'otp_field_3')", oninput: "this.value=this.value.replace(/[^0-9]/g,'');", class: 'form-control text-center otp-text' %>
+        </div>
+      </div>
+      <div class="form-group col-md-2 col-sm-2 col-lg-2 col-xs-2">
+        <div class="input-group">
+          <%= text_field_tag 'otp_field_3', nil, max: 9, maxlength: 1, step: 3, required: true, onkeyup: "movetoNext(this, 'otp_field_4')", oninput: "this.value=this.value.replace(/[^0-9]/g,'');", class: 'form-control text-center otp-text' %>
+        </div>
+      </div>
+      <div class="form-group col-md-2 col-sm-2 col-lg-2 col-xs-2">
+        <div class="input-group">
+          <%= text_field_tag 'otp_field_4', nil, max: 9, maxlength: 1, step: 4, required: true, oninput: "this.value=this.value.replace(/[^0-9]/g,'');", class: 'form-control text-center otp-text' %>
+        </div>
+      </div>
+      <%= hidden_field_tag 'otp_country_code', '' %>
+      <%= hidden_field_tag 'otp_phone_number', '' %>
+      <%= hidden_field_tag 'otp', '' %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 col-xs-12">
+    </div>
+    <div class="col-sm-6 col-xs-12 fp-right">
+      <%= link_to "Resend OTP", 'javascript:void(0);', class: 'resend-link' %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 clearfix">
+      <%= form.submit "Continue", class: "login-btn" %>
+    </div>
+  </div>
+<% end %>
+<style>
+  .jc-center{justify-content: center;}
+  .otp-text{min-width: 28px;}
+</style>
+<script>
+  function movetoNext(current, nextFieldID) {
+    if (current.value.length >= current.maxLength) {
+      document.getElementById(nextFieldID).focus();
+    }
+  }
+  $(document).ready(function(){
+    $('.back_to_number').on('click', function(){
+      $('#employee_details').show();
+      $('#employee_otp').hide();
+      $('#form-header').text('Login for Employee Feedback');
+      $('#phone_number').val(phone_number_with_pattern);
+    })
+    $('.resend-link').on('click', function(){
+      let country_code = $('#country_code').val();
+      let phone_number = $('#phone_number').val();
+      $.ajax({
+          url: "<%= send_otp_feedbacks_path %>",
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          type: 'POST',
+          data: {
+            country_code: country_code,
+            phone_number: phone_number,
+          },
+          dataType: "script",
+          success: function(result){
+          }
+        });
+    })
+    $("#employee_otp").submit(function( event ) {
+      let otp = $('#otp_field_1').val() + $('#otp_field_2').val() + $('#otp_field_3').val() + $('#otp_field_4').val();
+      $('#otp').val(otp);
+    });
+  })
+</script>

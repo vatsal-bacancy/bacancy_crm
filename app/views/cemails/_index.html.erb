@@ -1,0 +1,102 @@
+<div class="dynmic-tab-div directory-structure">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="dynmic-tab-div-header">
+        <span class="heading"> Email</span>
+        <div class="pull-right">
+          <% if checked_permission?(current_user, @klass_list['cEmail'], @action_list['delete'])%>
+            <a href="javascript:void(0)" class="site-content-head-btn" id='destroy_all_c_emails'>
+              Delete
+            </a>
+          <%end%>
+          <% if checked_permission?(current_user, @klass_list['cEmail'], @action_list['create'])%>
+            <%= link_to new_cemail_path( cemailable_type: object.class, cemailable_id: object.id ), remote: true, class: "site-content-head-btn" do %>
+              + Compose Email
+            <%end%>
+          <%end%>
+          <% if checked_permission?(current_user, @klass_list['EmailTemplete'], @action_list['create'])%>
+            <%= link_to new_email_templete_path( emailable_type: object.class, emailable_id: object.id )	, class: "site-content-head-btn" do %>
+              + Add Email Template
+            <%end%>
+          <%end%>
+        </div>
+      </div>
+      
+      <div class="dynmic-tab-div-data ">
+        <div class="row">
+          <div class="col-sm-12 filter-custom-main pr-0">
+           
+            <div class="d-flex flex-align-center cm-dasboard-serach ">
+              <div class="radio-lbl d-inline-block cemail-select-all">
+                <label class="check ">
+                  <input type="checkbox"  name="" id="cemail-check-all">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+
+              <div class="navbar-search-group navbar-search-group-mail d-inline-block cemail-search">
+                <input type="text" class="form-control" placeholder="Search Mail" name="value" id="search-msg">
+                <button type="submit" class="btn btn-default">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+            <div class="email-hr">
+              <hr/>
+            </div>
+
+            <div class="site-content-data">
+              <div id="email-list" class="table-list filter-middle m-t-0">
+                <%= render partial: "cemails/cemail_list", locals: { object: object } %>
+              </div>
+              <div class="hidden" id='message_container'></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  $(document).ready(function(){
+
+    $('#cemail-check-all').on('change', function(){
+      $('#messages_container .chk-msg').each(function(field,data) {
+        $(this).trigger('click')
+      });
+    });
+
+    $('#destroy_all_c_emails').on('click', function(){
+      var checked = []
+      $("input[name='email_ids[]']:checked").each(function ()
+      {
+          checked.push(parseInt($(this).val()));
+      });
+      if(checked == 0){
+        confirm("Please select any email.");
+      }else{
+        $.ajax({
+          url: "<%= destroy_all_cemails_path(cemailable_type: object.class, cemailable_id: object.id) %>",
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          type: 'DELETE',
+          data: {
+            ids: checked
+          },
+          dataType: "script",
+          success: function(result){
+          }
+        });
+      }
+    });
+
+    $("#search-msg").on("keyup", function() {
+      var value = $(this).val().toLowerCase();
+      $("#email-list .email-checkbox").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().replace(/\s\s+/g, ' ').indexOf(value) > -1)
+      });
+    });
+  
+  });
+</script>

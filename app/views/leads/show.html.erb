@@ -1,0 +1,138 @@
+<div id="success_message"></div>
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+  <div class="site-content">
+    <div class="site-content-data">
+      <div class="row">
+        <div class="col-md-12">
+          <ul id="myTabs" class="nav nav-pills nav-justified bpro-tab" role="tablist" data-tabs="tabs">
+            <li class="active"><a href="#tab1" data-toggle="tab">Summary </a></li>
+            <% if checked_permission?(current_user, @klass_list['Note'], @action_list['read'])%>
+              <li><a href="#note" data-toggle="tab">Notes</a></li>
+            <% end %>
+            <% if checked_permission?(current_user, @klass_list['cEmail'], @action_list['read'])%>
+              <li><a href="#emailList" data-toggle="tab">Email</a></li>
+            <%end%>
+            <% if checked_permission?(current_user, @klass_list['Task'], @action_list['read'])%>
+              <li><a href="#task" data-toggle="tab">Tasks</a></li>
+            <%end%>
+            <% if checked_permission?(current_user, @klass_list['Ticket'], @action_list['read'])%>
+              <li><a href="#ticket" data-toggle="tab">Tickets</a></li>
+            <%end%>
+            <% # TODO: rename klass %>
+            <% if checked_permission?(current_user, @klass_list['Document'], @action_list['read'])%>
+              <li><a href="#file-associations-tab" data-toggle="tab">Files</a></li>
+            <% end %>
+            <% if checked_permission?(current_user, @klass_list['Contact'], @action_list['read'])%>
+              <li><a href="#contact" data-toggle="tab">Contacts</a></li>
+            <%end%>
+            <% if true %>
+              <li><a href="#meeting" data-toggle="tab">Deployment Schedule</a></li>
+            <% end %>
+            <li><a href="#purchase-order-tab" data-toggle="tab">Purchase Order</a></li>
+            <li><a href="#contract" data-toggle="tab">Contracts</a></li>
+            <span class='pull-right'><a href="<%= leads_path %>" class='btn btn-success btn-sm back-btn-margin'>Back</a></span>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane fade in active" id="tab1">
+            <div class="col-md-12 list">
+              <%= form_for @lead, local: true, class: "form-inline" do |f| %>
+                <%= render partial: 'lead_details', locals: { klass: @klass, lead: @lead, f: f, data: @data }%>
+              <%end%>
+            </div>
+          </div>
+          <div role="tabpanel" class="tab-pane fade" id="tab2">
+            <%= render partial: 'lead_contract_details'%>
+          </div>
+          <% if checked_permission?(current_user, @klass_list['Note'], @action_list['read'])%>
+            <div role="tabpanel" class="tab-pane fade" id="note">
+              <div class="col-lg-8 col-md-12 list" >
+                <%= render partial: 'notes/index', locals: { object: @lead, note_fields: @note_fields, list: 'Object' } %>
+              </div>
+              <div class="col-lg-4 col-md-12 comment-lists-2" id=''>
+                <%= render partial: 'notes/note_on_show', locals: {object: @lead, note: @note, id: '2', list: 'Object' }%>
+              </div>
+            </div>
+          <%end%>
+          <% if checked_permission?(current_user, @klass_list['cEmail'], @action_list['read'])%>
+            <div role="tabpanel" class="tab-pane fade" id="emailList">
+              <div class="col-md-12 list">
+                <%= render partial: 'cemails/index', locals: { object: @lead } %>
+              </div>
+            </div>
+          <%end%>
+          <% if checked_permission?(current_user, @klass_list['Task'], @action_list['read'])%>
+            <div role="tabpanel" class="tab-pane fade" id="task">
+              <div class="col-md-12 list">
+                <%= render partial: 'tasks/index', locals: { object: @lead, task_klass: @task_klass, task_fields: @task_fields } %>
+              </div>
+            </div>
+          <%end%>
+          <% if checked_permission?(current_user, @klass_list['Ticket'], @action_list['read'])%>
+            <div role="tabpanel" class="tab-pane fade" id="ticket">
+              <div class="col-md-12 list">
+                <%= render partial: 'tickets/index', locals: { object: @lead, ticket_klass: @ticket_klass, ticket_fields: @ticket_fields, data: @ticket_data } %>
+              </div>
+            </div>
+          <%end%>
+          <% if checked_permission?(current_user, @klass_list['Document'], @action_list['read'])%>
+            <div role="tabpanel" class="tab-pane fade" id="file-associations-tab">
+              <div class="col-md-12 list" data-file-associations-index-container>
+                <%= render partial: 'file_manager/file_associations/index', locals: { associable: @lead } %>
+              </div>
+            </div>
+          <% end %>
+          <% if checked_permission?(current_user, @klass_list['Contact'], @action_list['read'])%>
+            <div role="tabpanel" class="tab-pane fade" id="contact">
+              <div class="col-md-12 list">
+                <%= render partial: 'contacts/contacts', locals: {contactable: @lead}%>
+              </div>
+            </div>
+          <%end%>
+          <div role="tabpanel" class="tab-pane fade" id="meeting">
+            <div class="col-md-12 list" id="meetings">
+              <%= render partial: 'meetings/index', locals: {meetingable: @lead} %>
+            </div>
+          </div>
+          <div role="tabpanel" class="tab-pane fade" id="purchase-order-tab">
+            <div class="col-md-12">
+              <%= render partial: 'purchase_order/versions/index', locals: { purchase_orderable: @lead } %>
+            </div>
+          </div>
+          <div role="tabpanel" class="tab-pane fade" id="contract">
+            <div class="col-md-12 list">
+              <%= render partial: 'contract/contracts/index', locals: {contractable: @lead} %>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-12" id='comment-lists'>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="modalContainer" class='modal-right'></div>
+<div id="modalCenterContainer"></div>
+<div id="convertClient"></div>
+<div id='directories'></div>
+<div id="showNote"></div>
+<div id="showTask"></div>
+<div id="composeEmail" class='modal-bottom'></div>
+<div id="cEmail"></div>
+
+<script>
+$(document).ready(function() {
+  if(<%= params[:email_templete].present? %>) {
+    $('a[href="#emailList"]').click();
+  }
+  if(<%= params[:ticket].present? %>) {
+    $('a[href="#ticket"]').click();
+  }
+  if(<%= params[:task].present? %>) {
+    $('a[href="#task"]').click();
+  }
+});
+</script>

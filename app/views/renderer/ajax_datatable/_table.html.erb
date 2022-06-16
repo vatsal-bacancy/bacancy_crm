@@ -1,0 +1,24 @@
+<table id="<%= id %>"
+       class="common-data-table table table-bordered text-center lead_table display"
+       data-ajax-datatable="true"
+       data-ajax-datatable-url="<%= url %>"
+       data-ajax-datatable-fields="<%= fields.map{|field| {data: field[:name]}}.to_json %>"
+       data-ajax-datatable-default-search="<%= default_search.to_json %>"
+       style="width: 100%;">
+  <thead>
+    <th>
+      <div class="radio-lbl">
+        <label class="check">
+          <input type="checkbox" id="check-all">
+          <span class="checkmark"></span>
+        </label>
+      </div>
+    </th>
+    <th class="action">Action</th>
+    <% fields.each do |field| %>
+      <th data-ajax-datatable-column-type="<%= field[:column_type] %>"><%= field[:label] %></th>
+    <% end %>
+  </thead>
+  <tbody class='list-body'>
+  </tbody>
+</table>

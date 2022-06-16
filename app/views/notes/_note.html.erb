@@ -1,0 +1,85 @@
+<%if note.persisted?%>
+  <% if checked_permission?(current_user, @klass_list['Note'], @action_list['read'])%>
+    <%= link_to note_path(note,list: list) do %>
+      <div class="row md-center">
+        <div class="col-lg-3 ">
+          <div class="round-small-img">
+            <% if note.user.profile_picture.present? %>
+              <%= image_tag note.user.profile_picture.url %>
+            <% else %>
+              <%= image_tag asset_path('small_demo_img.jpg')%>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div class="recent-comment-data">
+            <p class="dark-gray-font"><%= note.try(:user).try(:fullname)%></p>
+            <p class="dark-gray-font"><%= note.updated_at.strftime("%m/%d/%Y, %I:%M %p") %></p>
+            <div data-id="<%= note.id %>" data-klass='Note' data-field="content" data-deletable="<%= note.field_data %>">
+              <span class="dark-gray-font"><%= note.content.truncate_html(300).html_safe %> </span>
+            </div>
+            <p class="light-gray-font">
+              <% if note.documents.present? %>
+                <% note.documents.each do |attach| %>
+                  <%= link_to attach.attachment.url, target: 'blank', title: attach.attachment.file.filename, class: 'common-link' do %>
+                    <i class="fa fa-file" aria-hidden="true"></i>
+                    <%= attach.attachment.file.filename.truncate(20) %>
+                    <br/>
+                  <%end%>
+                <% end %>
+              <% end %>
+            </p>
+          </div>
+        </div>
+        <div class="col-lg-2">
+          <div class="btn-wrapper">
+            <div class="action-icon">
+              <% if checked_permission?(current_user, @klass_list['Note'], @action_list['delete'])%>
+                <%= link_to note_path(note),method: :delete, data: {confirm: 'Are you sure you want delete?'},remote: true do %>
+                  <i class="fa fa-trash " aria-hidden="true"></i>
+                <% end %>
+              <% end %>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr class="recen-cmn-hr" />
+    <% end %>
+  <% end %>
+<%end%>
+
+<script>
+$(document).ready(function(){
+  $('.note-editable-show p').on('click', function(){
+  if('<%= @from_page%>' != 'index'){
+        var text = $.trim($(this).text());
+        var dataId = $(this).parent().data('id');
+        var field = $(this).parent().data('field');
+        // var editable = $(this).parent().data('editable');
+        // if(editable==true){
+          $(this).parent().html("<input class='note-update-"+dataId+" form-control' value='"+text+"' data-id = '"+ dataId +"' data-klass='"+$(this).parent().data('klass')+"'  style= 'width:"+$(this).parent().width()+"px;'  />");
+          $('.note-update-'+dataId).on('keypress', function(e){
+            var key = e.which;
+            if(key == 13 || key ==9)  // the enter key code
+            {
+              data = {}
+              data[field] = $(this).val();
+              $.ajax({
+                url: "/notes/" + dataId,
+                beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+                type: 'patch',
+                data: {
+                  note: data
+                },
+                dataType: "script",
+                success: function(result){
+                }
+              });
+            }
+          });
+        }
+      // }
+    });
+});
+</script>

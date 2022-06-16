@@ -1,0 +1,207 @@
+<%# @project = Project.find(@message.messageable_id) %>
+<% if @message.messageable_type == "Project" %>
+  <% @project = Project.find(@message.messageable_id) %>
+<% elsif @message.messageable_type == "Ticket" %>
+  <% @ticket = Ticket.find(@message.messageable_id) %> 
+<% else %>
+  <% @message_object =  Message.find(@message.messageable_id) %>
+  <%# @project = Project.find(@project_message.messageable_id)%>
+  <%if @message_object.messageable_type == 'Project'%>
+    <% @project = Project.find(@message_object.messageable_id)%>
+  <%elsif @message_object.messageable_type == 'Project'%>
+    <% @ticket = Ticket.find(@message_object.messageable_id)%>
+  <%end%>
+<% end %>
+<div class="site-main">
+  <%= render 'layouts/contacts_sidebar'%>
+  <div class="site-content">
+     <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <span class="main-menu-sitecontent">
+            <% if @project %>
+              <%= @project.name %>
+            <% elsif @ticket %>
+              <%= @ticket.title %>
+            <% end %>
+            </span>
+            <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> Messages </span>
+            <span class="sub-menu-sitecontent">  </span>
+          </div>
+           <div id='modalContainer' class='modal-right'></div>
+          <div class="pull-right">
+            
+          </div>
+        </div>
+      </div> 
+    </div>
+    <div class="row" id= 'project-all'>
+      <div class="col-lg-8 col-md-12">
+        <div class="site-content-head">
+          <div class="dynmic-tab-div">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="dynmic-tab-div-header mb0 pl0">
+                  <span class="heading ">
+                  <% if @message.messageable_type == "Project" %>
+                    <%= Project.find(@message.messageable_id).name %> - Messages </span>
+                  <% elsif @message.messageable_type == "Ticket"  %>
+                    <%= Ticket.find(@message.messageable_id).title %> - Messages </span>
+                  <% else %>
+                    <%= Message.find(@message.messageable_id).title %> - Comment </span>
+                  <% end %>
+                  <span class='pull-right'><a href="<%#= project_path(@project) %>" class='btn btn-success btn-sm'>Back</a></span>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="">
+            <div class="row">
+              <div class="col-sm-12">
+                <ul id="myTabs" class="nav nav-pills nav-justified bpro-tab" role="tablist" data-tabs="tabs">
+                  <% if @project %>
+                    <li class=""><%= link_to "Project Overview", overview_contacts_project_path(@project), remote: true %></li>
+                    <li class="open active reload"><%= link_to "Message", contacts_project_messages_path(@project,message_id: @message), remote: true %></li>
+                    <!-- <li><a href="#tab4" data-toggle="tab">Email</a></li> -->
+                    <li class=""><%= link_to "Files", contacts_project_project_documents_path(@project,message_id: @message), remote: true %></li>
+                    <li class=""><%= link_to "New Message", new_contacts_project_message_path(@project), remote: true %></li>
+                  <% elsif @ticket %>
+                  <li class=""><%= link_to "Ticket Overview", overview_contacts_ticket_path(@ticket), remote: true %></li>
+                    <li class="open active reload"><%= link_to "Message", contacts_ticket_messages_path(@ticket,message_id: @message), remote: true %></li>
+                    <!-- <li><a href="#tab4" data-toggle="tab">Email</a></li> -->
+                    <li class=""><%= link_to "Files", contacts_ticket_ticket_documents_path(@ticket,message_id: @message), remote: true %></li>
+                    <li class=""><%= link_to "New Message", new_contacts_ticket_message_path(@ticket), remote: true %></li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          </div>
+        <div class="row">
+          
+          <div class="row"  id="project-detail-msg" data-cable-manager="true" data-channel="ResourceChannel" data-resource-klass="Message" data-resource-id="<%= @message.id %>">
+            <div class="col-sm-12" id="project-detail-msg">
+              <%= render partial: 'contacts/messages/messages_details', locals: {object: @project || @ticket, message: @message}%>
+            <div class="col-sm-12">
+            </div>
+          </div>
+        </div>
+      </div>
+       
+      </div>
+    </div>
+      <div class="col-lg-4 col-md-12">
+        <div class="dynmic-tab-div">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="dynmic-tab-div-header mb0">
+                <span class="heading">
+                  <% if @project %>
+                    <%= @project.name %>
+                  <% elsif @ticket %>
+                    <%= @ticket.title %>
+                  <% end %>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="cmn-tab-div" style="padding:10px 15px;">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+
+                <div class="dynmic-tab-div-header bg-blue  mb0">
+                    <p class="heading text-left white-font w-100">PEOPLE ON THIS PEOPLE ON THIS
+                      <%if @project%>
+                        PROJECT
+                      <%else%>
+                        TICKET
+                      <%end%>
+                    </p>
+                </div>
+                <%if @project %>
+                  <% users = @project.project_users %>
+                  <% contacts = @project.project_contacts %>
+                <%elsif @ticket %>
+                  <% users = @ticket.ticket_users %>
+                  <% contacts = @ticket.ticket_contacts %>
+                <%end%>
+                <div class="dynmic-tab-div-header mb5 sub-div-header inner-header">
+                  <p class="heading1 text-left w-100"><%#= Client.find(client).company_name %></p>
+                </div>
+
+                <%# users = @project.project_users %>
+                <div class="dynmic-tab-div-header mb5 sub-div-header inner-header">
+                  <p class="heading1 text-left w-100"><%= @company.name %></p>
+                </div>
+                <div class="back-data text-left">
+                  <ul>
+                    <% users.each do | pro_user | %>
+                      <% u = pro_user.user %>
+                        <li title="<%= u.try(:user).try(:email) %>">
+                          <%= u.fullname.present? ? u.fullname : u.email %>
+                        </li>
+                    <% end %>
+                  </ul>
+                </div>
+
+                <%# contacts = @project.project_contacts %>
+                <div class="dynmic-tab-div-header mb5 sub-div-header inner-header">
+                  <p class="heading1 text-left w-100">
+                    <%if @project %>
+                      <%= @project.client.company_name %>
+                    <%elsif @ticket %>
+                      <%= @ticket.ticketable_company_name %>
+                    <%end%>
+                  </p>
+                </div>
+                <div class="back-data text-left">
+                  <ul>
+                    <% contacts.each do | pro_cont | %>
+                      <% u = pro_cont.contact %>
+                        <li title="<%= u.try(:email) %>">
+                          <%= u.fullname.present? ? u.fullname : u.email %>
+                        </li>
+                    <% end %>
+                  </ul>
+                </div>
+               
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id='project-show-message'></div>
+
+
+
+<script>
+$(document).ready(function(){
+  $('.nav li').on('click',function(){
+    $('.nav li').removeClass('active');
+    var $this = $(this);
+    if (!$this.hasClass('active')) {
+        $this.addClass('active');
+    }
+  });
+
+  $('#project-detail-msg').on('cableManager:received', function(e, data){
+    if(data === 'reload_messages'){
+      $.ajax({
+        url: $('#myTabs').find('.active.reload').find('a').attr('href'),
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+        },
+        type: 'GET',
+        dataType: 'script'
+      });
+    }
+  });
+});
+
+</script>

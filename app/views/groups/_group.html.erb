@@ -1,0 +1,52 @@
+<div class="dynmic-tab-div-data" data-group-id="<%= group.id %>">
+  <p class="heading m-b-10">
+    <strong>
+      <%= group.parent_label %>
+      <% if group.parent_label %>
+        <span class="sub-menu-sitecontent m-x-10"><i class="fa fa-angle-right"></i></span>
+      <% end %>
+      <%= group.label %>
+    </strong>
+  </p>
+  <% if !group.default && !Group::USED_IN_IPOS_CENTER.include?(group.id) %>
+    <%= link_to group_path(group), method: :delete, remote: true, data: {confirm: 'Are you sure you want Delete this group with all its fields?'}, class: 'common-link pull-right' do %>
+      <i class="fa fa-trash m-l-10" aria-hidden="true"></i>
+    <% end %>
+  <% end %>
+  <%= link_to edit_group_path(group), remote: true, class: 'common-link pull-right' do %>
+    <i class="fa fa-pencil" aria-hidden="true"></i>
+  <% end %>
+  <ul class="row list-unstyled fields-sortable connectedSortable<%= klass.name.snakecase %>" data-group-id="<%= group.id %>" data-klass-id="<%= klass.id %>">
+    <% group.fields.where.not(column_type: 'Hidden').each do |field|%>
+      <li class="col-sm-12" data-field-id="<%= field.id %>">
+        <div class="block-ui-box pos-rel m-t-5 m-r-5 deletable-<%=!field.deletable%>">
+          <% if field.deletable %>
+            <%= link_to field_path(field), method: :delete, remote: true, data: {confirm: 'Are you sure you want Delete this field?'}, class: 'common-link pull-right edit-delete icon'  do %>
+            <i class="fa fa-trash m-l-10" aria-hidden="true"></i>
+            <% end %>
+          <% end %>
+          <%= link_to edit_field_path(field, group_id: group.id), remote: true, class: 'common-link pull-right edit-delete icon' do %>
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+          <% end %>
+          <div class="row row-eq-height-module m-rl-0">
+            <div class="col-lg-12 md-pd-10">
+              <b class="<%= 'color-red' if field.required? %>"><%= field.label %></b>
+              <span style="opacity:0.5;"><%= field.column_type %></span>
+            </div>
+          </div>
+        </div>
+      </li>
+    <% end %>
+
+    <% if !( (klass.name == "Invoice" || klass.name == "Inventory") && group.default) && !group.root? %>
+      <li class="col-sm-12 pin">
+        <div class="text-center block-ui-box m-t-5 m-r-5">
+          <%= link_to  new_field_path(group_id: group.id, klass_id: klass.id), remote: true, class: 'text-right common-link' do%>
+            Add Field
+            <i class="fa fa-plus" aria-hidden="true"></i>
+          <% end %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+</div>

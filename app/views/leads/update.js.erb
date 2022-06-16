@@ -1,0 +1,8 @@
+<% if @lead.errors.any? %>
+  $("#flash_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");
+<% else %>
+  $("#success_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");
+  $("#tab1 .list").html("<%= escape_javascript(render partial: 'lead_summary', locals: { lead: @lead, klass: @klass, data: @data }) %>");
+  $('#myModal').modal('hide');
+  $('#modal').modal('hide');
+<% end %>

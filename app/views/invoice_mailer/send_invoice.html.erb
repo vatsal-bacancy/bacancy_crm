@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style type="text/css">
+      @charset "utf-8";
+      /* CSS Document */
+
+      /* Client-specific Styles */
+      div, p, a, li, td {
+        -webkit-text-size-adjust:none;
+      }
+      #outlook a {
+        padding:0;
+      } /* Force Outlook to provide a "view in browser" menu link. */
+      html {
+        width: 100%;
+      }
+      body {
+        width:100% !important;
+        -webkit-text-size-adjust:100%;
+        -ms-text-size-adjust:100%;
+        margin:0;
+        padding:0;
+      }
+
+      body, td, input, textarea, select {
+          margin: 0;
+          font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+      }
+      /* Prevent Webkit and Windows Mobile platforms from changing default font sizes, while not breaking desktop design. */
+      .ExternalClass {
+        width:100%;
+      } /* Force Hotmail to display emails at full width */
+      .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {
+        line-height: 100%;
+      } /* Force Hotmail to display normal line spacing. */
+      #backgroundTable {
+        margin:0;
+        padding:0;
+        width:100% !important;
+        line-height: 100% !important;
+      }
+      img {
+        outline:none;
+        text-decoration:none;
+        border:none;
+        -ms-interpolation-mode: bicubic;
+      }
+      a img {
+        border:none;
+      }
+      .image_fix {
+        display:block;
+      }
+      p {
+        margin: 0px 0px;
+      }
+      table td {
+        border-collapse: collapse;
+      }
+      table {
+        border-collapse:collapse;
+        mso-table-lspace:0pt;
+        mso-table-rspace:0pt;
+      }
+      a {
+        color: #15c;
+        text-decoration: none;
+        text-decoration:none!important;
+      }
+
+      .join-btn{
+          border: 1px solid #1D5379;
+          background-color:#1D5379;
+          border-top-left-radius: 3px;
+          border-top-right-radius: 3px;
+          border-bottom-right-radius: 3px;
+          border-bottom-left-radius: 3px;
+          color: #ffffff !important;
+          display: inline-block;
+          font-size: 14px;
+          font-weight: 500;
+          line-height: 1;
+          padding: 12px 20px;
+          text-decoration: none;
+          width: auto;
+          min-width: 170px;
+          white-space: nowrap;
+          margin-top:20px;
+          margin-bottom: 40px;
+      }
+
+      /*.ii a[href] {
+          color: #fff !important;
+      }
+      */
+      /*STYLES*/
+      table[class=full] {
+        width: 100%;
+        clear: both;
+      }
+      /*IPAD STYLES*/
+      @media only screen and (max-width: 640px) {
+        a[href^="tel"], a[href^="sms"] {
+        text-decoration: none;
+        color: #33b9ff; /* or whatever your want */
+        pointer-events: none;
+        cursor: default;
+      }
+        .mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
+        text-decoration: default;
+        color: #33b9ff !important;
+        pointer-events: auto;
+        cursor: default;
+      }
+        table[class=devicewidth] {
+      width: 440px!important;
+      text-align:center!important;
+      }
+        table[class=devicewidthinner] {
+      width: 420px!important;
+      text-align:center!important;
+      }
+        img[class=banner] {
+      width: 440px!important;
+      height:220px!important;
+      }
+        img[class=col2img] {
+      width: 440px!important;
+      height:220px!important;
+      }
+      }
+      /*IPHONE STYLES*/
+      @media only screen and (max-width: 480px) {
+        a[href^="tel"], a[href^="sms"] {
+        text-decoration: none;
+        color: #33b9ff; /* or whatever your want */
+        pointer-events: none;
+        cursor: default;
+      }
+        .mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
+        text-decoration: default;
+        color: #33b9ff !important;
+        pointer-events: auto;
+        cursor: default;
+      }
+        table[class=devicewidth] {
+      width: 95%!important;
+      text-align:center!important;
+      }
+        table[class=devicewidthinner] {
+      width: 260px!important;
+      text-align:center!important;
+      }
+        img[class=banner] {
+      width: 280px!important;
+      height:140px!important;
+      }
+        img[class=col2img] {
+      width: 280px!important;
+      height:140px!important;
+      }
+      }
+
+
+      .logo-img{text-align:center;}
+      .info{ font-size: 18px;line-height: 1.5;text-align: left;padding-left: 20px;margin-left: 20px;}
+      .info p{margin-bottom:20px;}
+      /* .img-div-height{ height: 35px; } */
+    </style>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+      <div class="">
+        <table width="100%" bgcolor="#ffffff" cellpadding="0" cellspacing="0" border="0" id="backgroundTable" st-sortable="banner">
+          <tbody>
+            <tr>
+              <td>
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" align="center" class="devicewidth"  style="margin-top:20px;margin-bottom:20px;">
+                  <tbody>
+                    <tr>
+                      <td width="100%">
+                        <div class="logo-img" style='text-align:center;'>
+                          <% attachments.inline['logo.png'] = File.read("#{Rails.root}/app/assets/images/iPos-logo.png") %>
+                          <%= image_tag(attachments['logo.png'].url) %>
+                        </div>
+                        <p style="font-size: 20px;letter-spacing: 0px;text-align: center;padding: 14px 0px 0px 0px; color: #4f90bb;">
+                          <%= @invoice.sales_person.company.name %>
+                        </p>
+                        <div id="template_email_body" class="info" style="margin-top:70px;">
+                          <%= @body.try :html_safe %>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <table width="100%" bgcolor="#ffffff" cellpadding="0" cellspacing="0" border="0" id="backgroundTable" st-sortable="banner">
+          <tbody>
+            <tr>
+              <td>
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" align="center" class="devicewidth"  style="margin-bottom:20px;">
+                  <tbody>
+                    <tr>
+                      <td width="100%" class="text-center">
+                        <p id="template_email_subject" style="font-size: 13px; letter-spacing: 0px;text-align: center;color: #6b6c72;margin-bottom: 10px;"></p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" align="center" class="devicewidth"  style="margin-bottom:20px;font-family: ArialMT,Arial,Helvetica,Times New Roman;color: #393a3d;text-align: center;font-size: 13px; background-color: #dce9f1;">
+                  <tbody>
+                    <tr>
+                      <td width="100%" style="padding: 37px 0px 0px 0px;word-break: break-word;">
+                        <table width="100%" style="font-family: ArialMT,Arial,Helvetica,Times New Roman;color: #393a3d;background-color: #dce9f1;">
+                          <tr>
+                            <td width="100%" style="padding: 0px;font-size: 16px; font-weight: bold; letter-spacing: 0px; text-align: center; color: #393a3d;padding-bottom: 30px;">DUE <%= @invoice.due_date&.strftime("%m/%d/%Y") %></td>
+                          </tr>
+                          <tr>
+                            <td style="font-size: 48px;letter-spacing: 0px; text-align: center; color: #393a3d; padding: 10px 0px 70px 0px;">$<%= @invoice.amount_with_tax %></td>
+                          </tr>
+                          <tr>
+                            <td class="text-center">
+                              <%= link_to invoice_preview_url(@invoice) do %>
+                                <span style="font-weight: bold;text-align: center; vertical-align: middle; color: #ffffff; text-decoration: none; padding: 10px 50px; white-space: nowrap; border-radius: 4px; background-color: #34a853; font-size: 16px; text-align: center;margin-bottom:10px; display: inline-block;"> Pay Now </span>
+                              <% end %>
+                            </td>
+                          </tr>
+                          <tr style="clear:both;font-size: 15px;text-align: center; color: #393a3d; font-weight: 300; padding: 0px;">
+                            <td style="text-align: center;">Powered by iPos CRM
+                            </td>
+                          </tr>
+                        </table>
+                        <table style="font-family: ArialMT,Arial,Helvetica,Times New Roman;color: #393a3d; width: 100%; background-color: #f4f5f8; font-size: 18px; table-layout: fixed;margin-top:40px;">
+                          <tr>
+                            <td style="padding: 20px 0px;">
+                              <table style="font-family: ArialMT,Arial,Helvetica,Times New Roman;color: #393a3d; width: 100%; table-layout: fixed;">
+                                <tr>
+                                  <td style="background-color: #f4f5f8;padding: 10px 20px 10px 40px;">
+                                    <table style="font-family: ArialMT,Arial,Helvetica,Times New Roman;color: #393a3d;table-layout: fixed; width: 100%;background:transparent;">
+                                      <tbody>
+                                        <tr>
+                                          <td style="vertical-align: top;font-weight: bold; font-size: 18px; word-break: break-word; padding:10px 5px 30px 5px;">
+                                            <div style="text-align:left;">Bill to</div>
+                                          </td>
+                                          <td style="word-wrap: break-word; word-break: break-word; font-size: 18px; padding:10px 5px 30px 5px;text-align:left; line-height:normal;">
+                                            <div style="text-align:left; line-height:normal;"><%= @invoice.billing_address %> <br>
+                                               </div>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td style="vertical-align: top;font-weight: bold; font-size: 18px; word-break: break-word; padding:30px 5px 30px 5px;border-top: dotted 1px #babec5;">
+                                            <div style="text-align:left;"> Terms</div>
+                                          </td>
+                                          <td style="word-wrap: break-word; word-break: break-word; font-size: 18px; padding:30px 5px 30px 5px;text-align:left;border-top: dotted 1px #babec5;">
+                                            <div style="text-align:left;"> <%= @invoice.terms %> <br>
+                                               </div>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" align="center" class="devicewidth"  style="margin-bottom:20px;font-family: ArialMT,Arial,Helvetica,Times New Roman;color: #393a3d;text-align: center;font-size: 13px; border-bottom: dotted 1px #babec5; ">
+                  <tr>
+                    <td>
+                      <table style="font-family: ArialMT,Arial,Helvetica,Times New Roman;color: #393a3d;width: 100%;">
+                        <tr>
+                          <td>
+                            <table style="font-family: ArialMT,Arial,Helvetica,Times New Roman;color: #393a3d;width: 100%;padding: 40px 40px 40px 40px;">
+                              <tr>
+                                <td style="word-break: break-word;padding: 10px 20px 10px 40px;">
+                                  <table style="font-family: ArialMT,Arial,Helvetica,Times New Roman;color: #393a3d;width: 100%;">
+                                    <% @invoice.invoice_inventories.each do |item| %>
+                                      <tr>
+                                        <td style="width: 75%;vertical-align: top;padding-bottom:20px;">
+                                          <div  style="font-size: 18px;font-weight: bold; letter-spacing: 0px; text-align: left; color: #393a3d; text-align:left;">
+                                            <%= item.inventory.name %>
+                                          </div>
+                                        </td>
+                                        <td style="vertical-align: top;padding-bottom:20px;">
+                                          <div style="font-size: 18px;letter-spacing: 0px; text-align: right; color: #393a3d; float: right;">
+                                            $<%= item.amount_with_tax %>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td style="width: 75%;vertical-align: top;padding-bottom:20px;">
+                                          <div  style="font-size: 18px; letter-spacing: 0px; text-align: left; color: #393a3d; text-align:left;">
+                                            <%= item.description %>
+                                          </div>
+                                        </td>
+                                        <td style="vertical-align: top;padding-bottom:20px;">
+                                          <div style="font-size: 18px;letter-spacing: 0px; text-align: right; color: #393a3d; float: right;">
+                                          </div>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td style="width: 75%;vertical-align: top;padding-bottom:20px;">
+                                          <div  style="font-size: 18px; letter-spacing: 0px; text-align: left; color: #393a3d; text-align:left;">
+                                            <%= item.qty %> X $<%= item.rate %> Tax <%= item.tax %>%
+                                          </div>
+                                        </td>
+                                        <td style="vertical-align: top;padding-bottom:20px;">
+                                          <div style="font-size: 18px;letter-spacing: 0px; text-align: right; color: #393a3d; float: right;">
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    <% end %>
+                                  </table>
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" align="center" class="devicewidth"  style="margin-bottom:20px;font-family: ArialMT,Arial,Helvetica,Times New Roman;color: #393a3d;text-align: center;font-size: 13px; ">
+                  <tr>
+                    <td>
+                      <table style="font-family: ArialMT,Arial,Helvetica,Times New Roman;color: #393a3d; width: 100%; padding: 40px 40px 20px 0px; overflow: hidden;">
+                        <tr>
+                          <td align="right">
+                            <div class="pull-right" style="margin-right:10px;">
+                              <table style="font-family: ArialMT,Arial,Helvetica,Times New Roman;color: #393a3d;font-size: 18px;">
+                                <tr>
+                                  <td style="padding: 10px 40px 20px 0px;color: #393a3d;">Balance due</td>
+                                  <td style="text-align: right;padding: 10px 0px 20px 0px;">$<%= @invoice.amount_with_tax %></td>
+                                </tr>
+                              </table>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+                      <table style="font-family: ArialMT,Arial,Helvetica,Times New Roman;color: #393a3d;font-size: 18px;width: 100%">
+                        <tr>
+                          <td style="font-size: 18px; padding: 20px 40px 20px 40px; text-align: left; border-bottom: dotted 1px #babec5; color: #6b6c72; word-break: break-word; line-height: 1.5;">
+                            <%= @invoice.msg_on_invoice %>
+                          </td>
+                        </tr>
+                      </table>
+                      <table style="font-family: ArialMT,Arial,Helvetica,Times New Roman;color: #393a3d; width: 100%; padding: 10px 40px 25px 40px;">
+                        <tr>
+                          <td>
+                            <div style="font-size: 15px;text-align: center; color: #6b6c72; margin-top: 15px;"> <%= @invoice.sales_person.company.name %> </div>
+                            <div>
+                              <div style="font-size: 15px;text-align: center; color: #6b6c72; margin-top: 15px;">US
+                              </div>
+                              <div style="text-align: center;font-size: 15px;text-align: center; color: #6b6c72; margin-top: 15px; display: inline-block; margin-bottom:20px;width: 100%;">
+                                <a href="mailto:<%= @invoice.sales_person.company.email %>" target="_blank"> <%= @invoice.sales_person.company.email %> </a>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+                      <table style="font-family: ArialMT,Arial,Helvetica,Times New Roman;color: #393a3d;border-top: dotted 1px #babec5;width:100%;">
+                        <tr>
+                          <td style="padding: 27px 0px 5px 0px;font-size: 15px; color: #6b6c72; text-decoration: none;text-align: center;">
+                            <div>
+                              <span>If you receive an email that seems fraudulent, please check with the business owner before paying.</span>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="100%" class="text-center" >
+                            <div class="logo-img">
+                              <%= image_tag(attachments['logo.png'].url, :style=> "height: 30px;") %>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  </body>
+</html>

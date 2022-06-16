@@ -1,0 +1,251 @@
+<%action_delete =  checked_permission?(current_user, @klass_list['Note'], @action_list['delete']) %>
+<%action_update =  checked_permission?(current_user, @klass_list['Note'], @action_list['update']) %>
+<%action_create =  checked_permission?(current_user, @klass_list['Note'], @action_list['create']) %>
+<%action_read =  checked_permission?(current_user, @klass_list['Note'], @action_list['read']) %>
+<div class="table-responsive">
+  <table class="common-data-table text-center" id="notes">
+    <thead>
+      <th>
+        <div class="radio-lbl">
+          <label class="check ">
+            <input type="checkbox"  name="" id="check-all">
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      </th>
+
+      <th> Action</th>
+      <% note_fields.each do |field|%>
+        <th data-id="<%=field.id%>"><%=field.label %></th>
+      <%end%>
+    </thead>
+
+    <tbody class="list-body">
+      <% object.notes.ordered.each do |note| %>
+        <%#= form_for note, local: true, class: 'form-inline' do |f| %>
+        <tr>
+          <td>
+            <div class="radio-lbl">
+              <label class="check ">
+                <%= check_box_tag "note_ids[]", note.id , false, class:"check" %>
+                <span class="checkmark"></span>
+              </label>
+            </div>
+          </td>
+          <td>
+            <div class="btn-wrapper">
+              <%if action_read%>
+                <div class="action-icon">
+                 <%= link_to note_path(note,list: list) do %>
+                   <i class="fa fa-eye" aria-hidden="true"></i>
+                 <% end %>
+                </div>
+              <%end%>
+              <%if action_update%>
+                <div class="action-icon">
+                  <%= link_to edit_note_path(note),remote: true do %>
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                  <% end %>
+                </div>
+              <%end%>
+              <%if action_delete%>
+                <div class="action-icon">
+                  <%= link_to note_path(note),data: { confirm: "Are you sure you want to Delete this Note?" },method: :delete,remote: true do %>
+                    <i class="fa fa-trash " aria-hidden="true"></i>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </td>
+
+          <% note_fields.each do |field| %>
+            <td data-id="<%= note.id %>" data-klass='Note' data-field="<%= field.name%>" data-deletable="<%= field.deletable%>" class="<%= action_update ?  'note-editable' : '' %>" >
+              <div class="info-dynamic-data note-value fs-13">
+                <% if field.column_type == 'Multi-Select Check Box' %>
+                  <%= parse_multi_select(note.send(field.name)) %>
+                <% else %>
+                  <% case field.name %>
+                  <% when "content" %>
+                    <% if note.documents.present? %>
+                      <strong><i class="fa fa-paperclip m-r-5" aria-hidden="true"></i></strong>
+                    <% end %>
+                    <div class='d-inline-block'><%= note.send(field.name).truncate_html(300).html_safe %></div>
+                  <% when "attachment" %>
+                    <% if note.documents.present? %>
+                      <% note.documents.each do |attach| %>
+                        <%= link_to attach.attachment.url, target: 'blank', title: attach.attachment.file.filename do %>
+                          <i class="fa fa-file" aria-hidden="true"></i>
+                          <%= attach.attachment.file.filename.truncate(20) %>
+                        <%end%>
+                        <br/>
+                      <% end %>
+                    <% else %>
+                      No Attachment Added
+                    <% end %>
+                  <% when "created_at" %>
+                    <%= note.send(field.name)&.strftime("%m/%d/%Y, %I:%M %p") %>
+                  <% when "user_id" %>
+                    <%= note.user.fullname %>
+
+                  <% else %>
+                    <%= note.send(field.name) %>
+                  <% end %>
+                <% end %>
+              </div>
+
+              <%if field.name != 'created_at'%>
+                <div class="form-group field hidden">
+                  <%#= render partial: 'forms/field', locals: { f: f, field_name: field.name, field_label: nil, column_type: field.column_type, custom: field.custom, have_custom_value: field.have_custom_value, field: field, value: note.send(field.name), disp_lable: false } %>
+                </div>
+              <%end%>
+
+            </td>
+          <% end  %>
+        </tr>
+        <%# end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  $(document).ready(function(){
+    if ( $.fn.DataTable.isDataTable('#notes') ) {
+      $('#notes').DataTable().destroy();
+    }
+    $('#notes').DataTable({
+      sDom: 'lfrtip',
+      scrollX: false,
+      autoWidth: false,
+      paging: false,
+      searching: true,
+      lengthMenu: [50, 100],
+      // colReorder: {
+      //   fixedColumnsLeft: 1
+      // },
+      columnDefs: [
+        {orderable: false, targets: [0,1]},
+        {width: "30px", targets: [0] },
+        {className: "dt-center", targets: "_all"}
+      ],
+      order: []
+    });
+
+    $('#check-all').on('change', function(){
+      $('.list-body .check').prop('checked',$(this).prop('checked'));
+    });
+    $('#destroy_all_notes').on('click', function(){
+      var checked = []
+      $("input[name='note_ids[]']:checked").each(function ()
+      {
+          checked.push(parseInt($(this).val()));
+      });
+      if(checked == 0){
+        confirm("Please select any note");
+      }else{
+        $.ajax({
+          url: "<%= object ? destroy_all_notes_path(noteable_type: object.class,noteable_id: object.id) : destroy_all_notes_path %>",
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          type: 'DELETE',
+          data: {
+            ids: checked
+          },
+          dataType: "script",
+          success: function(result){
+          }
+        });
+      }
+    });
+
+    // $('.note-editable .note-value').on('click', function(){
+    //   debugger;
+    //   if('<%= @from_page%>' != 'index'){
+    //     var text = $.trim($(this).text());
+    //     var dataId = $(this).parent().data('id');
+    //     var field = $(this).parent().data('field');
+
+    //     // var editable = $(this).parent().data('editable');
+    //     // if(editable==true){
+    //     //$(this).parent().html("<input class='note-update-"+dataId+" form-control' value='"+text+"' data-id = '"+ dataId +"' data-klass='"+$(this).parent().data('klass')+"'  style= 'width:"+$(this).parent().width()+"px;'  />");
+    //       $('.note-editable').on('blur', function(e){
+    //         debugger;
+    //         //var key = e.which;
+    //         //if(key == 13 || key ==9)  // the enter key code
+    //         //{
+    //           data = {}
+    //           data[field] = $(this).val();
+    //           $.ajax({
+    //             url: "/notes/" + dataId,
+    //             beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+    //             type: 'patch',
+    //             data: {
+    //               note: data
+    //             },
+    //             dataType: "script",
+    //             success: function(result){
+    //             }
+    //           });
+    //         //}
+    //       });
+    //     //}
+    //   }
+    // });
+
+    $('.custom-editable span').on('click', function(){
+      var text = $.trim($(this).text());
+      var dataId = $(this).parent().data('id');
+      $(this).parent().html("<input class='custom-update-"+dataId+" form-control' value='"+text+"' data-id = '"+ dataId +"' data-klass='"+$(this).parent().data('klass')+"'   />");
+      $('.custom-update-'+dataId).on('blur', function(){
+        data = {value: $(this).val()};
+        $.ajax({
+          url: "/custom_values/" + dataId,
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          type: 'patch',
+          data: {
+            custom_value: data
+          },
+          dataType: "script",
+          success: function(result){
+            $.ajax({url: "/notes/",
+              type: 'get',
+              data: {
+              },
+              dataType: "script",
+            });
+          }
+        });
+      });
+    });
+
+    $('.custom-create span').on('click', function(){
+      var text = $.trim($(this).text());
+      var dataId = $(this).parent().data('id');
+      var fieldId = $(this).parent().data('field-id');
+      var dataKlassId = $(this).parent().data('klass-id');
+      var dataKlass = $(this).parent().data('klass');
+      $(this).parent().html("<input class='custom-update-"+dataId+" form-control' value='"+text+"' data-id = '"+ dataId +"' data-klass='"+$(this).parent().data('klass')+"'   />");
+      $('.custom-update-'+dataId).on('blur', function(){
+        data = {value: $(this).val(), field_id: fieldId, valuable_id: dataKlassId, valuable_type: dataKlass };
+        $.ajax({
+          url: "/custom_values/" + dataId,
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          type: 'patch',
+          data: {
+            custom_value: data
+          },
+          dataType: "script",
+          success: function(result){
+            $.ajax({url: "/notes/",
+              type: 'get',
+              data: {
+              },
+              dataType: "script",
+            });
+          }
+        });
+      });
+    });
+
+  });
+
+</script>

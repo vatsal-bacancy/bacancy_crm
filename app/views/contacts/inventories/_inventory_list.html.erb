@@ -1,0 +1,44 @@
+<table class="common-data-table inv-table">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Brand</th>
+    <th>SKU</th>
+    <th>Available Quantity</th>
+    <th>Sell Price</th>
+  </tr>
+  </thead>
+  <tbody class='list-body'>
+  <% inventories.each do |inventory|%>
+    <tr>
+      <td><%= inventory.name %></td>
+      <td><%= inventory.brand.try :name %></td>
+      <td><%= inventory.sku %></td>
+      <td><%= inventory.available_quantity %></td>
+      <td>$<%= format_float inventory.sell_price %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<script>
+  $(document).ready(function() {
+    $(".dropdown-toggle").dropdown();
+    $('[data-toggle="tooltip"]').tooltip();
+
+    $('.inv-table').DataTable({
+      sDom: 'lfrtip',
+      scrollX: false,
+      autoWidth: false,
+      paging: true,
+      pageLength: 50,
+      searching: true,
+      lengthMenu: [50, 100],
+      columnDefs: [
+        {orderable: false, targets: [0]},
+        {className: "dt-center", targets: "_all"}
+      ],
+      order: []
+    });
+  });
+</script>

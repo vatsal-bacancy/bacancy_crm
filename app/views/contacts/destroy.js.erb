@@ -1,0 +1,5 @@
+$('#contact-list-index').html("<%= escape_javascript(render partial: 'contact_list', locals: {contacts: @contactable.contacts}) %>");
+$('#contact-list').html("<%= escape_javascript(render partial: 'contact_list', locals: {contacts: @contactable.contacts}) %>");
+
+$('#modal').modal('hide');
+$("#success_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");

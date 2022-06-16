@@ -1,0 +1,18 @@
+<%if comment.persisted?%>
+  <div class="row md-center">
+    <div class="col-lg-3 ">
+      <div class="round-small-img">
+        <%= image_tag asset_path('small_demo_img.jpg')%>
+      </div>
+    </div>
+    <div class="col-lg-9">
+      <div class="recent-comment-data">
+        <p class="dark-gray-font"><%= comment.try(:user).try(:fullname)%></p>
+        <p class="dark-gray-font"><%= comment.updated_at.strftime("%m/%d/%Y, %I:%M %p") %></p>
+        <p class="light-gray-font"><%= comment.content %> </p>
+        <p class="light-gray-font"><%= link_to "Attachment", comment.attachment.url  if comment.attachment.present? %> </p>
+      </div>
+    </div>
+  </div>
+  <hr class="recen-cmn-hr" />
+<%end%>

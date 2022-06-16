@@ -1,0 +1,132 @@
+<body>
+   <div id="wrapper">
+      <section>
+         <div class="container">
+            <div class="row row-eq-height">
+               <div class="col-lg-4 col-md-5 col-sm-12 text-center pad-0">
+                  <div class="login-left-back">
+                     <!-- <img src="/assets/logo-left.png" class="img-responsive main-logo"> -->
+                     <%= image_tag asset_path('ic_ipos_white.svg'), class: 'img-responsive left-main-logo'%>
+                     <p class="login-left-first-p">iPos CRM</p>
+                     <p class="login-left-second-p">A powerful, yet easy-to-use application for managing our customers.</p>
+                      <div class="login-left-wrapper">
+                        <!-- <img src="/assets/login-left-img.png" class="img-responsive login-left-img"> -->
+                        <%= image_tag asset_path('launcher.png'), class: 'login-left-img'%>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-lg-8 col-md-7 col-sm-12 pad-0">
+                  <div class="container-login-center">
+                     <div class="login-wrapper">
+                        <div class="login-cmn-wrapper text-center">
+                           <!-- <img src="/assets/iPos-logo.png" class="img-responsive main-logo"> -->
+                           <%= image_tag asset_path('iPos-logo.svg'), class: 'img-responsive main-logo'%>
+
+                           <p class="sign-title"> CRM </p>
+
+                           <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: {class: "sign-cmn-form"}) do |f| %>
+
+                           <%#= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: "sign-cmn-form"}) do |f| %>
+                              <div class="row">
+                                <div class="col-sm-12">
+                                 <div class="form-group">
+                                      <div class="input-group">
+                                        <div class="input-group-addon">
+                                          <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                                        </div>
+                                        <%= f.text_field :first_name, autofocus: true, autocomplete: "first_name", class: 'form-control', placeholder: "First Name" %>
+                                        <%= error_message(f.object, :first_name , 'error-msg') %>
+                                      </div>
+                                  </div>
+
+                                  <div class="form-group">
+                                      <div class="input-group">
+                                        <div class="input-group-addon">
+                                          <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                                        </div>
+                                        <%= f.text_field :last_name, autofocus: true, autocomplete: "last_name", class: 'form-control', placeholder: "Last Name" %>
+                                        <%= error_message(f.object, :last_name , 'error-msg') %>
+                                      </div>
+                                  </div>
+
+                                    <div class="form-group">
+                                      <div class="input-group">
+                                        <div class="input-group-addon">
+                                          <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                                        </div>
+                                        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control', placeholder: "Email Address" %>
+                                        <%= error_message(f.object, :email , 'error-msg') %>
+                                      </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="input-group">
+                                          <div class="input-group-addon pass-addon">
+                                         <i class="fa fa-lock" aria-hidden="true"></i>
+                                          </div>
+                                          <%= f.password_field :password, autocomplete: "current-password", class: "form-control", placeholder: "Password" %>
+                                          <%= error_message(f.object, :password , 'error-msg') %>
+                                       </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <div class="input-group">
+                                          <div class="input-group-addon pass-addon">
+                                         <i class="fa fa-lock" aria-hidden="true"></i>
+                                          </div>
+                                          <%= f.password_field :password_confirmation, autocomplete: "current-password", class: "form-control", placeholder: "Confirm Password" %>
+                                          <%= error_message(f.object, :password_confirmation , 'error-msg') %>
+                                       </div>
+                                    </div>
+                                 </div>
+                               </div>
+
+                               <div class="row">
+                                 <div class="col-sm-6 ">
+                                  <%= f.submit "Sign Up", class: "login-btn" %>
+                                 </div>
+                                 <div class="col-sm-6 ">
+                                  <%= link_to "Sign in", new_user_session_path, class: "login-btn" %>
+                                 </div>
+                              </div>
+                            </div>
+                           <%end%>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+   </div>
+</body>
+<!-- <h2>Log in</h2>
+   <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+     <div class="field">
+       <%= f.label :email %><br />
+       <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+     </div>
+
+     <div class="field">
+       <%= f.label :password %><br />
+       <%= f.password_field :password, autocomplete: "current-password" %>
+     </div>
+
+     <% if devise_mapping.rememberable? %>
+       <div class="field">
+         <%= f.check_box :remember_me %>
+         <%= f.label :remember_me %>
+       </div>
+     <% end %>
+
+     <div class="actions">
+       <%= f.submit "Log in" %>
+     </div>
+   <% end %> -->
+<%#= render "devise/shared/links" %>
+<style>
+  .login-left-img{width: 82%}
+  body{background-color: #ffffff}
+  .login-cmn-wrapper{box-shadow:0px 0px 0px #fff}
+  .input-group{border:1px solid #e0e0e0;border-radius:5px}
+  .form-control{border: 0;padding: 0px 0px;}
+  select {border: none;background: transparent;-webkit-appearance: none;-moz-appearance: none;appearance: none;padding-top: 0px;background-size: 20px;color:#ffffff;font-size:30px;}
+</style>

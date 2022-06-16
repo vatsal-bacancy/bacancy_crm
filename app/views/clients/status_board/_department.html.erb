@@ -1,0 +1,59 @@
+<form data-status-board-datatable-field-form>
+  <a class="status-board-anchor" href="<%= "#{record.client.id}#group-#{assigned_to_field.group.parent.id}" %>">
+    <div class="table-box bg-lightgray" style="background-color: <%= status_field.field_picklist_value_of(record.client)&.color %>">
+      <p class="assign-text fw-500">Assign To:</p>
+      <span class="box-title fw-700" data-status-board-datatable-field-value>
+        <%= pretty_value(assigned_to_field, record.client) %>
+      </span>
+      <span style="display: none;" data-status-board-datatable-field-editor>
+        <%= select_tag "client[#{assigned_to_field.name}]", options_for_select(assigned_to_field.field_picklist_values.pluck(:value), record.client.send(assigned_to_field.name)), include_blank: 'Select', class: 'form-control' %>
+      </span>
+      <div class="date-area">
+        <p>
+          <span class="text-darkgray">Start Date:</span>
+          <%= pretty_date(start_date) %>
+        </p>
+        <p>
+          <span class="text-darkgray">Start Time:</span>
+          <%= pretty_time(start_date) %>
+        </p>
+        <p>
+          <span class="text-darkgray">End Date:</span>
+          <%= pretty_date(end_date) %>
+        </p>
+        <p>
+          <span class="text-darkgray">End Time:</span>
+          <%= pretty_time(end_date) %>
+        </p>
+        <p>
+          <span class="text-darkgray">Time Taken:</span>
+          <%= pretty_days_from_dates(start_date, end_date) %>
+        </p>
+        <% if ["CLIENT'S LOCATION", "QA BY POS MANAGEMENT"].include?(assigned_to_field.group.parent.name) %>
+          <p class='flex-start'>
+            <span class="text-darkgray">Location:</span>
+            <% ctl = record.client.client_task_logs&.first %>
+            <% if ctl.present? %>
+              <% geo_location_name = geo_location(ctl.checkin_latitude, ctl.checkin_longitude) %>
+              <a href="javascript:(0);" class="show_location_modal break-all-word" data-location="<%= geo_location_name %>" data-location-latitude="<%= ctl.checkin_latitude %>" data-location-longitude="<%= ctl.checkin_longitude %>">
+                <%= truncate(geo_location_name, length: 25) %>
+              </a>
+            <% else %>
+                -
+            <% end %>
+          </p>
+        <% end %>
+        <p>
+          <span class="text-darkgray">Status:</span>
+          <span data-status-board-datatable-field-value>
+            <%= pretty_value(status_field, record.client) %>
+          </span>
+          <span style="display: none;" data-status-board-datatable-field-editor>
+            <%= select_tag "client[#{status_field.name}]", options_for_select(status_field.field_picklist_values.pluck(:value), record.client.send(status_field.name)), include_blank: 'Select', class: 'form-control' %>
+          </span>
+        </p>
+      </div>
+    </div>
+  </a>
+  <%= hidden_field_tag 'client_id', record.client.id %>
+</form>

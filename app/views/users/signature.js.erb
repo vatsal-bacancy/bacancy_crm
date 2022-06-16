@@ -1,0 +1,2 @@
+$("#signatureContainer").html("<%= escape_javascript(render partial: 'signature', locals: {user: @user}) %>")
+$("#signature").modal('show');

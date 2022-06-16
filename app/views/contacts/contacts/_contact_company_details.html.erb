@@ -1,0 +1,203 @@
+<div class="col-sm-12 mt15">
+  <div class="d-flex d-flex-wrap editable" data-id="<%=company.id %>" data-klass='Client' data-field="company_name" >
+    <label>Company Name: </label>
+    <span class="info-dynamic-data value"><%= company.company_name.present? ? company.company_name : "N/A" %></span>
+    <div class="form-group field hidden ml10">
+      <%= f.text_field :company_name, class: "form-control company_name",placeholder: "Enter company name", required: true,  value: "#{company.company_name}" %>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-12 mt15">
+  <div class="d-flex d-flex-wrap editable" data-id="<%=company.id %>" data-klass='Client' data-field="company_email" >
+    <label>Company Email:  </label>
+    <span class="info-dynamic-data value"><%=  company.company_email.present? ? company.company_email : "N/A" %></span>
+    <div class="form-group field hidden ml10">
+      <%= f.text_field :company_email, class: "form-control company_email",placeholder: "Enter company email", required: true,  value: "#{company.company_email}" %>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-12 mt15">
+  <div class="d-flex d-flex-wrap editable" data-id="<%=company.id %>" data-klass='Client' data-field="phone_no" >
+    <label>Phone Number: </label>
+    <span class="info-dynamic-data value"><%= company.phone_no.present? ? company.phone_no : "N/A" %></span>
+    <div class="form-group field hidden ml10">
+      <%= f.text_field :phone_no, class: "form-control phone_no",placeholder: "Enter phone number", required: true,  value: "#{company.phone_no}" %>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-12 mt15">
+  <div class="d-flex d-flex-wrap editable" data-id="<%=company.id %>" data-klass='Client' data-field="company_url" >
+    <label>Company Url: </label>
+    <span class="info-dynamic-data value"><%= company.company_url.present? ? company.company_url : "N/A" %></span>
+    <div class="form-group field hidden ml10">
+      <%= f.text_field :company_url, class: "form-control company_url",placeholder: "Enter company url", required: true,  value: "#{company.company_url}" %>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-12 mt15">
+  <div class="dynmic-tab-div-header mt20">
+    <p class="heading">Company Address</p>
+  </div>
+</div>
+
+
+<div class="col-sm-12 mt15">
+  <div class="d-flex d-flex-wrap editable" data-id="<%=company.id %>" data-klass='Client' data-field="street_address" >
+    <label>Street Address: </label>
+    <span class="info-dynamic-data value"><%= company.street_address.present? ? company.street_address : "N/A" %></span>
+    <div class="form-group field hidden ml10">
+      <%= f.text_field :street_address, class: "form-control street_address",placeholder: "Enter street address", required: true,id: "street_address",  value: "#{company.street_address}" %>
+    </div>
+  </div>
+</div>
+
+
+<div class="col-sm-12 mt15">
+  <div class="d-flex d-flex-wrap editable" data-id="<%=company.id %>" data-klass='Client' data-field="city" >
+    <label>City:</label>
+    <span class="info-dynamic-data value"><%= company.city.present? ? company.city : "N/A" %></span>
+    <div class="form-group field hidden ml10">
+      <%= f.text_field :city, class: "form-control city",placeholder: "Enter city", required: true,  value: "#{company.city}", id: "city" %>
+    </div>
+  </div>
+</div>
+
+
+<div class="col-sm-12 mt15">
+  <div class="d-flex d-flex-wrap editable" data-id="<%=company.id %>" data-klass='Client' data-field="state" >
+    <label>State: </label>
+    <span class="info-dynamic-data value"><%= company.state.present? ? company.state : "N/A" %></span>
+    <div class="form-group field hidden ml10">
+      <%= f.text_field :state, class: "form-control state",placeholder: "Enter state", required: true,  value: "#{company.state}", id: "state" %>
+    </div>
+  </div>
+</div>
+
+
+<div class="col-sm-12 mt15">
+  <div class="d-flex d-flex-wrap editable" data-id="<%=company.id %>" data-klass='Client' data-field="zip_code" >
+    <label>Zip Code: </label>
+    <span class="info-dynamic-data value"><%= company.zip_code.present? ? company.zip_code : "N/A" %></span>
+    <div class="form-group field hidden ml10">
+      <%= f.text_field :zip_code, class: "form-control zip_code",placeholder: "Enter zip code", required: true,  value: "#{company.zip_code}", id: "zip_code" %>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.editable span').on('click', function(e){
+      var text = $.trim($(this).text());
+      var dataId = $(this).parent().data('id');
+      var field = $(this).parent().data('field');
+      var clientKalss = $(this).parent().data('klass');
+      
+      element = $(this).siblings( ".field");
+      element.removeClass('hidden');
+      $(this).addClass('hidden');
+      
+      if(field == "street_address")
+      {
+        //var location = document.getElementById("lead-fields").getElementsByClassName("street_address");
+        var location = document.getElementById("street_address")
+        var options = {};
+        var autocomplete = new google.maps.places.Autocomplete(location, options);
+        google.maps.event.addListener(autocomplete, 'place_changed', function() 
+        {
+          var place = autocomplete.getPlace();
+          var componentForm = {
+              street_number: 'short_name',
+            address1: 'short_name',
+            route: 'long_name',
+            locality: 'long_name',
+            administrative_area_level_1: 'long_name',
+            country: 'long_name',
+            postal_code: 'short_name'
+          };
+
+          var streetAddress = ""
+          place.address_components.forEach(function(e) {
+            let placeType = e.types[0];
+            let addressTypeArr = componentForm[placeType];
+            if (placeType == "locality") {
+              $("#city").val(e[addressTypeArr]);
+            } else if (placeType == "postal_code") {
+              $("#zip_code").val(e[addressTypeArr])
+            } else if (placeType == "administrative_area_level_1") {
+              $("#state").val(e[addressTypeArr])
+            }
+            else{
+              if (e[addressTypeArr] != undefined){
+                if(streetAddress == ""){
+                  streetAddress = e[addressTypeArr];
+                }else{
+                  streetAddress += ", " + e[addressTypeArr];
+                }
+              }
+            }
+            // if (addressTypeArr) {
+            //  // toggleFull($(".shipping-" + addressTypeArr[1])[0]);
+            // }
+
+          });
+          $("#street_address").val(streetAddress);
+        });
+
+        var pacContainerInitialized = false;
+        $('#street_address').on('keyup keypress keydown', function() {
+          if (!pacContainerInitialized) {
+            $('.pac-container').css('z-index', '9999');
+            pacContainerInitialized = true;
+          }
+        });
+        $('#street_address').on('keyup keypress keydown', function(event) {
+          var keyCode = event.keyCode || event.which;
+          if (keyCode === 13) {
+            event.preventDefault();
+            return false;
+          }
+        });
+        $(".remove_fields").remove();
+      }
+   
+      element.children('.form-control').on('blur', function(e){
+        if(clientKalss=="Client"){
+          data = {}
+          if(field == "street_address")
+          {
+            data['street_address'] = $("#street_address").val();
+            data['city'] = $("#city").val();
+            data['state'] = $("#state").val();
+            data['zip_code'] = $("#zip_code").val();
+          }
+          else
+          {
+            data[field] = $(this).val();
+          }
+          
+          $.ajax({
+            url: "/contacts/contacts/client_update/"+ dataId,
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            type: 'patch',
+            data: {
+              client: data
+            },
+            dataType: "script",
+            success: function(result){
+              element.addClass('hidden');
+              element.siblings('.value').html(element.children('.form-control').val())
+              element.siblings('.value').removeClass('hidden');
+            }
+          });
+        }
+      });
+     
+    });
+
+  });
+</script>

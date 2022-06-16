@@ -1,0 +1,3 @@
+<% if @message.present? %>
+  $("." + "message_id_<%= params[:id] %>").html("<%= escape_javascript(render partial: 'emails/list_message', locals: { message: @message, ind: params[:ind] }) %>")
+<%end%>

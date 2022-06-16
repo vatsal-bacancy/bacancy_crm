@@ -1,0 +1,5 @@
+$("#messages_container").html("<%= escape_javascript(render partial: 'messages', locals: { messages: @messages }) %>");
+$('.small-circle').remove();
+$(".sent").children('a').append('<div class="small-circle"></div>');
+$("#messages_container").removeClass('hidden');
+$("#message_container").addClass('hidden');

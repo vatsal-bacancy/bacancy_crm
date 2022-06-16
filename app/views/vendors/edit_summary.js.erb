@@ -1,0 +1,2 @@
+$("#modalContainer").html("<%= escape_javascript(render partial: 'edit_summary_modal', locals: { vendor: @vendor, group: @group }) %>");
+$("#modal").modal('show');

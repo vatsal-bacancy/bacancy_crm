@@ -1,0 +1,65 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar' %>
+  <div class="site-content common-datatable">
+    <div class="inventory-top bg-white d-sm-flex justify-content-between border-bottom mb-25">
+      <div class="site-content-head">
+        <div class="row">
+          <div class="col-sm-12">
+            <h2 class="admin-main-title text-darkgray1 mb-0 pr-2 m-0 dark-gray-font text-capitalize">Inventory Category & Subcategory</h2>
+          </div>
+        </div>
+      </div>
+      <div class="download-area d-flex align-items-center justify-content-end flex-wrap leads_icons pl-0">
+        <%= link_to new_category_path, remote: true, class: 'nowrap' do %>
+          <i class="mr-2">
+            <%= image_tag asset_path('add_lead.svg') %>
+          </i>Add Category
+        <% end %>
+        <%= link_to new_subcategory_path, remote: true, class: 'nowrap' do %>
+          <i class="mr-2">
+            <%= image_tag asset_path('add_lead.svg') %>
+          </i>Add Subcategory
+        <% end %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="site-content-data">
+          <div class="table-responsive">
+            <table class='common-data-table user-list table-bordered table-hover'>
+              <thead>
+                <tr>
+                  <th class="bold">Title</th>
+                  <th class="bold">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @categories.each do |category| %>
+                <tr>
+                  <td class="bold"><%= category.title %></td>
+                  <td>
+                    <%= link_to 'Edit', edit_category_path(category), remote: true, class: 'btn btn-primary' %>
+                    <%= link_to 'Delete', category_path(category), method: :delete, data: {confirm: "Are you sure you want to Delete this Category?"}, class: 'btn btn-danger' %>
+                  </td>
+                </tr>
+                <% category.subcategories.each do |subcategory| %>
+                  <tr>
+                    <td class="item-treeview item-treeview-span">
+                      <span class="ml8"><%= subcategory.title %></span>
+                    </td>
+                    <td>
+                      <%= link_to 'Edit', edit_subcategory_path(subcategory), remote: true, class: 'btn btn-primary' %>
+                      <%= link_to 'Delete', subcategory_path(subcategory), method: :delete, data: {confirm: "Are you sure you want to Delete this Subcategory?"}, class: 'btn btn-danger' %>
+                    </td>
+                  </tr>
+                <% end %>
+              <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="modalCenterContainer"></div>

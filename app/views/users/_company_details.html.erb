@@ -1,0 +1,59 @@
+<% if current_user.has_role?(:super_admin) %>
+  <div class="col-sm-12 mt15">
+    <!-- <div class="form-group ">
+      <label for="Phonenumber">Phone number</label>
+      <input class="form-control" required="required" placeholder="Phone number" type="text" name="" id="">
+    </div> -->
+    <b>Company Name</b>
+    <%= text_field_tag :company_name, company.name, class: 'form-control' %>
+  </div>
+  <div class="col-sm-12 mt15" id="submit-comapny"> 
+    <button id="save" class="btn btn-success"> Save </button>
+    <button id="cancel" class="btn btn-default"> Cancel </button>
+  </div>
+<% end %>
+
+<script>
+
+$(document).ready(function(){
+  var company_id = <%= company.id %>;
+  var comapny_name = document.getElementById("company_name").value;
+  var $com_name = "<%= company.name %>";
+  $('div #submit-comapny').hide();
+
+  $("#company_name").on('click',function(){
+    $("div #submit-comapny").show();
+  });
+
+  $("#cancel").on('click',function(){
+    $("#company_name").val($com_name);
+    $('div #submit-comapny').hide();
+  });
+    
+  $("#save").on('click', function(){
+    $com_name = document.getElementById("company_name").value;;
+    if(document.getElementById("company_name").value == ""){
+      $("#company_name").val(comapny_name);
+      
+      alert("Please fill Company Name");
+    }
+    else{
+      $.ajax({
+        //url:<%#= company_path(@company) %>,
+        url: "/companies/" + company_id,
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: 'patch',
+        //dataType: 'script'
+        data:{
+          comapny_name: document.getElementById("company_name").value
+        }
+      });
+      $('div #submit-comapny').hide();
+    }
+  });
+  $("#profile_image").on('click',function(){
+  });
+
+});
+
+</script>

@@ -1,0 +1,2 @@
+$("#invoice-list").html("<%= escape_javascript(render partial: 'invoice_list', locals: {invoices: @invoices, fields: @fields}) %>")
+$("#modal").modal('hide');

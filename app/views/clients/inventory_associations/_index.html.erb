@@ -1,0 +1,145 @@
+<% # requires client to be set to render this partial %>
+<div class="dynmic-tab-div">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="dynmic-tab-div-header">
+        <span class="heading">Inventories (<%= client.company_name %>)</span>
+        <div class="pull-right">
+          <% if true %>
+            <%= link_to bulk_new_client_inventory_associations_path(client), remote: true, class: "site-content-head-btn" do %>
+              + Assign Inventory to Client
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+      <div class="dynmic-tab-div-data">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="site-content-data">
+              <div class="table-list">
+                <div class="table-responsive">
+                  <table class="common-data-table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Item Category</th>
+                        <th>Item Name</th>
+                        <th>Vendor Name</th>
+                        <th>Purchase Price</th>
+                        <th>Selling Price</th>
+                        <th>Qty</th>
+                        <th>SKU</th>
+                        <th>Inventory Status</th>
+                        <th>Created Date/Time</th>
+                        <th>Assigned By</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% client.inventory_associations.includes(:created_by).sort_by_order_with_category.each do |category, inventory_associations| %>
+                        <tr>
+                          <td rowspan="<%= inventory_associations.count + 1 %>"><%= category %> (<%= inventory_associations.count %>)</td>
+                        </tr>
+                        <% inventory_associations.each do |inventory_association| %>
+                          <tr>
+                            <td>
+                              <%= link_to inventory_association.inventory.name, logs_inventory_path(inventory_association.inventory), target: :_blank %>
+                            </td>
+                            <td><%= inventory_association.inventory.vendor&.company_name || '-' %></td>
+                            <td><%= pretty_amount inventory_association.inventory.buy_price %></td>
+                            <td><%= pretty_amount inventory_association.inventory.sell_price %></td>
+                            <td>1</td>
+                            <td><%= inventory_association.inventory.sku %></td>
+                            <td>
+                              <%= form_for inventory_association.inventory do |f| %>
+                                <%= f.select :status, options_for_select(f.object.valid_statuses, selected: f.object.status), {}, class: 'form-control', 'data-inventory-group-id' => inventory_association.inventory.id, 'data-client-id' => client.id, 'data-client-inventory-association-status' => true %>
+                              <% end %>
+                            </td>
+                            <td><%= pretty_date_time(inventory_association.created_at) %></td>
+                            <td><%= inventory_association.created_by.fullname %></td>
+                          </tr>
+                        <% end %>
+                      <% end %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="dynmic-tab-div">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="dynmic-tab-div-header">
+        <span class="heading">Old Logs (<%= client.company_name %>)</span>
+      </div>
+      <div class="dynmic-tab-div-data">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="site-content-data">
+              <div class="table-list">
+                <div class="table-responsive">
+                  <table class="common-data-table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Created Date/Time</th>
+                        <th>Item Name</th>
+                        <th>Purchase Price</th>
+                        <th>Selling Price</th>
+                        <th>Qty</th>
+                        <th>SKU</th>
+                        <th>Inventory Status Changed From</th>
+                        <th>Inventory Status Changed To</th>
+                        <th>Assigned By</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    <% client.inventory_associations_logs.each do |version| %>
+                      <tr>
+                        <td><%= pretty_date_time version.created_at %></td>
+                        <td><%= link_to version.object.name, logs_inventory_path(version.object.id), target: :_blank %></td>
+                        <td><%= pretty_amount version.object.buy_price %></td>
+                        <td><%= pretty_amount version.object.sell_price %></td>
+                        <td>1</td>
+                        <td><%= version.object.sku %></td>
+                        <td><%= version.object_changes.status.first %></td>
+                        <td><%= version.object_changes.status.last %></td>
+                        <td><%= version.user.fullname %></td>
+                      </tr>
+                    <% end %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $('[data-client-inventory-association-status]').on('change', function() {
+      let inventoryGroupId = $(this).attr('data-inventory-group-id');
+      let clientId = $(this).attr('data-client-id');
+      $.ajax({
+        url: Routes.inventory_path(inventoryGroupId),
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: 'POST',
+        data: $(this).closest('form').serializeArray(),
+        success: function() {
+          $.ajax({
+            url: Routes.client_inventory_associations_path({client_id: clientId}),
+            method: 'GET',
+            dataType: 'script'
+          });
+        }
+      });
+    });
+  });
+</script>

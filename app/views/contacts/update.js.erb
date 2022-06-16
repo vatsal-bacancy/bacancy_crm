@@ -1,0 +1,8 @@
+<% if @contact.errors.any? %>
+  $("#flash_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");
+<% else %>
+  $("#success_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>"); 
+  $('#contact-list').html("<%= escape_javascript(render partial: 'contact_list', locals: {contacts: @contactable.contacts}) %>");
+  $('#contact-list-index').html("<%= escape_javascript(render partial: 'contact_list', locals: {contacts: @contactable.contacts}) %>");
+  $('#modal').modal('hide');
+<% end %>

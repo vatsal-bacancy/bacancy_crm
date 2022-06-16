@@ -1,0 +1,7 @@
+<% if @feedback_question.errors.any? %>
+  $("#flash_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>"); 
+<% else %>
+  $("#success_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");
+  $("#question-list").html("<%= escape_javascript(render partial: 'question_list', locals: {feedback_questions: @feedback_questions}) %>")
+  $("#questionsModal").modal("hide");
+<% end %>

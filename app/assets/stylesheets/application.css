@@ -1,0 +1,36 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require bootstrap.min.css
+ *= require dataTables.bootstrap.min.css
+ *= require bootstrap-select.min.css
+ *= require vendor.css
+ *= require cosmos.css
+ *= require custom-application.css
+ *= require bootstrap-tagsinput
+ *= require dropzone/dropzone
+ *= require croppie
+ *= require_tree .
+ *= require_self
+ */
+
+ .modal .modal-header{
+   background-color: #10305b;
+   color: white;
+ }
+.modal .close {
+  color: white;
+}
+
+ table.dataTable thead>tr>td.sorting {
+     padding-right: 0px;
+ }

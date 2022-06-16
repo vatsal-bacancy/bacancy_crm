@@ -1,0 +1,42 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<div class="site-main">
+  <div class="custom-wrapper emails">
+    <section class="content">
+      <div class="row">
+        <div class="col-md-12">
+          <center class="m-t-30">
+            <div class="col-md-12">
+              <h3>What kind of email do you want to connect?</h3>
+            </div>
+            <div class="site-content-data">
+              <div class="email-connect-icons">
+                <div class="setting-icon-wrapper">
+                  <%= link_to  @login_url do  %>
+                    <div class="setting-icon">
+                      <div class="setting-icon-main">
+                        <%= image_tag 'outlook.png'%>
+                      </div>
+                      <div class="setting-icon-title">
+                        <p>Connect to Outlook</p>
+                      </div>
+                    </div>
+                  <%end%>
+                  <%= link_to @google_login_url do  %>
+                    <div class="setting-icon">
+                      <div class="setting-icon-main">
+                        <%= image_tag 'gmail.png'%>
+                      </div>
+                      <div class="setting-icon-title">
+                        <p>Connect to Google</p>
+                      </div>
+                    </div>
+                  <%end%>
+                </div>
+              </div>
+            </div>
+          </center>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

@@ -1,0 +1,7 @@
+var new_inventory = new Option("<%= @inventory.name %>", "<%= @inventory.id %>", true, true);
+$("#<%= params[:inventory_select_html_id] %>").append(new_inventory).trigger('change');
+var tr = $("#<%= params[:inventory_select_html_id] %>").closest('tr');
+tr.find('.rate').val('<%= @inventory.sell_price %>').trigger('change');
+tr.find('.qty').val(1).trigger('change');
+tr.find('.tax').val('<%= @inventory.tax %>').trigger('change');
+$("#modal").modal('hide');

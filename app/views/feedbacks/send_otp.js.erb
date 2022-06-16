@@ -1,0 +1,12 @@
+<% unless @error.present? %>
+  $('#otp_country_code').val('<%= @employee.country_code.to_s %>')
+  $('#otp_phone_number').val(<%= @employee.phone_number %>)
+  $('#form-header').text('OTP for Employee Feedback');
+  $('#employee_details').hide();
+  $('#employee_otp').show();
+  $('#employee_feedback').hide();
+  $('#otp_field_1').focus();
+<% else %>
+  $('#phone_number').val('');
+<% end %>
+$("#flash_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");

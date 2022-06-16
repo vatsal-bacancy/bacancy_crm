@@ -1,0 +1,6 @@
+<%if params[:update].present?%>
+  $('.action-data').html("<%= escape_javascript(render partial: 'settings/action_data', locals: {klass: @klass, url: @url}) %>")
+<%else%>
+  $('#actions').html("<%= escape_javascript(render partial: 'modal_action', locals: {klass: @klass, url: @url}) %>")
+  $("#actionModal").modal('show');
+<%end%>

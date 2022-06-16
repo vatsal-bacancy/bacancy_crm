@@ -1,0 +1,79 @@
+<div class="col-sm-12 mt15">
+  <div class="d-flex d-flex-wrap editable" data-id="<%=current_contact.id %>" data-klass='Contact' data-field="first_name" >
+    <label>First Name: </label>
+    <span class="info-dynamic-data value"><%= current_contact.first_name.present? ? current_contact.first_name : "N/A" %></span>
+    <div class="form-group field hidden ml10">
+      <%= f.text_field :first_name, class: "form-control first_name",placeholder: "Enter first name", required: true,  value: "#{current_contact.first_name}" %>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-12 mt15">
+  <div class="d-flex d-flex-wrap editable" data-id="<%=current_contact.id %>" data-klass='Contact' data-field="last_name" >
+    <label>Last Name: </label>
+    <span class="info-dynamic-data value"><%= current_contact.last_name.present? ? current_contact.last_name : "N/A" %></span>
+    <div class="form-group field hidden ml10">
+      <%= f.text_field :last_name, class: "form-control last_name",placeholder: "Enter last name", required: true,  value: "#{current_contact.last_name}" %>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-12 mt15">
+  <div class="d-flex d-flex-wrap editable" data-id="<%=current_contact.id %>" data-klass='Contact' data-field="email" >
+    <label>Email: </label>
+    <span class="info-dynamic-data value"><%= current_contact.email.present? ? current_contact.email : "N/A" %></span>
+    <div class="form-group field hidden ml10">
+      <%= f.text_field :email, class: "form-control email",placeholder: "Enter email", required: true,  value: "#{current_contact.email}" %>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-12 mt15">
+  <div class="d-flex d-flex-wrap editable" data-id="<%=current_contact.id %>" data-klass='Contact' data-field="phone_no" >
+    <label>Phone Number: </label>
+    <span class="info-dynamic-data value"><%= current_contact.phone_no.present? ? current_contact.phone_no : "N/A" %></span>
+    <div class="form-group field hidden ml10">
+      <%= f.text_field :phone_no, class: "form-control phone_no",placeholder: "Enter Phone Number", required: true,  value: "#{current_contact.phone_no}" %>
+    </div>
+  </div>
+</div>
+
+
+
+
+<script>
+  $(document).ready(function(){
+    $('.editable span').on('click', function(e){
+      var text = $.trim($(this).text());
+      var dataId = $(this).parent().data('id');
+      var field = $(this).parent().data('field');
+      var klass = $(this).parent().data('klass');
+
+      element = $(this).siblings( ".field");
+      element.removeClass('hidden');
+      $(this).addClass('hidden');
+
+      element.children('.form-control').on('blur', function(e){
+        if(klass=="Contact")
+        {
+          data = {}
+          data[field] = $(this).val();
+          $.ajax({
+            url: "/contacts/contacts/" + dataId,
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            type: 'patch',
+            data: {
+              contact: data
+            },
+            dataType: "script",
+            success: function(result){
+              element.addClass('hidden');
+              element.siblings('.value').html(element.children('.form-control').val())
+              element.siblings('.value').removeClass('hidden');
+            }
+          });
+        }
+      });
+    });
+  });
+</script>

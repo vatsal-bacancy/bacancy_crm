@@ -1,0 +1,72 @@
+<%= render 'components/site_content' do %>
+  <% content_for :head do %>
+    <div class="l-menu">
+      <span class="sub-menu-sitecontent"><%= link_to 'CRM Customization Settings', settings_path, class: 'common-link' %></span>
+      <span class="sub-menu-sitecontent m-x-10"><i class="fa fa-angle-right"></i></span>
+      <span class="sub-menu-sitecontent"><%= link_to 'User Settings', users_settings_path, class: 'common-link' %></span>
+      <span class="sub-menu-sitecontent m-x-10"><i class="fa fa-angle-right"></i></span>
+      <span class="sub-menu-sitecontent">User Timesheet</span>
+    </div>
+    <div class="pull-right">
+      <%= link_to 'Back', users_settings_path, class: 'btn btn-success' %>
+    </div>
+  <% end %>
+  <% content_for :body do %>
+    <%= render 'components/white_body' do %>
+      <h1 class="heading">Filter By</h1>
+      <hr class="mt5"/>
+      <div class="row">
+        <%= form_tag time_sheet_logs_all_users_users_path, method: :get do %>
+          <div class="col-sm-4">
+            <div class="form-group">
+              <label>From Date</label>
+              <input name="start_date" class="form-control bootstrapdatepicker" value="<%= pretty_date @users_data.start_date %>" data-users-time-sheet-logs-filter>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="form-group">
+              <label>To Date</label>
+              <input name="end_date" class="form-control bootstrapdatepicker" value="<%= pretty_date @users_data.end_date %>" data-users-time-sheet-logs-filter>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th>User Name</th>
+          <th width="10%">Total Work Hours</th>
+          <th>Mon</th>
+          <th>Tue</th>
+          <th>Wed</th>
+          <th>Thur</th>
+          <th>Fri</th>
+          <th>Sat</th>
+          <th>Sun</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @users_data.records.each do |user, data| %>
+          <tr>
+            <td><%= link_to(user.fullname, user_time_sheet_logs_path(user), class: 'common-link') %></td>
+            <td><%= pretty_hours_from_number(data[:total_work_hours]) %></td>
+            <% User::TimeSheetLog::DAYNAMES.each do |day_name| %>
+              <td><%= pretty_hours_from_number(data[:total_hours_of_week_day][day_name]) || '- -' %></td>
+            <% end %>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+<% end %>
+
+<script>
+  $(document).ready(function() {
+    $('[data-users-time-sheet-logs-filter]').on('change', function() {
+      $(this).closest('form').submit();
+    });
+  });
+</script>

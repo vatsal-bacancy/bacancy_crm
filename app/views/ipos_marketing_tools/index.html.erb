@@ -1,0 +1,35 @@
+<div id="success_message"></div>
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+  <div class="site-content common-datatable">
+    <div class="inventory-top bg-white d-sm-flex justify-content-between border-bottom mb-25">
+      <div class="site-content-head">
+        <div class="row">
+          <div class="col-sm-12">
+              <!-- <span class="main-menu-sitecontent"> Marketplace </span> -->
+              <h2 class="admin-main-title text-darkgray1 mb-0 pr-2 m-0 dark-gray-font text-capitalize">Marketplace</h2>
+              <!-- <%= link_to invoice_taxes_path, class: "sub-menu-sitecontent" do %> All <% end%> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+       <div class="col-sm-12">
+          <div class="site-content-data">
+            <div class="content position-relative lead_page">
+              <div id="marketplace-list" class="table-list">
+                <%= render partial: "marketplace_list", locals: {marketplaces: @marketplaces}%>
+              </div>
+            </div>
+          </div>
+       </div>
+    </div>
+    <div id="modalContainer" class="modal-right"></div>
+    <div id="importfiled"></div>
+  </div>
+</div>
+<script>
+  $(document).ready(function() {
+    $(".dropdown-toggle").dropdown();
+  });
+</script>

@@ -1,0 +1,24 @@
+<% @document = Document.new%>
+<div id='content'>
+  <%= form_for @document, url: uploadfiles_path, html: {multipart: true, class: 'dropzone', id: 'my-dropzone', method: :post} do |f| %>
+    <div class="dz-message needsclick">
+      <h3> Drop file here </h3> or
+      <strong> Click </strong> to upload
+    </div>
+    <div class="fallback">
+      <%= f.file_field :attachment%>
+      <%= f.submit 'Upload Document'%>
+    </div>
+  <%end%>
+</div>
+<script>
+$(function(){
+  Dropzone.autoDiscover = false;
+  $('#my-dropzone').dropzone({
+    maxFileSize: 2,
+    addRemoveLinks: true,
+    paramName: 'document[:attachment]'
+  });
+
+});
+</script>

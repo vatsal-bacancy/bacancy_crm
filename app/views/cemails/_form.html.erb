@@ -1,0 +1,169 @@
+
+<div class="col-sm-12">
+  <label>To</label>
+  <div class="email-cc-bcc">
+    <a href="javascript:void(0)"  id='email_cc_show' value='show_cc'>
+      CC
+    </a>
+    <span> | </span>
+    <a href="javascript:void(0)" id='email_bcc_show' value='show_bcc'>
+      BCC
+    </a>
+  </div>
+  <%#= f.text_field :to, class: "form-control tagableinput",id: "cemail_to", value: object.company_email %>
+  <%#= f.text_field :to, class: "form-control tagableinput", value: object.company_email, required: true %>
+</div>
+<div class="col-sm-12">
+  <%= f.text_field :to, class: "form-control tagableinput", id: "cemail_to", value: object.company_email %>
+</div>
+
+
+<div id="email_cc">
+  <div class="col-sm-12">
+    <label>CC</label>
+  </div>
+  <div class="col-sm-12">
+    <%#= text_field_tag :to, User.pluck(:email), class: 'form-control emails' %>
+    <%= f.text_field :cc, class: "form-control" %>
+  </div>
+</div>
+
+<div id="email_bcc">
+  <div class="col-sm-12">
+    <label>BCC</label>
+  </div>
+  <div class="col-sm-12">
+    <%#= text_field_tag :to, User.pluck(:email), class: 'form-control emails' %>
+    <%= f.text_field :bcc, class: "form-control" %>
+  </div>
+</div>
+
+
+
+<div class="col-sm-12">
+  <%#= current_user.email %>
+</div>
+
+
+<div class="col-sm-12">
+  <label>Subject</label>
+</div>
+<div class="col-sm-12">
+  <%#= text_field_tag :to, User.pluck(:email), class: 'form-control emails' %>
+  <%= f.text_field :subject, class: "form-control" %>
+</div>
+
+<div class="col-sm-12">
+  <label>Content</label>
+</div>
+<div class="col-sm-12">
+  <%= f.cktext_area :content, class: "ckeditor", id: "email_content", value: "<br/>" +  current_user.signature.to_s  %>
+</div>
+
+<div class="col-sm-12 mt15">
+  <label>Attachment</label>
+</div>
+<div class="col-sm-12 mb10">
+  <input type="file" name="attachments[]" id="file3" class="inputfile" multiple />
+  <label for="file3" title='Upload Local Files' class="btn btn-default">Upload Files</label>
+  <div class= 'row' id="file-upload-filename"></div>
+  <%= hidden_field_tag :document_ids, [], class: 'document_ids'%>
+  <div class="row m-t-15">
+
+    <div class="col-md-12 ">
+      <div class='selected_documents'>
+        <%= render partial: 'documents/selected_documents', locals: { documents: [] } %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<script>
+
+$(document).ready(function(){
+  $('div #email_cc').hide();
+  $('div #email_bcc').hide();
+  $('.tagableinput').tagsinput();
+  $("#cemail_to").attr('required', 'required');
+
+  $('#email_cc_show').click(function(){
+     if( $(this).attr('value') == 'show_cc' )
+    {
+      $('div #email_cc').show();
+      $(this).attr('value', 'hide_cc');
+    }
+    else
+    {
+      $('div #email_cc').hide();
+      $(this).attr('value', 'show_cc');
+    }
+  });
+
+  $('#email_bcc_show').click(function(){
+     if( $(this).attr('value') == 'show_bcc' )
+    {
+      $('div #email_bcc').show();
+      $(this).attr('value', 'hide_bcc');
+    }
+    else
+    {
+      $('div #email_bcc').hide();
+      $(this).attr('value', 'show_bcc');
+    }
+  });
+
+  $("#cemail_to").on('change',function(){
+    if($("#cemail_to").val() == ""){
+    $("#cemail-save").attr('disabled', true)
+    }
+    else{
+      $("#cemail-save").attr('disabled', false)
+    }
+  });
+
+    $('#file3').on('change', function (e) {
+      if(!e.target.files) return;
+      var files = e.target.files;
+      for(var i=0; i<files.length; i++) {
+        var f = files[i];
+        var datafile = new FormData();
+        datafile.append('resourcable_type', "<%= current_user.class.name %>");
+        datafile.append('resourcable_id', "<%= current_user.id %>" );
+        datafile.append('documentable_type', "<%= @system_directory.class.name %>");
+        datafile.append('documentable_id', "<%= @system_directory.id %>" );
+        datafile.append('attachment', f);
+        $.ajax({
+          url: "<%= uploadfiles_url %>",
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          type: 'POST',
+          contentType: false,
+          cache: false,
+          processData: false,
+          data: datafile,
+          success: function(res, file){
+            documentId = res["d_id"];
+            $document_ids.push(documentId);
+            $.ajax({
+              url: "<%= selected_documents_documents_path %>",
+              beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+              type: 'GET',
+              data: {
+                document_ids: $document_ids
+              },
+              dataType: "script",
+              success: function(result){
+              }
+            });
+            $('.document_ids').val($document_ids);
+          }
+        });
+      }
+    });
+
+
+});
+
+</script>

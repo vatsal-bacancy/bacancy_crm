@@ -1,0 +1,37 @@
+<div class="modal fade" id="actionModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Retraining Needed Questions</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row action-data">
+          <table class="common-data-table table table-bordered text-center">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th width="25%">Retraining needed</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if questions_answers.blank? %>
+                <tr>
+                  <td colspan=2>No Retraining needed</td>
+                </tr>
+              <% else %>
+                <% questions_answers.each do |q_a| %>
+                  <tr>
+                    <td> <%= q_a.feedback_question.title %> </td>
+                    <td> <%= pretty_checkbox(q_a.retraining) %> </td>
+                  </tr>
+                <% end %>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <hr/>
+    </div>
+  </div>
+</div>

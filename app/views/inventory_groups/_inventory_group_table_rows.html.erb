@@ -1,0 +1,66 @@
+<% inventory_groups.each do |inventory_group|%>
+  <tr>
+    <td width="5%">
+      <div class="radio-lbl">
+        <label class="check ">
+        <input type="checkbox" name="name" data-group-id="<%= inventory_group.id %>" class="inventory_group_delete">
+        <span class="checkmark"></span> </label>
+      </div>
+    </td>
+    <td width="40%" class="text-left">
+      <a class="hideItems dis-inlineblock mb4" data-group-id="<%= inventory_group.id %>" id="hideItems<%= inventory_group.id %>" style="display: none;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon text-muted align-middle icon-sm"><path d="M19.8 420.1c-4-6.2-4.6-13.9-1.6-20.6L29 375.1V171.3c0-15.5 12.5-28 28-28h334.6c13 0 24 8.9 27.1 20.9h29.7v-5.5c.1-24.5-19.8-44.3-44.2-44.3H273.5c-20.1 0-38.8-10.7-48.4-28.4-11.1-20.7-32.9-34.7-58-34.7H30.8c-14.4 0-26 11.7-26.2 25.9l-1.7 65.7C1.1 147.8 0 153.1 0 158.6v228.2c0 19.6 12.7 36.2 30.3 42-4.3-1.8-8-4.8-10.5-8.7z"></path><path d="M509 170.4c-2.9-3.9-7.5-6.3-12.4-6.3H132.2c-6.1 0-11.6 3.6-14.1 9.2l-90 201.8-10.9 24.4c-3 6.7-2.4 14.4 1.6 20.6 2.5 3.9 6.2 6.9 10.5 8.8 3.3 1.4 6.9 2.2 10.8 2.2h369.5c15.9 0 29.8-9.5 34-23.1l67.8-223.9c1.4-4.7.5-9.8-2.4-13.7zm-61.5 117.7L414 398.8c-.4.4-2 1.4-4.4 1.4H55.3c-2.1 0-3.5-2.2-2.7-4.1l88.9-199.3c.5-1 1.5-1.7 2.7-1.7h327.7c1.9 0 3.3 1.9 2.8 3.7l-27.2 89.3z"></path></svg>
+      </a>
+      <a class="showItems dis-inlineblock mb4" data-group-id="<%= inventory_group.id %>" id="showItems<%= inventory_group.id %>">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon text-muted align-middle icon-sm blue-bg"><path d="M461.4 94.5H312.2c-22.9 0-44.3-12.2-55.2-32.4-12.7-23.6-37.6-39.6-66.2-39.6H35.1c-16.4 0-29.7 13.3-29.9 29.6l-1.9 75c-2.1 5.6-3.3 11.7-3.3 18v260.5c0 28 22.7 50.6 50.6 50.6h410.7c28 0 50.6-22.7 50.6-50.6V145.1c.1-28-22.6-50.6-50.5-50.6zm17.5 296.6c0 17.7-14.3 32-32 32H65.1c-17.7 0-32-14.3-32-32V159.5c0-17.7 14.3-32 32-32H447c17.7 0 32 14.3 32 32v231.6h-.1z"></path></svg>
+      </a>
+     <span class="ml15 main-inv-link"> <%= link_to inventory_group.name, inventory_group_path(inventory_group) %></span>
+    </td>
+    <td width="10%" ><%= inventory_group.category.title %></td>
+    <td width="15%"><%= inventory_group.subcategory.title %></td>
+    <td width="10%" class="text-right"><p><%= inventory_group.active_inventories.length %></p></td>
+    <td width="10%" class="text-right <%= inventory_group.under_stock? ? 'color-red' : '' %>">
+      <%= form_for inventory_group, remote: true, class: 'form-inline', html: { 'data-inventory-field-form': true } do |f| %>
+        <div data-inventory-field-value>
+          <%= inventory_group.active_inventories_minimum_qty %>
+        </div>
+        <div style="display: none;" data-inventory-field-editor>
+          <%= f.number_field :active_inventories_minimum_qty, min: 0, required: true, class: 'form-control' %>
+        </div>
+      <% end %>
+    </td>
+    <td style="display: none;"><%= inventory_group.active_inventories.pluck(:sku).join(', ') %></td>
+  </tr>
+  <% inventory_group.active_inventories.each do |inventory| %>
+    <tr class="inventoryRows_<%= inventory_group.id %>" style="display: none;">
+      <td></td>
+      <td class="text-left item-treeview item-treeview-span">
+        <span class="ml8 "><%= link_to inventory.name, inventory_group_path(inventory_group) %><small class="text-muted text-capitalize"></small></span>
+      </td>
+      <td><%= inventory_group.category.title %></td>
+      <td><%= inventory_group.subcategory.title %></td>
+      <td class="text-right"><p>1</p></td>
+      <td class="text-right">-</td>
+      <td style="display: none;"></td>
+    </tr>
+  <% end %>
+<% end %>
+
+<script>
+ $(document).ready(function() {
+   $('[data-inventory-field-value]').on('click', function() {
+     $(this).hide();
+     $(this).closest('[data-inventory-field-form]').find('[data-inventory-field-editor]').show();
+   });
+   $('[data-inventory-field-editor]').on('focusout', function() {
+     let form = $(this).closest('[data-inventory-field-form]');
+     $.ajax({
+       url: form.attr('action'),
+       beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+       method: 'PATCH',
+       data: form.serialize(),
+       dataType: "script"
+     });
+   });
+ })
+</script>

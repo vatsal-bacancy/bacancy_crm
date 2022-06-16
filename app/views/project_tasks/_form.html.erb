@@ -1,0 +1,89 @@
+<%= form_for project_task, local: true, class: 'form-inline' do |f| %>
+  <div class='row'>
+    <div class='col-md-6'>
+      <div class='form-group'>
+        <%= f.label 'Project Task Name' %>
+        <%= f.text_field :title, class: 'form-control' %>
+      </div>
+      <div class='form-group'>
+        <%= f.label 'Related To' %>
+        <%= f.text_field :related_to_task, data: {autocomplete_source: search_auto_complete_data_tasks_path }, class: "form-control"  %>
+      </div>
+      <div class='form-group'>
+        <%= f.label 'Status' %>
+        <%= f.select :status, options_for_select(ProjectTask.statuses.map {|k, v| [k.humanize.capitalize, k]}, project_task.status),{}, {class: 'form-control'} %>
+      </div>
+      <div class='form-group'>
+        <%= f.label 'Assigned To' %>
+        <%= f.select :assigned_to_id, options_from_collection_for_select(users, :id, :first_name, project_task.assigned_to_id),{}, {class: 'form-control'} %>
+      </div>
+      <div class='form-group'>
+        <%= f.label 'Priority' %>
+        <%= f.select :priority, options_for_select(ProjectTask.priorities.map {|k, v| [k.humanize.capitalize, k]}, project_task.priority),{}, {class: 'form-control'} %>
+      </div>
+    </div>
+    <div class='col-md-6'>
+      <div class='form-group'>
+        <%= f.label 'Start date' %>
+        <%= f.text_field :start_date, value: project_task.start_date ? project_task.start_date&.strftime("%m/%d/%Y, %I:%M %p") : '', class: 'form-control datepicker', id: 'start_date' %>
+      </div>
+      <div class='form-group'>
+        <%= f.label 'End date' %>
+        <%= f.text_field :end_date, value: project_task.end_date ? project_task.end_date&.strftime("%m/%d/%Y, %I:%M %p") : '', class: 'form-control datepicker', id: 'end_date' %>
+      </div>
+      <div class='form-group'>
+        <%= f.label 'Description' %>
+        <%= f.text_area :description, class: 'form-control' %>
+      </div>
+      <div class='form-group'>
+        <%= f.submit 'Save' , class: 'btn btn-success' %>
+        <%= link_to 'Back', project_tasks_path, class: 'btn btn-success' %>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+ <% content_for :script do %>
+  $(document).ready(function()
+  {
+    <%
+=begin%>
+ console.log("in autocomplete");
+    $('#task_related_to_task').autocomplete({
+    //console.log("in autocomplete")
+    source: $('#task_related_to_task').data('autocomplete_source'),
+    messages: {
+      noResults: '', results: function(){}
+    });
+<%
+=end%>
+
+    $('.datepicker').datepicker({format: 'mm/dd/yyyy', todayHighlight: true, autoclose: true});
+    $('#start_date').datepicker().on('changeDate',function(e)
+    {
+      $('#end_date').datepicker('setStartDate',e.date);
+    });
+    $('#end_date').datepicker().on('changeDate',function(e)
+    {
+      $('#start_date').datepicker('setEndDate',e.date);
+    });
+  });
+<% end %>
+
+
+<script>
+
+$(document).ready(function(){
+  console.log("in doc");
+
+    $('#project_task_related_to_task').autocomplete({
+      //source: ["foo","foobar","food"]
+      //console.log("in autocomplete");
+      source: $('#project_task_related_to_task').data('autocomplete-source'),
+      messages: {
+        noResults: '', results: function(){}
+      },
+      minLength: 3
+    });
+});
+</script>

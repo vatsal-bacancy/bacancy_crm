@@ -1,0 +1,6 @@
+<% if @shipment.errors.any? %>
+  $("#success_message").html("<%= escape_javascript(render 'layouts/flash') %>");
+<% else %>
+  $("#shipments").html("<%= escape_javascript(render 'clients/shipments/index', client: @client) %>")
+  $("#modal").modal('hide');
+<% end %>

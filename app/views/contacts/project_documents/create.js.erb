@@ -1,0 +1,2 @@
+$("#project-detail").html("<%= escape_javascript(render partial: 'project_documents/documents', locals: {documents: @documents, object: @project})%>");
+$("#documentModal").modal('hide');

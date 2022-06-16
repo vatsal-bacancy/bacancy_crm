@@ -1,0 +1,166 @@
+<div class="modal fade" id="modal" role="dialog">
+  <div class="modal-dialog">
+    <%= form_for shipment, remote: true, html: { 'data-block-ui' => 'true', 'data-block-ui-message' => 'Validating Your Shipment...!' } do |f| %>
+      <div id='flash_message'></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Create Shipment</h4>
+        </div>
+        <div class="modal-body">
+          <div class='block-ui-box m-t-5 row'>
+            <h3 class="title m-l-5 m-t-5">From</h3>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <%= label_tag 'Contact Name' %><span class="required">*</span>
+                <%= f.text_field :shipper_person_name, required: true, placeholder: 'Contact Name', class: 'form-control' %>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <%= label_tag 'Phone Number' %><span class="required">*</span>
+                <%= f.text_field :shipper_person_phone_no, required: true, maxlength: 14, placeholder: 'Phone Number', class: 'form-control phone-validation' %>
+              </div>
+            </div>
+            <div class="col-sm-12">
+              <div class="form-group">
+                <%= label_tag 'Address' %><span class="required">*</span>
+                <%= f.text_field :shipper_street_line, required: true, placeholder: 'Address', class: 'form-control' %>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <%= label_tag 'City' %><span class="required">*</span>
+                <%= f.text_field :shipper_city, required: true, placeholder: 'City', class: 'form-control' %>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <%= label_tag 'State' %><span class="required">*</span>
+                <%= f.text_field :shipper_state, required: true, placeholder: 'State', class: 'form-control' %>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <%= label_tag 'Country' %><span class="required">*</span>
+                <%= f.text_field :shipper_country, required: true, placeholder: 'Country', class: 'form-control' %>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <%= label_tag 'Zip Code' %><span class="required">*</span>
+                <%= f.text_field :shipper_zip_code, required: true, placeholder: 'Zip Code', class: 'form-control' %>
+              </div>
+            </div>
+          </div>
+          <div class='block-ui-box m-t-5 row'>
+            <h3 class="title m-l-5 m-t-5">To</h3>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <%= label_tag 'Contact Name' %><span class="required">*</span>
+                <%= f.text_field :recipient_person_name, required: true, placeholder: 'Contact Name', class: 'form-control' %>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <%= label_tag 'Phone Number' %><span class="required">*</span>
+                <%= f.text_field :recipient_person_phone_no, required: true, maxlength: 14, placeholder: 'Phone Number', class: 'form-control phone-validation' %>
+              </div>
+            </div>
+            <div class="col-sm-12">
+              <div class="form-group">
+                <%= label_tag 'Address' %><span class="required">*</span>
+                <%= f.text_field :recipient_street_line, required: true, placeholder: 'Address', class: 'form-control' %>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <%= label_tag 'City' %><span class="required">*</span>
+                <%= f.text_field :recipient_city, required: true, placeholder: 'City', class: 'form-control' %>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <%= label_tag 'State' %><span class="required">*</span>
+                <%= f.text_field :recipient_state, required: true, placeholder: 'State', class: 'form-control' %>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <%= label_tag 'Country' %><span class="required">*</span>
+                <%= f.text_field :recipient_country, required: true, placeholder: 'Country', class: 'form-control' %>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <%= label_tag 'Zip Code' %><span class="required">*</span>
+                <%= f.text_field :recipient_zip_code, required: true, placeholder: 'Zip Code', class: 'form-control' %>
+              </div>
+            </div>
+          </div>
+          <div class='block-ui-box m-t-5 row'>
+            <h3 class="title m-l-5 m-t-5">Package & Shipment Details</h3>
+            <div class="col-sm-12">
+              <div class="form-group">
+                <%= label_tag 'Ship Date' %><span class="required">*</span>
+                <%= f.text_field :ship_date, required: true, placeholder: 'Ship Date', class: 'form-control datetimepicker' %>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <%= label_tag 'Service Type' %><span class="required">*</span>
+                <%= f.select :service_type, Client::Shipment.supported_service_types, { include_blank: 'Select Service Type' }, required: true, class: 'form-control' %>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <%= label_tag 'Package Type' %><span class="required">*</span>
+                <%= f.select :package_type, Client::Shipment.supported_package_types, { include_blank: 'Select Package Type' }, required: true, class: 'form-control' %>
+              </div>
+            </div>
+            <div class="col-sm-12">
+              <div class="form-group">
+                <%= label_tag 'Packages' %><span class="required">*</span>
+                <div class="pull-right">
+                  <%= link_to_add_association f, :packages, 'data-association-insertion-node' => '[data-shipment-packages-fields]', 'data-association-insertion-method' => 'append', 'data-add-shipment-package-link' => true, class: 'common-link' do %>
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    Add Package
+                  <% end %>
+                </div>
+                <table class="table table-borderless">
+                  <tbody data-shipment-packages-fields>
+                  <%= f.fields_for :packages do |package| %>
+                    <%= render 'package_fields', f: package %>
+                  <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class='block-ui-box m-t-5 row'>
+            <h3 class="title m-l-5 m-t-5">Billing Details</h3>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <%= label_tag 'Payment Type' %><span class="required">*</span>
+                <%= f.select :payment_type, Client::Shipment.supported_payment_types, { include_blank: 'Select Payment Type' }, required: true, class: 'form-control' %>
+              </div>
+            </div>
+          </div>
+          <div class='block-ui-box m-t-5 row'>
+            <h3 class="title m-l-5 m-t-5">Pickup/Drop-off</h3>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <%= label_tag 'Dropoff Type' %><span class="required">*</span>
+                <%= f.select :drop_off_type, Client::Shipment.supported_drop_off_types, { include_blank: 'Select Drop off Type' }, required: true, class: 'form-control' %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <%= submit_tag 'Create Shipment', class: "btn btn-success" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

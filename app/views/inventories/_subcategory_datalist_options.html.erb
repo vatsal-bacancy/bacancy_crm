@@ -1,0 +1,5 @@
+<% if category %>
+  <% category.subcategories.each do |subcategory| %>
+    <option value="<%= subcategory.title %>">
+  <% end %>
+<% end %>

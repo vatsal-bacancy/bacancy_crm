@@ -1,0 +1,160 @@
+
+<div role="tabpanel" class="tab-pane fade in active" id="tab1">
+  <div class="col-md-12">
+
+    <div class="site-content-data pr15 pl15">
+      <div class="row cl-both" >
+        <div class="col-sm-5">
+          <!--<div class="d-flex flex-align-center cm-dasboard-serach">
+            <label class="blue-font">Show </label><select name="leads_length" aria-controls="leads" class="form-control"><option value="50">50</option><option value="100">100</option></select> <label>entries</label>
+          </div>-->
+        </div>
+        <!--<div class="col-sm-7">
+          <div class="d-flex flex-align-center cm-dasboard-serach pull-right">
+            <label class="">Search</label>
+            <input type="search" class="form-control" placeholder="Search here" aria-controls="leads" id="search-view">
+          </div>
+        </div>-->
+      </div>
+
+      <div class="row ">
+        <div class="col-sm-12 m-r-20">
+         <%= ticket.description.html_safe %>
+        </div>
+      </div>
+
+
+      <div id="overview-data">
+        <% overviews.each do |date, data|%>
+          <div id="myTable">
+            <div class="row">
+              <div class="col-sm-12">
+                <h2 class="date-heading mt15">
+                  <span>
+                    <%#= project.created_at.strftime("%m/%d/%Y") %>
+                    <%= date == Date.today ? "Today" : date&.strftime("%m/%d/%Y")%>
+                  </span>
+                </h2>
+              </div>
+            </div>
+
+            <div class="ticket-overview table-responsive">
+              <table width="100%" class="sub-table">
+                <% data.each do |message_doc| %>
+                  <tr>
+                    <%if message_doc.class.name == 'Message'%>
+                      <td style="padding:5px 0px;" width="5%"><a href="" class="msg-com-btn msg-btn"> Comment</a></td>
+                      <td class="ticket-overview-link" width="45%">
+                        <span style="word-break: break-word;">
+                          <%=  message_doc.description.html_safe %>
+                        </span>
+                      </td>
+                      <td class="text-right" width="50%" class="ticket-overview-link">
+                        <% if message_doc.resourcable == current_contact && message_doc.messageable.status != "Close"  %>
+                        <div class="btn-wrapper dis-inline-flex">
+                          <div class="action-icon">
+                            <%= link_to contacts_ticket_message_reply_edit_path(ticket,message_doc), remote: true do %>
+                              <i class="fa fa-pencil " aria-hidden="true"></i>
+                            <% end %>
+                          </div>
+                          <div class="action-icon">
+                            <%= link_to contacts_ticket_message_reply_delete_path(ticket,message_doc, object: 'Message'),method: :delete,remote: true do %>
+                              <i class="fa fa-trash " aria-hidden="true"></i>
+                            <% end %>
+                          </div>
+                          </div>
+                        </div>
+                        <% end %>
+
+                        <span class="posted-by">Posted by</span>
+                        <span class="posted-by-name"><%= message_doc.resourcable.fullname%> at <%= message_doc.created_at.strftime("%I:%M %p")%></span>
+                      </td>
+                    <% elsif message_doc.class.name == 'DocumentDocumentable'%>
+                      <td style="padding:5px 0px;" width="5%"><a href="" class="msg-com-btn doc-btn">Document</a></td>
+                      <td class="ticket-overview-link" width="45%">
+                        <span class="">
+                          <%= link_to message_doc.document.attachment.file.filename, message_doc.document.attachment.url, class: "text-break-word" %>
+                         </span>
+                      </td>
+                      <td class="text-right" width="50%">
+                        <% if message_doc.document.resourcable == current_contact %>
+                          <div class="btn-wrapper dis-inline-flex">
+                            <div class="action-icon">
+                              <%= link_to contacts_ticket_message_reply_delete_path(ticket,message_doc,object: 'Document'),method: :delete,remote: true do %>
+                                <i class="fa fa-trash " aria-hidden="true"></i>
+                              <% end %>
+                            </div>
+                          </div>
+                        <% end %>
+                        <span class="posted-by">Posted by</span>
+                        <span class="posted-by-name"><%= message_doc.document.resourcable.fullname%> at <%= message_doc.created_at.strftime("%I:%M %p")%></span>
+                      </td>
+                    <%end%>
+                  </tr>
+                <%end%>
+              </table>
+            </div>
+          </div>
+        <%end%>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div id="reply-ticket">
+    <%= render partial: 'contacts/tickets/ticket_reply', locals: {message: ticket.messages.build, ticket: ticket } %>
+  </div>
+
+
+</div>
+<script>
+$(document).ready(function(){
+  $("#search-view").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#overview-data #myTable tr").filter(function() {
+      $(this).toggle($('td:nth-child(2)',this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+
+    $('#file').on('change', function (e) {
+      if(!e.target.files) return;
+      var files = e.target.files;
+      for(var i=0; i<files.length; i++) {
+        var f = files[i];
+        var datafile = new FormData();
+        datafile.append('resourcable_type', "<%= current_contact.class.name %>");
+        datafile.append('resourcable_id', "<%= current_contact.id %>" );
+        datafile.append('documentable_type', "<%= current_contact.system_directory.class.name %>");
+        datafile.append('documentable_id', "<%=  current_contact.system_directory.id %>" );
+        datafile.append('attachment', f);
+        $.ajax({
+          url: "<%= contacts_uploadfiles_url %>",
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          type: 'POST',
+          contentType: false,
+          cache: false,
+          processData: false,
+          data: datafile,
+          success: function(res, file){
+            documentId = res["d_id"];
+            $document_ids.push(documentId);
+            $.ajax({
+              url: "<%= selected_documents_contacts_documents_path %>",
+              beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+              type: 'GET',
+              data: {
+                document_ids: $document_ids
+              },
+              dataType: "script",
+              success: function(result){
+              }
+            });
+            $('.document_ids').val($document_ids);
+          }
+        });
+      }
+    });
+
+});
+</script>

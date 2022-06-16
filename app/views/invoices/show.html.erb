@@ -1,0 +1,14 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <b>Company name:</b><%= @invoice.client.company_name %><br>
+          <b>Email:</b> <%= @invoice.email %><br>
+          <b>Due date:</b><%= @invoice.due_date%><br>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

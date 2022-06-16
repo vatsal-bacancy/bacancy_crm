@@ -1,0 +1,7 @@
+<% if @employee.errors.any? %>
+  $("#success_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");
+<% else %>
+  $("#success_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>"); 
+  $('#employees-list .list').html("<%= escape_javascript(render partial: 'index', locals: { employer: @client }) %>"); //on client and lead show page
+  $('#employeeModal').modal('hide');
+<% end %>

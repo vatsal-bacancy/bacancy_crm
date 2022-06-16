@@ -1,0 +1,6 @@
+$('#showNote').html("<%= escape_javascript(render partial: 'new', locals: { note: @note }) %>");
+$('#modalContainer-index').html("<%= escape_javascript(render partial: 'new', locals: { note: @note }) %>");
+
+$('#noteModal').modal('show');
+$document_ids = [];
+//$('.ckeditor').ckeditor();

@@ -1,0 +1,20 @@
+<% if @contact.errors.any? %>
+  $("#flash_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>"); 
+<% else %>
+$("#success_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");
+$("#fullname_contact").html("<%= @contact.fullname %>");
+$("#fullname_contact_header").html("<%= @contact.fullname %>");
+$("#contact-email").html("<%= @contact.email %>");
+$("#contact-details").html("<%= escape_javascript(render partial: 'contact_summary',locals: { current_contact: @contact }) %>")
+
+<%if params[:company_id].present? %>
+  <% if @client.errors.any? %>
+    $("#flash_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>"); 
+  <% else %>
+    $("#success_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");
+    $("#company-details").html("<%= escape_javascript(render partial: 'client_summary',locals: {company: @client} ) %>");
+  <% end %>
+<% end %>
+$("#contact-company").html("<%= @client.company_name %>");
+$('#modal').modal('hide');
+<% end %>

@@ -1,0 +1,2 @@
+$("#client-list").html("<%= escape_javascript(render partial: 'client_list', locals: {clients: @clients, fields: @fields, data: @data}) %>")
+$("#success_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");

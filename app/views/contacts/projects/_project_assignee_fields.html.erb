@@ -1,0 +1,15 @@
+<div class="col-sm-12">
+  <div class="row">
+    <div class="col-lg-11 col-xs-10 ">
+      <div class='project-assignee-wrapper'>
+      
+        <%= f.email_field :email, placeholder: 'Email', class: 'form-control' %>
+        <%= f.text_field :title, placeholder: 'Title', class: 'form-control' %>
+        <%= f.text_field :company, placeholder: 'Company', class: 'form-control' %>
+      </div>
+    </div>
+    <div class="col-lg-1 col-xs-2 project-assignee-delete">
+      <%= link_to_remove_association '<i class="fa fa-trash" aria-hidden="true"></i>'.html_safe, f %>
+    </div>
+  </div>
+</div>

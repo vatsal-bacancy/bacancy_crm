@@ -1,0 +1,30 @@
+<div class="col-sm-12">
+  <div class="site-content-data">
+    <div class="table-list">
+      <div class="table-responsive">
+        <table class="common-data-table" id="leads">
+          <thead>
+            <th>Project Name</th>
+            <th>User</th>
+            <th>User Email</th>
+            <th>Company</th>
+            <th>Invitation Sent At</th>
+            <th>Invitation Status</th>
+          </thead>
+          <tbody class='list-body'>
+            <% @project_users.each do |project_user| %>
+              <tr>
+                <td><%= project_user.try(:project).try(:name) %></td>
+                <td><%= project_user.try(:user).try(:fullname) %></td>
+                <td><%= project_user.try(:user).try(:email) %></td>
+                <td><%= project_user.try(:client).try(:company_name) %></td>
+                <td><%= project_user.try(:created_at).try(:strftime, "%m/%d/%Y, %I:%M %p") %></td>
+                <td><%= project_user.status == true ? 'Accepted' : 'Pending' %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

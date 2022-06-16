@@ -1,0 +1,71 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+  <div class="site-content">
+    <div class="dynmic-tab-div">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="dynmic-tab-div-header">
+            <span class="heading">CRM Settings > Edit Workflow</span>
+            <div class="pull-right">
+              <%= link_to work_flows_path, class: 'btn btn-success' do %>
+                Back
+              <% end %>
+            </div>
+          </div>
+          <div class="dynmic-tab-div-data">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="col-md-3 col-sm-12">
+                </div>
+                <div class="col-md-6 col-sm-12" data-work-flow-form>
+                  <%= render 'form', work_flow: @work_flow %>
+                </div>
+                <div class="col-md-3 col-sm-12">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function(){
+    $(document).on('change', '[data-field-change]', function() {
+      let originalElement = $(this).closest('.nested-fields').find('[data-field-value]');
+      $(`[data-original-element-name="${originalElement.attr("name")}"]`).remove();
+      if($(this).find(":selected").attr('data-is-picklist')) {
+        let options = $(this).find(":selected").data('picklist-values');
+        let select = $(document.createElement("select"));
+        select.attr('data-original-element-name', originalElement.attr('name'));
+        select.addClass('form-control');
+        for (let i = 0; i < options.length; i++) {
+          select.append($('<option/>', { value: options[i], text: options[i] }));
+        }
+        select.val(originalElement.val());
+        originalElement.hide();
+        select.on('change', function(){
+          originalElement.val($(this).val());
+        });
+        select.insertAfter(originalElement);
+      } else {
+        originalElement.show();
+      }
+    });
+    $('[data-field-change]').trigger('change');
+
+    $(document).on('click', '[data-edit-action]', function() {
+      Bpro.oneTimeKeystore.write('data-for-action-edit-data', {
+        node: $(this).closest('.nested-fields'),
+        serializedArray: Bpro.utils.formSerializer($(this).closest('.nested-fields'))
+      });
+      $.ajax({
+        url: $(this).attr('data-edit-action-url'),
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: 'POST',
+        data: $('[data-work-flow-form]').find('[data-serializable]').serialize()
+      });
+    });
+  });
+</script>

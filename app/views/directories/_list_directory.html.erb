@@ -1,0 +1,17 @@
+<div class="col-md-12">
+  <div class="col-md-4">
+    <%= link_to directory_path(directory), remote: true do%>
+      <i class="fa fa-folder" aria-hidden="true"></i>
+      <%=  directory.name%>
+    <% end %>
+  </div>
+  <div class="col-md-3">
+
+    <%= link_to edit_directory_path(directory), remote: true do%>
+    <i class="fa fa-pencil" aria-hidden="true"></i>
+    <%end%>
+    <%= link_to directory_path(directory),data: { confirm: "Are you sure you want to Delete this Directory?" }, method: :delete, remote: true do%>
+      <i class="fa fa-trash" aria-hidden="true"></i>
+    <%end%>
+  </div>
+</div>

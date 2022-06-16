@@ -1,0 +1,98 @@
+<% action_update = checked_permission?(current_user, @klass_list['Vendor'], @action_list['update']) %>
+<div class="dynmic-tab-div">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="dynmic-tab-div-header">
+        <span class="heading">Vendor Details</span>
+      </div>
+      <div class="cmn-tab-div">
+        <div class="row">
+          <div class="col-md-8 col-sm-12 mobile-center">
+            <div class="info-lead">
+              <p class="title"><%= vendor.company_name %></p>
+              <div class="table-responsive">
+                <table>
+                  <tbody>
+                  <tr>
+                    <td>
+                      <div class="icon-data"><i class="fa fa-user-o" aria-hidden="true"></i></div>
+                    </td>
+                    <td>
+                      <div class="cmn-lead-info-data">
+                        <span class="light-gray-font">Assigned To</span> <b> <%= vendor.assigned_to.fullname %> </b>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="icon-data">
+                        <i class="fa fa-map-marker" aria-hidden="true" style="font-size:28px;"></i>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="cmn-lead-info-data">
+                        <p class="cmn-lead-info-data">
+                          <%= link_to view_map_path(address: "#{vendor.street_address} #{vendor.city} #{vendor.state} #{vendor.zip_code}", company_name: vendor.company_name), target: '_blank' do %>
+                            <%= vendor.street_address.present? ? "#{vendor.street_address}," : "" %>
+                            <%= vendor.city.present? ? "#{vendor.city}," : "" %><br/>
+                            <%= vendor.state.present? ? "#{vendor.state}," : "" %>
+                            <%= vendor.zip_code.present? ? "#{vendor.zip_code}" : "" %>
+                          <% end %>
+                        </p>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-1 col-sm-offset-3 pull-right text-right mini-mobile-left">
+            <div class="lead-icon-wrapper">
+              <div class="lead-icon">
+                <% if action_update %>
+                  <%= link_to edit_vendor_path(vendor), remote: true, class: "cmn-lead-icon info-edit-icon" do %>
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% current_user.role.readable_root_groups(klass: klass).each do |group| %>
+  <div class="dynmic-tab-div">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="dynmic-tab-div-header">
+          <span class="heading"><%= group.label %></span>
+          <div class="pull-right">
+            <%= link_to 'Edit', edit_summary_vendor_path(vendor, group_id: group.id), remote: true, class: 'site-content-head-btn' %>
+          </div>
+        </div>
+        <div class="dynmic-tab-div-data">
+          <div class="row">
+            <% group.fields.each do |field| %>
+              <div class="col-sm-6 border-right">
+                <div class="row">
+                  <div class="col-md-4">
+                    <span class="info-title"><%= field.label %>:<span class="required"><%= '*' if field.required? %></span></span>
+                  </div>
+                  <div class="col-md-6">
+                  <span class="info-dynamic-data value">
+                    <%= pretty_value(field, vendor) %>
+                  </span>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

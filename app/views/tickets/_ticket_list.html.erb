@@ -1,0 +1,72 @@
+<div role="tabpanel" class="tab-pane fade in active" id="ticket-assigned-to-you-tab">
+  <div class="col-sm-12">
+    <div class="dynmic-tab-div directory-structure">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="dynmic-tab-div-data">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="site-content-data">
+                  <div class="table-list">
+                    <div class="table-responsive">
+                    <%= ::Renderer::AjaxDatatable.new.render(id: 'ajax-datatable-tickets-assigned-to-you',
+                                                             url: tickets_path,
+                                                             fields: ticket_fields.as_json.concat([
+                                                               {name: 'ticket_users', label: 'Assigned To', column_type: 'Picklist'},
+                                                               {name: 'owner', label: 'Created By', column_type: 'Picklist'}
+                                                             ]),
+                                                             default_search: {
+                                                               ticket_users: current_user.fullname
+                                                             }) %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div role="tabpanel" class="tab-pane fade" id="ticket-created-by-you-tab">
+  <div class="col-sm-12">
+    <div class="dynmic-tab-div directory-structure">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="dynmic-tab-div-data">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="site-content-data">
+                  <div class="table-list">
+                    <div class="table-responsive">
+                      <%= ::Renderer::AjaxDatatable.new.render(id: 'ajax-datatable-tickets-created-by-you',
+                                                               url: tickets_path,
+                                                               fields: ticket_fields.as_json.concat([
+                                                                 {name: 'ticket_users', label: 'Assigned To', column_type: 'Picklist'},
+                                                                 {name: 'owner', label: 'Created By', column_type: 'Picklist'}
+                                                               ]),
+                                                               default_search: {
+                                                                 owner: current_user.fullname
+                                                               }) %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $(document).trigger('ajax-datatable:reload');
+
+    $('[id="check-all"]').on('change', function() {
+      $(this).closest('table').find('.list-body .check').prop('checked', $(this).prop('checked'));
+    });
+  });
+</script>

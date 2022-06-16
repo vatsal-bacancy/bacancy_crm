@@ -1,0 +1,125 @@
+<%= form_for work_flow do |f|%>
+  <div class="form-group">
+    <%= f.label :name, "Workflow Name" %><span class="required">*</span>
+    <%= f.text_field :name, class: 'form-control', required: true, data: { serializable: true } %>
+  </div>
+  <div class="form-group">
+    <%= f.label :description, "Description" %>
+    <%= f.text_area :description, class: 'form-control', data: { serializable: true } %>
+  </div>
+  <div class="form-group">
+    <%= f.label :module, "Module"%><span class="required">*</span>
+    <%= f.select :klass_id, options_for_select(Klass.pluck(:label, :id), f.object.klass&.id), {prompt: "Select Module"}, required: true, class: "form-control", data: { "klass-change": true, "serializable": true } %>
+  </div>
+  <div class="form-group">
+    <%= f.label :on, "Trigger Workflow On" %>
+    <span class="required">*</span><br/>
+    <div class="radio-lbl">
+      <label class="radio">
+        <%= f.radio_button :on, 'created', required: true, 'data-workflow-trigger-type' => true %>On created
+        <span class="checkround"></span>
+      </label>
+      <label class="radio">
+        <%= f.radio_button :on, 'updated', required: true, 'data-workflow-trigger-type' => true %>On updated (Includes Creation)
+        <span class="checkround"></span>
+      </label>
+      <label class="radio">
+        <%= f.radio_button :on, 'deleted', required: true, 'data-workflow-trigger-type' => true %>On deleted
+        <span class="checkround"></span>
+      </label>
+      <label class="radio">
+        <%= f.radio_button :on, 'recurrence', required: true, 'data-workflow-trigger-type' => true %>Time Interval
+        <span class="checkround"></span>
+      </label>
+    </div>
+  </div>
+  <div class="form-group" data-workflow-recurrence-form data-show-on-workflow-trigger-type="recurrence">
+    <%= f.hidden_field :recurrence_schedule, "data-workflow-recurrence-schedule" => true %>
+  </div>
+  <div>
+    <div class="row block-ui-box m-t-5 m-r-5">
+      All Conditions (All conditions must be met)
+      <div class="work_flow_condition_field_list_and">
+        <%= f.fields_for :and_conditions do |condition| %>
+          <%= render partial: 'and_condition_fields', locals: { f: condition, operator_type: 'AND' }  %>
+        <% end %>
+      </div>
+      <%= link_to_add_association 'Add Condition', f, :and_conditions, class: 'site-content-head-btn pull-right', data: { 'association-insertion-node' => '.work_flow_condition_field_list_and', 'association-insertion-method' => 'prepend' } %>
+    </div>
+    <div class="row block-ui-box m-t-5 m-r-5">
+      Any Conditions (At least one of the conditions must be met)
+      <div class="work_flow_condition_field_list_or">
+        <%= f.fields_for :or_conditions do |condition| %>
+          <%= render partial: 'or_condition_fields', locals: { f: condition, operator_type: 'OR' } %>
+        <% end %>
+      </div>
+      <%= link_to_add_association 'Add Condition', f, :or_conditions, class: 'site-content-head-btn pull-right', data: { 'association-insertion-node' => '.work_flow_condition_field_list_or', 'association-insertion-method' => 'prepend' } %>
+    </div>
+  </div>
+  <div>
+    <div class="row block-ui-box m-t-5 m-r-5">
+      Action
+      <div data-work_flow_action_fields>
+        <%= f.fields_for :actions do |action| %>
+          <%= render partial: 'work_flows/action/fields', locals: { f: action }  %>
+        <% end %>
+      </div>
+      <%= link_to_add_association '#', f, :actions, class: 'hidden site-content-head-btn pull-right', partial: 'work_flows/action/fields', data: { 'association-insertion-node' => '[data-work_flow_action_fields]', 'association-insertion-method' => 'prepend', 'insert-mail-action-button' => true } %>
+      <%= link_to 'Add Mail Action', 'javascript:void(0)', class: 'site-content-head-btn pull-right', 'data-add-action' => true, 'data-add-action-url' => action_builder_work_flows_path(type: WorkFlows::Action.mail_type) %>
+      <%= link_to 'Add SMS Action', 'javascript:void(0)', class: 'site-content-head-btn pull-right', 'data-add-action' => true, 'data-add-action-url' => action_builder_work_flows_path(type: WorkFlows::Action.sms_type) %>
+    </div>
+  </div>
+  <%= f.hidden_field :id %>
+  <%= f.submit class: 'btn btn-success mt-10' %>
+<% end %>
+<script>
+  $(document).ready(function() {
+    $('[data-klass-change]').on('change', function() {
+      $.ajax({
+        url: '<%= builder_work_flows_path %>',
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: 'POST',
+        data: $('[data-work-flow-form]').find('[data-serializable]').serialize(),
+      });
+    });
+    $('[data-add-action]').on('click', function() {
+      Bpro.utils.formValidator($('[data-work-flow-form]').find('form')[0], () => {
+        $.ajax({
+          url: $(this).attr('data-add-action-url'),
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          type: 'POST',
+          data: $('[data-work-flow-form]').find('[data-serializable]').serialize(),
+          dataType: 'script'
+        });
+      });
+    });
+    $('[data-work_flow_action_fields]').on('cocoon:after-insert', function(event, element) {
+      element = $(element);
+      Bpro.utils.formDeSerializer(element, Bpro.oneTimeKeystore.read('data-for-work_flow_action_fields'));
+    });
+
+    $('[data-workflow-recurrence-form]').jqCron({
+      enabled_minute: true,
+      multiple_dom: true,
+      multiple_month: true,
+      multiple_mins: true,
+      multiple_dow: true,
+      multiple_time_hours: true,
+      multiple_time_minutes: true,
+      no_reset_button: false,
+      numeric_zero_pad: true,
+      default_value: '0 9 * * *',
+      lang: 'en',
+      bind_to: $('[data-workflow-recurrence-schedule]'),
+    });
+    $('[data-workflow-trigger-type]').on('change', function() {
+      if($(this).val() == $('[data-workflow-recurrence-form]').attr('data-show-on-workflow-trigger-type')) {
+        $('[data-workflow-recurrence-form]').show();
+        return;
+      }
+      $('[data-workflow-recurrence-form]').hide();
+    });
+    $('[data-workflow-recurrence-form]').hide();
+    $('[data-workflow-trigger-type]:checked').trigger('change');
+  });
+</script>

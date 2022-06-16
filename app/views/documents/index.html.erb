@@ -1,0 +1,62 @@
+<div id="success_message"></div>
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+
+  <div class="site-content">
+
+    <div class="row">
+      <div class="col-md-12">
+
+        <div class="dynmic-tab-div">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="dynmic-tab-div-header">
+                <span class="heading">Directories</span>
+
+              </div>
+              <div class="cmn-tab-div">
+                <div class="row">
+                  <div class="col-sm-12 mobile-center">
+                    <% @directories.each do |directory|%>
+                    <div class="col-md-3">
+                      <%= link_to directory_path(directory) do%>
+                        <i class="fa fa-folder"> </i><%= directory.name %>
+                      <% end %>
+                    </div>
+                    <%end%>
+                  </div>
+                </div>
+
+                <%#= render partial: "client_list", locals: {clients: @clients, fields: @fields, data: @data}%>
+              </div>
+              <div class="dynmic-tab-div-header">
+                <span class="heading">Documents</span>
+                <%@documents.each do |document| %>
+                <%end%>
+
+              </div>
+              <div class="cmn-tab-div">
+                <div class="row">
+                  <div class="col-md-8 col-sm-12 mobile-center">
+
+                  </div>
+                </div>
+
+                <%#= render partial: "client_list", locals: {clients: @clients, fields: @fields, data: @data}%>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="modalContainer" class="modal-right"></div>
+    <div id="importfiled"></div>
+  </div>
+</div>
+<script>
+  $(document).ready(function() {
+    $(".dropdown-toggle").dropdown();
+  });
+</script>

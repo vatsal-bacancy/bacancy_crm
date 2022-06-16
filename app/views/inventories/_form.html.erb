@@ -1,0 +1,442 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="site-content-data inv-data">
+      <div id="client-list" class="table-list">
+        <div class="white-body-wrapper">
+          <div class="light-gray-bg mr-10 ml-10 pl10 pr10">
+            <div class="row">
+              <div class="col-lg-8">
+                <div class="row mt20">
+                  <div class="col-md-2">
+                    <%= f.label :name, 'Name' %><span class="required">*</span>
+                    <i aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="Stock keeping unit for this item">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon align-middle gray-bg  ">
+                        <path d="M317.1 147.5c-15.1-13.8-35.5-20.8-60.5-20.8-23.7 0-43.1 6.5-57.7 19.4-14.6 12.9-23.5 31.5-26.4 55.5l-.6 4.9 40.4 4.8.7-4.6c2.5-15.8 7.7-27.5 15.4-34.7s17.1-10.7 28.7-10.7c12 0 21.9 3.9 30.1 11.9s12.2 16.9 12.2 27.3c0 5.6-1.3 10.7-4 15.4-2.8 4.9-9.3 11.9-19.3 20.7-10.7 9.4-17.9 16.5-22.1 21.5-5.8 7-10 14-12.6 20.8-3.5 9.1-5.3 19.9-5.3 32.3 0 2.1.1 5.1.2 9l.1 4.7h38.4l.1-4.8c.3-14.3 1.4-21.4 2.3-24.7 1.3-4.7 3.2-8.8 5.9-12.5 2.8-3.8 9-10 18.5-18.4 15.1-13.4 25.1-24.6 30.4-34.2 5.4-9.7 8.1-20.4 8.1-31.9 0-19.9-7.7-37-23-50.9zm-60.8 237.8c12.1 0 22-9.8 22-22 0-12.1-9.8-22-22-22-12.1 0-22 9.8-22 22s9.8 22 22 22z"></path>
+                        <path d="M437.4 74.6C388.9 26.1 324.5-.5 256-.5S123.1 26.2 74.6 74.6C26.1 123.1-.5 187.5-.5 256s26.7 132.9 75.1 181.4c48.5 48.5 112.9 75.1 181.4 75.1s132.9-26.7 181.4-75.1c48.5-48.5 75.1-112.9 75.1-181.4s-26.6-132.9-75.1-181.4zm-22.6 340.2c-42.4 42.4-98.8 65.8-158.8 65.8s-116.4-23.4-158.8-65.8S31.5 316 31.5 256 54.8 139.6 97.2 97.2 196 31.5 256 31.5s116.4 23.4 158.8 65.8 65.8 98.8 65.8 158.8-23.4 116.3-65.8 158.7z"></path>
+                      </svg>
+                    </i>
+                  </div>
+                  <div class="col-md-10">
+                    <div class="form-group">
+                      <%= f.text_field :name, placeholder: 'Enter Item Name', class: "form-control", required: true %>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt20 ">
+                  <div class="col-md-2">
+                    <%= f.label :name, 'SKU' %><span class="required">*</span>
+                    <i aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="Stock keeping unit for this item">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon align-middle gray-bg  ">
+                        <path d="M317.1 147.5c-15.1-13.8-35.5-20.8-60.5-20.8-23.7 0-43.1 6.5-57.7 19.4-14.6 12.9-23.5 31.5-26.4 55.5l-.6 4.9 40.4 4.8.7-4.6c2.5-15.8 7.7-27.5 15.4-34.7s17.1-10.7 28.7-10.7c12 0 21.9 3.9 30.1 11.9s12.2 16.9 12.2 27.3c0 5.6-1.3 10.7-4 15.4-2.8 4.9-9.3 11.9-19.3 20.7-10.7 9.4-17.9 16.5-22.1 21.5-5.8 7-10 14-12.6 20.8-3.5 9.1-5.3 19.9-5.3 32.3 0 2.1.1 5.1.2 9l.1 4.7h38.4l.1-4.8c.3-14.3 1.4-21.4 2.3-24.7 1.3-4.7 3.2-8.8 5.9-12.5 2.8-3.8 9-10 18.5-18.4 15.1-13.4 25.1-24.6 30.4-34.2 5.4-9.7 8.1-20.4 8.1-31.9 0-19.9-7.7-37-23-50.9zm-60.8 237.8c12.1 0 22-9.8 22-22 0-12.1-9.8-22-22-22-12.1 0-22 9.8-22 22s9.8 22 22 22z"></path>
+                        <path d="M437.4 74.6C388.9 26.1 324.5-.5 256-.5S123.1 26.2 74.6 74.6C26.1 123.1-.5 187.5-.5 256s26.7 132.9 75.1 181.4c48.5 48.5 112.9 75.1 181.4 75.1s132.9-26.7 181.4-75.1c48.5-48.5 75.1-112.9 75.1-181.4s-26.6-132.9-75.1-181.4zm-22.6 340.2c-42.4 42.4-98.8 65.8-158.8 65.8s-116.4-23.4-158.8-65.8S31.5 316 31.5 256 54.8 139.6 97.2 97.2 196 31.5 256 31.5s116.4 23.4 158.8 65.8 65.8 98.8 65.8 158.8-23.4 116.3-65.8 158.7z"></path>
+                      </svg>
+                    </i>
+                  </div>
+                  <div class="col-md-10">
+                    <div class="form-group">
+                      <%= f.text_field :sku, placeholder: 'Enter SKU', class: "form-control", required: true %>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt10">
+                  <div class="col-md-2">
+                    <%= f.label :inventory_status %>
+                  </div>
+                  <div class="col-md-10">
+                    <div class="form-group">
+                      <%= f.select :status, options_for_select(inventory.valid_statuses, selected: inventory.status, disabled: inventory.disabled_statuses), {include_blank: 'Select Inventory Status'}, class: 'form-control' %>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt10 hide">
+                  <div class="col-md-2">
+                    <%= f.label :unit_id, 'Unit' %>
+                    <i aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="Unit of measurement">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon align-middle gray-bg  ">
+                        <path d="M317.1 147.5c-15.1-13.8-35.5-20.8-60.5-20.8-23.7 0-43.1 6.5-57.7 19.4-14.6 12.9-23.5 31.5-26.4 55.5l-.6 4.9 40.4 4.8.7-4.6c2.5-15.8 7.7-27.5 15.4-34.7s17.1-10.7 28.7-10.7c12 0 21.9 3.9 30.1 11.9s12.2 16.9 12.2 27.3c0 5.6-1.3 10.7-4 15.4-2.8 4.9-9.3 11.9-19.3 20.7-10.7 9.4-17.9 16.5-22.1 21.5-5.8 7-10 14-12.6 20.8-3.5 9.1-5.3 19.9-5.3 32.3 0 2.1.1 5.1.2 9l.1 4.7h38.4l.1-4.8c.3-14.3 1.4-21.4 2.3-24.7 1.3-4.7 3.2-8.8 5.9-12.5 2.8-3.8 9-10 18.5-18.4 15.1-13.4 25.1-24.6 30.4-34.2 5.4-9.7 8.1-20.4 8.1-31.9 0-19.9-7.7-37-23-50.9zm-60.8 237.8c12.1 0 22-9.8 22-22 0-12.1-9.8-22-22-22-12.1 0-22 9.8-22 22s9.8 22 22 22z"></path>
+                        <path d="M437.4 74.6C388.9 26.1 324.5-.5 256-.5S123.1 26.2 74.6 74.6C26.1 123.1-.5 187.5-.5 256s26.7 132.9 75.1 181.4c48.5 48.5 112.9 75.1 181.4 75.1s132.9-26.7 181.4-75.1c48.5-48.5 75.1-112.9 75.1-181.4s-26.6-132.9-75.1-181.4zm-22.6 340.2c-42.4 42.4-98.8 65.8-158.8 65.8s-116.4-23.4-158.8-65.8S31.5 316 31.5 256 54.8 139.6 97.2 97.2 196 31.5 256 31.5s116.4 23.4 158.8 65.8 65.8 98.8 65.8 158.8-23.4 116.3-65.8 158.7z"></path>
+                      </svg>
+                    </i>
+                  </div>
+                  <div class="col-md-10">
+                    <%= f.select :unit_id, options_for_select(Unit.pluck(:messure, :id), selected: inventory.unit_id), {}, class: 'form-control' %>
+                    <div class="radio-lbl pl-0 mt20 mb20">
+                      <label class="check" style="display: inline;">Returnable Item
+                        <i aria-hidden="true" data-toggle="tooltip" data-placement="right" title="" data-original-title="Enable this option if this item is eligible for sales return." aria-describedby="tooltip559838">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon align-middle gray-bg  ">
+                            <path d="M317.1 147.5c-15.1-13.8-35.5-20.8-60.5-20.8-23.7 0-43.1 6.5-57.7 19.4-14.6 12.9-23.5 31.5-26.4 55.5l-.6 4.9 40.4 4.8.7-4.6c2.5-15.8 7.7-27.5 15.4-34.7s17.1-10.7 28.7-10.7c12 0 21.9 3.9 30.1 11.9s12.2 16.9 12.2 27.3c0 5.6-1.3 10.7-4 15.4-2.8 4.9-9.3 11.9-19.3 20.7-10.7 9.4-17.9 16.5-22.1 21.5-5.8 7-10 14-12.6 20.8-3.5 9.1-5.3 19.9-5.3 32.3 0 2.1.1 5.1.2 9l.1 4.7h38.4l.1-4.8c.3-14.3 1.4-21.4 2.3-24.7 1.3-4.7 3.2-8.8 5.9-12.5 2.8-3.8 9-10 18.5-18.4 15.1-13.4 25.1-24.6 30.4-34.2 5.4-9.7 8.1-20.4 8.1-31.9 0-19.9-7.7-37-23-50.9zm-60.8 237.8c12.1 0 22-9.8 22-22 0-12.1-9.8-22-22-22-12.1 0-22 9.8-22 22s9.8 22 22 22z"></path>
+                            <path d="M437.4 74.6C388.9 26.1 324.5-.5 256-.5S123.1 26.2 74.6 74.6C26.1 123.1-.5 187.5-.5 256s26.7 132.9 75.1 181.4c48.5 48.5 112.9 75.1 181.4 75.1s132.9-26.7 181.4-75.1c48.5-48.5 75.1-112.9 75.1-181.4s-26.6-132.9-75.1-181.4zm-22.6 340.2c-42.4 42.4-98.8 65.8-158.8 65.8s-116.4-23.4-158.8-65.8S31.5 316 31.5 256 54.8 139.6 97.2 97.2 196 31.5 256 31.5s116.4 23.4 158.8 65.8 65.8 98.8 65.8 158.8-23.4 116.3-65.8 158.7z"></path>
+                          </svg>
+                        </i>
+                        <%= f.check_box :returnable %>
+                        <span class="checkmark" style="margin-top:3px;"></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class='row mt10 hide'>
+                  <div class='col-md-offset-2 col-md-10'>
+                    <div class="radio-lbl pl-0">
+                      <label class="check ">Taxable
+                        <%= f.check_box :is_taxable, id: 'is_taxable_checkbox' %>
+                        <span class="checkmark"></span> </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row hide" id='tax'>
+                  <div class="col-md-2">
+                    <label for="">Tax</label>
+                  </div>
+                  <div class="col-md-10 ">
+                    <div class="form-group">
+                      <%= f.select :tax, options_for_select(tax_array, selected: inventory.tax), {include_blank: 'Select tax'}, class: 'form-control' %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 d-flex flex-justify-center">
+                <div class="placeholder-inv d-flex flex-justify-center">
+                  <div id='inventory-carousel' class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner inventory-carousel" id='inventory_images'>
+                      <% inventory.image_paths.each do |image_path| %>
+                        <div class="item">
+                          <%= image_tag image_path %>
+                        </div>
+                      <% end %>
+                    </div>
+                    <a class="left carousel-control" href="#inventory-carousel" data-slide="prev">
+                      <span class="glyphicon glyphicon-chevron-left"></span>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="right carousel-control" href="#inventory-carousel" data-slide="next">
+                      <span class="glyphicon glyphicon-chevron-right"></span>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </div>
+                  <%= file_field_tag 'attachments[]', id: :inventory_images_field, accept: "image/*", class: 'hidden', multiple: true %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="dim">
+            <div class="row" id='goods_information'>
+              <div class="col-md-6">
+                <div class="row mt20">
+                  <div class="col-md-3">
+                    <label for="category_id">Category</label>
+                  </div>
+                  <div class="col-md-9">
+                    <%= f.text_field :category, placeholder: 'Category', class: "form-control", value: inventory.category.try(:title), list: 'inventory_category_datalist', id: 'category_input' %>
+                    <datalist id="inventory_category_datalist">
+                      <% Category.all.each do |category| %>
+                        <option value="<%= category.title %>">
+                      <% end %>
+                    </datalist>
+                  </div>
+                </div>
+                <div class="row mt20">
+                  <div class="col-md-3">
+                    <label for="Manufacturer_id">Brand </label>
+                  </div>
+                  <div class="col-md-9">
+                    <%= f.text_field :brand, placeholder: 'Brand', class: "form-control", value: inventory.brand.try(:name), list: 'inventory_brand_datalist' %>
+                    <datalist id="inventory_brand_datalist">
+                      <% Brand.all.each do |brand| %>
+                        <option value="<%= brand.name %>">
+                      <% end %>
+                    </datalist>
+                  </div>
+                </div>
+                <div class="row mt20 hide">
+                  <div class="col-md-3">
+                    <label for="Manufacturer_id">Manufacturer</label>
+                  </div>
+                  <div class="col-md-9">
+                    <%= f.text_field :merchant, placeholder: 'Manufacture', class: "form-control", value: inventory.merchant.try(:name), list: 'inventory_merchant_datalist' %>
+                    <datalist id="inventory_merchant_datalist">
+                      <% Merchant.all.each do |merchant| %>
+                        <option value="<%= merchant.name %>">
+                      <% end %>
+                    </datalist>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="row mt20">
+                  <div class="col-md-3">
+                    <label for="category_id">Subcategory</label>
+                  </div>
+                  <div class="col-md-9">
+                    <%= f.text_field :subcategory, placeholder: 'Subcategory', value: inventory.subcategory.try(:title), class: 'form-control', list: 'inventory_subcategory_datalist', id: 'subcategory_input' %>
+                    <datalist id="inventory_subcategory_datalist">
+                      <%= render 'inventories/subcategory_datalist_options', category: inventory.category %>
+                    </datalist>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <hr/>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="radio-lbl ">
+                      <label class="check" style="display: inline;">Sales Information
+                        <%= f.check_box :is_saleable, id: 'is_saleable' %>
+                        <span class="checkmark" style="margin-top:3px;"></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt20 tooltip-w-100">
+                  <div class="col-md-3">
+                    <%= f.label :name, 'Selling Price(USD)' %>
+                  </div>
+                  <div class="col-md-9">
+                    <div class="form-group">
+                      <%= f.number_field :sell_price, placeholder: 'Enter Selling Price(USD)', class: "form-control", min: 0, oninput: "this.value = Math.abs(this.value)", step: 0.01, id: 'inventory_sell_price' %>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt20">
+                  <div class="col-md-3">
+                    <label for="Description">Description </label>
+                  </div>
+                  <div class="col-md-9">
+                    <%= f.cktext_area :sales_description, class: "ckeditor", id: 'inventory_sales_description' %>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="radio-lbl ">
+                      <label class="check" style="display: inline;"> Purchase Information
+                        <%= f.check_box :is_purchasable, id: 'is_purchasable' %>
+                        <span class="checkmark" style="margin-top:3px;"></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt20 tooltip-w-100">
+                  <div class="col-md-3">
+                    <%= f.label :buy_price, 'Purchase Price(USD)' %>
+                  </div>
+                  <div class="col-md-9">
+                    <div class="form-group">
+                      <%= f.number_field :buy_price, placeholder: 'Enter Purchase Price(USD)', class: "form-control", min: 0, oninput: "this.value = Math.abs(this.value)", step: 0.01, id: 'inventory_buy_price' %>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt20">
+                  <div class="col-md-3">
+                    <label for="Description">Description</label>
+                  </div>
+                  <div class="col-md-9">
+                    <%= f.cktext_area :purchase_description, class: "ckeditor", id: 'inventory_purchase_description' %>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <hr/>
+                </div>
+              </div>
+            </div>
+            <div class='row'>
+              <div class='col-sm-12 mt20'>
+                <div class='col-sm-12'>
+                  <label class="check" style="display: inline;">Track Inventory
+                    <%= f.check_box :is_trackable, id: 'is_trackable' %>
+                    <span class="checkmark" style="margin-top:3px;"></span>
+                  </label>
+                  <i aria-hidden="true" data-toggle="tooltip" data-placement="right" title="" data-original-title="Enable inventory to track this item's stock based on sales and purchase transactions recorded in your organization">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon align-middle gray-bg  ">
+                      <path d="M317.1 147.5c-15.1-13.8-35.5-20.8-60.5-20.8-23.7 0-43.1 6.5-57.7 19.4-14.6 12.9-23.5 31.5-26.4 55.5l-.6 4.9 40.4 4.8.7-4.6c2.5-15.8 7.7-27.5 15.4-34.7s17.1-10.7 28.7-10.7c12 0 21.9 3.9 30.1 11.9s12.2 16.9 12.2 27.3c0 5.6-1.3 10.7-4 15.4-2.8 4.9-9.3 11.9-19.3 20.7-10.7 9.4-17.9 16.5-22.1 21.5-5.8 7-10 14-12.6 20.8-3.5 9.1-5.3 19.9-5.3 32.3 0 2.1.1 5.1.2 9l.1 4.7h38.4l.1-4.8c.3-14.3 1.4-21.4 2.3-24.7 1.3-4.7 3.2-8.8 5.9-12.5 2.8-3.8 9-10 18.5-18.4 15.1-13.4 25.1-24.6 30.4-34.2 5.4-9.7 8.1-20.4 8.1-31.9 0-19.9-7.7-37-23-50.9zm-60.8 237.8c12.1 0 22-9.8 22-22 0-12.1-9.8-22-22-22-12.1 0-22 9.8-22 22s9.8 22 22 22z"></path>
+                      <path d="M437.4 74.6C388.9 26.1 324.5-.5 256-.5S123.1 26.2 74.6 74.6C26.1 123.1-.5 187.5-.5 256s26.7 132.9 75.1 181.4c48.5 48.5 112.9 75.1 181.4 75.1s132.9-26.7 181.4-75.1c48.5-48.5 75.1-112.9 75.1-181.4s-26.6-132.9-75.1-181.4zm-22.6 340.2c-42.4 42.4-98.8 65.8-158.8 65.8s-116.4-23.4-158.8-65.8S31.5 316 31.5 256 54.8 139.6 97.2 97.2 196 31.5 256 31.5s116.4 23.4 158.8 65.8 65.8 98.8 65.8 158.8-23.4 116.3-65.8 158.7z"></path>
+                    </svg>
+                  </i>
+                </div>
+              </div>
+              <div class='col-sm-12' id='track_information'>
+                <div class='col-sm-6'>
+                  <div class='row mt20'>
+                    <div class='col-sm-3'>
+                      <%= f.label :initial_quantity, 'Initial Quantity' %>
+                      <i aria-hidden="true" data-toggle="tooltip" data-placement="right" title="" data-original-title="Initial quantity refers to the quantity of the Item on hand before you start tracking Inventory">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon align-middle gray-bg  ">
+                          <path d="M317.1 147.5c-15.1-13.8-35.5-20.8-60.5-20.8-23.7 0-43.1 6.5-57.7 19.4-14.6 12.9-23.5 31.5-26.4 55.5l-.6 4.9 40.4 4.8.7-4.6c2.5-15.8 7.7-27.5 15.4-34.7s17.1-10.7 28.7-10.7c12 0 21.9 3.9 30.1 11.9s12.2 16.9 12.2 27.3c0 5.6-1.3 10.7-4 15.4-2.8 4.9-9.3 11.9-19.3 20.7-10.7 9.4-17.9 16.5-22.1 21.5-5.8 7-10 14-12.6 20.8-3.5 9.1-5.3 19.9-5.3 32.3 0 2.1.1 5.1.2 9l.1 4.7h38.4l.1-4.8c.3-14.3 1.4-21.4 2.3-24.7 1.3-4.7 3.2-8.8 5.9-12.5 2.8-3.8 9-10 18.5-18.4 15.1-13.4 25.1-24.6 30.4-34.2 5.4-9.7 8.1-20.4 8.1-31.9 0-19.9-7.7-37-23-50.9zm-60.8 237.8c12.1 0 22-9.8 22-22 0-12.1-9.8-22-22-22-12.1 0-22 9.8-22 22s9.8 22 22 22z"></path>
+                          <path d="M437.4 74.6C388.9 26.1 324.5-.5 256-.5S123.1 26.2 74.6 74.6C26.1 123.1-.5 187.5-.5 256s26.7 132.9 75.1 181.4c48.5 48.5 112.9 75.1 181.4 75.1s132.9-26.7 181.4-75.1c48.5-48.5 75.1-112.9 75.1-181.4s-26.6-132.9-75.1-181.4zm-22.6 340.2c-42.4 42.4-98.8 65.8-158.8 65.8s-116.4-23.4-158.8-65.8S31.5 316 31.5 256 54.8 139.6 97.2 97.2 196 31.5 256 31.5s116.4 23.4 158.8 65.8 65.8 98.8 65.8 158.8-23.4 116.3-65.8 158.7z"></path>
+                        </svg>
+                      </i>
+                    </div>
+                    <div class='col-sm-9'>
+                      <%= f.number_field :initial_quantity, class: "form-control", steps: 'any' %>
+                    </div>
+                  </div>
+                  <div class='row mt20'>
+                    <div class='col-sm-3'>
+                      <%= f.label :reorder_level, 'Reorder Level' %>
+                      <i aria-hidden="true" data-toggle="tooltip" data-placement="right" title="" data-original-title="Reorder level refers to the quantity of an Item below which, an Item is considered to be low on stock">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon align-middle gray-bg  ">
+                          <path d="M317.1 147.5c-15.1-13.8-35.5-20.8-60.5-20.8-23.7 0-43.1 6.5-57.7 19.4-14.6 12.9-23.5 31.5-26.4 55.5l-.6 4.9 40.4 4.8.7-4.6c2.5-15.8 7.7-27.5 15.4-34.7s17.1-10.7 28.7-10.7c12 0 21.9 3.9 30.1 11.9s12.2 16.9 12.2 27.3c0 5.6-1.3 10.7-4 15.4-2.8 4.9-9.3 11.9-19.3 20.7-10.7 9.4-17.9 16.5-22.1 21.5-5.8 7-10 14-12.6 20.8-3.5 9.1-5.3 19.9-5.3 32.3 0 2.1.1 5.1.2 9l.1 4.7h38.4l.1-4.8c.3-14.3 1.4-21.4 2.3-24.7 1.3-4.7 3.2-8.8 5.9-12.5 2.8-3.8 9-10 18.5-18.4 15.1-13.4 25.1-24.6 30.4-34.2 5.4-9.7 8.1-20.4 8.1-31.9 0-19.9-7.7-37-23-50.9zm-60.8 237.8c12.1 0 22-9.8 22-22 0-12.1-9.8-22-22-22-12.1 0-22 9.8-22 22s9.8 22 22 22z"></path>
+                          <path d="M437.4 74.6C388.9 26.1 324.5-.5 256-.5S123.1 26.2 74.6 74.6C26.1 123.1-.5 187.5-.5 256s26.7 132.9 75.1 181.4c48.5 48.5 112.9 75.1 181.4 75.1s132.9-26.7 181.4-75.1c48.5-48.5 75.1-112.9 75.1-181.4s-26.6-132.9-75.1-181.4zm-22.6 340.2c-42.4 42.4-98.8 65.8-158.8 65.8s-116.4-23.4-158.8-65.8S31.5 316 31.5 256 54.8 139.6 97.2 97.2 196 31.5 256 31.5s116.4 23.4 158.8 65.8 65.8 98.8 65.8 158.8-23.4 116.3-65.8 158.7z"></path>
+                        </svg>
+                      </i>
+                    </div>
+                    <div class='col-sm-9'>
+                      <%= f.number_field :reorder_level, class: "form-control", steps: 'any' %>
+                    </div>
+                  </div>
+                </div>
+                <div class='col-sm-6'>
+                  <div class='row mt20'>
+                    <div class='col-sm-3'>
+                      <%= f.label :initial_value, 'Initial Value' %>
+                      <i aria-hidden="true" data-toggle="tooltip" data-placement="right" title="" data-original-title="Stock Value refers to the average purchase price of your Opening Stock. This is required for FIFO Cost lot tracking and Inventory valuation">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon align-middle gray-bg  ">
+                          <path d="M317.1 147.5c-15.1-13.8-35.5-20.8-60.5-20.8-23.7 0-43.1 6.5-57.7 19.4-14.6 12.9-23.5 31.5-26.4 55.5l-.6 4.9 40.4 4.8.7-4.6c2.5-15.8 7.7-27.5 15.4-34.7s17.1-10.7 28.7-10.7c12 0 21.9 3.9 30.1 11.9s12.2 16.9 12.2 27.3c0 5.6-1.3 10.7-4 15.4-2.8 4.9-9.3 11.9-19.3 20.7-10.7 9.4-17.9 16.5-22.1 21.5-5.8 7-10 14-12.6 20.8-3.5 9.1-5.3 19.9-5.3 32.3 0 2.1.1 5.1.2 9l.1 4.7h38.4l.1-4.8c.3-14.3 1.4-21.4 2.3-24.7 1.3-4.7 3.2-8.8 5.9-12.5 2.8-3.8 9-10 18.5-18.4 15.1-13.4 25.1-24.6 30.4-34.2 5.4-9.7 8.1-20.4 8.1-31.9 0-19.9-7.7-37-23-50.9zm-60.8 237.8c12.1 0 22-9.8 22-22 0-12.1-9.8-22-22-22-12.1 0-22 9.8-22 22s9.8 22 22 22z"></path>
+                          <path d="M437.4 74.6C388.9 26.1 324.5-.5 256-.5S123.1 26.2 74.6 74.6C26.1 123.1-.5 187.5-.5 256s26.7 132.9 75.1 181.4c48.5 48.5 112.9 75.1 181.4 75.1s132.9-26.7 181.4-75.1c48.5-48.5 75.1-112.9 75.1-181.4s-26.6-132.9-75.1-181.4zm-22.6 340.2c-42.4 42.4-98.8 65.8-158.8 65.8s-116.4-23.4-158.8-65.8S31.5 316 31.5 256 54.8 139.6 97.2 97.2 196 31.5 256 31.5s116.4 23.4 158.8 65.8 65.8 98.8 65.8 158.8-23.4 116.3-65.8 158.7z"></path>
+                        </svg>
+                      </i>
+                    </div>
+                    <div class='col-sm-9'>
+                      <%= f.number_field :initial_value, class: "form-control", steps: 'any' %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% klass.groups.each do |group| %>
+              <% if group.name != "default_group" %>
+                <div class='row '>
+                  <div class="col-md-12">
+                    <div class="radio-lbl">
+                      <hr/>
+                      <h3 class=""><%= group.label %></h3>
+                    </div>
+                  </div>
+                  <% group.fields.each do |field| %>
+                    <div class="mt20">
+                      <div class= <%= field.column_type == "Text Area HTML" ? 'col-md-12' : 'col-md-6 ' %>>
+                        <div class="form-group col-md-9">
+                          <%= render partial: 'forms/field', locals: {f: f, field_name: field.name, field_label: field.label, column_type: field.column_type, custom: field.custom, have_custom_value: field.have_custom_value, data: @data, field: field, value: inventory.send(field.name)} %>
+                        </div>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+          <% submit_block.call if local_assigns[:submit_block].present? %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function () {
+    $(".dropdown-toggle").dropdown();
+    $('[data-toggle="tooltip"]').tooltip();
+
+    $('#is_taxable_checkbox').on('change', function(){
+      let tax = $('#tax');
+      if($(this).is(':checked')){
+        tax.removeClass('hide');
+        tax.find('select').attr('required', true);
+        return;
+      }
+      tax.addClass('hide');
+      tax.find('select').attr('required', false);
+    });
+    $('#is_taxable_checkbox').trigger('change');
+
+    $('#is_service').on('change', function(){
+      $('#goods_information').addClass('hide');
+    });
+
+    $('#is_goods').on('change', function(){
+      $('#goods_information').removeClass('hide');
+    });
+
+    $('#is_purchasable').on('change', function(){
+      if($(this).is(':checked')){
+        $('#inventory_buy_price').attr('disabled', false);
+        CKEDITOR.instances['inventory_purchase_description'].setReadOnly(false);
+        return;
+      }
+      $('#inventory_buy_price').attr('disabled', true);
+      CKEDITOR.instances['inventory_purchase_description'].setReadOnly(true);
+    });
+
+    $('#is_saleable').on('change', function(){
+      if($(this).is(':checked')){
+        $('#inventory_sell_price').attr('disabled', false);
+        CKEDITOR.instances['inventory_sales_description'].setReadOnly(false);
+        return;
+      }
+      $('#inventory_sell_price').attr('disabled', true);
+      CKEDITOR.instances['inventory_sales_description'].setReadOnly(true);
+    });
+
+    CKEDITOR.on('instanceReady', function(evt){
+      $('#is_purchasable').trigger('change');
+      $('#is_saleable').trigger('change');
+    });
+
+    $('#is_trackable').on('change', function(){
+      if($(this).is(':checked')){
+        $('#track_information').removeClass('hide');
+        return;
+      }
+      $('#track_information').addClass('hide');
+    });
+    $('#is_trackable').trigger('change');
+  });
+
+  $('#inventory_images').on('click', function(){
+    document.getElementById('inventory_images_field').click();
+  });
+  $('#inventory_images_field').on('change', function(){
+    renderImages({
+      input: this,
+      onNoFiles(){
+        $('#inventory_images').html('<div class="item active"><img src="'+'<%= asset_path 'inv-placeholder.png' %>'+'"></div>');
+      },
+      onFiles(){
+        $('#inventory_images').empty();
+      },
+      eachFile(srcData, index) {
+        if(index === 0){
+          $('#inventory_images').append('<div class="item active"><img src="' + srcData + '"></div>');
+          return;
+        }
+        $('#inventory_images').append('<div class="item"><img src="' + srcData + '"></div>');
+      }
+    });
+  });
+  $('#inventory_images').children().first().addClass('active');
+
+  $(document).on('change keyup', '#category_input', function () {
+    $('#subcategory_input').val('');
+    $('#inventory_subcategory_datalist').html('');
+    var categories = [];
+    $.each($('#inventory_category_datalist > option'), function (index, value) {
+      categories.push($(value).val());
+    });
+
+    if ($.inArray($(this).val(), categories) != -1) {
+      $.ajax({
+        url: '/inventories/subcategories_for_data_list',
+        type: 'GET',
+        data: {title: $(this).val()},
+        dataType: "script"
+      })
+    }
+  });
+</script>

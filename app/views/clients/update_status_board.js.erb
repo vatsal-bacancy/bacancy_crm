@@ -1,0 +1,3 @@
+<% if @client.errors.present? %>
+  $("#flash_container").html("<%= escape_javascript(render('layouts/flash')) %>");
+<% end %>

@@ -1,0 +1,2 @@
+$("#meetings").html("<%= escape_javascript(render partial: 'index', locals: { meetingable: @meetingable }) %>");
+$("#modal").modal('hide');

@@ -1,0 +1,40 @@
+<div id="success_message"></div>
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <span class="sub-menu-sitecontent heading"> Project Dashboard </span>
+            <!-- <%= link_to projects_path, class: "sub-menu-sitecontent" do %>Project Communication Dashboard <% end %> -->
+          </div>
+          <div class="pull-right">
+            <!-- <a class="site-content-head-btn" data-remote="true" href="">+Add Customer</a>
+            <a class="site-content-head-btn" data-remote="true" href="">Import Customer</a>
+            <a class="site-content-head-btn" href="">Filter</a>
+            <a href="javascript:void(0)" class="dropdown-toggle site-content-head-btn" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> -->
+              <!--<span class="nav-cell blue-font"> Action
+                <span class="caret"></span>
+              </span>-->
+            <!-- </a> -->
+            <!--<ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item" data-remote="true" href="">Edit Column</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="">Edit Properties</a>
+              </li>
+            </ul>-->
+            <!-- <a href="" class="site-content-head-btn">Actions</a> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" id= 'project-all'>
+      <%= render partial: 'projects_list', locals: { projects: @projects, fields: @fields, clients: @clients }%>
+    </div>
+  </div>
+</div>
+<div id="modalContainerIndex" class='modal-right'></div>
+<div id='project-message'></div>

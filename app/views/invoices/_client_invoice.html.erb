@@ -1,0 +1,37 @@
+<% action_delete =  checked_permission?(current_user, @klass_list['Invoice'], @action_list['delete']) %>
+<% action_update =  checked_permission?(current_user, @klass_list['Invoice'], @action_list['update']) %>
+<% action_create =  checked_permission?(current_user, @klass_list['Invoice'], @action_list['create']) %>
+<% action_read =  checked_permission?(current_user, @klass_list['Invoice'], @action_list['read']) %>
+<div class="dynmic-tab-div directory-structure">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="dynmic-tab-div-header">
+        <span class="heading"><%= @from_page == 'index' ? "Invoice" : '' %></span>
+        <div class="pull-right">
+          <%if action_create%>
+            <%= link_to new_invoice_path( client_id: object.id ), class: "site-content-head-btn" do %>
+              + Add Invoice
+            <%end%>
+          <%end%>
+        </div>
+      </div>
+      <div class="dynmic-tab-div-data ">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="site-content-data">
+              <div id="invoice-list" class="table-list">
+                <%= render partial: "invoices/invoice_list", locals: {invoices: object.invoices, fields: invoice_fields}%>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $(".dropdown-toggle").dropdown();
+  });
+</script>

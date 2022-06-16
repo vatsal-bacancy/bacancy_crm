@@ -1,0 +1,56 @@
+<div id="success_message"></div>
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+  <div class="site-content common-datatable">
+    <div class="inventory-top bg-white d-sm-flex justify-content-between border-bottom mb-25">
+      <div class="site-content-head">
+        <div class="row">
+          <div class="col-sm-12">
+            <% if @directory.directoriable_type != "Company"%>
+              <!-- <%= link_to directories_path, class: "heading common-link" do%>File Drive<% end %>
+                    <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> </span>
+                    <span class="sub-menu-sitecontent"> <%= @directory.directory_on_index(params[:directory_id]) %></span> -->
+              <h2 class="admin-main-title text-darkgray1 mb-0 pr-2 m-0 d-inline dark-gray-font text-capitalize"> File Drive </h2>
+              <h2 class="admin-main-title text-darkgray1 mb-0 pr-2 m-0 d-inline light-gray-font"> <i class="fa fa-angle-right"></i> </span>
+              <h2 class="admin-main-title text-darkgray1 mb-0 pr-2 m-0 d-inline light-gray-font"> <%= @directory.directory_on_index(params[:directory_id]) %> </h2>
+            <% else %>
+              <h2 class="admin-main-title text-darkgray1 dark-gray-font mb-0 pr-2 m-0 text-capitalize">File Drive</h2>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="download-area d-flex align-items-center justify-content-end flex-wrap leads_icons pl-0">
+        <% if checked_permission?(current_user, @klass_list['Document'], @action_list['delete'])%>
+          <a href="javascript:;" class="nowrap" id='destroy_all'>
+            <i class="mr-2">
+              <%= image_tag asset_path('ic_delete.svg') %>
+            </i>Delete
+          </a>
+        <%end%>
+        <%= link_to new_directory_path( directoriable_type: @directory.class.name, directoriable_id: @directory.id ), class: 'nowrap', remote: true do %>
+          <i class="mr-2">
+            <%= image_tag asset_path('header_plus.svg') %>
+          </i>Add Folder
+        <%end%>
+      </div>
+    </div>     
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="site-content-data">
+          <div class="row">
+            <div class="col-sm-12 mobile-center" id='dir_list'>
+              <%= render partial: 'list', locals: {directory: @directory, directories: @directories, documents: @documents}%>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="modal-dir" class="modal-right"></div>
+    <div id="importfiled"></div>
+  </div>
+</div>
+<script>
+  $(document).ready(function() {
+    $(".dropdown-toggle").dropdown();
+  });
+</script>

@@ -1,0 +1,75 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <span class="main-menu-sitecontent">Project -  <%= @project.name %></span>
+
+          </div>
+          <div class="pull-right">
+            <%= link_to projects_path, class: "site-content-head-btn", title: 'Back' do %>
+              Back
+            <%end%>
+            <%= link_to new_project_message_path(project_id: @project.id), remote: true, class: "site-content-head-btn", title: 'Add message' do %>
+              New Message
+            <%end%>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+       <div class="col-sm-12">
+          <div class="site-content-data">
+
+            <div class="dynmic-tab-div">
+              <div class="row">
+                <div class="col-md-8">
+                  <div class="dynmic-tab-div-header">
+                    <span class="heading"><%= link_to "Project OverView", overview_project_path(@project), remote: true  %></span>
+                    <span class="heading"><%= link_to "Message", project_messages_path(@project), remote: true  %></span>
+                    <span class="heading"><%= link_to "Document", project_project_documents_path(@project), remote: true  %></span>
+                  </div>
+                  <div class="dynmic-tab-div-data">
+
+                    <div class="row" id="project-detail">
+                     <%= render partial: 'overview', locals: {klass: @klass, project: @project, overviews: @overviews}%>
+                    </div>
+                    <%#= link_to "Back", back_to_project_path(@project), remote: true , class: 'btn btn-success'%>
+                  </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+                  <div class="dynmic-tab-div-header">
+                    People on this project
+                  </div>
+                  <div class="dynmic-tab-div-data">
+
+                    <div class="row" id="project-detail">
+                      <% @project.project_users.each do |project_user|%>
+                        <div class="col-md-12">
+                          <%= project_user.user.fullname%>
+                        </div>
+
+                      <%end%>
+                     <%#= render partial: 'overview', locals: {klass: @klass, project: @project, overviews: @overviews}%>
+                    </div>
+                    <%#= link_to "Back", back_to_project_path(@project), remote: true , class: 'btn btn-success'%>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+    </div>
+
+  </div>
+</div>
+<div id='project-message'></div>

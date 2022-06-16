@@ -1,0 +1,77 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar' %>
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <span class= "main-menu-sitecontent">Contracts</span>
+          </div>
+          <div class="pull-right">
+            <%= link_to 'Back', dashboard_path, class: 'btn btn-success' %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="site-content-data">
+            <div class="table-list">
+              <div class="table-responsive">
+                <table class="common-data-table table-bordered" data-contract-table>
+                  <thead>
+                  <th class="action">Action</th>
+                  <th>Company Name</th>
+                  <th>Title</th>
+                  <th>Created At</th>
+                  <th>Created By</th>
+                  </thead>
+                  <tbody>
+                  <% @contracts.each do |contract| %>
+                    <tr>
+                      <td>
+                        <div class="btn-wrapper">
+                          <div class="action-icon">
+                            <%= link_to edit_contract_contract_path(contract) do %>
+                              <i class="fa fa-pencil" aria-hidden="true"></i>
+                            <% end %>
+                          </div>
+                          <div class="action-icon">
+                            <%= link_to contract_contract_path(contract), method: :delete, data: { confirm: "Are you sure you want to Delete this Contract?" } do %>
+                              <i class="fa fa-trash" aria-hidden="true"></i>
+                            <% end %>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <%= link_to polymorphic_path(contract.contractable), class: 'common-link' do %>
+                          <%= contract.contractable.company_name %> (<%= contract.contractable_type %>)
+                        <% end %>
+                      </td>
+                      <td><%= contract.title %></td>
+                      <td><%= pretty_date_time contract.created_at %></td>
+                      <td><%= contract.user.fullname %></td>
+                    </tr>
+                  <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function() {
+    $('[data-contract-table]').DataTable({
+      sDom: 'lfrtip',
+      paging: true,
+      pageLength: 50,
+      searching: true,
+      lengthMenu: [50, 100]
+    });
+  });
+</script>

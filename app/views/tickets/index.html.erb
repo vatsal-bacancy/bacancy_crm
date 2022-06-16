@@ -1,0 +1,83 @@
+<div id="success_message"></div>
+<%= render 'components/site_content_2' do %>
+  <% content_for :head_title do %>
+    <h2 class="admin-main-title text-darkgray1 mb-0 pr-2 m-0 dark-gray-font text-capitalize">Tickets</h2>
+  <% end %>
+  <% content_for :head_buttons do %>
+    <% if checked_permission?(current_user, @klass_list['User'], @action_list['delete']) %>
+      <!-- <a href="javascript:void(0)" class="site-content-head-btn" id='destroy_all'>Delete</a> -->
+      <a href="javascript:;" class="nowrap" id='destroy_all'>
+        <i class="mr-2">
+          <%= image_tag asset_path('ic_delete.svg') %>
+        </i>Delete
+      </a>
+    <% end %>
+    <% if checked_permission?(current_user, @klass_list['User'], @action_list['create']) %>
+      <%= link_to new_ticket_path, class: 'nowrap', remote: true do %>
+        <i class="mr-2">
+          <%= image_tag asset_path('header_plus.svg') %>
+        </i>Add Ticket
+      <% end %>
+    <% end %>
+    <div class="nav-item dropdown">
+      <a href="javascript:;"
+        class="nav-link text-blue1 fw-400 fs-15 mr-0 p-0 nowrap dropdown-toggle fw-500 d-flex align-items-center"
+        data-toggle="dropdown">
+        <i class="mr-2"><%= image_tag asset_path('action.svg') %></i> Actions
+      </a>
+      <ul class="dropdown-menu">
+        <li>
+          <%= link_to "Edit Column", actions_settings_path(klass_id: @ticket_klass.id, url: tickets_path()), class: 'dropdown-item', remote: true %>
+        </li>
+        <li role="separator" class="divider"></li>
+        <li>
+          <%= link_to "Edit Properties", module_settings_path(klass_id: @ticket_klass.id), class: 'dropdown-item' %>
+        </li>
+      </ul>
+    </div>
+  <% end %>
+  <% content_for :body do %>
+    <div class="row">
+      <div class="col-md-12">
+        <ul id="myTabs" class="nav nav-pills nav-justified bpro-tab" role="tablist" data-tabs="tabs">
+          <li class="active"><a href="#ticket-assigned-to-you-tab" data-toggle="tab">Assigned To You</a></li>
+          <li><a href="#ticket-created-by-you-tab" data-toggle="tab">Created By You</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="tab-content" id="ticket-all">
+        <%= render partial: "ticket_list", locals: {ticket_fields: @ticket_fields} %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+<div id="modalContainerIndex" class='modal-right'></div>
+
+<script>
+  $(document).ready(function() {
+    $('#destroy_all').on('click', function() {
+      var checked = [];
+      $("input[name='ids[]']:checked").each(function() {
+        checked.push(parseInt($(this).val()));
+      });
+      if(checked == 0) {
+        confirm("Please select a Ticket.");
+      } else {
+        if(confirm('Are you sure you want to Delete selected Tickets?')) {
+          $.ajax({
+            url: Routes.destroy_all_tickets_path(),
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            type: 'DELETE',
+            data: {
+              ids: checked
+            },
+            dataType: "script",
+            success: function(result){
+            }
+          });
+        }
+      }
+    });
+  });
+</script>

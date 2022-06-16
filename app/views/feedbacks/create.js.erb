@@ -1,0 +1,11 @@
+<% unless @error.present? %>
+  $('#employee_details').hide();
+  $('#employee_otp').hide();
+  $('#employee_feedback').hide();
+  $('#form-header').text('Thankyou for the Feedback!')
+  $('#feedback_questions_list').html("");
+  $(".new_response").show();
+  $(".login-cmn-wrapper").removeAttr("style");
+  window.onbeforeunload = function() {  }
+<% end %>
+$("#flash_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");

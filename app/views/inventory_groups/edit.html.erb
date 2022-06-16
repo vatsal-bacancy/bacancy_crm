@@ -1,0 +1,31 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <%= link_to inventory_groups_path, class: "main-menu-sitecontent common-link" do %> Inventory Group <% end %>
+            <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> </span>
+            <span class="sub-menu-sitecontent"> Edit </span>
+          </div>
+          <div class="pull-right">
+            <%= link_to inventory_group_path(@inventory_group), class: 'btn btn-success' do %>
+              Back
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="inventoryGroupFormRow">
+      <%= render 'form', inventory_group: @inventory_group %>
+    </div>
+    <div id="modalContainer" class="modal-right"></div>
+    <div id="importfiled"></div>
+  </div>
+</div>
+<script>
+  $(document).ready(function() {
+    $(".dropdown-toggle").dropdown();
+  });
+</script>

@@ -1,0 +1,78 @@
+<%= render 'components/site_content' do %>
+  <% content_for :head do %>
+    <div class="l-menu">
+      <span class="main-menu-sitecontent">
+        <%= link_to 'Tickets', tickets_path, class: 'common-link' %>
+      </span>
+      <span class="sub-menu-sitecontent m-x-10"><i class="fa fa-angle-right"></i></span>
+      <span class="sub-menu-sitecontent">Reports</span>
+    </div>
+  <% end %>
+  <% content_for :body do %>
+    <div class="row">
+      <%= form_tag reports_tickets_path, method: :get do %>
+        <div class="col-md-3">
+          <div class="form-group">
+            <%= label_tag 'Users' %>
+            <%= select_tag :user_ids, options_for_select(User.all_active_users.pluck(:fullname, :id), selected: params[:user_ids]), multiple: true, class: 'form-control multi_select' %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <%= label_tag 'Start Date' %>
+            <%= text_field_tag :start_date, params[:start_date], class: 'form-control datetimepicker', placeholder: 'Start Date' %>
+          </div>
+        </div>
+        <div class="col-md-1" style="width: 100px">
+          <div class="form-group">
+            <%= label_tag nil %>
+            <%= submit_tag 'Filter', class: 'form-control btn btn-success' %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="dynmic-tab-div">
+      <div class="row">
+        <% @tickets.each do |user, tickets_with_status| %>
+          <div class="col-sm-4 m-t-15">
+            <div class="dynmic-tab-div-header">
+              <span class="heading"><%= user.fullname %></span>
+              <div class="pull-right">
+                <span class="color-red" data-blink>Late: <b><%= tickets_with_status[:late] %></b></span>
+              </div>
+            </div>
+            <div class="dynmic-tab-div-data">
+              <div class="row">
+                <div class="col-sm-12">
+                  <% tickets_with_status[:tickets].each do |status, count| %>
+                    <div class="row">
+                      <div class="col-md-5">
+                        <span class="info-title"><%= status %></span>
+                      </div>
+                      <div class="col-md-6">
+                        <span class="info-dynamic-data"><%= count %></span>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<script>
+  $(document).ready(function() {
+    setInterval(function() {
+      $('[data-blink]').fadeOut(500).fadeIn(500);
+    }, 1000);
+
+    setInterval(function() {
+      location.reload();
+    }, 300000);
+    $('body').attr('data-turbolinks', false); // Disable turbolinks on this specific page because we dont want to `setInterval` to be persist due to turbolinks clicks
+  });
+</script>

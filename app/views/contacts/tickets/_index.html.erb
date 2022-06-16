@@ -1,0 +1,50 @@
+<div class="dynmic-tab-div directory-structure">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="dynmic-tab-div-header">
+        <span class="heading"><%= @from_page == 'index' ? "Ticket" : '' %></span>
+        <div class="pull-right">
+          <a href="javascript:void(0)" class="dropdown-toggle site-content-head-btn pull-right m-r-10" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+
+          <span class="nav-cell blue-font"> Action
+            <span class="caret"></span>
+          </span>
+          </a>
+          <ul class="dropdown-menu edit-menu">
+             <li>
+              <%= link_to "Edit Column", actions_settings_path(klass_id: ticket_klass.id, url: tickets_path(ticketable_type: object.class, ticketable_id: object.id)), class: 'dropdown-item', remote: true%>
+             </li>
+             <li>
+               <%= link_to "Edit Properties", module_settings_path(klass_id: ticket_klass.id), class: 'dropdown-item'%>
+             </li>
+          </ul>
+          <a href="javascript:void(0)" class="site-content-head-btn" id='destroy_all_tickets'>
+            Delete
+          </a>
+          <%= link_to new_ticket_path( ticketable_type: object.class, ticketable_id: object.id ), remote: true, class: "site-content-head-btn" do %>
+            + Add Ticket
+          <%end%>
+        </div>
+      </div>
+      <div class="dynmic-tab-div-data ">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="site-content-data">
+              <div class="content position-relative lead_page">
+                <div id="ticket-list" class="table-list">
+                  <%= render partial: "tickets/ticket_list", locals: {object: object, ticket_fields: ticket_fields}%>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $(".dropdown-toggle").dropdown();
+  });
+</script>

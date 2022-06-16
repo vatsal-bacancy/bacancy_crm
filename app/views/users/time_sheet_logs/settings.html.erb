@@ -1,0 +1,59 @@
+<%= render 'components/site_content' do %>
+  <% content_for :head do %>
+    <div class="l-menu">
+      <span class="sub-menu-sitecontent">
+        <%= link_to 'CRM Customization Settings', settings_path, class: 'common-link' %>
+      </span>
+      <span class="sub-menu-sitecontent m-x-10"><i class="fa fa-angle-right"></i></span>
+      <span class="sub-menu-sitecontent">Timesheet Email Settings</span>
+    </div>
+    <span class='pull-right'>
+      <a href="<%= settings_index_path %>" class='btn btn-success'>Back</a>
+    </span>
+  <% end %>
+  <% content_for :body do %>
+    <div class="block-ui-box-wrapper" style="max-width: 50%">
+      <div class="block-ui-box m-t-20 p-a-30" style="height: 500px;">
+        <div class="row">
+          <div class="col-md-12">
+            <%= form_for @setting, url: time_sheet_logs_update_settings_users_path, method: :post do |f| %>
+              <div class="form-group">
+                <%= f.label :recipients %>:
+                <%= f.select :recipients, options_for_select(f.object.valid_emails, selected: f.object.recipients), {include_hidden: false}, multiple: true, required: true, class: 'form-control multi_select', 'data-placeholder' => 'Select recipient email' %>
+              </div>
+              <div class="form-group">
+                <%= f.label :days_range %>:
+                <%= f.select :days_range, options_for_select(f.object.valid_days_range, selected: f.object.days_range), {include_blank: 'Select days range'}, required: true, class: 'form-control' %>
+              </div>
+              <div class="form-group">
+                <%= f.label 'Reporting Schedule' %>:
+                <div class="m-t-10" data-recurrence-schedule-picker></div>
+                <%= f.hidden_field :recurrence_schedule, 'data-recurrence-schedule' => true %>
+              </div>
+              <div class="form-group">
+                <%= f.submit 'Save', class: 'btn btn-success' %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<script>
+  $(document).ready(function() {
+    $('[data-recurrence-schedule-picker]').jqCron({
+      enabled_minute: false,
+      enabled_hour: false,
+      enabled_day: false,
+      enabled_week: false,
+      multiple_dom: true,
+      no_reset_button: true,
+      numeric_zero_pad: true,
+      default_period: 'year',
+      lang: 'en',
+      bind_to: $('[data-recurrence-schedule]')
+    });
+  });
+</script>

@@ -1,0 +1,96 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="site-content-data">
+      <div class="table-list">
+        <div class="table-responsive">
+          <table class="common-data-table" id="leads">
+            <thead>
+              <th>
+                <div class="radio-lbl">
+                  <label class="check ">
+                    <input type="checkbox"  name="" id="check-all">
+                    <span class="checkmark"></span>
+                  </label>
+                </div>
+              </th>
+              <th class="action">Action</th>
+              <th>Name</th>
+              <th>Start Date</th>
+              <th>End Date</th>
+              <th>Client Name</th>
+              <th>Belongs to</th>
+            </thead>
+            <tbody class='list-body'>
+              <% @projects.each do |project| %>
+                <tr>
+                  <td class="hide"></td>
+                  <td class="hide"></td>
+                  <td>
+                    <div class="radio-lbl">
+                      <label class="check ">
+                        <%= check_box_tag "project_ids[]", project.id , false, class:"check" %>
+                        <span class="checkmark"></span>
+                      </label>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="btn-wrapper">
+                      <div class="action-icon">
+                        <%= link_to project_path(project) do %>
+                          <i class="fa fa-eye" aria-hidden="true"></i>
+                        <% end %>
+                      </div>
+                      <div class="action-icon">
+                        <%= link_to edit_project_path(project),remote: true do %>
+                          <i class="fa fa-pencil" aria-hidden="true"></i>
+                        <% end %>
+                      </div>
+                      <div class="action-icon">
+                        <%= link_to project_path(project),data: { confirm: "Are you sure you want to Delete this Project?" }, method: :delete, remote: true do %>
+                          <i class="fa fa-trash " aria-hidden="true"></i>
+                        <% end %>
+                      </div>
+                    </div>
+                  </td>
+                  <td><%= project.name %></td>
+                  <td><%= project.start_date&.strftime("%m/%d/%Y") %></td>
+                  <td><%= project.end_date&.strftime("%m/%d/%Y") %></td>
+                  <td><%= project.client.company_name %></td>
+                  <td><%= project.user.fullname %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $('#check-all').on('change', function(){
+    $('.list-body .check').prop('checked',$(this).prop('checked'));
+  });
+  $('#destroy_all').on('click', function(){
+    var checked = []
+    $("input[name='project_ids[]']:checked").each(function ()
+    {
+        checked.push(parseInt($(this).val()));
+    });
+    if(checked == 0){
+      confirm("Please select any project.");
+    }else{
+      $.ajax({
+        url: "<%= destroy_all_projects_path %>",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: 'DELETE',
+        data: {
+          ids: checked
+        },
+        dataType: "script",
+        success: function(result){
+        }
+      });
+    }
+  });
+</script>

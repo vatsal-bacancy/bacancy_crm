@@ -1,0 +1,24 @@
+<div class="col-sm-12 m-b-20">
+  <div class="site-content-data">
+    <div class="table-list">
+      <div class="table-responsive">
+        <table class="common-data-table table-bordered table-hover">
+          <thead>
+            <th>Total Leads</th>
+            <% leads_by_marketing_group.each do |assign_to, count| %>
+              <th><%= assign_to %></th>
+            <% end %>
+          </thead>
+          <tbody>
+          <tr>
+            <td><%= leads.count %></td>
+            <% leads_by_marketing_group.each do |assign_to, count| %>
+              <td><%= count %></td>
+            <% end %>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

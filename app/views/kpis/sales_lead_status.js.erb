@@ -1,0 +1,1 @@
+$('[data-kpis-sales-lead-status-table]').html("<%= escape_javascript(render partial: 'kpis/sales_lead_status', locals: { leads: @leads, leads_by_sales_group: @leads_by_sales_group, sales_assign_to_group: @sales_assign_to_group, sales_lead_statuses: @sales_lead_statuses }) %>");

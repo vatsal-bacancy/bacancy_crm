@@ -1,0 +1,36 @@
+<style>.cke_inner .cke_top { display: none; }</style>
+<div>
+  <div style="padding: 20px">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <%= link_to public_help_desks_path, class: "main-menu-sitecontent common-link" do %>
+              Help Desk
+            <% end %>
+            <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> </span>
+            <span class="sub-menu-sitecontent"><%= @help_desk.title %></span>
+          </div>
+          <div class="pull-right">
+            <%= link_to 'Back', public_help_desks_path, class: 'btn btn-success back-btn-margin' %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="site-content-data">
+          <div class="white-body-wrapper">
+            <div class="row">
+              <div class="col-sm-12">
+                <%= cktext_area_tag 'help_desk_description', @help_desk.description,
+                                    ckeditor: {removeButtons: 'HorizontalRule,NumberedList,Copy,BulletedList,Bold,Underline,Italic,Paste,Cut,Image,Table,Blockquote,Format,Styles,Undo,Redo,List,Menu',
+                                               readOnly:true,resize_enabled:false, removePlugins: "elementspath,sourcearea"} %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

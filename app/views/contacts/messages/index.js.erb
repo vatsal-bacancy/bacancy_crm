@@ -1,0 +1,5 @@
+<% if params[:message_id] %>
+  $("#project-detail-msg").html("<%= escape_javascript(render partial: 'contacts/messages/messages_details', locals: {message: @message, object: @object})%>")
+<% else %>
+  $("#project-detail, #ticket-detail").html("<%= escape_javascript(render partial: 'contacts/messages/messages', locals: {messages: @messages, object: @object})%>")
+<% end %>

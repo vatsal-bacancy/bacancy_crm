@@ -1,0 +1,3 @@
+
+$('#dirModal').modal('hide');
+$("#email-temp-all").html("<%=  escape_javascript(render partial: 'email_templetes/email_templete_list', locals: {email_templetes: @email_templetes, list: @list}) %>");

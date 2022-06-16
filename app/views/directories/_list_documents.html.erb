@@ -1,0 +1,66 @@
+
+<div class="row m-t-10 m-b-10">
+  <h3 class="m-l-15 m-b-5"> Files</h3>
+  <div class="doc-checkbox-container">
+    <% directory.documents.each do |doc| %>
+      <div class="col-md-3 col-sm-12">
+        <div class="radio-lbl">
+          <label class="check ">
+            <%= check_box_tag "documents[]", doc.id, false, class: 'doc-checkbox', data: {id: doc.id}%>
+
+            <span class="checkmark">
+              <% extension = doc.attachment.try(:file).try(:extension).try(:downcase) %>
+              <% if extension == "jpg" || extension == "png" || extension == "jpeg"  %>
+                <%= image_tag doc.attachment.url, :size => "35x35" %>
+              <% elsif extension == "pdf" %>
+                <img src="/assets/icon_PDF_big.png" class="file-icon" width="35" height="35">
+              <% else %>
+                <img src="/assets/icon_Generic_big.png" class="file-icon" width="35" height="35">
+              <% end %>
+            </span>
+          </label>
+          <%= link_to doc.attachment.url, target: "_blank", class:"common-link m-t-15" do%>
+            <%= doc.attachment.file.filename.truncate(20) %>
+          <% end %>
+        </div>
+
+      </div>
+    <% end %>
+  </div>
+
+</div>
+<script>
+  $(document).ready(function(){
+    $('.doc-checkbox').each(function(){
+      if($document_ids.includes($(this).attr('data-id'))){
+        $(this).prop('checked', 'checked');
+      }
+    });
+
+    $('.doc-checkbox-container').on('click', '.doc-checkbox', function(){
+      ele = $(this);
+      $('.doc-checkbox:checked').each(function(){
+        if(!$document_ids.includes($(this).attr('data-id'))) {
+          $document_ids.push($(this).attr("data-id"));
+        }
+      });
+      if(!$(this).prop('checked')){
+        $document_ids = jQuery.grep($document_ids, function(value) {
+          return value != ele.attr("data-id");
+        });
+      }
+      $.ajax({
+        url: "<%= selected_documents_documents_path %>",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: 'GET',
+        data: {
+          document_ids: $document_ids
+        },
+        dataType: "script",
+        success: function(result){
+        }
+      });
+      $('.document_ids').val($document_ids);
+    });
+  });
+</script>

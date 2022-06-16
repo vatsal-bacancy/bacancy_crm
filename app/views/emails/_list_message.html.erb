@@ -1,0 +1,25 @@
+  <label class="check">
+    <% message_path = message.mailbox == :draft ? new_email_path(message_id: message.id, mailbox: message.mailbox, ind: ind) : email_path(message.id, mailbox: message.mailbox, msg_id: 'msg-'+ind.to_s)%>
+    <a href="<%= message_path %>" class="message-data" data-remote="true">
+      <div class="email-data">
+        <span class="dis-inlineblock m-r-10 msg-from">
+          <%= message.mailbox == :draft ? 'Draft' : (message.display_name.try :truncate, 20) %>
+        </span>
+        <span class="dis-inlineblock msg-subject">
+          <%size = message.subject.size rescue 0%>
+          <span class="list-subject"> <%= message.subject&.truncate(75)%> - </span>
+          <%= strip_tags(message.body.gsub("\n", ' ')).squeeze(' ')&.truncate(75-size)%>
+        </span>
+      </div>
+    </a>
+    <input type="checkbox" name="message_ids[]" class='chk-msg' value=<%=message.id %>  >
+    <span class="checkmark"></span>
+    <div class="email-remove">
+      <span class="date-time"><%= time_date(message.received_date_time.to_datetime) %></span>
+        <div class="action-icon pull-right">
+          <%= link_to message.mailbox == :draft ? destroy_draft_emails_path(message.id) : email_path(message.id), data: {id: message.id}, method: :delete, remote: true do %>
+            <i class="fa fa-trash" aria-hidden="true"></i>
+          <% end %>
+        </div>
+    </div>
+  </label>

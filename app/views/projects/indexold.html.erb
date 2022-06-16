@@ -1,0 +1,42 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <span class="main-menu-sitecontent">Projects</span>
+            <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> </span>
+            <span class="sub-menu-sitecontent"> </span>
+          </div>
+          <div class="pull-right">
+            <a href="" class="site-content-head-btn" id="project_destroy_all">Delete</a>
+            <%= link_to new_project_path, class: 'site-content-head-btn', remote: true do %>
+              + Add Projects
+            <%end%>
+
+            <!-- <%= link_to import_form_path, class: 'site-content-head-btn', remote: true do %>
+              Import Projects
+            <% end %>
+            <%= link_to leads_path(format: :csv), class: 'site-content-head-btn' do %>
+              Export To Excel
+            <% end %> -->
+
+            <!-- <a href="" class="site-content-head-btn">Import Projects</a> -->
+            <!-- <a href="" class="site-content-head-btn">Export To Excel</a> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="site-content-data", id="project-all">
+          <%= render partial: "project_list", locals: { projects: @projects, fields: @fields }  %>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

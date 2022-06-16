@@ -1,0 +1,46 @@
+<div class="dynmic-tab-div">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="dynmic-tab-div-header">
+        <span class="heading">Shipments</span>
+        <div class="pull-right">
+          <%= link_to new_client_shipment_path(client), remote: true, class: 'site-content-head-btn' do %>
+            + Create Shipment
+          <% end %>
+        </div>
+      </div>
+      <div class="dynmic-tab-div-data">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="site-content-data">
+              <div class="table-list">
+                <div class="table-responsive">
+                  <table class="common-data-table table-bordered">
+                    <thead>
+                    <tr>
+                      <th>Ship Date</th>
+                      <th>Contact Person</th>
+                      <th>Destination</th>
+                      <th>Tracking Number & Label</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% client.shipments.each do |shipment| %>
+                      <tr>
+                        <td><%= pretty_date shipment.ship_date %></td>
+                        <td><%= shipment.recipient_person_name %></td>
+                        <td><%= shipment.recipient_address %></td>
+                        <td><%= shipment_package_label_links(client, shipment) %></td>
+                      </tr>
+                    <% end %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <span class="main-menu-sitecontent">Notes</span>
+            <span class="sub-menu-sitecontent m-x-10"><i class="fa fa-angle-right"></i></span>
+            <span class="sub-menu-sitecontent"><%= @object.class %></span>
+          </div>
+          <div class='pull-right'>
+          <% if params[:list] == "Object" %>
+            <%= link_to @note.noteable, class: 'btn btn-success back-btn-users' do %> Back <% end %>
+          <% elsif params[:list] == "Index" %>
+            <%= link_to notes_path(noteable_type: @note.noteable_type , noteable_id: @note.noteable_id), class: 'btn btn-success back-btn-users' do %>Back<% end %>
+          <% end %>
+          </div>
+          <div class="pull-right">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+       <div class="col-sm-12">
+          <div class="site-content-data">
+            <div id="note-list" class="table-list">
+              <%= render partial: 'notes/note_details', locals: { object: @object, note: @note, klass: @klass } %> <%# object.notes %>
+            </div>
+          </div>
+       </div>
+    </div>
+    <div id="modalContainer-index" class='modal-right'></div>
+  </div>
+</div>

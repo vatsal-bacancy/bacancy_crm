@@ -1,0 +1,18 @@
+<div class='row block-ui-box m-t-5 m-r-5'>
+  <p class="title">
+  <h3 class="title m-l-10 p-b-5">
+    <%= inventory_group.name %>
+  </h3>
+  </p>
+  <% inventory_group.active_inventories.each do |inventory| %>
+    <div class='col-md-6'>
+      <div class="radio-lbl">
+        <label class="check ">
+          <%= check_box_tag "inventory_ids[]", inventory.id , false, class:"check" %>
+          <span class="checkmark"></span>
+          <%= inventory.name_with_sku %>
+        </label>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,94 @@
+<%= render 'components/site_content' do %>
+  <% content_for :body do %>
+    <div class="dynmic-tab-div">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="dynmic-tab-div-header">
+            <span class="heading">Account Manager Performance</span>
+          </div>
+          <div class="dynmic-tab-div-data">
+            <div class="row">
+              <div class="col-sm-12 m-b-20">
+                <%= form_tag account_manager_performance_kpis_path, method: :get, class: 'form-inline' do %>
+                  <div class="form-group">
+                    <label>Start Date:</label>
+                    <input name="start_date" class="form-control bootstrapdatepicker" value="<%= pretty_date @account_manager_performance.start_date %>">
+                  </div>
+                  <div class="form-group">
+                    <label>End Date:</label>
+                    <input name="end_date" class="form-control bootstrapdatepicker" value="<%= pretty_date @account_manager_performance.end_date %>">
+                  </div>
+                  <button type="submit" class="btn btn-success">Filter</button>
+                <% end %>
+              </div>
+              <div class="col-sm-12">
+                <table class="table table-bordered fs-14" data-kpis-account-manager-performance-datatable>
+                  <thead>
+                  <tr>
+                    <th data-kpis-account-manager-performance-datatable-column-type="Picklist">Account Manager Name</th>
+                    <th>Number of Accounts Installed</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <% @account_manager_performance.records.each do |account_manager| %>
+                    <tr data-kpis-account-manager-performance-accounts-extra-attributes="<%= account_manager.clients_id_and_company_name.as_json %>">
+                      <td><%= account_manager.fullname %></td>
+                      <td data-kpis-account-manager-performance-accounts>
+                        <%= link_to account_manager.clients.size, 'javascript:void(0)' %>
+                      </td>
+                    </tr>
+                  <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+<script>
+  $(document).ready(function () {
+    let table = $('[data-kpis-account-manager-performance-datatable]');
+    let dataTable = table.DataTable({
+      dom: 'lrtip',
+      scrollX: false,
+      autoWidth: false,
+      paging: false,
+      columnDefs: [
+        { orderable: false, targets: '_all' },
+      ],
+      order: []
+    });
+
+    yadcf.init(dataTable, [{
+      column_selector: '[data-kpis-account-manager-performance-datatable-column-type="Picklist"]',
+      filter_type: 'multi_select',
+      select_type: 'select2',
+      sort_as: 'none',
+      select_type_options: { theme: 'bootstrap', width: 'resolve', dropdownAutoWidth: true }
+    }]);
+
+    // Initialize Datatable child rows
+    table.find('[data-kpis-account-manager-performance-accounts]').on('click', function() {
+      let tr = $(this).closest('tr');
+      let row = dataTable.row(tr);
+      if(row.child.isShown()) {
+        row.child.hide();
+        tr.removeClass('shown');
+      }
+      else {
+        let childRowAttributes = tr.attr('data-kpis-account-manager-performance-accounts-extra-attributes').deserialize;
+        let childRowTemplate = '<table style="background-color: #eee">';
+        childRowAttributes.forEach(function(client) {
+          childRowTemplate += Mustache.render('<tr><td><a href="{{url}}" target="_blank">{{companyName}}</a></td></tr>', {url: Routes.client_path(client.id), companyName: client.company_name});
+        });
+        childRowTemplate += '</table>';
+        row.child(childRowTemplate).show();
+        row.child().attr('style', 'background-color: #eee');
+        tr.addClass('shown');
+      }
+    });
+  });
+</script>

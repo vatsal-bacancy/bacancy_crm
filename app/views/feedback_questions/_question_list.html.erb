@@ -1,0 +1,117 @@
+<div class="table-responsive">
+  <table class="common-data-table" id="feedback_questions">
+    <thead>
+      <th>
+        <div class="radio-lbl">
+          <label class="check ">
+            <input type="checkbox"  name="" id="check-all">
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      </th>
+      <th class="action">Action</th>
+      <th> Question Title </th>
+    </thead>
+
+    <tbody class="list-body">
+      <% feedback_questions.each do |feedback_question| %>
+        <tr>
+          <td>
+            <div class="radio-lbl">
+              <label class="check ">
+                <%= check_box_tag "feedback_question_ids[]", feedback_question.id , false, class:"check" %>
+                <span class="checkmark"></span>
+              </label>
+            </div>
+          </td>
+          <td>
+          <div class="btn-wrapper">
+            <div class="action-icon">
+              <%= link_to edit_feedback_question_path(feedback_question), remote: true do %>
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+              <% end  %>
+              <%= link_to feedback_question_path(feedback_question), remote: true,data: { confirm: "Are you sure you want to Delete this Question?" }, method: :delete do %>
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              <% end %>
+            </div>
+          </div>
+          </td>
+          <td><%= feedback_question.title %></td>          
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  $(document).ready(function(){
+    if ( $.fn.DataTable.isDataTable('#feedback_questions') ) {
+      $('#feedback_questions').DataTable().destroy();
+    }
+
+    $('#feedback_questions').DataTable({
+      sDom: 'lfrtip',
+      scrollX: false,
+      autoWidth: false,
+      paging: true,
+      searching: true,
+      lengthMenu: [50, 100],
+      // colReorder: {
+      //   fixedColumnsLeft: 1
+      // },
+      columnDefs: [
+        {orderable: false, targets: [0,1]},
+        {width: "30px", targets: [0] },
+        {className: "dt-center", targets: "_all"}
+      ],
+      order: []
+    });
+
+    $('#check-all').on('change', function(){
+      $('.list-body .check').prop('checked',$(this).prop('checked'));
+    });
+
+    function checked_checkbox_count(){
+      if ($("#check-all").is(':checked')){
+        $('.total-selected').removeClass('hide')
+        checked_count = $('.list-body .check:checked').length
+        // $("table.common-data-table thead th").append("<th> Hey prakash chaudhary</th>");
+        $('.clients-table-header').hide()
+        console.log(checked_count)
+        $('.total-count b, .total-selected b').html(checked_count)
+        $('.total-count').removeClass('hide')
+        $('.action').addClass('hide')
+        $('#total_no').val(checked_count);
+      }else{
+        $('.total-selected').addClass('hide')
+        $('.total-count').addClass('hide')
+        $('.action').removeClass('hide')
+        $('.clients-table-header').show()
+      }
+    }
+
+    $('#destroy_all').on('click', function(){
+      var checked = []
+      $("input[name='client_ids[]']:checked").each(function ()
+      {
+          checked.push(parseInt($(this).val()));
+      });
+      if(checked == 0){
+        confirm("Please select any client.");
+      }else{
+        $.ajax({
+          url: "<%= destroy_all_clients_path %>",
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          type: 'DELETE',
+          data: {
+            ids: checked
+          },
+          dataType: "script",
+          success: function(result){
+          }
+        });
+      }
+    });
+  });
+
+</script>

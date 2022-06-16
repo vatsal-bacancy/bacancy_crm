@@ -1,0 +1,274 @@
+<div class="row">
+  <div class="col-lg-5 col-md-6">
+    <div class="form-group ">
+      <%= f.label :company, "Company/Customer" %>
+      <span class="required"> <%= "*" %></span>
+      <%= f.select :client_id, options_for_select(Client.pluck(:company_name, :id), f.object.client_id),{prompt: "Select Company/Customer"}, {class: 'form-control', required: true } %>
+    </div>
+  </div>
+  <div class="col-lg-5 col-md-6">
+    <div class="form-group ">
+      <%= f.label :email %>
+      <span class="required"> <%= "*" %></span>
+      <%= f.text_field :email, class: "form-control", placeholder: "Separate by comma", required: true %>
+      <div class="cc-bcc-link"> <a href="JavaScript:Void(0)" class="" id="cc-bcc">Cc/Bcc</a></div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-3 col-md-3">
+    <div class="form-group ">
+      <%= f.label :billing_address, "Billing Address" %>
+      <%= f.text_area :billing_address, class: "form-control", rows: 4, placeholder: "Write Billing Address" %>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-3">
+    <div class="form-group ">
+      <%= f.label :terms %>
+      <%= f.select :terms,options_for_select( ["Net 30","Net 15"],f.object.terms ) , {prompt: "Select term"}, {class: 'form-control'} %>
+    </div>
+  </div>
+  <div class="col-lg-2 col-md-3 ">
+    <div class="form-group ">
+      <%= f.label :invoice_date, "Invoice Date" %>
+      <%= f.text_field :invoice_date, class: "form-control", value: Date.today.strftime("%m/%d/%Y") %>
+    </div>
+  </div>
+  <div class="col-lg-2 col-md-3">
+    <div class="form-group ">
+      <%= f.label :due_date, "Due Date" %>
+      <%= f.text_field :due_date, class: "form-control", value: (Date.today + 1.month).strftime("%m/%d/%Y") %>
+    </div>
+  </div>
+</div>
+<div class="white-body-wrapper">
+  <div class="row mt15">
+    <div class="col-sm-12">
+      <div>
+        <table class="common-data-table invoice-table">
+          <thead>
+            <th width="5%">#</th>
+            <th width="10%">Inventory</th>
+            <th width="35%">Description</th>
+            <th width="7%">Qty</th>
+            <th width="7%">Rate</th>
+            <th width="7%">Amount</th>
+            <th width="7%">Tax</th>
+            <th width="5%">&nbsp;</th>
+          </thead>
+          <tbody>
+            <%= f.fields_for :invoice_inventories do |f| %>
+              <%= render 'invoice_inventory_fields', f: f %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="row mt15">
+    <div class="col-md-6">
+      <div class="invoice-btn">
+        <%= link_to_add_association 'Add Lines', f, :invoice_inventories, class: 'site-content-head-btn' %>
+        <!--a href="javascript:void(0)" class="site-content-head-btn" id="">Clear All Lines</a-->
+        <!--a href="javascript:void(0)" class="site-content-head-btn" id="">Add Subtotal</a-->
+      </div>
+      <div class="row mt15">
+        <div class="col-sm-12">
+          <div class="form-group ">
+            <label for="Billing">Message On Invoice</label>
+            <%= f.text_area :msg_on_invoice, rows: "4" ,placeholder: "This will show up on the invoice", class: "form-control" %>
+          </div>
+        </div>
+      </div>
+      <div class="row mt10">
+        <div class="col-sm-12">
+          <div class="form-group ">
+            <label for="Billing">Message On Statement</label>
+            <%= f.text_area :msg_on_statement, rows: "4" ,placeholder: "If you send statement to customer, this will show up as the description for this invoice.", class: "form-control" %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="pull-right">
+        <table class="add-sales-tax-table mt15">
+          <tr>
+            <td width="40%">Total</td>
+            <td width="30%">$<b id='invoice_total'>0.00</b></td>
+          </tr>
+          <tr>
+            <td>Balance due</td>
+            <td>$<b id='invoice_balance_due'>0.00</b></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="Attachments-wrapper">
+        <%= f.label "Attachment"%>
+        <br/>
+        <input type="file" name="attachments[]" id="file" class="inputfile" multiple />
+        <label for="file" title='Upload Local Files' class="btn btn-default">Upload Files</label>
+        <div class= 'row' id="file-upload-filename"></div>
+        <%#= f.label :attachments%><span class="required"></span>
+        <%= hidden_field_tag :document_ids, [], class: 'document_ids'%>
+        <div class="row m-t-15">
+
+          <div class="col-md-12">
+            <div class='selected_documents'>
+              <%= render partial: 'documents/selected_documents', locals: { documents: [] } %>
+            </div>
+          </div>
+        </div>
+
+        <% if f.object.persisted?%>
+          <%  f.object.documents.each do |attach| %>
+            <span class="file-name">
+              <%= link_to attach.attachment.url, target: 'blank', class: 'file-name', title: attach.attachment.file.filename do %>
+                <i class="fa fa-file" aria-hidden="true"></i>
+                <%= attach.attachment.file.filename.truncate(20) %>
+              <%end%>
+              <span class="remove-file" data-id="<%= attach.id %>"><i class="fa fa-close" ></i></span>
+              <br/>
+            </span>
+          <% end %>
+        <% end %>
+
+      </div>
+    </div>
+  </div>
+
+  <% klass.groups.each do |group|%>
+    <% if group.name != "default_group" %>
+      <div class='row mt15'>
+        <div class="">
+          <p class="title">
+            <h3 class="title  p-b-5"><%#= group.label  %></h3>
+          </p>
+          <% group.fields.each do |field|%>
+            <div class= <%= field.column_type == "Text Area HTML" ? 'col-md-12' : 'col-md-6' %>>
+              <div class="form-group ">
+                <%= render partial: 'forms/field', locals: { f: f, field_name: field.name, field_label: field.label, column_type: field.column_type, custom: field.custom, have_custom_value: field.have_custom_value, data: @data, field: field, value: invoice.send(field.name) } %>
+              </div>
+            </div>
+          <%end%>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+  <div class="row">
+    <div class="pull-right mt15">
+      <%= f.submit "Save and Send" , class: 'btn btn-success' %>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="modal-custom" id="modalInvoice">
+  <div class="form-group">
+    <label for="invoice_cc">Cc:</label>
+    <input type="text" class="form-control tagableinput" id="invoice_cc" name='cc_email' value='<%= f.object.cc %>'>
+  </div>
+  <div class="form-group">
+    <label for="invoice_bcc">Bcc:</label>
+    <input type="text" class="form-control tagableinput" id="invoice_bcc" name='bcc_email' value='<%= f.object.bcc %>'>
+  </div>
+  <div class="form-group">
+    <a href="JavaScript:Void(0)" class="btn btn-primary" id="cancel">Cancel</a>
+    <a href="JavaScript:Void(0)" class="btn btn-success" id="done">Done</a>
+  </div>
+</div>
+
+<!-- dynemic -->
+
+
+
+<script>
+$(document).ready(function(){
+
+  $('#invoice_client_id').select2({
+    theme: 'bootstrap',
+    ajax: {
+      url: '<%= clients_invoices_path %>',
+      delay: 250
+    },
+    placeholder: 'Select inventory',
+    width: "auto"
+  }).on('select2:select', function(e){
+    $('#invoice_billing_address').val(e.params.data.full_address);
+    $('#invoice_email').val(e.params.data.company_email);
+  });
+
+  <% if params[:client_id] %>
+    $('#invoice_billing_address').val("<%= f.object.client.full_address %>");
+    $('#invoice_email').val("<%= f.object.client.company_email %>");
+  <% end %>
+
+  $('#invoice_invoice_date').datepicker({ format: 'mm/dd/yyyy', autoclose: true  });
+  $('#invoice_due_date').datepicker({ format: 'mm/dd/yyyy', autoclose: true });
+
+  var modal = document.getElementById("modalInvoice");
+  modal.style.display = "none";
+  $('.tagableinput').tagsinput({freeInput: true});
+
+  $('#cc-bcc').on('click', function(){
+    modal.style.display = "block";
+  });
+
+  $('#cancel').on('click', function(){
+    $('#invoice_cc').tagsinput('removeAll');
+    $("#invoice_bcc").tagsinput('removeAll');
+    modal.style.display = "none";
+  });
+
+  $('#done').on('click', function(){
+    modal.style.display = "none";
+  });
+
+  // $(".tax").select2({ theme: 'bootstrap', placeholder: "Select tax", width: "auto" });
+
+  $('#file').on('change', function (e) {
+    if(!e.target.files) return;
+    var files = e.target.files;
+    for(var i=0; i<files.length; i++) {
+      var f = files[i];
+      var datafile = new FormData();
+      datafile.append('resourcable_type', "<%= current_user.class.name %>");
+      datafile.append('resourcable_id', "<%= current_user.id %>" );
+      datafile.append('documentable_type', "<%= @system_directory.class.name %>");
+      datafile.append('documentable_id', "<%= @system_directory.id %>" );
+      datafile.append('attachment', f);
+      $.ajax({
+        url: "<%= uploadfiles_url %>",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: 'POST',
+        contentType: false,
+        cache: false,
+        processData: false,
+        data: datafile,
+        success: function(res, file){
+          documentId = res["d_id"];
+          $document_ids.push(documentId);
+          $.ajax({
+            url: "<%= selected_documents_documents_path %>",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            type: 'GET',
+            data: {
+              document_ids: $document_ids
+            },
+            dataType: "script",
+            success: function(result){
+            }
+          });
+          $('.document_ids').val($document_ids);
+        }
+      });
+    }
+  });
+
+
+});
+</script>

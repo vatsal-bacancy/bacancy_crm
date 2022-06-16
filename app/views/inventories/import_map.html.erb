@@ -1,0 +1,112 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <span class="main-menu-sitecontent">Inventories</span>
+            <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> </span>
+            <span class="sub-menu-sitecontent"> Map Fields</span>
+          </div>
+          <div class="pull-right">
+            <%= link_to "Back", import_inventories_path , class: 'btn btn-success' %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cmn-tab-div">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="site-content-data">
+            <div id="field-list" class="table-list">
+
+              <%= form_tag import_file_inventories_path do  %>
+                <div class="row">
+                  <div class="col-md-4 col-sm-4 ">
+                    <h3 class="">
+                      COLUMN HEADER FROM FILE
+                    </h3>
+                  </div>
+                  <div class="col-md-3 col-sm-4">
+                    <h3 class="">
+                      PREVIEW INFORMATION
+                    </h3>
+                  </div>
+                  <div class="col-md-5 col-sm-4">
+                    <h3 class="">
+                      <%= @company.name%>'s PROPERTY
+                    </h3>
+                  </div>
+                </div>
+                <hr>
+                <% @headers.each do |header| %>
+                  <div class="row m-t-5">
+                    <div class="col-md-4 col-sm-4 ">
+                      <div class="m-t-10">
+                        <%= header  %> :
+                        <% field = @fields.find_by(label: header)%>
+                        <span class="required"> <%= "*" if field && field.required%> </span>
+                      </div>
+                    </div>
+                    <div class="col-md-3 col-sm-4 m-t-5">
+                        <span>
+                          <%= @sample_data[header] ||= "---" %>
+                        </span>
+                    </div>
+                    <div class="col-md-5 col-sm-4">
+                      <% if header == "Id"%>
+                        <span class="m-t-5"> Inventory Id is used for update data</span>
+                      <% else %>
+                        <%= select_tag header, options_for_select(@fields.pluck(:label, :name), field.try(:name)), {name: "fields[#{header}]",prompt: "Select Type", class: 'form-control'}%>
+                      <%end%>
+                    </div>
+                  </div>
+                <%end%>
+                <div class="row">
+                  <div class="col-md-12 m-t-10">
+                    <%= hidden_field_tag :document_id, @document.id %>
+                    <%= submit_tag "Proceed", class: "btn btn-success pull-right", id: 'submit-data' %>
+                  </div>
+                </div>
+              <%end%>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <span class="main-menu-sitecontent">Errors</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cmn-tab-div">
+      <% ::CSVManager.new(Inventory, 'name', Inventory.mapping).try_import(@document.attachment).each do |error| %>
+        <div class="row">
+          <div class="col-md-2 col-sm-4">
+            <strong> Record <%= error[0] %> </strong>
+          </div>
+          <div class="col-md-10">
+            <%= error[1] %>
+          </div>
+        </div>
+      <%end%>
+    </div>
+    <div id="modalContainer" class='modal-right'></div>
+    <div id="importfiled"></div>
+  </div>
+</div>
+
+
+<script>
+  $(document).ready(function() {
+    $(".dropdown-toggle").dropdown();
+    if(<%= @errors %> == true){
+      $("#submit-data").attr("disabled", true);
+    }
+  });
+</script>

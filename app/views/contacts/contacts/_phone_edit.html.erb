@@ -1,0 +1,58 @@
+
+<div class="col-sm-12 mt15">
+  <!-- <div class="form-group ">
+    <label for="Phonenumber">Phone number</label>
+    <input class="form-control" required="required" placeholder="Phone number" type="text" name="" id="">
+  </div> -->
+  <b>Phone No:</b>
+  <%= text_field_tag :phone_no, current_contact.phone_no, class: 'form-control' %>
+</div>
+<div class="col-sm-12 mt15" id="submit-phone"> 
+  <button id="save" class="btn btn-success"> Save </button>
+  <button id="cancel" class="btn btn-default"> Cancel </button>
+</div>
+
+
+<script>
+
+$(document).ready(function(){
+  var contact_id = <%= current_contact.id %>;
+  var phone_no = document.getElementById("phone_no").value;
+  var $phone = "<%= current_contact.phone_no %>";
+  $('div #submit-phone').hide();
+
+  $("#phone_no").on('click',function(){
+    $("div #submit-phone").show();
+  });
+
+  $("#cancel").on('click',function(){
+    $("#phone_no").val($phone);
+    $('div #submit-phone').hide();
+  });
+    
+  $("#save").on('click', function(){
+    $phone = document.getElementById("phone_no").value;
+    if(document.getElementById("phone_no").value == ""){
+      $("#phone_no").val(phone_no);
+      
+      alert("Please fill Company Name");
+    }
+    else{
+      $.ajax({
+        //url:<%#= company_path(@company) %>,
+        url: "<%= contacts_contact_phone_update_path(current_contact) %>",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: 'patch',
+        //dataType: 'script'
+        data:{
+          phone_no: document.getElementById("phone_no").value
+        }
+      });
+      $('div #submit-phone').hide();
+    }
+  });
+  
+
+});
+
+</script>

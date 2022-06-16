@@ -1,0 +1,25 @@
+<div class="row">
+  <div class='col-md-6'>
+    <div class='form-group'>
+      <%= f.label :value %>
+      <%= f.text_field :value, class: 'form-control', required: true, disabled: f.object.is_system %>
+    </div>
+  </div>
+  <div class='col-md-6'>
+    <div class='form-group'>
+      <%= f.label :color %>
+      <%= f.color_field :color, class: 'form-control', disabled: f.object.is_system %>
+    </div>
+  </div>
+  <%= f.hidden_field :field_id, value: f.object.field_id%>
+</div>
+<p>For color, you can choose from below according to it's status:</p>
+<div class="row">
+  <div class="col-sm-4">In Progress</div><div class="col-sm-4" style="background-color: #ff9029;">#ff9029</div>
+</div>
+<div class="row">
+  <div class="col-sm-4">On Hold</div><div class="col-sm-4" style="background-color: #f01212">#f01212</div>
+</div>
+<div class="row">
+  <div class="col-sm-4">Completed</div><div class="col-sm-4" style="background-color: #3cc87b">#3cc87b</div>
+</div>

@@ -1,0 +1,212 @@
+<%action_delete =  checked_permission?(current_user, @klass_list['Client'], @action_list['delete']) %>
+<%action_update =  checked_permission?(current_user, @klass_list['Client'], @action_list['update']) %>
+<%action_create =  checked_permission?(current_user, @klass_list['Client'], @action_list['create']) %>
+<%action_read =  checked_permission?(current_user, @klass_list['Client'], @action_list['read']) %>
+<div class="dynmic-tab-div">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="dynmic-tab-div-header">
+        <span class="heading">Client Details</span>
+        <div class="pull-right"></div>
+      </div>
+      <div class="cmn-tab-div" style="<%= client_tier_style(client) %>">
+        <div class="row">
+          <div class="col-md-10 col-sm-12 mobile-center">
+            <!-- <div class="round-big-img"> -->
+              <!-- <img src="/assets/big_demo_img.jpg"> -->
+            <!-- </div> -->
+            <div class="info-lead">
+              <p class="title" style="<%= client_tier_style(client) %>;background-color: transparent;"><%= client.company_name%></p>
+              <div class="table-responsive">
+                <table style="<%= client_tier_style(client) %>">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <div class="icon-data"><i class="fa fa-user-o" aria-hidden="true" style="<%= client_tier_style(client) %>"></i></div>
+                      </td>
+                      <td>
+                        <div class="cmn-lead-info-data">
+                          <span class="light-gray-font" style="<%= client_tier_style(client) %>">Account Manager</span>
+                          <b style="<%= client_tier_style(client) %>"><%= client.user.fullname %></b>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="icon-data m-l-30"><i class="fa fa-cogs" aria-hidden="true" style="<%= client_tier_style(client) %>"></i></div>
+                      </td>
+                      <td>
+                        <div class="cmn-lead-info-data">
+                          <span class="light-gray-font" style="<%= client_tier_style(client) %>">Account Service Type</span>
+                          <b style="<%= client_tier_style(client) %>"><%= client.account_service_type_ %></b>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="icon-data m-l-30"><i class="fa fa-user-o" aria-hidden="true" style="<%= client_tier_style(client) %>"></i></div>
+                      </td>
+                      <td>
+                        <div class="cmn-lead-info-data">
+                          <span class="light-gray-font" style="<%= client_tier_style(client) %>">iPos Username</span>
+                          <b style="<%= client_tier_style(client) %>"><%= client.ipos_username %></b>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="icon-data"><i class="fa fa-id-card-o" aria-hidden="true" style="<%= client_tier_style(client) %>"></i></div>
+                      </td>
+                      <td>
+                        <div class="cmn-lead-info-data">
+                          <span class="light-gray-font" style="<%= client_tier_style(client) %>">Physical Location Merchant ID MID</span>
+                          <b style="<%= client_tier_style(client) %>"><%= client.merchant_id %></b>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="icon-data m-l-30"><i class="fa fa-id-card-o" aria-hidden="true" style="<%= client_tier_style(client) %>"></i></div>
+                      </td>
+                      <td>
+                        <div class="cmn-lead-info-data">
+                          <span class="light-gray-font" style="<%= client_tier_style(client) %>">olo Merchant ID</span>
+                          <b style="<%= client_tier_style(client) %>"><%= client.online_merchant_id %></b>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="icon-data m-l-30"><i class="fa fa-user-o" aria-hidden="true" style="<%= client_tier_style(client) %>"></i></div>
+                      </td>
+                      <td>
+                        <div class="cmn-lead-info-data">
+                          <span class="light-gray-font" style="<%= client_tier_style(client) %>">iPos Password</span>
+                          <b style="<%= client_tier_style(client) %>"><%= client.ipos_password %></b>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="icon-data"><i class="fa fa-line-chart" aria-hidden="true" style="<%= client_tier_style(client) %>"></i></div>
+                      </td>
+                      <td>
+                        <div class="cmn-lead-info-data">
+                          <span class="light-gray-font" style="<%= client_tier_style(client) %>">Tier</span>
+                          <b style="<%= client_tier_style(client) %>"><%= client.client_tier_ %></b>
+                        </div>
+                      </td>
+                    </tr>
+                      <tr>
+                      <td>
+                        <div class="icon-data">
+                          <i class="fa fa-map-marker" aria-hidden="true" style="font-size:28px;<%= client_tier_style(client) %>"></i>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="cmn-lead-info-data">
+                          <p class="cmn-lead-info-data">
+                            <%= link_to view_map_path(address: "#{client.street_address.to_s} #{client.city.to_s} #{client.state.to_s} #{client.zip_code.to_s}", company_name: client.company_name), target: '_blank', style: client_tier_link_style(client) do %>
+                              <%= client.street_address.present? ? "#{client.street_address}," : ""%>
+                              <%= client.city.present? ? "#{client.city},"  : ""%><br/>
+                              <%= client.state.present? ? "#{client.state}," : ""%>
+                              <%= client.zip_code.present? ? "#{client.zip_code}" : ""%>
+                            <%end%>
+                          </p>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 col-sm-12 mini-mobile-left">
+            <div class="lead-icon-wrapper pull-right">
+              <div class="lead-icon">
+                <a href="<%= logs_client_path %>" class="cmn-lead-icon site-content-head-btn">
+                  Logs
+                </a>
+                <% if checked_permission?(current_user, @klass_list['cEmail'], @action_list['create']) %>
+                  <a href="<%=new_cemail_path(cemailable_type: client.class.name, cemailable_id: client.id)%>" class="cmn-lead-icon info-mail-icon" data-remote="true">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                  </a>
+                <%end%>
+                <% if checked_permission?(current_user, @klass_list['Client'], @action_list['edit']) %>
+                  <%= link_to edit_client_path(client),remote: true, class: "cmn-lead-icon info-edit-icon" do %>
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <ul id="myTabs" class="nav nav-pills nav-justified bpro-tab" role="tablist" data-tabs="tabs">
+      <% current_user.role.readable_root_groups(klass: klass).each_with_index do |group, index| %>
+        <% next unless client.is_department_visible?(group) %>
+        <li class="bpro_li <%= 'active' if index == 0 %>">
+          <a href="#group-<%= group.id %>" data-toggle="tab" style="background-color: <%= client.field_picklist_value_of_department(group)&.color %>"><%= group.label %></a>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+<div class="row">
+  <div class="tab-content">
+    <% current_user.role.readable_root_groups(klass: klass).each_with_index do |group, index| %>
+      <% next unless client.is_department_visible?(group) %>
+      <div role="tabpanel" class="tab-pane fade <%= 'in active' if index == 0 %>" id="group-<%= group.id %>">
+        <div class="col-sm-12">
+          <% group.descendants.each do |group| %>
+            <div class="dynmic-tab-div">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="dynmic-tab-div-header">
+                    <span class="heading"><%= group.label%></span>
+                    <div class="pull-right">
+                      <%= link_to 'Edit', edit_summary_client_path(client, group_id: group.id), remote: true, class: 'site-content-head-btn' %>
+                      <% if group.name == 'EMPLOYEE TRAINING CHECKLIST' %>
+                        <a href="#employees-list" data-toggle="tab", class='site-content-head-btn'>Employees</a>
+                      <% end %>
+                    </div>
+                  </div>
+                  <div class="dynmic-tab-div-data">
+                    <div class="row">
+                      <% group.fields.each do |field|%>
+                        <div class="col-sm-12">
+                          <div class="row">
+                            <div class="col-md-4">
+                              <span class="info-title <%= 'color-red' if field.required? %>"><%= field.label %>:<span><%= '*' if field.required? %></span></span>
+                            </div>
+                            <div class="col-md-6">
+                            <span class="info-dynamic-data value">
+                              <%= pretty_value(field, client) %>
+                            </span>
+                            </div>
+                          </div>
+                        </div>
+                      <% end %>
+                      <% if group.label == 'MENU DETAILS USA' %>
+                        <%= link_to 'Send Menu Approval Email', send_menu_approval_email_client_path,
+                                    remote: true, class: 'cmn-lead-icon site-content-head-btn',
+                                    data: { confirm: 'Do you really want to send Menu Approval Email Client?' } %>
+                        <%= link_to 'Send Menu Approval Text', send_menu_approval_sms_client_path,
+                                    remote: true, class: 'cmn-lead-icon site-content-head-btn',
+                                    data: { confirm: 'Do you really want to send Menu Approval SMS to Client?' } %>
+                        <a href="<%= edit_public_client_path(id: client.encrypted_id) %>" class="cmn-lead-icon site-content-head-btn">
+                          Copy Menu Approval Link
+                        </a>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+<style>
+  .bpro_li{ line-height: 2;}
+</style>

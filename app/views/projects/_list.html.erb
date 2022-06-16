@@ -1,0 +1,103 @@
+<% action_delete =  checked_permission?(current_user, @klass_list['Project'], @action_list['delete']) %>
+<% action_update =  checked_permission?(current_user, @klass_list['Project'], @action_list['update']) %>
+<% action_create =  checked_permission?(current_user, @klass_list['Project'], @action_list['create']) %>
+<% action_read =  checked_permission?(current_user, @klass_list['Project'], @action_list['read']) %>
+<div class="row">
+  <div class="col-sm-12">
+    <div class="site-content-data">
+      <div class="table-list">
+        <div class="table-responsive">
+          <table class="common-data-table" id="projects-table">
+            <thead>
+              <th>
+                <div class="radio-lbl">
+                  <label class="check ">
+                    <input type="checkbox"  name="" id="project-check-all">
+                    <span class="checkmark"></span>
+                  </label>
+                </div>
+              </th>
+              <th class="action">Action</th>
+              <% current_user.fields_for_table_with_order(klass: klass).each do |field| %>
+                <th data-id="<%=field.id%>"><%=field.label %></th>
+              <% end %>
+            </thead>
+            <tbody class='list-body'>
+              <% projects.each do |project| %>
+                <tr>
+                  <td>
+                    <div class="radio-lbl">
+                      <label class="check ">
+                        <%= check_box_tag "project_ids[]", project.id , false, class:"check" %>
+                        <span class="checkmark"></span>
+                      </label>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="btn-wrapper">
+                      <%if action_read%>
+                        <div class="action-icon">
+                          <%= link_to project_path(project) do %>
+                            <i class="fa fa-eye" aria-hidden="true"></i>
+                          <% end %>
+                        </div>
+                      <%end%>
+                      <%if action_update%>
+                        <div class="action-icon">
+                          <%= link_to object ? edit_project_path(project, object: "#{object.class.name}:#{object.id}") : edit_project_path(project),remote: true do %>
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                          <% end %>
+                        </div>
+                      <%end%>
+                      <%if action_delete%>
+                        <div class="action-icon">
+                          <%= link_to object ? project_path(project, object: "#{object.class.name}:#{object.id}") : project_path(project),method: :delete, remote: true do %>
+                            <i class="fa fa-trash " aria-hidden="true"></i>
+                          <% end %>
+                        </div>
+                      <%end%>
+                    </div>
+                  </td>
+                  <% current_user.fields_for_table_with_order(klass: klass).each do |field| %>
+                    <td data-id="<%= project.id %>" data-klass='project' data-field="<%= field.name %>" data-deletable="<%= field.deletable %>" class="project-editable" >
+                      <% if field.name == 'client_id' %>
+                        <%= project.client.company_name %>
+                      <% elsif field.name == 'description' %>
+                        <%= project.send(field.name).try(:html_safe) %>
+                      <% else %>
+                        <%= project.send(field.name) %>
+                      <% end %>
+                    </td>
+                  <% end %>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#project-check-all').on('change', function(){
+      $('.list-body .check').prop('checked',$(this).prop('checked'));
+    });
+
+    $('#projects-table').DataTable({
+      sDom: 'lfrtip',
+      scrollX: false,
+      autoWidth: false,
+      paging: true,
+      searching: true,
+      lengthMenu: [50, 100],
+      columnDefs: [
+        {orderable: false, targets: [0,1]},
+        {className: "dt-center", targets: "_all"},
+        {width: "25px", targets: [0] }
+      ],
+      order: []
+    });
+  });
+</script>

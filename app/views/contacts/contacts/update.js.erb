@@ -1,0 +1,10 @@
+<% if @contact.errors.any? %>
+  $("#flash_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>"); 
+<% else %>
+$("#success_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");
+$("#fullname_contact").html("<%= @contact.fullname %>");
+$("#fullname_contact_header").html("<%= @contact.fullname %>");
+$("#contact-email").html("<%= @contact.email %>");
+$("#contact-details").html("<%= escape_javascript(render partial: 'contact_summary',locals: { current_contact: @contact }) %>")
+$("#modal").modal('hide');
+<% end %>

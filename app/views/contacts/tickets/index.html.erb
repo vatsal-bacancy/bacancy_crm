@@ -1,0 +1,38 @@
+<div class="site-main" id="show-index">
+  <%= render 'layouts/contacts_sidebar'%>
+
+  <div class="site-content">
+    <div class="site-content-head">
+       <div class="row">
+          <div class="col-sm-12">
+            <div class="l-menu">
+              <span class="main-menu-sitecontent">Ticket</span>
+              <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> </span>
+              <span class="sub-menu-sitecontent"> My Ticket</span>
+            </div>
+            <div class="pull-right">
+
+              <%#= link_to new_ticket_path, class: 'site-content-head-btn', remote: true do %>
+                <!-- + Add Ticket -->
+              <%#end%>
+
+
+              <!-- <a href="" class="site-content-head-btn">Import Ticket</a>
+              <a href="" class="site-content-head-btn">Export To Excel</a> -->
+              <!-- <a href="" class="site-content-head-btn">Actions</a> -->
+            </div>
+          </div>
+       </div>
+    </div>
+
+    <div class="row">
+       <div class="col-sm-12">
+          <div class="site-content-data table-list", id="ticket-all">
+            <!-- call at create, update and destroy ticket  -->
+             <%= render partial: "ticket_list" , locals: { tickets: @tickets, ticket_fields: @ticket_fields, object: @data } %>
+          </div>
+       </div>
+    </div>
+  </div>
+</div>
+<div id="modalContainerIndex" class='modal-right'></div>

@@ -1,0 +1,30 @@
+<tr class="nested-fields">
+  <td>
+    <%= f.text_field :name, class: 'form-control', required: true %>
+    <%= f.hidden_field :user_id, value: (f.object.user_id || current_user.id) %>
+  </td>
+  <td><%= f.text_field :sku, class: 'form-control' %></td>
+  <td><%= f.text_field :mac_address, class: 'form-control' %></td>
+  <td><%= f.select :status, options_for_select(f.object.valid_statuses, selected: f.object.status, disabled: f.object.disabled_statuses), {}, class: 'form-control' %></td>
+  <td><%= f.number_field :buy_price, class: 'form-control', step: 'any' %></td>
+  <td><%= f.number_field :sell_price, class: 'form-control', step: 'any' %></td>
+  <td><%= f.text_field :purchase_date, value: pretty_date_time(f.object.purchase_date), required: true, class: 'form-control', 'data-inventory-purchase-date' => true %></td>
+  <td><%= f.collection_select :vendor_id, Vendor.all, :id, :company_name, {include_blank: 'Select Vendor'}, required: true, class: 'form-control' %></td>
+  <td><%= f.text_field :purchase_order_number, required: true, class: 'form-control' %></td>
+  <td>
+    <%= link_to_remove_association f do %>
+      <div class="inv-delete">
+        <i class="fa fa-trash" aria-hidden="true"></i>
+      </div>
+    <% end %>
+  </td>
+  <td style="display: none;" data-inventory-group-search-data><%= "#{f.object.name} #{f.object.sku} #{f.object.status} #{f.object.vendor&.company_name} #{f.object.purchase_date} #{f.object.purchase_order_number}" %></td>
+</tr>
+
+
+<script>
+  $(document).ready(function() {
+    $(".dropdown-toggle").dropdown();
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+</script>

@@ -1,0 +1,69 @@
+<div class="site-header">
+   <nav class="navbar navbar-default">
+      <div class="navbar-header">
+         <a class="navbar-brand" href="<%= root_url%>">
+           <%= image_tag asset_path('ic_ipos_white.svg'), class: 'small-logo', width: '33px', height: '33px'%>
+          <span>
+            <%= image_tag asset_path('iPos-logo-white.svg'), class: 'big-logo'%>
+         </a>
+         <button class="navbar-toggler left-sidebar-toggle pull-left visible-xs" type="button">
+         <span class="hamburger"></span>
+         </button>
+
+         <button class="navbar-toggler pull-right visible-xs-block" type="button" data-toggle="collapse" data-target="#navbar">
+         <span class="more"></span>
+         </button>
+      </div>
+      <div class="navbar-collapsible">
+         <div id="navbar" class="navbar-collapse collapse">
+            <button class="navbar-toggler left-sidebar-collapse pull-left hidden-xs" type="button">
+            <span class="hamburger"></span>
+            </button>
+            <ul class="nav navbar-nav">
+               <li class="visible-xs-block">
+
+                  <h4 class="navbar-text text-center">Welcome, <%= current_contact.fullname %>!</h4>
+               </li>
+            </ul>
+            <form class="navbar-form navbar-left">
+               <div class="navbar-search-group">
+                  <input type="text" class="form-control" placeholder="Search by Leads, Company Name">
+                  <button type="submit" class="btn btn-default">
+                  <i class="fa fa-search"></i>
+                  </button>
+               </div>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+               <li class="nav-table dropdown hidden-sm-down">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  <span class="nav-cell p-r-10">
+                     <div id="contact_pro_pic">
+                        <%= render partial: 'layouts/contact_header_profile', locals: { current_contact: current_contact } %>
+                        <%#= image_tag asset_path('small_demo_img.jpg'), class: 'img-circle', width: '32px', height: '32px'%>
+                     </div>
+                  </span>
+                  <span class="nav-cell blue-font" id="fullname_contact_header"><%= current_contact.fullname %>
+                  <span class="caret"></span>
+                  </span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    
+                    <li>
+                      <a href="<%= contacts_contact_path(current_contact) %>">
+                      <i class="fa fa-user m-r-10"></i> Profile</a>
+                    </li>
+                    <li role="separator" class="divider"></li>
+                    <li>
+                      <%if contact_signed_in?%>
+                        <%=  link_to destroy_contact_session_path, method: :delete  do%>
+                          <i class="fa fa-sign-out m-r-10"></i> Logout
+                        <%end%>
+                      <%end%>
+                    </li>
+                  </ul>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </nav>
+</div>

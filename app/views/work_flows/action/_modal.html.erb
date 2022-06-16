@@ -1,0 +1,55 @@
+<div class="modal fade" id="layout-modal-large" role="dialog">
+  <div class="modal-dialog">
+    <%= form_for action, url: '#', class: 'form-inline' do |f| %>
+      <div id='flash_message'></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Action</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <% if f.object.class.mail_type? %>
+              <%= render 'work_flows/action/mail/form', f: f %>
+            <% elsif f.object.class.sms_type? %>
+              <%= render 'work_flows/action/sms/form', f: f %>
+            <% end %>
+            <%= hidden_field_tag :type, f.object.type %>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <%= link_to 'Save Action', 'javascript:void(0)', class: 'btn btn-success', data: { "insert-mail-action": true } %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+<script>
+  $(document).ready(function () {
+    $('[data-refer-to-name]').on('change', function () {
+      let refer = $(`[name="${$(this).attr('data-refer-to-name')}"]`);
+      refer.val(refer.val() + `${$(this).attr('data-refer-to-name-join')}${$(this).attr('data-refer-to-name-prefix')}${$(this).val()}${$(this).attr('data-refer-to-name-suffix')}`);
+    });
+    $('[data-refer-to-ckeditor-name]').on('change', function () {
+      CKEDITOR.instances[$(this).attr('data-refer-to-ckeditor-name')].insertText(`${$(this).attr('data-refer-to-name-join')}${$(this).attr('data-refer-to-name-prefix')}${$(this).val()}${$(this).attr('data-refer-to-name-suffix')}`);
+    });
+
+    let actionEditData = Bpro.oneTimeKeystore.read('data-for-action-edit-data');
+    if (actionEditData != null) {
+      Bpro.utils.formDeSerializer($('#new_action'), actionEditData.serializedArray);
+    }
+    $('[data-insert-mail-action]').on('click', function () {
+      Bpro.utils.formValidator($('#new_action')[0], function () {
+        updateCKEDITORInstances();
+        Bpro.oneTimeKeystore.write('data-for-work_flow_action_fields', $('#new_action').serializeArray());
+        if (actionEditData != null) {
+          $('[data-work_flow_action_fields]').trigger('cocoon:after-insert', actionEditData.node);
+        } else {
+          $('[data-insert-mail-action-button]').click();
+        }
+        $('#layout-modal-large').modal('hide');
+      });
+    });
+  });
+</script>

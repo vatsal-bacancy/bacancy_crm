@@ -1,0 +1,84 @@
+
+<div id="success_message"></div>
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+
+  <div class="site-content common-datatable">
+    <div class="inventory-top bg-white d-sm-flex justify-content-between border-bottom mb-25">
+      <div class="site-content-head">
+        <div class="row">
+          <div class="col-sm-12">
+            <h2 class="admin-main-title text-darkgray1 dark-gray-font mb-0 pr-2 m-0 text-capitalize">Clients</h2>
+          </div>
+        </div>
+      </div>
+      <div class="download-area d-flex align-items-center justify-content-end flex-wrap leads_icons pl-0">
+        <% if checked_permission?(current_user, @klass_list['Client'], @action_list['delete'])%>
+          <a href="javascript:;" class="nowrap" id='destroy_all'>
+            <i class="mr-2">
+              <%= image_tag asset_path('ic_delete.svg') %>
+            </i>Delete
+          </a>
+        <%end%>
+        <!--<a href="" class="site-content-head-btn">Email</a>
+        <a href="" class="site-content-head-btn">Text Message</a>-->
+        <% if checked_permission?(current_user, @klass_list['Client'], @action_list['create'])%>
+          <%= link_to new_client_path, class: 'nowrap', remote: true do %>
+            <i class="mr-2">
+              <%= image_tag asset_path('add_lead.svg') %>
+            </i>Add Clients
+          <%end%>
+          <%= link_to import_clients_clients_path, class: 'nowrap' do %>
+            <i class="mr-2">
+              <%= image_tag asset_path('ic_download.svg') %>
+            </i> Import
+          <% end %>
+        <%end%>
+        <%= link_to clients_path(format: :csv), class: 'nowrap' do %>
+          <i class="mr-2">
+            <%= image_tag asset_path('ic_download.svg') %>
+          </i>Export To Excel
+        <% end %>
+        <%= link_to root_url + "import-example-client.csv" , class: 'nowrap' do %>
+          <i class="mr-2">
+            <%= image_tag asset_path('csv.svg') %>
+          </i>Sample CSV
+        <% end %>
+        <div class="nav-item dropdown">
+          <a href="javascript:;"
+            class="nav-link text-blue1 fw-400 fs-15 mr-0 p-0 nowrap dropdown-toggle fw-500 d-flex align-items-center"
+            data-toggle="dropdown">
+            <i class="mr-2"><%= image_tag asset_path('action.svg') %></i> Actions
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <%= link_to "Edit Column", actions_settings_path(klass_id: @klass.id, url: request.url), class: 'dropdown-item', remote: true%>
+            </li>
+            <li role="separator" class="divider"></li>
+            <li>
+              <%= link_to "Edit Properties", module_settings_path(klass_id: @klass.id), class: 'dropdown-item'%>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+       <div class="col-sm-12">
+          <div class="site-content-data">
+            <div class="content position-relative lead_page">
+              <div id="client-list" class="table-list">
+                <%= render partial: "client_list", locals: {clients: @clients, fields: @fields, data: @data}%>
+              </div>
+            </div>
+          </div>
+       </div>
+    </div>
+    <div id="modalContainer" class="modal-right"></div>
+    <div id="importfiled"></div>
+  </div>
+</div>
+<script>
+  $(document).ready(function() {
+    $(".dropdown-toggle").dropdown();
+  });
+</script>

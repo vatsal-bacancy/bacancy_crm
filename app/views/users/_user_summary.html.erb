@@ -1,0 +1,3 @@
+<%= form_for current_user, remote: true, class: "form-inline" do |f| %>
+  <%= render partial: 'user_details', locals: { f: f, current_user: current_user, company: @company } %>
+<% end %>

@@ -1,0 +1,16 @@
+<%= form_for object, remote: true, class: 'form-inline', html: { 'data-ajax-datatable-field-form': true } do |f| %>
+  <div data-ajax-datatable-field-value>
+    <%= pretty_value(field, object) %>
+  </div>
+  <div style="display: none;" data-ajax-datatable-field-editor>
+    <%= render partial: 'forms/field', locals: { f: f,
+                                                 field: field,
+                                                 field_name: field.name,
+                                                 field_label: nil,
+                                                 column_type: field.column_type,
+                                                 custom: field.custom,
+                                                 have_custom_value: field.have_custom_value,
+                                                 data: fields_picklist_data,
+                                                 value: object.send(field.name) } %>
+  </div>
+<% end %>

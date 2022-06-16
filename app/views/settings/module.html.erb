@@ -1,0 +1,63 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <%= link_to settings_path, class: "main-menu-sitecontent common-link"   do %> CRM Customization Settings <% end %>
+            <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> </span>
+            <span class="main-menu-sitecontent"> CRM Module Settings </span>
+            <!-- <%= link_to module_settings_path,class: "main-menu-sitecontent" do %> CRM Module Settings <% end %> -->
+            <!-- <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> </span> -->
+            <span class="sub-menu-sitecontent"> </span>
+          </div>
+          <div class="pull-right">
+            <%= link_to "Back", settings_path , class: 'btn btn-success m-t-5' %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="site-content-data">
+      <div class="row">
+        <div class="col-md-12">
+          <ul id="myTabs" class="nav nav-pills nav-justified bpro-tab" role="tablist" data-tabs="tabs">
+            <li class="active"><a href="<%= module_select_settings_path(klass_name: "Lead")%>" data-toggle="tab" data-remote='true'>Leads</a></li>
+            <li><a href="<%= module_select_settings_path(klass_name: "Client")%>" data-toggle="tab" data-remote='true'>Clients</a></li>
+            <li><a href="<%= module_select_settings_path(klass_name: Vendor.klass_name) %>" data-toggle="tab" data-remote='true'>Vendor</a></li>
+            <li><a href="<%= module_select_settings_path(klass_name: ProjectManagement::Project.klass_name) %>" data-toggle="tab" data-remote='true'>Project</a></li>
+            <li><a href="<%= module_select_settings_path(klass_name: ProjectManagement::Project::Task.klass_name) %>" data-toggle="tab" data-remote='true'>Project Task</a></li>
+            <li><a href="<%= module_select_settings_path(klass_name: "Ticket")%>" data-toggle="tab" data-remote='true'>Tickets</a></li>
+            <li><a href="<%= module_select_settings_path(klass_name: "Task")%>" data-toggle="tab" data-remote='true'>Tasks</a></li>
+            <li><a href="<%= module_select_settings_path(klass_name: "Note")%>" data-toggle="tab" data-remote='true'>Notes</a></li>
+            <li><a href="<%= module_select_settings_path(klass_name: "User")%>" data-toggle="tab" data-remote='true'>Users</a></li>
+            <li><a href="<%= module_select_settings_path(klass_name: "Invoice")%>" data-toggle="tab" data-remote='true'>Invoice</a></li>
+            <li><a href="<%= module_select_settings_path(klass_name: "Inventory")%>" data-toggle="tab" data-remote='true'>Inventory</a></li>
+          </ul>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade in active" id="tabLead">
+              <% if params[:klass_id].present? %>
+                <%= render partial: 'module_setting', locals: {klass: @klass, groups: @current_groups} %>
+              <% else %>
+                <%= render partial: 'module_setting', locals: {klass: @lead_klass, groups: @lead_groups} %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="newFieldGroup" class="model-right"></div>
+<script>
+  $(document).ready(function(){
+    //$(".fields-sortable, .group-sortable").sortable()
+    $('.nav li').on('click',function(){
+      $('.nav li').removeClass('active');
+      var $this = $(this);
+      if (!$this.hasClass('active')) {
+        $this.addClass('active');
+      }
+    });
+  });
+</script>

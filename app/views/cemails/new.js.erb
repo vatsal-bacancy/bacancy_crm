@@ -1,0 +1,8 @@
+<% if current_user.google_access_token.present? || current_user.ms_azure_token.present?%>
+  $("#cEmail").html("<%= escape_javascript(render partial: 'emails/modal', locals: { email: Email.new, object: @object }) %>");
+  $("#modal").modal('show');
+<%else%>
+  $("#cEmail").html("<%= escape_javascript(render partial: 'modal', locals: { cemail: @cemail, object: @object }) %>"); //on show of client and lead
+  $("#cEmailModal").modal('show');
+<%end%>
+$document_ids = [];

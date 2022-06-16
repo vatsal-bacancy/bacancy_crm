@@ -1,0 +1,27 @@
+<div class="modal fade" id="UploadImage" role="dialog">
+  <div class="modal-dialog">
+    <%= form_for company, remote: true, class: "form-inline",:html => { multipart: true} do |f| %>
+      <div id='flash_message'></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><%= "Company's #{field.to_s}" %></h4>
+        </div>
+        <div class="modal-body">
+
+           <div class="placeholder-inv d-flex flex-justify-center">
+
+            <%= f.file_field "#{field}" %>
+    
+          </div>
+
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <%= f.submit 'Save', class: "btn btn-success"%>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

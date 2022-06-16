@@ -1,0 +1,22 @@
+<%= form_tag field_picklist_values_path, method: :post do %>
+  <%= label_tag "Select Field","Select Field", class:'select-module-set'  %>
+  <%= grouped_collection_select nil, :field_id, klass.groups, :field_picklist_valuable_fields, :label, :id, :label, {include_blank: "Select Field"}, class: 'form-control' %>
+<%end%>
+<script>
+  $(document).ready(function(){
+    $("#field_id").on('change', function(){
+      $.ajax({
+        url: "<%= change_field_field_picklist_values_url %>",
+        type: 'GET',
+        data: {
+          klass_id: $("#klasses").val(),
+          field_id: $(this).val()
+        },
+        dataType: "script",
+        success: function(result){
+
+        }
+      });
+    });
+  });
+</script>

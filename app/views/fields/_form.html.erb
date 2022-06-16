@@ -1,0 +1,91 @@
+<div class='row'>
+  <div class='col-md-6'>
+    <!-- <div class="form-group">
+      <%= label_tag :name %>
+      <%= f.text_field :name, class: 'form-control', required: true, pattern: Field::PATTERNS[:field], title:"Field name should only contain 'letters' & '_' . e.g. new_field" %>
+    </div> -->
+    <div class="form-group">
+      <%= label_tag :label %>
+      <%= f.text_field :label, class: 'form-control', required: true %>
+    </div>
+    <div class="form-group">
+      <%= label_tag :type %>
+      <%= f.select :column_type, options_for_select(Field::TYPE_CAST.keys.sort,  f.object.column_type), {prompt: "Select Type"}, { class: 'form-control', disabled: field.persisted?, required: true} %>
+    </div>
+    <div class="form-group min-max hidden file">
+      <%= label_tag :min_length %>
+      <%= f.number_field :min_length, value: 0, class: 'form-control' %>
+    </div>
+
+  </div>
+  <div class='col-md-6'>
+
+    <div class="form-group">
+      <%= label_tag :placeholder %>
+      <%= f.text_field :placeholder, class: 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= label_tag :default_value %>
+      <%= f.text_field :default_value, class: 'form-control' %>
+    </div>
+    <div class="form-group min-max hidden file">
+      <%= label_tag :max_length %>
+      <%= f.number_field :max_length, value: 255, class: 'form-control' %>
+    </div>
+
+  </div>
+</div>
+
+<div class='row file'>
+
+  <div class='col-md-6'>
+    <div class="form-group">
+      <%= f.check_box :required, class: '' %>
+      <%= label_tag :required %>
+    </div>
+  </div>
+</div>
+<div class='row file'>
+  <div class='col-md-6'>
+    <div class="form-group">
+      <%= f.check_box :quick_create, class: '' %>
+      <%= label_tag :quick_create %>
+    </div>
+    <div class="form-group">
+      <%= f.check_box :key_field_view, class: '' %>
+      <%= label_tag :key_field_view %>
+    </div>
+  </div>
+
+  <div class='col-md-6'>
+    <div class="form-group">
+      <%= f.check_box :mass_edit, class: '' %>
+      <%= label_tag :mass_edit %>
+    </div>
+  </div>
+</div>
+
+<%= f.hidden_field :klass_id, value: klass.id %>
+<%= f.hidden_field :group_id, value: group.id %>
+<%= f.hidden_field :custom, value: true %>
+
+<script>
+  $(document).ready(function(){
+
+    $("#field_column_type").on('change', function(){
+      if(["File"].includes($(this).val()) ){
+        $(".file").addClass('hidden');
+      }else{
+        $(".file").removeClass('hidden');
+      }
+      if(["Text", "URL", "Text Area HTML"].includes($(this).val()) ){
+        $(".min-max").removeClass('hidden');
+      }else{
+        $(".min-max").addClass('hidden');
+      }
+    });
+    <%-if f.object.column_type == 'File' %>
+      $(".file").addClass('hidden');
+    <%end%>
+  });
+</script>

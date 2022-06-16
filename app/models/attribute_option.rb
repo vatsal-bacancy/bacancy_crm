@@ -1,0 +1,2 @@
+class AttributeOption < ApplicationRecord
+end

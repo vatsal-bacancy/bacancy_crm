@@ -1,0 +1,69 @@
+<%action_delete =  checked_permission?(current_user, @klass_list['Task'], @action_list['delete']) %>
+<%action_update =  checked_permission?(current_user, @klass_list['Task'], @action_list['update']) %>
+<%action_create =  checked_permission?(current_user, @klass_list['Task'], @action_list['create']) %>
+<%action_read =  checked_permission?(current_user, @klass_list['Task'], @action_list['read']) %>
+<div id="success_message"></div>
+ <div class="site-main" id="show-index">
+  <%= render 'layouts/sidebar'%>
+
+  <div class="site-content">
+    <div class="site-content-head">
+       <div class="row">
+          <div class="col-sm-12">
+            <div class="l-menu">
+              <span class= "main-menu-sitecontent" > Tasks </span>
+              <!--<%= link_to tasks_path, class: "main-menu-sitecontent" do %> All <% end %>-->
+            </div>
+            <div class="pull-right">
+              <%if action_delete%>
+                <a href="javascript:void(0)" class="site-content-head-btn" id='destroy_all_tasks'>Delete</a>
+              <%end%>
+              <%if action_create%>
+                <%= link_to new_task_path,class: 'site-content-head-btn', remote: true do %>
+                  + Add Task
+                <%end%>
+              <%end%>
+              <!-- <a href="" class="site-content-head-btn">Import Ticket</a>
+              <a href="" class="site-content-head-btn">Export To Excel</a> -->
+              <!-- <a href="" class="site-content-head-btn">Actions</a> -->
+            </div>
+          </div>
+       </div>
+    </div>
+
+    <div class="row">
+       <div class="col-sm-12">
+          <div id="task-all" class="table-list">
+            <!-- call at create, update and destroy ticket  -->
+             <%= render partial: "tasks/task_list" , locals: { tasks: @tasks, task_fields: @task_fields, object: @data } %>
+          </div>
+       </div>
+    </div>
+
+
+
+    <%
+=begin%>
+ <% provide :script do %>
+      $(document).ready(function()
+      {
+        $('#tasks-table').DataTable({
+          scrollX: false,
+          autoWidtd: false,
+          paging: false,
+          searching: false,
+          <!-- columnDefs: [
+          { "width": "80px", "targets": [2,3,4,6,7,8] },
+          { "width": "30px", "targets": [0] },
+          { "width": "250px", "targets": [1] }
+          ] -->
+        });
+      });
+    <% end %>
+<%
+=end%>
+  </div>
+</div>
+</div>
+
+<div id="modalContainerIndex" class='modal-right'></div>

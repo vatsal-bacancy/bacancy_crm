@@ -1,0 +1,72 @@
+<div class="modal fade cemil-modal" id="cEmailModal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <%= form_for cemail, remote: true, class: "form-inline", html: { multipart: true } do |f| %>
+
+      <div class="modal-content ">
+        <div class="modal-header">
+          <div class="pull-right">
+            <button type="button" class="close" data-dismiss="modal">&#x2715;</button>
+          </div>
+          <h4 class="modal-title">Email</h4>
+        </div>
+        <div class="modal-body">
+          <div class="email-link-wrapper">
+            <div class="col-md-12">
+              <%= select_tag 'template',options_for_select(current_user.email_templetes.pluck(:name,:id)), { :prompt=> "Template", :class=> "form-control" } %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 p-l-r-0">
+              <div class="custom-hr">
+              <hr/>
+            </div>
+          </div>
+        </div>
+
+
+            <%= render 'form',f: f, object: object  %>
+
+            <%= f.hidden_field :cemailable_type , value: f.object.cemailable_type %>
+            <%= f.hidden_field :cemailable_id , value: f.object.cemailable_id %>
+            <%#= hidden_field_tag :email_temp, "", :id => "email_temp_id" %>
+            <div id="cemail_file" class="col-sm-12 mb10">
+            </div>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <%= f.submit "Send",id: "cemail-save", class: 'btn btn-success' %>
+        </div>
+
+    <%end%>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $('#template').change(function(){
+      var id = this.value
+      $.ajax({
+        url: "<%= get_template_path	 %>",
+        method: "get",
+        data:{
+          id: id
+        },
+        success: function(result){
+          $('#cemail_subject').val(result['subject']);
+          CKEDITOR.instances['email_content'].setData(result['content'] + '<br/>' +result['signature']);
+          //$('#email_temp_id').val(result['id'])
+          if(result['attachment'])
+          {
+            $.each(result['attachment'], function(key , value)
+            {
+              $('#cemail_file').append("<a class='m/r/10' herf=" + value[1] + ">" + value[0] + "</a><br> ");
+            });
+          }
+
+        }
+      });
+    });
+  });
+</script>

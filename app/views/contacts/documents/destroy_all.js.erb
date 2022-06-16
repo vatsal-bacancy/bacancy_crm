@@ -1,0 +1,2 @@
+$("#dir_list").html("<%= escape_javascript(render partial: 'contacts/directories/list', locals: {directory: @directory, directories: @directories, documents: @documents}) %>");
+$('#directory_detail').html("<%= escape_javascript(render partial: 'contacts/directories/directory_detail',locals: {directory: @directory, directories: @directories, documents: @documents}) %>")

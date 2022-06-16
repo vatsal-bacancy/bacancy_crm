@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <title>Home</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link href="css/font-awesome.min.css" rel="stylesheet" media="all" type="text/css">
+    <style type="text/css">
+      .card-section{padding:20px;}
+      .card-wrapper{background-color: #ffffff;border-radius: 4px; width: 100%; box-shadow: 0 12px 19px 0 rgba(192, 192, 192, 0.5);}
+      .main-card-wrapper{padding: 15px 60px 0;}
+      .company-name{font-size: 32px;font-style: normal; font-stretch: normal; line-height: 1; -webkit-letter-spacing: normal; -moz-letter-spacing: normal; -ms-letter-spacing: normal; letter-spacing: normal; color: #4a4a4a; margin-top: 35px; text-align: center;}
+      .payment-amount-wrapper{text-align: center;margin-top: 32px;}
+      .payment-amount-label{font-size: 12px;color: #8c9097; text-transform: uppercase; display: block;}
+      .payment-amount{font-size: 30px; line-height: 37px; color: #4a4a4a; text-transform: uppercase; display: block;}
+      .contact-message{font-size: 22px; color: #4a4a4a; display: block; margin-top: 15px; margin-bottom: 25px; text-align: center; line-height: 1.3;}
+      .custom-hr hr{border-top: 1px solid rgba(151, 151, 151, 1);border-bottom: 0; border-right: 0; border-left: 0; opacity: 0.33; margin: 20px 0px 20px 0px;}
+      .flex{display:flex;}
+      .side-icon-wrapper{flex-wrap: wrap;}
+      .icon{margin-top: 1px;}
+      .side-icon-wrapper .content {margin-left: 10px;text-align: left;}
+      .contact-info .contact-link{    color: #0079cb; font-size: 14px; -webkit-text-decoration: none; text-decoration: none; cursor: pointer;}
+      .custom-hr1 hr{border-top: 1px solid rgba(151, 151, 151, 1); border-bottom: 0; border-right: 0; border-left: 0; opacity: 0.33; margin: 20px 0px 20px 0px;}
+      .main-footer{font-size: 12px;text-align: center; color: #848588; padding: 0 7px 20px;}
+      .justify-center{justify-content:center;}
+      .side-panel{max-width: 320px;}
+      .pdf-preview-wrapper{position: relative;margin-bottom:20px;}
+      .pdf-preview-thumbnail-wrapper{height: 180px;position: relative;}
+      .pdf-img{position: relative;overflow: hidden;height: 180px;}
+      .pdf-img img{position: absolute; left: 21%; top: 25%;margin:10px;width:50%;height:50%;}
+      .side-panel-hr hr{border-top: 1px solid rgba(151, 151, 151, 1);border-bottom: 0;border-right: 0; border-left: 0; opacity: 0.33; margin: 0px 0px 0px 0px;}
+      .space-between{}
+      .flex-row{flex-direction: row;display: -webkit-box;display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-pack: justify; -webkit-justify-content: space-between; -ms-flex-pack: justify; justify-content: space-between;}
+      .side-panel label{cursor: text;font-size: 14px; color: #393a3d; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex;} 
+      .side-panel span{   cursor: text;font-size: 14px; color: #393a3d;}
+      .no-wrap{white-space: nowrap; }
+      .lock-wrapper{line-height: normal;margin-top:15px;}
+      .lockwrapper-msg{font-size: 12px;color: #393a3d; vertical-align: text-top; margin-left: 3px; padding-top: 3px; white-space: normal; }
+      .overlay {position: absolute; top: 0; bottom: 0; left: 0; right: 0; height: 180px; width: 100%; opacity: 0; transition: .5s ease; background-color: #393a3d; border-top-left-radius: 4px; border-top-right-radius: 4px; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column; -webkit-align-content: space-around; -ms-flex-line-pack: space-around; align-content: space-around; -webkit-box-pack: center; -webkit-justify-content: center; -ms-flex-pack: center; justify-content: center; -webkit-align-items: center; -webkit-box-align: center; -ms-flex-align: center; align-items: center; }
+      .pdf-preview-thumbnail-wrapper:hover .overlay {opacity: 1;}
+      .cpButton--jumbo {height: 48px; min-width: 120px; border-radius: calc(48px/2); font-size: 19px; line-height: 24px; -webkit-box-pack: center; -webkit-justify-content: center; -ms-flex-pack: center; justify-content: center; -webkit-align-content: center; -ms-flex-line-pack: center; align-content: center; width: 100%; position: relative; outline: none; padding: 0 18px; margin: 0; cursor: pointer; white-space: nowrap; border: none; background-color: #00a300; color: #ffffff; display: block; padding: 10px; text-align: center; cursor: pointer;}
+      .cpButton--jumbo:hover,  .cpButton--jumbo:focus,  .cpButton--jumbo :active{text-decoration: none; cursor: pointer;}
+      .amount-to-pay {margin-left: 6px; display: inline-block; color: #ffffff !important; cursor: pointer !important;}
+      .cursor-pointer{cursor: pointer !important;}
+      .text {color: white; font-size: 20px; position: absolute; top: 50%; left: 50%; -webkit-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); text-align: center; }
+      .pdf-preview-btn{    margin-top: 5px;width: 180px; height: 35px; background-color: transparent; border: 2px solid #ffffff; border-radius: 17px; color: #ffffff; font-size: 14px; cursor: pointer; -webkit-transition: background-color 0.35s ease; transition: background-color 0.35s ease; }
+      .pdf-preview-btn:hover, .pdf-preview-btn:active, .pdf-preview-btn:focus{background-color: #68686c;color:#fff;text-decoration:none;}
+      .pdf-preview-actions{display: -webkit-box;display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-pack: justify; -webkit-justify-content: space-between; -ms-flex-pack: justify; justify-content: space-between; margin-top: 30px; width: 100%; padding: 0 17px; }
+      .pdf-preview-actions a{width: 138px;height: 35px; background: none; border: none; font-size: 14px; color: #ffffff; cursor: pointer; border-radius: 17px; padding: 5px 15px; -webkit-transition: background-color 0.35s ease; transition: background-color 0.35s ease; white-space: nowrap;display: flex;justify-content: center;}
+      .pdf-preview-actions a:hover, {background-color: #68686c;}
+      .pdf-preview-actions a svg{margin-right: 5px;}
+      .pdf-preview-actions a:hover, .pdf-preview-actions a:focus, .pdf-preview-actions a:active {color:#fff;text-decoration:none;}
+      .pdf-default-icon{width: 100px !important;height: 100px !important; left: 28% !important; top: 16% !important;}
+      .pdf-icon-main{left: 33% !important;top: 23% !important;width: 80px !important; height: 80px !important;}
+
+      /*media query*/
+
+      @media (max-width: 767px) {
+      .pdf-preview-wrapper{margin-top:20px;}
+      .card-section{padding: 0px;}
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+    </header>
+    <section class="card-section">
+      <div class="container">
+      <div class="row">
+        <div class="col-sm-7">
+          <div class="card-wrapper">
+            <div class="main-card-wrapper">
+              <div class="company-name">
+                <span> <%= @invoice.sales_person.company.name %> </span>
+              </div>
+              <div class="payment-amount-wrapper">
+                <div class="payment-amount-label">
+                  <span> BALANCE DUE</span>
+                  <span class="payment-amount"><span>$<%= @invoice.amount_with_tax %></span></span>
+                </div>
+              </div>
+              <span class="contact-message">
+              <span>Contact <%= @invoice.sales_person.company.name  %> if you're not sure how to pay this invoice.</span>
+              </span>
+              <div class="cutom-hr">
+                <hr/>
+              </div>
+              <div class="flex side-icon-wrapper justify-center">
+                <div class="icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20" color="#393a3d">
+                    <g fill="none" fill-rule="evenodd" transform="translate(1 1)">
+                      <rect width="15" height="18" x="1" stroke="#393a3d" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" rx="2.14"></rect>
+                      <path stroke="#393a3d" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M0 4h2M0 9h2M0 14h2"></path>
+                      <path fill="#393a3d" d="M9.39 9.45c.983 0 1.78.797 1.78 1.78v1.38a.45.45 0 0 1-.45.44H6.28a.45.45 0 0 1-.45-.44v-1.33c0-.983.797-1.78 1.78-1.78v-.24a1.78 1.78 0 0 1-.89-1.54v-.89a1.78 1.78 0 0 1 3.56 0v.89a1.8 1.8 0 0 1-.52 1.26 2.57 2.57 0 0 1-.37.28v.19z"></path>
+                    </g>
+                  </svg>
+                </div>
+                <div class="content flex-any trunc">
+                  <a href="mailto:<%= @invoice.sales_person.company.email %>?subject=Question about invoice <%= @invoice.invoice_no %>" class=" contact contact-link"><%= @invoice.sales_person.company.email %></a>
+                </div>
+              </div>
+              <div class="custom-hr1">
+                <hr/>
+              </div>
+              <div class="main-footer">
+                <span>© 2019 Intuit Inc. All rights reserved.</span>
+                <!--<a href="" target="_blank" rel="" class=""><span>Privacy.</span></a>
+                <span>|</span>
+                <a class="" href="/payor-terms-of-service"><span>Terms of service.</span></a>-->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-5">
+          <aside class="side-panel">
+            <div class="card-wrapper">
+              <div class="pdf-preview-wrapper">
+              <div class="pdf-preview-thumbnail-wrapper">
+                <div class="pdf-img">
+                
+
+                    <%#= @invoice.sales_person.fullname %> 
+                    <%#= @invoice.sales_person.email %> 
+
+                    <!--put image in right-->
+                    <img src="/assets/pdf-icon.png" class="pdf-icon-main" >
+
+
+                    <!-- invoice details  -->
+                    <!--  <h2> Invoice </h2>-->
+
+                    <!-- put it left -->
+                     <!-- <h4> Bill to </h4>-->
+                    <%#= @invoice.billing_address %>
+
+
+
+                    <div class="overlay">
+                    <%= link_to "View invoice",invoice_path(@invoice,format: :pdf), class: "btn pdf-preview-btn", target: "_blank"   %>
+                  
+                  <div class="pdf-preview-actions">
+                   
+                    <%= link_to invoice_download_path(@invoice,format: :pdf) do %>
+                    <!--<a herf = "<%= invoice_download_path(@invoice,format: :pdf) %>" >-->
+                    <!--<button type="button" class="">-->
+                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+                        <g fill="none" fill-rule="evenodd" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round">
+                          <path stroke-width="2" d="M8.558 1h5.8a1 1 0 0 1 1 1v5.902h2.188a1 1 0 0 1 .642 1.767l-5.417 4.54a2 2 0 0 1-2.602-.029L5 9.655a1 1 0 0 1 .659-1.753h1.898V2a1 1 0 0 1 1-1z"></path>
+                          <path fill="#FFF" d="M1 20h20.296v1.255H1z"></path>
+                        </g>
+                      </svg>
+                      Download
+                    <!--</button>-->
+                    <!--</a>-->
+                    <%end%>
+                      
+                    <!--<button type="button" class="">-->
+                    <a href="#">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+                        <g fill="none" fill-rule="evenodd" transform="translate(1 1)">
+                          <path stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7V1a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v6"></path>
+                          <circle cx="3" cy="10" r="1" fill="#FFF"></circle>
+                          <path stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16H2a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-.653"></path>
+                          <rect width="4" height="10" x="8.003" y="11.008" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" rx="2" transform="rotate(-89.91 10.003 16.008)"></rect>
+                        </g>
+                      </svg>
+                      Print
+                    <!--</button>-->
+                    </a>
+                  </div>
+
+               </div>
+                 </div>
+              </div>
+              <div class="side-panel-hr">
+                <hr>
+              </div>
+              <div style="padding: 10px 18px;">
+              <div class=" flex-column">
+              <div class=" space-between flex-row">
+                <span class=" label"><span>Invoice</span></span>
+                <label class=" label label-data right trunc"><%= @invoice.invoice_no %></label>
+               </div>
+               <div class=" space-between flex-row">
+                <span class=" label"><span>Due date</span></span>
+                <label class=" label label-data right trunc">
+                  <span><%= @invoice.due_date&.strftime('%m/%d/%Y') %></span></label>
+                </div>
+                <div class=" space-between flex-row"><span class=" label"><span>Invoice total</span></span><label class=" label label-data right trunc"><span>$<%= @invoice.amount_with_tax %></span></label></div>
+              </div>
+
+              </div>
+              </div>
+            </div>
+
+            <%= link_to new_invoice_payment_path(@invoice), class: 'cpButton pay cpButton--jumbo cpButton--primary cpButton--custom-width' do %>
+              <span class="cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="15" viewBox="0 0 12 15" class="lock-icon">
+                  <g fill="none" fill-rule="evenodd" transform="translate(1 1)">
+                    <rect width="10.165" height="9" y="4" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" rx="2"></rect>
+                    <path stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.132 4V2.963C8.132 1.327 6.767 0 5.082 0 3.399 0 2.034 1.327 2.034 2.963V4"></path>
+                    <path stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.083 8v2"></path>
+                    <ellipse cx="5.083" cy="8" fill="#ffffff" fill-rule="nonzero" rx="1.017" ry="1"></ellipse>
+                  </g>
+                </svg>
+                <span class="jsx-2357038070 caption cursor-pointer"><span class="amount-to-pay">Pay</span></span><span class="jsx-2357038070 amount-to-pay">$<%= @invoice.amount_with_tax %></span>
+              </span>
+            <% end %>
+
+            <div class=" lock-wrapper no-wrap">
+            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="13" viewBox="0 0 12 15"><g fill="none" fill-rule="evenodd" transform="translate(1 1)"><rect width="10.165" height="9" y="4" stroke="#393a3d" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" rx="2"></rect><path stroke="#393a3d" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M8.132 4V2.963C8.132 1.327 6.767 0 5.082 0 3.399 0 2.034 1.327 2.034 2.963V4"></path><path stroke="#393a3d" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5.083 8v2"></path><ellipse cx="5.083" cy="8" fill="#393a3d" fill-rule="nonzero" rx="1.017" ry="1"></ellipse></g></svg><span class=" msg"><span class="lockwrapper-msg">Information is protected and kept confidential</span></span></div>
+
+          </aside>
+
+        </div>
+      </div>
+    </section>
+    <!-- /container -->
+    <!-- Bootstrap core JavaScript
+      ================================================== --> 
+    <!-- Placed at the end of the document so the pages load faster --> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  </body>
+</html>

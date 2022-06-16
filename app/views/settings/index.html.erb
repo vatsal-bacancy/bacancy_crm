@@ -1,0 +1,145 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+  <div class="site-content">
+    <div class="dynmic-tab-div">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="dynmic-tab-div-header">
+            <span class="heading common-link">CRM Customization Settings</span>
+          </div>
+          <div class="dynmic-tab-div-data">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="setting-icon-wrapper">
+                  <%= link_to users_settings_path do  %>
+                    <div class="setting-icon">
+                      <div class="setting-icon-main">
+                        <i class="fa fa-wpforms" aria-hidden="true"></i>
+                      </div>
+                      <div class="setting-icon-title">
+                          <p>User Settings</p>
+                      </div>
+                    </div>
+                  <%end%>
+                  <%= link_to module_settings_path do %>
+
+                    <div class="setting-icon">
+                      <div class="setting-icon-main">
+                        <i class="fa fa-user-o" aria-hidden="true"></i>
+                      </div>
+                      <div class="setting-icon-title">
+                        <p>Module Customization</p>
+                      </div>
+                    </div>
+                  <%end%>
+                  <%= link_to field_picklist_values_path  do %>
+                    <div class="setting-icon">
+                      <div class="setting-icon-main">
+                        <i class="fa fa-phone-square" aria-hidden="true"></i>
+                      </div>
+                      <div class="setting-icon-title">
+                        <p>Picklist Field Values</p>
+                      </div>
+                    </div>
+                  <%end%>
+                  <%= link_to module_numbers_path  do %>
+                    <div class="setting-icon">
+                      <div class="setting-icon-main">
+                        <i class="fa  fa-sort-numeric-asc" aria-hidden="true"></i>
+                      </div>
+                      <div class="setting-icon-title">
+                        <p>Module Numbering</p>
+                      </div>
+                    </div>
+                  <%end%>
+                  <%= link_to work_flows_path  do %>
+                    <div class="setting-icon">
+                      <div class="setting-icon-main">
+                        <i class="fa  fa-stumbleupon" aria-hidden="true"></i>
+                      </div>
+                      <div class="setting-icon-title">
+                        <p>Work Flows</p>
+                      </div>
+                    </div>
+                  <%end%>
+                  <% if checked_permission?(current_user, @klass_list['EmailTemplete'], @action_list['read'])%>
+                    <%= link_to email_templetes_path  do %>
+                      <div class="setting-icon">
+                        <div class="setting-icon-main">
+                          <i class="fa fa-envelope" aria-hidden="true"></i>
+                        </div>
+                        <div class="setting-icon-title">
+                          <p>Email Template</p>
+                        </div>
+                      </div>
+                    <%end%>
+                  <%end%>
+                  <%= link_to invoice_taxes_path do %>
+                    <div class="setting-icon">
+                      <div class="setting-icon-main">
+                        <i class="fa fa-file-text" aria-hidden="true"></i>
+                      </div>
+                      <div class="setting-icon-title">
+                        <p>Invoice Tax</p>
+                      </div>
+                    </div>
+                  <% end %>
+                  <%= link_to email_settings_path do %>
+                    <div class="setting-icon">
+                      <div class="setting-icon-main">
+                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                      </div>
+                      <div class="setting-icon-title">
+                        <p>Mail</p>
+                      </div>
+                    </div>
+                  <% end %>
+                  <%= link_to contract_templates_path do %>
+                    <div class="setting-icon">
+                      <div class="setting-icon-main">
+                        <i class="fa fa-handshake-o" aria-hidden="true"></i>
+                      </div>
+                      <div class="setting-icon-title">
+                        <p>Contract Templates</p>
+                      </div>
+                    </div>
+                  <% end %>
+                  <%= link_to users_tfa_phone_numbers_path do %>
+                    <div class="setting-icon">
+                      <div class="setting-icon-main">
+                        <i class="fa fa-phone-square" aria-hidden="true"></i>
+                      </div>
+                      <div class="setting-icon-title">
+                        <p>2FA Phone Numbers</p>
+                      </div>
+                    </div>
+                  <% end %>
+                  <%= link_to feedback_questions_path do %>
+                    <div class="setting-icon">
+                      <div class="setting-icon-main">
+                        <i class="fa fa-question-circle" aria-hidden="true"></i>
+                      </div>
+                      <div class="setting-icon-title">
+                        <p>Feedback Questions</p>
+                      </div>
+                    </div>
+                  <% end %>
+                  <%= link_to time_sheet_logs_settings_users_path do %>
+                    <div class="setting-icon">
+                      <div class="setting-icon-main">
+                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                      </div>
+                      <div class="setting-icon-title">
+                        <p>Timesheet Email Settings</p>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

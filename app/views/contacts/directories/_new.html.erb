@@ -1,0 +1,22 @@
+<div class="modal fade" id="newDir" role="dialog">
+  <%= form_for directory,url: contacts_directories_path, local: true, class: "form-inline", id: "new-dir" , remote: true do |f| %>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Folder</h4>
+        </div>
+        <div class="modal-body">
+          <div id='flash_message'></div>
+          <%= render 'form', f: f %>
+          <%=f.hidden_field 'directoriable_type', value: f.object.directoriable_type%>
+          <%=f.hidden_field 'directoriable_id', value: f.object.directoriable_id%>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <%= f.submit class: 'btn btn-success' %>
+        </div>
+      </div>
+    </div>
+  <%end%>
+</div>

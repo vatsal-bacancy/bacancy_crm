@@ -1,0 +1,86 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar' %>
+  <div class="site-content">
+    <div class="dynmic-tab-div">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="dynmic-tab-div-header">
+            <span class="heading">Contract Pipeline</span>
+          </div>
+          <div class="dynmic-tab-div-data">
+            <div class="row">
+              <div class="col-sm-12 m-b-20">
+                <%= form_tag sales_lead_contracts_pipeline_kpis_path, remote: true, class: 'form-inline' do %>
+                  <div class="form-group">
+                    <label>Start Date:</label>
+                    <input name="start_date" class="form-control bootstrapdatepicker" value="<%= pretty_date Date.today.beginning_of_month %>">
+                  </div>
+                  <div class="form-group">
+                    <label>End Date:</label>
+                    <input name="end_date" class="form-control bootstrapdatepicker" value="<%= pretty_date Date.today.end_of_month %>">
+                  </div>
+                  <button type="submit" class="btn btn-success" data-kpis-tables-filter>Filter</button>
+                <% end %>
+              </div>
+              <div data-kpis-sales-lead-contract-pipeline-table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 m-t-20">
+          <div class="dynmic-tab-div-header">
+            <span class="heading">Lead Status</span>
+          </div>
+          <div class="dynmic-tab-div-data">
+            <div class="row">
+              <div class="col-sm-12 m-b-20">
+                <%= form_tag sales_lead_status_kpis_path, remote: true, class: 'form-inline' do %>
+                  <div class="form-group">
+                    <label>Start Date:</label>
+                    <input name="start_date" class="form-control bootstrapdatepicker" value="<%= pretty_date Date.today.beginning_of_month %>">
+                  </div>
+                  <div class="form-group">
+                    <label>End Date:</label>
+                    <input name="end_date" class="form-control bootstrapdatepicker" value="<%= pretty_date Date.today.end_of_month %>">
+                  </div>
+                  <button type="submit" class="btn btn-success" data-kpis-tables-filter>Filter</button>
+                <% end %>
+              </div>
+              <div data-kpis-sales-lead-status-table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 m-t-20">
+          <div class="dynmic-tab-div-header">
+            <span class="heading">Client Won</span>
+          </div>
+          <div class="dynmic-tab-div-data">
+            <div class="row">
+              <div class="col-sm-12 m-b-20">
+                <%= form_tag won_clients_kpis_path, remote: true, class: 'form-inline' do %>
+                  <div class="form-group">
+                    <label>Start Date:</label>
+                    <input name="start_date" class="form-control bootstrapdatepicker" value="<%= pretty_date Date.today.beginning_of_month %>">
+                  </div>
+                  <div class="form-group">
+                    <label>End Date:</label>
+                    <input name="end_date" class="form-control bootstrapdatepicker" value="<%= pretty_date Date.today.end_of_month %>">
+                  </div>
+                  <button type="submit" class="btn btn-success" data-kpis-tables-filter>Filter</button>
+                <% end %>
+              </div>
+              <div data-kpis-won-client-table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function () {
+    $('[data-kpis-tables-filter]').click();
+  })
+</script>

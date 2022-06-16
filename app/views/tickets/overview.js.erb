@@ -1,0 +1,2 @@
+$("#ticket-detail").html("<%= escape_javascript(render partial: 'tickets/overview', locals: {klass: @klass, ticket: @ticket, overviews: @overviews})%>")
+$("#project-detail-msg").html("<%= escape_javascript(render partial: 'tickets/overview', locals: {klass: @klass, ticket: @ticket, overviews: @overviews})%>")

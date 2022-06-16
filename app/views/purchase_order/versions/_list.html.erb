@@ -1,0 +1,20 @@
+<table class="table table-bordered common-data-table">
+  <thead>
+  <tr>
+    <th>Created By</th>
+    <th>Created Date / Time</th>
+    <th width="15%">Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% purchase_order_versions.each do |purchase_order_version| %>
+    <tr>
+      <td><%= purchase_order_version.created_by.fullname %></td>
+      <td><%= pretty_date_time purchase_order_version.created_at %></td>
+      <td>
+        <%= link_to 'Download PDF', purchase_order_version_path(purchase_order_version, format: 'pdf'), class: 'btn btn-primary' %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,24 @@
+<% adjustments = inventory.stock_adjustments %>
+<% if adjustments.present? %>
+  <% adjustments.each do |adjustment| %>
+    <tr>  
+      <td width="15%" class="text-left"><%= adjustment. adjustment_type %></td>
+      <td width="15%" class="text-left">28 Jun 2019 </td>
+      <td width="20%" class="text-left"><%= adjustment.reason_label %>  </td>
+      <td width="15%" class="text-left"><%= adjustment.adjustment_label %></td>
+      <td width="15%" class="text-left"><%= adjustment.reference_no %></td>
+      <td width="20%" class="text-left" title="<%= adjustment.description.strip %>">
+        <span class="pl20 pr20"><i class="" data-original-title=""> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon icon-sm"><path d="M320.5 107.5h-140c-6.6 0-12 5.4-12 12v12c0 6.6 5.4 12 12 12h140c6.6 0 12-5.4 12-12v-12c0-6.6-5.4-12-12-12zm0 77h-140c-6.6 0-12 5.4-12 12v12c0 6.6 5.4 12 12 12h140c6.6 0 12-5.4 12-12v-12c0-6.6-5.4-12-12-12zm-140 112h140c6.6 0 12-5.4 12-12v-11c0-6.6-5.4-12-12-12h-140c-6.6 0-12 5.4-12 12v11c0 6.6 5.4 12 12 12z"></path><path d="M58.5 46.5h313c6.6 0 12 5.4 12 12v172.4l47-45.4v-173c0-6.6-5.4-12-12-12h-407c-6.6 0-12 5.4-12 12v462c0 6.6 5.4 12 12 12h175l9.6-46H58.5c-6.6 0-12-5.4-12-12v-370c0-6.6 5.4-12 12-12zm374.1 179.8l-21.2 20.9c-4.8 4.7-4.8 12.4 0 17.1l53.9 53.2c4.7 4.6 12.2 4.6 16.9 0l21.2-20.9c4.8-4.7 4.8-12.4 0-17.1l-53.9-53.2c-4.8-4.7-12.3-4.7-16.9 0z"></path><ellipse cx="116.5" cy="127.1" rx="20.8" ry="20.5"></ellipse><path d="M230.4 425.7L212.5 512l89-16.2 141.9-140.1c4.8-4.7 4.8-12.4 0-17.1l-53.9-53.2c-4.7-4.6-12.2-4.6-16.9 0L230.4 425.7z"></path><ellipse cx="116.5" cy="280.3" rx="20.8" ry="20.5"></ellipse><ellipse cx="116.5" cy="204" rx="20.8" ry="20.5"></ellipse></svg> </i>
+        </span>
+      </td>
+      <td width="5%" class="text-right">
+        <%= link_to stock_adjustment_path(adjustment), remote: true, method: :delete, title: 'Delete this Adjustment' do %>
+          <span class="cursor-pointer " data-ember-action="" data-ember-action-1254="1254"> <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" class="icon icon-sm"><path d="M448 64h-96V0H159.9l.066 64H32v32h32v416h384V96h32V64h-32zM192 32h128v32H192V32zm224 448H96V96h320v384zM192 160h32v256h-32V160zm96 0h32v256h-32V160z"></path></svg>
+          </span>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+<% else %>
+  <tr><td colspan='6'>No Adjustments Available.</td></tr>
+<% end %>

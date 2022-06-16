@@ -1,0 +1,29 @@
+<div class="site-main">
+  <div class="site-content">
+    <div class="site-content-data">
+      <div class="block-ui-box-wrapper">
+        <div class="block-ui-box m-t-20 p-a-40">
+          <%= form_for @client, url: public_client_path(id: @client.encrypted_id) do |f| %>
+            <div class="form-group">
+              <label>Please confirm if menu is approved?</label>
+              <%= render partial: 'forms/field', locals: { f: f,
+                                                           field: @client_menu_approved_field,
+                                                           field_name: @client_menu_approved_field.name,
+                                                           field_label: nil,
+                                                           column_type: @client_menu_approved_field.column_type,
+                                                           custom: @client_menu_approved_field.custom,
+                                                           have_custom_value: @client_menu_approved_field.have_custom_value,
+                                                           data: { @client_menu_approved_field.name => @client_menu_approved_field.field_picklist_values.pluck(:value) }.with_indifferent_access,
+                                                           value: @client.send(@client_menu_approved_field.name) } %>
+            </div>
+            <%= f.submit 'Submit', class: 'btn btn-success' %>
+          <% end %>
+          <div class="m-t-20">
+            <p>Thank You,</p>
+            <p>iPos</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

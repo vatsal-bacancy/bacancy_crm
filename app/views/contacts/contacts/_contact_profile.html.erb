@@ -1,0 +1,26 @@
+<% if current_contact.profile_picture.present? %>
+  <%= image_tag "#{current_contact.profile_picture.url}?_=#{Time.now.to_i}", { id: 'profile_image', class: 'profile-circle-main dropdown-toggle', 'data-toggle'=>  "dropdown", 'role'=>"button",  'aria-haspopup'=>"true", 'aria-expanded'=>"false" }  %>
+<% else %>
+  <%= image_tag asset_path('small_demo_img.jpg'),{ id: 'profile_image', class: 'profile-circle-main dropdown-toggle', 'data-toggle'=>  "dropdown", 'role'=>"button",  'aria-haspopup'=>"true", 'aria-expanded'=>"false" } %>
+<% end %>
+<ul class="dropdown-menu">
+  <li class= 'dropdown-item'> 
+    <!-- Remove Image (delete call) -->
+    <%= link_to "Remove Image", contacts_contact_remove_image_path(current_contact), method: :delete, remote: true, class: 'dropdown-item' %>
+  </li>
+  <li class= 'dropdown-item'>
+    <!-- upload image ( upadte call) --> 
+    <%= link_to "Upload Image", contacts_contact_new_image_path(current_contact ), remote: true, class: 'dropdown-item' %>
+  </li>
+</ul>
+
+
+<script>
+ $(document).ready(function() {
+    $(".dropdown-toggle").dropdown();
+    $('[data-toggle="tooltip"]').tooltip();
+    $('.dropdown-menu .dropdown-item').on('click',function(){
+      $('.dropdown .open').removeClass('open');
+    });
+  });
+</script>

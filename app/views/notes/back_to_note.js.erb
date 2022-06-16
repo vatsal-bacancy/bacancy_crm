@@ -1,0 +1,2 @@
+$("#note .list").html("<%= escape_javascript(render partial: 'index', locals: {object: @object, note_fields: @note_fields }) %>");
+$(".dropdown-toggle").dropdown();

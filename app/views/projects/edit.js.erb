@@ -1,0 +1,23 @@
+<% if params[:assign_project] %>
+  $("#modalContainerIndex").html("<%= escape_javascript(render partial: 'form_project_assignees', locals: { project: @project }) %>")
+  $("#modalProjectTitle").html('Assign Project');
+  $("#myModal").modal('show');
+<% else %>
+$("#modalContainer").html("<%= escape_javascript(render partial: 'new', locals: { project: @project }) %>");
+$("#modalContainerIndex").html("<%= escape_javascript(render partial: 'new', locals: { project: @project }) %>")
+$("#myModal").modal('show');
+<% end %>
+
+$(document).ready(function()
+{
+  $('.datepicker').datepicker({format: 'mm/dd/yyyy', todayHighlight: true, autoclose: true});
+  $('#project_start_date').datepicker().on('changeDate',function(e)
+  {
+    $('#project_end_date').datepicker('setStartDate',e.date);
+  });
+  $('#project_end_date').datepicker().on('changeDate',function(e)
+  {
+    $('#project_start_date').datepicker('setEndDate',e.date);
+  });
+});
+$document_ids =[];

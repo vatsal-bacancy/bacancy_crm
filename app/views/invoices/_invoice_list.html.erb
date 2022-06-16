@@ -1,0 +1,225 @@
+<% action_delete =  checked_permission?(current_user, @klass_list['Invoice'], @action_list['delete']) %>
+<% action_update =  checked_permission?(current_user, @klass_list['Invoice'], @action_list['update']) %>
+<% action_create =  checked_permission?(current_user, @klass_list['Invoice'], @action_list['create']) %>
+<% action_read =  checked_permission?(current_user, @klass_list['Invoice'], @action_list['read']) %>
+<div class="admin-table bg-white table-responsive p-4">
+  <table class="common-data-table table table-bordered text-center lead_table display no-footer dataTable" id="invoices">
+    <thead>
+      <tr>
+        <th>
+          <div class="radio-lbl">
+            <label class="check ">
+              <input type="checkbox"  name="" id="check-all-invoice">
+              <span class="checkmark"></span>
+            </label>
+          </div>
+        </th>
+        <th> Action </th>
+        <% fields.each do |field| %>
+          <th><%= field.label %></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody class='list-body'>
+      <% invoices.each do |invoice|  %>
+        <tr>
+          <td>
+            <div class="radio-lbl">
+              <label class="check ">
+                <%= check_box_tag "invoice_ids[]", invoice.id , false, class:"check" %>
+                <span class="checkmark"></span>
+              </label>
+            </div>
+          </td>
+          <td>
+          <div class="btn-wrapper">
+            <div class="action-icon">
+              <% if action_read %>
+                <% if invoice.invoice_pdf.present? %>
+                  <%= link_to invoice_path(invoice,format: :pdf), target: "_blank" do %>
+                    <i class="fa fa-eye" aria-hidden="true"></i>
+                  <% end %>
+                <% end %>
+              <%end%>
+              <% if action_update %>
+                <%= link_to edit_invoice_path(invoice) do %>
+                  <i class="fa fa-pencil" aria-hidden="true"></i>
+                <% end if !invoice.paid? %>
+              <%end%>
+              <% if action_delete %>
+                <%= link_to invoice_path(invoice), method: :delete, remote: true do %>
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                <% end if !invoice.paid? %>
+              <% end %>
+            </div>
+          </div>
+          </td>
+          <% fields.each do |field| %>
+            <td>
+              <% if field.column_type == 'Multi-Select Check Box' %>
+                <%= parse_multi_select(invoice.send(field.name)) %>
+              <% elsif field.name == 'client_id' %>
+                <%= invoice.client.company_name %>
+              <% elsif field.name == 'status' %>
+                <%= invoice.paid? ? 'Paid' : "Due in #{(invoice.due_date - Date.today).to_i} days" %>
+              <% elsif field.name == 'total' %>
+                $<%= invoice.amount_with_tax %>
+              <% elsif field.name == 'invoice_date' %>
+                <%= invoice.invoice_date&.strftime("%m/%d/%Y") %>
+              <% elsif field.name == 'due_date' %>
+                <%= invoice.due_date&.strftime("%m/%d/%Y") %>
+              <% elsif field.name == 'sales_person_id' %>
+                <%= invoice.sales_person.try :fullname %>
+              <% else %>
+                <%= invoice.send(field.name) %>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  $(document).ready(function(){
+    var table = $('#invoices').DataTable({
+      sDom: 'lfrtip',
+      scrollX: false,
+      autoWidth: false,
+      paging: true,
+      pageLength: 50,
+      searching: true,
+      lengthMenu: [50, 100],
+      columnDefs: [
+        {orderable: false, targets: [0,1]},
+        {width: "30px", targets: [0] },
+        {className: "dt-center", targets: "_all"}
+      ],
+      order: []
+    });
+    table.on( 'column-reorder', function ( e, settings, details ) {
+      var fieldId = $("#invoices thead th:nth-child("+(details.to+1)+")" ).data("id");
+      $.ajax({
+        url: "<%= change_position_in_table_fields_path %>",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: 'patch',
+
+        data: {
+          details: details,
+          klass: "Invoice",
+          field_id: fieldId
+        },
+        dataType: "script",
+        success: function(result){
+        }
+      });
+    });
+    $('#check-all-invoice').on('change', function(){
+      $('.list-body .check').prop('checked',$(this).prop('checked'));
+    });
+    $('#destroy_all').on('click', function(){
+      var checked = [];
+      $("input[name='invoice_ids[]']:checked").each(function ()
+      {
+          checked.push(parseInt($(this).val()));
+      });
+      $.ajax({
+        url: "<%= destroy_all_invoices_path %>",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: 'DELETE',
+        data: {
+          ids: checked
+        },
+        dataType: "script",
+        success: function(result){
+        }
+      });
+    });
+
+    $('.invoice-editable span').on('click', function(){
+      var text = $.trim($(this).text());
+      var dataId = $(this).parent().data('id');
+      var field = $(this).parent().data('field');
+      // var editable = $(this).parent().data('editable');
+      // debugger;
+      // if(editable==""){
+        $(this).parent().html("<input class='invoice-update-"+dataId+" form-control' value='"+text+"' data-id = '"+ dataId +"' data-klass='"+$(this).parent().data('klass')+"'  style= 'width:"+$(this).parent().width()+"px;'  />");
+
+        $('.invoice-update-'+dataId).on('keypress', function(e){
+          var key = e.which;
+          if(key == 13 || key ==9)  // the enter key code
+          {
+            data = {}
+            data[field] = $(this).val();
+            $.ajax({
+              url: "/invoices/" + dataId,
+              beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+              type: 'patch',
+              data: {
+                invoice: data
+              },
+              dataType: "script",
+              success: function(result){
+
+              }
+            });
+          }
+        });
+      // }
+    });
+    $('.custom-editable span').on('click', function(){
+      var text = $.trim($(this).text());
+      var dataId = $(this).parent().data('id');
+      $(this).parent().html("<input class='custom-update-"+dataId+" form-control' value='"+text+"' data-id = '"+ dataId +"' data-klass='"+$(this).parent().data('klass')+"'   />");
+      $('.custom-update-'+dataId).on('blur', function(){
+        data = {value: $(this).val()};
+        $.ajax({
+          url: "/custom_values/" + dataId,
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          type: 'patch',
+          data: {
+            custom_value: data
+          },
+          dataType: "script",
+          success: function(result){
+            $.ajax({url: "/invoices/",
+              type: 'get',
+              data: {
+              },
+              dataType: "script",
+            });
+          }
+        });
+      });
+    });
+    $('.custom-create span').on('click', function(){
+      var text = $.trim($(this).text());
+      var dataId = $(this).parent().data('id');
+      var fieldId = $(this).parent().data('field-id');
+      var dataKlassId = $(this).parent().data('klass-id');
+      var dataKlass = $(this).parent().data('klass');
+      $(this).parent().html("<input class='custom-update-"+dataId+" form-control' value='"+text+"' data-id = '"+ dataId +"' data-klass='"+$(this).parent().data('klass')+"'   />");
+      $('.custom-update-'+dataId).on('blur', function(){
+        data = {value: $(this).val(), field_id: fieldId, valuable_id: dataKlassId, valuable_type: dataKlass };
+        $.ajax({
+          url: "/custom_values/" + dataId,
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          type: 'patch',
+          data: {
+            custom_value: data
+          },
+          dataType: "script",
+          success: function(result){
+            $.ajax({url: "/invoices/",
+              type: 'get',
+              data: {
+              },
+              dataType: "script",
+            });
+          }
+        });
+      });
+    });
+  });
+</script>

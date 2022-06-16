@@ -1,0 +1,37 @@
+<% if checked_permission?(current_user, @klass_list['Note'], @action_list['create'])%>
+  <div class="dynmic-tab-div pad-top-0">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="dynmic-tab-div-header">
+          <span class="heading">Notes</span>
+        </div>
+        <%= form_for note, remote: true, html: { multipart: true } do |f| %>
+          <div class="dynmic-tab-div-data">
+            <%= render partial: "notes/form_note", locals: {f: f, id: id} %>
+            <%= f.hidden_field :noteable_type, value: object.class %>
+            <%= f.hidden_field :noteable_id, value: object.id %>
+            <%= f.submit "Save Note",class: 'btn btn-success m-t-10' %>
+            <!-- </div> -->
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<%end%>
+<% if checked_permission?(current_user, @klass_list['Note'], @action_list['read'])%>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="dynmic-tab-div-header">
+        <span class="heading">Recent Notes</span>
+          <%# path = object.class == Client ? notes_path(object) : notes_path(object) %>
+          <%= link_to "View More", notes_path(noteable_type: object.class , noteable_id: object.id), class: "site-content-head-btn pull-right"  if object.notes.count > 5 %>
+      </div>
+      <div class="dynmic-tab-div-data ">
+        <% object.notes.ordered.first(5).each do |note| %>
+          <%= render partial: "notes/note", locals: {note: note, list: list} %>
+        <%end%>
+        <%#= link_to "View more", client_comments_path(@client) if @client.comments.count > 10 %>
+      </div>
+    </div>
+  </div>
+<%end%>

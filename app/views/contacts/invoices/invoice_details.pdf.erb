@@ -1,0 +1,94 @@
+<div class="header" >
+  <div class="header-left mb20" >
+    <h3><b> <%= @invoice.sales_person.fullname %> </b></h3>
+    <a href="" style="color:#000;font-size:14px;"><%= @invoice.sales_person.email %></a>
+  </div>
+  <div class="header-right pull-right mb20 text-right">
+    <%= wicked_pdf_image_tag 'iPos-logo.png' %>
+  </div>
+</div>
+<div class="invoice-wrapper mt20">
+  <div class="invoice-wrapper-left">
+    <p class="blue-color" style="margin-bottom:10px;">Invoice</p>
+    <p class="gray-color">BILL TO</p>
+    <p> <%= @invoice.billing_address %> </p>
+  </div>
+  <div class="invoice-wrapper-right" style="margin-bottom:30px;">
+    <table width="100%">
+      <tbody>
+        <tr>
+          <td width="50%">
+            <p class="gray-color">INVOICE</p>
+          </td>
+          <td width="50%">
+            <p><%= @invoice.invoice_no %></p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p class="gray-color">DATE</p>
+          </td>
+          <td>
+            <p><%= @invoice.invoice_date&.strftime("%m/%d/%Y") %></p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p class="gray-color">TERMS</p>
+          </td>
+          <td>
+            <p> <%= @invoice.terms %> </p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p class="gray-color">DUE DATE</p>
+          </td>
+          <td>
+            <p><%= @invoice.due_date&.strftime("%m/%d/%Y") %></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="pay-table w-100 mb20" >
+    <table width="100%">
+      <thead>
+        <tr>
+          <th width="15%">SERVICE</th>
+          <th width="50%">DESCRIPTION</th>
+          <th width="5%">QTY</th>
+          <th width="15%" class="text-right">RATE</th>
+          <th width="15%" class="text-right">AMOUNT</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @invoice.invoice_inventories.each do |item| %>
+          <tr>
+            <td width="15%"><%= item.inventory.name %></td>
+            <td width="50%"><%= item.description %></td>
+            <td width="5%"><%= item.qty %></td>
+            <td width="15%" class="text-right">$<%= item.rate %></td>
+            <td width="15%" class="text-right">$<%= item.amount %></td>
+          </tr>
+        <% end %>
+        <tr>
+          <td colspan="5">
+            <div class="cutom-hr"><hr></div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" class="text-right">
+            <p class="gray-color">BALANCE DUE</p>
+          </td>
+          <td colspan="3" class="text-right">
+            <p><b>$<%= @invoice.amount_with_tax %></b></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="invoice-pdf-bottom">
+    <%= @invoice.msg_on_invoice %>
+  </div>
+</div>

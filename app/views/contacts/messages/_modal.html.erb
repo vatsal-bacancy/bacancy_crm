@@ -1,0 +1,140 @@
+<div class="modal fade" id="messageModal" role="dialog">
+  <div class="modal-dialog">
+    <% url = message.persisted? ? contacts_message_path : contacts_messages_path %>
+    <!-- Modal content-->
+    <%= form_for message,url: url, local: true, class: "form-inline", remote: true do |f| %>
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Message</h4>
+        </div>
+        <div class="modal-body">
+          <div id='flash_message'></div>
+          <%= render 'form',  f: f, message: message, client: client, users: users, object: object %>
+
+          <div class = 'row block-ui-box m-t-5 m-r-5'>
+            <div class="col-md-12">
+              <%= f.label "Attachment" %>
+              <br/>
+              <input type="file" name="attachments[]" id="file" class="inputfile" multiple />
+              <label for="file" title='Upload Local Files' class="btn btn-default">Upload Files</label>
+              <div class= 'row' id="file-upload-filename"></div>
+              <span class="required"></span>
+              <%= hidden_field_tag :document_ids, [], class: 'document_ids' %>
+              <div class="row m-t-15">
+                <div class="col-md-12 ">
+                  <div class='selected_documents'>
+                    <%= render partial: 'documents/selected_documents', locals: { documents: [] } %>
+                  </div>
+                </div>
+              </div>
+              <% if f.object.persisted?%>
+                <%  f.object.documents.each do |attach| %>
+                  <span class="file-name">
+                    <%= link_to attach.attachment.url, target: 'blank', class: 'file-name', title: attach.attachment.file.filename do %>
+                      <i class="fa fa-file" aria-hidden="true"></i>
+                      <%= attach.attachment.file.filename.truncate(20) %>
+                    <%end%>
+                    <span class="remove-file" data-id="<%= attach.id %>"><i class="fa fa-close" ></i></span>
+                    <br/>
+                  </span>
+                <% end %>
+              <% end %>
+
+            </div>
+          </div>
+
+          <% if object.class.name == 'Message'%>
+            <%= hidden_field_tag :message_id, object.id %>
+          <%elsif object.class.name == 'Ticket'%>
+            <%= hidden_field_tag :ticket_id, object.id %>
+          <% else %>
+            <%= hidden_field_tag :project_id, object.id %>
+          <%end%>
+
+          <%= f.hidden_field :messageable_type, value: f.object.messageable_type %>
+          <%= f.hidden_field :messageable_id, value: f.object.messageable_id %>
+          <%#= f.hidden_field :user_id, value: object.user_id %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <%= f.submit "Save Message", class: 'btn btn-success' %>
+        </div>
+      </div>
+    <%end%>
+  </div>
+</div>
+
+
+
+
+
+<script>
+  $(document).ready(function(){
+    console.log("out of remove");
+    $(".remove-file").on('click', function(){
+      var id = $(this).data('id');
+      var pro_id = "<%= object.id %>"
+      var object_id = "<%= message.id %>"
+      var object_type = "<%= message.class.name %>"
+      $.ajax({
+        url: "/contacts/projects/" + pro_id + "/project_documents/" +id,
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: 'delete',
+        data: {
+          id: id,
+          file_remove: true,
+          object_id: object_id,
+          object_type: object_type
+        },
+        dataType: "script",
+        success: function(result){
+
+        }
+      });
+      $(this).siblings(".file-name").addClass("hidden");
+      $(this).addClass("hidden");
+    });
+
+    $('#file').on('change', function (e) {
+      if(!e.target.files) return;
+      var files = e.target.files;
+      for(var i=0; i<files.length; i++) {
+        var f = files[i];
+        var datafile = new FormData();
+        datafile.append('resourcable_type', "<%= current_contact.class.name %>");
+        datafile.append('resourcable_id', "<%= current_contact.id %>" );
+        datafile.append('documentable_type', "<%= current_contact.system_directory.class.name %>");
+        datafile.append('documentable_id', "<%=  current_contact.system_directory.id %>" );
+        datafile.append('attachment', f);
+        $.ajax({
+          url: "<%= contacts_uploadfiles_url %>",
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          type: 'POST',
+          contentType: false,
+          cache: false,
+          processData: false,
+          data: datafile,
+          success: function(res, file){
+            documentId = res["d_id"];
+            $document_ids.push(documentId);
+            $.ajax({
+              url: "<%= selected_documents_contacts_documents_path %>",
+              beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+              type: 'GET',
+              data: {
+                document_ids: $document_ids
+              },
+              dataType: "script",
+              success: function(result){
+              }
+            });
+            $('.document_ids').val($document_ids);
+          }
+        });
+      }
+    });
+    
+  });
+</script>

@@ -1,0 +1,30 @@
+<div class="row mt10">
+  <div class="col-md-12">
+    <ul id="myTabs" class="nav nav-pills nav-justified bpro-tab sub-header-ul" role="tablist" data-tabs="tabs">
+      <span><a href="#purchase-order-version-history-tab" data-toggle="tab" class="btn btn-primary sub-header-button">Purchase Order History</a></span>
+      <span><a href="#purchase-order-version-tab" data-toggle="tab" class="btn btn-primary sub-header-button">New Purchase Order</a></span>
+    </ul>
+  </div>
+</div>
+<div class="row mt10">
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane fade in active" id="purchase-order-version-history-tab">
+      <div class="col-sm-12">
+        <%= render 'purchase_order/versions/list', purchase_order_versions: purchase_orderable.purchase_order_versions %>
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane fade" id="purchase-order-version-tab">
+      <div class="col-sm-12">
+        <%= render 'purchase_order/versions/form', purchase_order_version: purchase_orderable.purchase_order_versions.build %>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+.sub-header-button{
+  width: 11rem;
+}
+.sub-header-ul{
+  line-height: 3rem;
+}
+</style>

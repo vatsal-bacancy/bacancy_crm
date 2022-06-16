@@ -1,0 +1,36 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar' %>
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <span class="main-menu-sitecontent">Contact</span>
+            <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> </span>
+            <span class="sub-menu-sitecontent"> My Contact</span>
+          </div>
+          <div class="pull-right">
+            <% if checked_permission?(current_user, @klass_list['Contact'], @action_list['create'])%>
+              <%= link_to new_contact_path(contactable_type: @client.class.name, contactable_id: @client.id), remote: true, class: "site-content-head-btn" do %>
+                + Add Contact
+              <%end%>
+            <% end %>
+        </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+       <div class="col-sm-12">
+          <div class="site-content-data">
+            <div id="contact-list-index" class="table-list">
+              <%= render partial: "contact_list", locals: {contactable: @client}%>
+            </div>
+          </div>
+       </div>
+    </div>
+    <div id="modalContainer" class='modal-right'></div>
+    <div id="importfiled"></div>
+    <div id='modalContainerCenter'></div>
+  </div>
+
+</div>

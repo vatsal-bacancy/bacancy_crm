@@ -1,0 +1,50 @@
+<div class='row'>
+  <div class='col-md-12'>
+    <div class="form-group">
+      <%= label_tag 'meeting_title' %><span class="required">*</span>
+      <%= f.text_field :title, required: true, class: 'form-control' %>
+    </div>
+  </div>
+  <div class='col-md-12'>
+    <div class="form-group">
+      <%= label_tag 'meeting_category' %><span class="required">*</span>
+      <%= f.select :category, options_for_select(Meetings::Meeting.categories.collect{ |c| [c.first.titleize, c.second.to_i] }, Meetings::Meeting.categories[f.object.category] ), {prompt: "Select Category"}, {class: 'form-control', required: true} %>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="form-group">
+      <%= label_tag :attendees, 'Deployment Assigned To' %><span class="required">*</span>
+      <%= select_tag :attendees, grouped_options_for_select(all_attendees, value_of_attendees_for_select(f.object)), multiple: true, required: true, title: 'Select Attendees', class: 'form-control select_picker', data: { "live-search": true } %>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <%= label_tag :date %><span class="required">*</span>
+      <%= f.text_field :date, required: true, class: 'form-control bootstrapdatepicker', value: pretty_date(f.object.date), autocomplete: 'off' %>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="row" data-datetimepair-container>
+      <div class="col-sm-6">
+        <label>Start Time</label><span class="required">*</span>
+        <%= f.text_field :start_time, required: true, class: 'form-control timepicker timestart', value: pretty_time(f.object.start_time) %>
+      </div>
+      <div class="col-sm-6">
+        <label>End Time</label><span class="required">*</span>
+        <%= f.text_field :end_time, required: true, class: 'form-control timepicker timeend', value: pretty_time(f.object.end_time) %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="form-group">
+      <%= label_tag :location %>
+      <%= f.text_field :location, class: 'form-control', 'data-google-maps-autocomplete' => true %>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="form-group">
+      <%= label_tag :description %>
+      <%= f.cktext_area :description, class: 'form-control' %>
+    </div>
+  </div>
+</div>

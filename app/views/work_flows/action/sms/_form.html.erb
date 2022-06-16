@@ -1,0 +1,30 @@
+<div class="col-sm-12">
+  <div class="form-group">
+    <label for="subject">Work Flow SMS Action Name:<span class="required">*</span></label>
+    <%= text_field_tag :name, nil, required: true, class: 'form-control', placeholder: 'Name of Action', data: { serializable: :name } %>
+  </div>
+</div>
+<div class="col-sm-6">
+  <div class="form-group">
+    <label for="to">To:<span class="required">*</span></label>
+    <%= text_field_tag :to, nil, required: true, class: 'form-control', placeholder: 'Comma separated value of phone number', data: { serializable: :to } %>
+  </div>
+</div>
+<div class="col-sm-6">
+  <div class="form-group">
+    <label>Select value for To:</label>
+    <%= select_tag nil, options_for_select(f.object.valid_evals), class: 'form-control', prompt: 'Select valid phone number type', 'data-refer-to-name' => :to, 'data-refer-to-name-prefix' => '{{{', 'data-refer-to-name-suffix' => '}}}', 'data-refer-to-name-join' => ',' %>
+  </div>
+</div>
+<div class="col-sm-6">
+  <div class="form-group">
+    <label>Description:</label>
+    <%= select_tag nil, option_groups_from_collection_for_select(f.object.valid_groups, :fields, :label, :name, :label), class: 'form-control', prompt: 'Select record field', 'data-refer-to-name' => :description, 'data-refer-to-name-prefix' => '{{{', 'data-refer-to-name-suffix' => '}}}', 'data-refer-to-name-join' => '' %>
+  </div>
+</div>
+<div class="col-sm-12">
+  <div class="form-group">
+    <label for="description"></label>
+    <%= text_area_tag :description, nil, class: 'form-control', data: { serializable: :description } %>
+  </div>
+</div>

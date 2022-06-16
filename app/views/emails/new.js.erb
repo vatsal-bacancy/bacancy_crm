@@ -1,0 +1,46 @@
+$("#modal_container").html("<%= escape_javascript(render partial: 'modal', locals: { email: @email, object: @object }) %>"); //on show of client and lead
+$("#modal").modal('show');
+$document_ids = [];
+
+$('#modal').on('hide.bs.modal', function (e) {
+  // do something…
+  url = '<%=  @object.class.name %>'  == 'NilClass' ? '/emails/create_draft' : '/emails/update_draft';
+  var to = $('#email').val();
+  var cc = $('#cc_email').val();
+  var bcc = $('#bcc_email').val();
+  var subject = $("#subject").val();
+  var body = CKEDITOR.instances['email_content'].getData();
+  if(url == '/emails/update_draft' || to.length != 0 || cc != '' || bcc != '' || subject != '' || body != ''){
+    $.ajax({
+      url: url,
+      type: 'GET',
+      data: {
+        id: $('#email_id').val(),
+        subject: subject,
+        body: CKEDITOR.instances['email_content'].getData(),
+        to: to,
+        cc: cc,
+        bcc: bcc,
+        document_ids: $document_ids
+      },
+      dataType: "script",
+      success: function(result){
+        if($('.small-circle').parents('.draft').length == 1){
+          $.ajax({
+            url: '/emails/draft',
+            type: 'GET',
+            data: {
+            },
+            dataType: "script",
+          });
+        }
+      }
+    });
+  }
+});
+
+$(document).ready(function(){
+  if($('#email').val()  != '', $("#subject").val() != '', CKEDITOR.instances['email_content'].getData() != '' ){
+    $("#email-save").attr('disabled', false);
+  }
+});

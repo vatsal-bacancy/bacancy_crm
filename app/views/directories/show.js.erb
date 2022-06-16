@@ -1,0 +1,7 @@
+$('#my-dropzone').remove();
+$("#directory_detail").html("<%= escape_javascript(render partial: 'directories/directory_detail', locals: {directory: @directory}) %>")
+$('.doc-checkbox').each(function(){
+  if($document_ids.includes($(this).attr('data-id'))){
+    $(this).prop('checked', 'checked');
+  }
+});

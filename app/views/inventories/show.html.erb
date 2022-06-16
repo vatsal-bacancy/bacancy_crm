@@ -1,0 +1,327 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar' %>
+  <div class="site-content p-b-0">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="flash-messages"></div>
+        </div>
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <%= link_to inventories_path, class: "main-menu-sitecontent common-link" do %>Inventory
+            <% end %>
+          </div>
+          <div class="pull-right">
+            <!--<a href="" class="site-content-head-btn">Email</a>
+              <a href="" class="site-content-head-btn">Text Message</a>-->
+            <%= link_to new_inventory_path, class: 'site-content-head-btn' do %>
+              + Add Inventory
+            <% end %>
+            <%= link_to new_inventory_group_path, class: 'site-content-head-btn' do %>
+              + Add Inventory Group
+            <% end %>
+            <!--<%= link_to import_form_path, class: 'site-content-head-btn', remote: true do %>
+              Import Clients
+              <% end %>
+              <%= link_to clients_path(format: :csv), class: 'site-content-head-btn' do %>
+              Export To Excel
+              <% end %> -->
+            <!-- <a href="javascript:void(0)" class="dropdown-toggle site-content-head-btn" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <span class="nav-cell blue-font"> Action
+            <span class="caret"></span>
+            </span>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <%= link_to "Edit Column", '#', class: 'dropdown-item', remote: true %>
+              </li>
+              <li>
+                <%= link_to "Edit Properties", '#', class: 'dropdown-item' %>
+              </li>
+            </ul> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="site-content-data inv-data white-bg ">
+          <div class="tabs_wrapper">
+            <ul class="tabs">
+              <% @inventories.each do |inventory| %>
+                <li class="active" rel="tab_<%= inventory.id %>">
+                  <div class="d-flex" style="flex-wrap:wrap;">
+                    <div class="inv-item-tab-link">
+                      <%= link_to inventory.name, inventory_path(inventory) %>
+                    </div>
+                  </div>
+                </li>
+              <% end %>
+            </ul>
+            <div class="tab_container">
+              <% @inventories.each do |inventory| %>
+                <h3 class="d_active tab_drawer_heading" rel="tab1">
+                  <div class="radio-lbl">
+                    <label class="check"><%= inventory.name %>
+                    </label>
+                  </div>
+                </h3>
+                <div id="tab_<%= inventory.id %>" class="tab_content">
+                  <div class=" item-title-header">
+                    <%= inventory.name %>
+                    <div class=" pull-right">
+                      <%= link_to edit_inventory_path(inventory), class: "site-content-head-btn" do %>
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                      <% end %>
+                      <%= link_to 'Adjust Stock', new_stock_adjustment_path(inventory_id: inventory), class: 'site-content-head-btn', remote: true %>
+                      <!--<span class="dropdown">
+                          <a href="javascript:void(0)" class="dropdown-toggle site-content-head-btn" data-toggle="dropdown" role="button" aria-haspopup="true"> More
+                            <span class="caret"></span>
+                          </a>
+                          <ul class="dropdown-menu">
+                            <li><a href="#">All Items</a></li>
+                            <li><a href="#">Active Items</a></li>
+                            <li><a href="#">Ungrouped Items</a></li>
+                          </ul>
+                      </span> -->
+                      <%= link_to inventories_path, class: "close-details" do %>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" class="icon icon-lg text-top">
+                          <path d="M466.745 0L256 210.745 45.255 0 0 45.254 210.745 256 0 466.745 45.255 512 256 301.255 466.745 512 512 466.745 301.255 256 512 45.254z"></path>
+                        </svg>
+                      <% end %>
+                    </div>
+                  </div>
+                  <!--<div class="item-title-subheader">
+                    <span class="num">2</span>
+                    <span>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon icon-sm align-middle mr5">
+                        <path d="M278.4 177.7h-81.2l21.4-21.4c6.2-6.2 6.2-16.4 0-22.6-6.2-6.2-16.4-6.2-22.6 0l-49.2 49.2c-3 3-4.7 7.1-4.7 11.3s1.7 8.3 4.7 11.3l49.2 49.2c3.1 3.1 7.2 4.7 11.3 4.7s8.2-1.6 11.3-4.7c6.2-6.2 6.2-16.4 0-22.6l-22.4-22.4h82.2c32.8 0 59.5 26.7 59.5 59.5s-26.7 59.5-59.5 59.5H167.8c-8.8 0-16 7.2-16 16s7.2 16 16 16h110.7c50.4 0 91.5-41 91.5-91.5-.1-50.5-41.1-91.5-91.6-91.5z"></path>
+                        <path d="M435.4 76.6C387.4 28.7 323.8 2.4 256 2.4S124.6 28.7 76.6 76.6C28.7 124.6 2.4 188.2 2.4 256s26.4 131.4 74.3 179.4c47.9 47.9 111.6 74.3 179.4 74.3s131.4-26.4 179.4-74.3c47.9-47.9 74.3-111.6 74.3-179.4s-26.5-131.4-74.4-179.4zm-22.7 336.1c-41.9 41.9-97.5 64.9-156.7 64.9s-114.9-23.1-156.7-64.9S34.4 315.2 34.4 256s23-114.9 64.9-156.7S196.8 34.4 256 34.4s114.9 23.1 156.7 64.9 64.9 97.5 64.9 156.7-23 114.9-64.9 156.7z"></path>
+                      </svg>
+                      Returnable Item
+                    </span>
+                  </div>-->
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="cmn-tab-div inv-tab-div">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <ul id="myTabs" class="nav nav-pills nav-justified bpro-tab" role="tablist" data-tabs="tabs">
+                              <li class="open active">
+                                <a href="#primaryDetailsTab_<%= inventory.id %>" data-toggle="tab" aria-expanded="true">Overview</a>
+                              </li>
+                              <li class="">
+                                <a href="#transactionsTab_<%= inventory.id %>" data-toggle="tab" aria-expanded="true">Invoices</a>
+                              </li>
+                              <li class="">
+                                <a href="#adjustmentTab_<%= inventory.id %>" data-toggle="tab" aria-expanded="true">Adjustments</a>
+                              </li>
+                            </ul>
+                            <div class="inv-hr">
+                              <hr/>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade active in" id="primaryDetailsTab_<%= inventory.id %>">
+                              <div class="col-md-12">
+                                <div class="inv-table-info">
+                                  <div class="row ">
+                                    <div class="col-sm-12">
+                                      <p class="mb10">Primary Details</p>
+                                      <div class="inv-info-wrapper">
+                                        <div class="row">
+                                          <div class="col-md-3 col-xs-4">
+                                            <span>Item Group Name</span>
+                                          </div>
+                                          <div class="col-md-9 col-xs-8">
+                                            <%= parse_nil(inventory.inventory_group.try(:name)) %>
+                                          </div>
+                                        </div>
+                                        <div class="row mt5">
+                                          <div class="col-md-3 col-xs-4">
+                                            <span>Item Name</span>
+                                          </div>
+                                          <div class="col-md-9 col-xs-8">
+                                            <%= inventory.name %>
+                                          </div>
+                                        </div>
+                                        <div class="row mt5">
+                                          <div class="col-md-3 col-xs-4">
+                                            <span>Item Type</span>
+                                          </div>
+                                          <div class="col-md-9 col-xs-8">
+                                            <%= inventory.is_service ? 'Service' : 'Goods' %>
+                                          </div>
+                                        </div>
+                                        <div class="row mt5">
+                                          <div class="col-md-3 col-xs-4">
+                                            <span>SKU</span>
+                                          </div>
+                                          <div class="col-md-9 col-xs-8">
+                                            <%= parse_nil(inventory.try(:sku)) %>
+                                          </div>
+                                        </div>
+                                        <div class="row mt5">
+                                          <div class="col-md-3 col-xs-4">
+                                            <span>Unit</span>
+                                          </div>
+                                          <div class="col-md-9 col-xs-8">
+                                            <%= parse_nil(inventory.unit.try(:messure)) %>
+                                          </div>
+                                        </div>
+                                        <div class="row mt5">
+                                          <div class="col-md-3 col-xs-4">
+                                            <span>Manufacture</span>
+                                          </div>
+                                          <div class="col-md-9 col-xs-8">
+                                            <%= parse_nil(inventory.merchant.try(:name)) %>
+                                          </div>
+                                        </div>
+                                        <div class="row mt5">
+                                          <div class="col-md-3 col-xs-4">
+                                            <span>Brand</span>
+                                          </div>
+                                          <div class="col-md-9 col-xs-8">
+                                            <%= parse_nil(inventory.brand.try(:name)) %>
+                                          </div>
+                                        </div>
+                                        <div class="row mt5">
+                                          <div class="col-md-3 col-xs-4">
+                                            <span>Created Source</span>
+                                          </div>
+                                          <div class="col-md-9 col-xs-8">
+                                            <%= inventory.user.fullname %>
+                                          </div>
+                                        </div>
+
+                                        <% @klass.groups.each do |group|%>
+                                          <% if group.name != "default_group" %>
+                                            <% group.fields.each do |field|%>
+                                              <div class="row mt5">
+                                                <div class="col-md-3 col-xs-4">
+                                                  <span> <%= field.name %> </span>
+                                                </div>
+                                                <div class="col-md-9 col-xs-8">
+                                                  <%= inventory.send(field.name).present? ? inventory.send(field.name) : "N/A" %>
+                                                </div>
+                                              </div>
+                                            <%end%>
+                                          <% end %>
+                                        <% end %>
+                                        
+                                        <!-- <div class="row mt5">
+                                          <div class="col-md-3 col-xs-4">
+                                            <span>Inventory Account</span>
+                                          </div>
+                                          <div class="col-md-9 col-xs-8">
+                                            Inventory Asset
+                                          </div>
+                                        </div> -->
+                                        <!--  <div class="row">
+                                            <div class="col-md-12">
+                                              <p class="mt15">Purchase Information</p>
+                                            </div>
+                                        </div> -->
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="transactionsTab_<%= inventory.id %>">
+                              <div class="col-md-12">
+                                <div class="site-content-data">
+                                  <div class="table-responsive">
+                                    <table class="table common-data-table user-list inv-table inv-group inv-tab-table">
+                                      <thead>
+                                      <tr>
+                                        <th width="12%" class="text-left">Preview</th>
+                                        <th width="24%" class="text-left">Status</th>
+                                        <th width="26%" class="text-left">Customer</th>
+                                        <th width="12%" class="text-left">Date</th>
+                                        <th width="12%" class="text-left">Due Date</th>
+                                        <th width="14%" class="text-left">Total</th>
+                                      </tr>
+                                      </thead>
+                                      <tbody id='tableBodyInvoice'>
+                                      <%= render 'table_body_invoices', inventory: inventory %>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="adjustmentTab_<%= inventory.id %>">
+                              <div class="col-md-12">
+                                <div class="site-content-data">
+                                  <div class="table-responsive">
+                                    <table class="table common-data-table user-list inv-table inv-group inv-tab-table">
+                                      <thead>
+                                      <tr>
+                                        <th width="15%" class="text-left">Type</th>
+                                        <th width="15%" class="text-left">Date</th>
+                                        <th width="20%" class="text-left">Reason</th>
+                                        <th width="15%" class="text-left">Adjustments</th>
+                                        <th width="15%" class="text-left">Reference#</th>
+                                        <th width="20%" class="text-left">Description</th>
+                                        <th width="5%"></th>
+                                      </tr>
+                                      </thead>
+                                      <tbody id='tableBodyAdjustment'>
+                                      <%= render 'table_body_adjustments', inventory: inventory %>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="historyTab">
+                              <div class="col-md-12">
+                                No History available.
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="modalContainerIndex" class='modal-right'></div>
+
+<script>
+  $(".tab_content").hide();
+  $(".tab_content:first").show();
+  $("ul.tabs li").click(function () {
+    $(".tab_content").hide();
+    var activeTab = $(this).attr("rel");
+    $("#" + activeTab).fadeIn();
+    $("ul.tabs li").removeClass("active");
+    $(this).addClass("active");
+    $(".tab_drawer_heading").removeClass("d_active");
+    $(".tab_drawer_heading[rel^='" + activeTab + "']").addClass("d_active");
+  });
+  $(".tab_drawer_heading").click(function () {
+    $(".tab_content").hide();
+    var d_activeTab = $(this).attr("rel");
+    $("#" + d_activeTab).fadeIn();
+    if ($(this).hasClass("d_active")) {
+      $(".tab_content").hide();
+      $(".tab_drawer_heading").removeClass("d_active");
+    } else {
+      $(".tab_drawer_heading").removeClass("d_active");
+      $(this).addClass("d_active");
+    }
+    $("ul.tabs li").removeClass("active");
+    $("ul.tabs li[rel^='" + d_activeTab + "']").addClass("active");
+  });
+</script>

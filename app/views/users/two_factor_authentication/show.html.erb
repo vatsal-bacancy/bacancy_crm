@@ -1,0 +1,74 @@
+<div class="container">
+  <div class="row row-eq-height">
+    <div class="col-lg-4 col-md-5 col-sm-12 text-center pad-0">
+      <div class="login-left-back">
+        <%= image_tag @company.white_background_image, class: "img-responsive left-main-logo" %>
+        <p class="login-left-first-p">iPos CRM</p>
+        <p class="login-left-second-p">A powerful, yet easy-to-use application for managing our customers.</p>
+        <div class="login-left-wrapper">
+          <%= image_tag asset_path('launcher.png'), class: "login-left-img" %>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8 col-md-7 col-sm-12 pad-0">
+      <div class="container-login-center">
+        <div class="login-wrapper">
+          <div class="login-cmn-wrapper">
+            <h1 style="font-size: 20px;">Verify</h1>
+            <%= form_for(@tfa_current_user, url: users_two_factor_authentication_path, method: :post, html: {class: "sign-cmn-form"}) do |f| %>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <div class="input-group">
+                      <div class="input-group-addon">
+                        <i class="fa fa-phone-square" aria-hidden="true"></i>
+                      </div>
+                      <%= text_field_tag :phone_number, @phone_number, readonly: true, required: true, class: 'form-control fs-14' %>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <div class="input-group-addon pass-addon">
+                        <i class="fa fa-lock" aria-hidden="true"></i>
+                      </div>
+                      <%= number_field_tag :direct_otp, nil, oninput: "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);", maxlength: 4, autofocus: true, class: "form-control", placeholder: 'Enter OTP' %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6 col-xs-12">
+                  <div class="radio-lbl">
+                    <label class="check ">Remember me on this computer
+                      <input type="checkbox" name="tfa_user_remember_me">
+                      <span class="checkmark"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12 clearfix">
+                  <%= f.submit 'Verify', class: 'login-btn' %>
+                </div>
+              </div>
+            <% end %>
+            <div class="row mt15">
+              <div class="col-sm-6 col-xs-12">
+                <%= link_to 'Resend OTP', resend_direct_otp_users_two_factor_authentication_path(phone_number: @phone_number), remote: true, class: 'forgot-link' %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <%= render 'layouts/login_footer'%>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .login-left-img{width: 82%}
+  body{background-color: #ffffff}
+  .login-cmn-wrapper{box-shadow:0px 0px 0px #fff}
+  .input-group{border:1px solid #e0e0e0;border-radius:5px}
+  .form-control{border: 0;padding: 0px 0px;}
+  select {border: none;background: transparent;-webkit-appearance: none;-moz-appearance: none;appearance: none;padding-top: 0px;background-size: 20px;color:#ffffff;font-size:30px;}
+</style>

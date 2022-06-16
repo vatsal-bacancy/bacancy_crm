@@ -1,0 +1,2 @@
+$("#modalContainer").html("<%= escape_javascript(render partial: 'invite_for_project', locals: {project: @project, contacts: @contacts, users: @users }) %>")
+$("#projectInvitaionModal").modal('show');

@@ -1,0 +1,366 @@
+<%= render 'components/site_content' do %>
+  <% content_for :head do %>
+    <div class="l-menu">
+      <span class="main-menu-sitecontent">Meetings</span>
+      <span class="sub-menu-sitecontent m-x-10"><i class="fa fa-angle-right"></i></span>
+      <span class="main-menu-sitecontent">Calendar</span>
+    </div>
+  <% end %>
+  <% content_for :body do %>
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="dynmic-tab-div-data">
+          <div class="calendar_part bg-white">
+            <ul id="cal_Tabs" class="nav nav-pills nav-justified mb-10" role="tablist" data-tabs="tabs">
+              <li><a class="active" href="#pending-task-tab" data-toggle="tab" aria-expanded="true">Pending Task</a></li>
+              <li class=""><a href="#all-task-tab" data-toggle="tab" aria-expanded="true">All Task</a></li>
+            </ul>
+            <div class="tab-content" id="ticket-all">
+              <div role="tabpanel" class="tab-pane  active " id="pending-task-tab">
+                <div class="dynmic-tab-div directory-structure">
+                  <div class="site-content-data">
+                    <div class="table-list">
+                      <div class="table-responsive">
+                        <div id="calendar"></div>
+                        <div
+                          class="dynmic-tab-div-header p-0 d-flex align-items-center justify-content-between mt-25 mb-10">
+                          <span class="heading fs-14">Meetings & Events Categories</span>
+                          <%= image_tag asset_path('arrow-up-down.png'), height: '15', class: 'img-fluid' %>
+                          <%# <img src="./images/arrow-up-down.png" class="img-fluid" height="15"> %>
+                        </div>
+                        <ul class="unstyled centered main pl-2">
+                          <li><input class="styled-checkbox checkbox meeting_type_checkbox" id="select_all" type="checkbox" value="all" />
+                            <label for="select_all" class="blue fw-600">Select All</label>
+                          </li>
+                          <!-- TODO: Need to make it dynamic -->
+                          <li>
+                            <input class="styled-checkbox checkbox meeting_type_checkbox" id="meeting_type_publicity" type="checkbox" value='publicity'>
+                            <label for="meeting_type_publicity" class="sky">Publicity</label>
+                          </li>
+                          <li>
+                            <input class="styled-checkbox checkbox meeting_type_checkbox" id="meeting_type_technology" type="checkbox"
+                              value='technology'>
+                            <label for="meeting_type_technology" class="yellow_gradient">Technology</label>
+                          </li>
+                          <li>
+                            <input class="styled-checkbox checkbox meeting_type_checkbox" id="meeting_type_finance" type="checkbox" value='finance'>
+                            <label for="meeting_type_finance" class="blue_gradient">Finance</label>
+                          </li>
+                          <li>
+                            <input class="styled-checkbox checkbox meeting_type_checkbox" id="meeting_type_sales_and_marketing" type="checkbox" value='sales_and_marketing'>
+                            <label for="meeting_type_sales_and_marketing" class="orange">Sales And Marketing</label>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div role="tabpanel" class="tab-pane " id="all-task-tab">
+                <div class="dynmic-tab-div directory-structure">
+                  <div class="site-content-data">
+                    <div class="table-list">
+                      <div class="table-responsive">
+                        <div id="calendar_2"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 p-lg-0">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="dynmic-tab-div-data" style="padding-bottom: 3rem;">
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle blue_dropdown" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Day
+                  </button>
+                </div>
+                <h4 class="fs-16 fw-600 header_date"></h4>
+                <div class="d-flex align-items-center justify-content-center">
+                  <%= image_tag asset_path('left-arrow-blue.png'), class: 'img-fluid cursor-pointer visibility-hidden', width: "26" %>
+                  <%= image_tag asset_path('right-arrow-blue.png'), class: 'img-fluid cursor-pointer visibility-hidden', width: "26" %>
+                </div>
+              </div>
+              <div class=" border-bottom-light mt-10 mb-10"></div>
+              <div class="meeting_time_details">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="dynmic-tab-div-data">
+              <div class="calendar_info">
+                <div class="d-flex align-items-center justify-content-between mb-12">
+                  <span class="green_badge text-white hide meeting_scheduled_badge">Scheduled</span>
+                  <div>
+                    <%#= image_tag asset_path('dorred_dropdown.png'), class: 'img-fluid' %>
+                    <%#= image_tag asset_path('close_icon.png'), class: 'img-fluid ml-12' %>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center">
+                  <%= image_tag asset_path('clock_nobg.png'), class: 'img-fluid', height: "27" %>
+                  <p class="fs-14 blue ml-10 m-0 meeting_title">-</p>
+                </div>
+                <hr class="light_border mt-8  mb-8">
+                <div class="d-flex align-items-center justify-content-between">
+                  <p class="fs-14 light_gray fw-600 m-0">Meeting Time</p>
+                  <p class="fs-15 blue ml-12 fw-900 m-0 meeting_start_time">-</p>
+                </div>
+              </div>
+              <div class="calendar_info">
+                <div class="d-flex align-items-center justify-content-between mb-12">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <%= image_tag asset_path('clock_nobg.png'), class: 'img-fluid', height: "22" %>
+                    <p class="fs-14 blue ml-10 fw-500 m-0 meeting_details_time">-</p>
+                  </div>
+                  <p class="fs-14 light_gray fw-500 m-0 meeting_details_time_count">-</p>
+                </div>
+                <div class="d-flex align-items-center mb-12">
+                  <%= image_tag asset_path('calendar.png'), class: 'img-fluid ml-2', height: "18" %>
+                  <p class="fs-14 blue ml-12 fw-500 m-0 meeting_details_date">-</p>
+                </div>
+                <a href="#" class="btn btn-block btn-light-blue fw-500 mt-10 fs-15 meeting_details_reschedule hide">Reschedule</a>
+              </div>
+              <div class="calendar_info mb-25">
+                <p class="fs-14 light_gray fw-600 m-0">Organizer</p>
+                <div class="schedule d-flex align-items-start mt-10">
+                  <%#= image_tag asset_path('user.png'), class: 'img-fluid calendar_user', height: "42", width: '42' %>
+                  <div class="ml-10">
+                    <p class="blue fw-600 fs-14 m-0 meeting_details_organizer">-</p>
+                    <p class="light_gray fw-600 fs-13 m-0 meeting_details_organizer_role">-</p>
+                  </div>
+                </div>
+                <hr class="light_border mt-10  mb-10">
+                <p class="fs-14 light_gray fw-600 m-0 mb-10">Participants</p>
+                <div>
+                  <span class="bg_light_gray multi_users" style="padding: 0 0;">
+                    <div class="list_of_participants  ml-10">
+                      <p class="blue fw-600 fs-14 m-0">-</p>
+                    </div>
+                  </span>
+                    <%#= image_tag asset_path('user.png'), class: 'img-fluid', height: "39", width: '39' %>
+                    <%#= image_tag asset_path('user.png'), class: 'img-fluid left_user', height: "39", width: '39' %>
+                    <%#= image_tag asset_path('user.png'), class: 'img-fluid left_user', height: "39", width: '39' %>
+                    <%# <img src="./images/user.png" class="img-fluid" width="39" height="39"> %> 
+                   <!-- <a class="fw-600 fs-15" href="#">See All<%= image_tag asset_path('right_arrow.png'), class: 'img-fluid ml-2' %></a> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <!-- <div class="block-ui-box-wrapper" style="max-width: 100%; font-size: 14px;"> -->
+  <!-- <div class="block-ui-box m-t-20"> -->
+  <!-- <div id="calendar" data-cable-manager="true" data-channel="ResourceChannel" data-resource-klass="<%= Meetings::Meeting.klass_name %>" data-resource-id="all"></div> -->
+  <!-- </div> -->
+  <!-- </div> -->
+  <% end %>
+<% end %>
+
+<style>
+  ul#cal_Tabs {border: 1px solid #e2e2e2;border-radius: 40px;}
+  ul#cal_Tabs > li > a { color: #333333;padding: 7px 10px;color: #7489a7;font-weight: 500;}
+  ul#cal_Tabs >li>a.active {background: none;box-shadow: 0px 2px 9px rgb(21 20 20 / 28%);border-radius: 19px;color:#0d3a77 !important;}
+  .bg-white{background-color: white;}
+  .styled-checkbox {position: absolute;opacity: 0;}
+  .styled-checkbox + label {position: relative;cursor: pointer;padding: 0;margin-bottom:12px;}
+  .styled-checkbox + label:before {content: "";margin-right: 10px;display: inline-block;vertical-align: text-top;width: 18px;height: 18px;background: white;border: 1px solid #cecaca;border-radius: 3px;}
+  .styled-checkbox:focus + label:before {box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);}
+  .styled-checkbox:disabled + label {color: #b8b8b8;cursor: auto;}
+  .styled-checkbox:disabled + label:before {box-shadow: none;background: #ddd;}
+  .styled-checkbox:checked + label:after {content: "";position: absolute;left: 4px;top: 10px;background: white;width: 2px;height: 2px;box-shadow: 2px 0 0 white, 4px 0 0 white, 4px -2px 0 white, 4px -4px 0 white, 4px -6px 0 white, 4px -8px 0 white;transform: rotate(45deg);}
+  .styled-checkbox:checked + label.blue:before {background: #007aff;}
+  .styled-checkbox:checked + label.sky:before { background: #54e2ee;}
+  .styled-checkbox:checked + label.yellow_gradient:before {background: -webkit-gradient(linear, left top, right top, from(#f8ac30), to(#ffce5e)) !important;background-image: linear-gradient(to right, #f8ac30, #ffce5e);}
+  .styled-checkbox:checked + label.blue_gradient:before {background: -webkit-gradient(linear, left top, right top, from(#0b83ff), to(#48b8ff)) !important;background-image: linear-gradient(to right, #0b83ff, #48b8ff);}
+  .styled-checkbox:checked + label.orange:before {background: #fe6c85;}
+  .styled-checkbox:checked + label.gray:before {background: #e0e0e0;}
+  .fs-14{font-size: 14px;}.fs-15{font-size: 15px;}.fs-16{font-size: 16px;}
+  .p-0{padding:0;}.m-0{margin:0;}
+  .pl-2{padding-left: 5px;}
+  .ml-2{margin-left: 5px;}
+  .mt-10{margin-top:10px;}
+  .mb-10{margin-bottom:10px;}
+  .mb-12{margin-bottom:12px;}
+  .ml-12{margin-left:12px;}
+  .pl-12{padding-left:12px;}
+  .ml-10{margin-left:10px;}
+  .justify-content-between{justify-content: space-between;}
+  .align-items-center{align-items:center;}
+  .align-items-start{align-items:start;}
+  ::marker {content: none;}
+  .blue_dropdown,.blue_dropdown:hover,.blue_dropdown:focus {background-color: #007aff;color: white;border-radius: 20px;}
+  .border-bottom-light {border-bottom: 1px solid #eeeeee;}
+  .mt-5{margin-top:5px;}.mb-5{margin-bottom:5px;}
+  .calendar_card{padding:10px 15px;border-style: solid;border-width: 4px;border-radius: 20px;flex:auto;}
+  .mt-25{margin-top:25px;}.mt-35{margin-top:35px;}
+  .p-0{padding:0;}
+  .sky_blue_card{border-color:rgb(206 242 245); background-color: rgb(84, 226, 238);}
+  .calendar_card_box_shadow{box-shadow: 0px 20px 21px 0px rgba(0, 0, 0, 0.23);}
+  .blue_gradient_card{background-image: -moz-linear-gradient( 25deg, rgb(0,122,255) 0%, rgb(72,184,255) 100%);background-image: -webkit-linear-gradient( 25deg, rgb(0,122,255) 0%, rgb(72,184,255) 100%);background-image: -ms-linear-gradient( 25deg, rgb(0,122,255) 0%, rgb(72,184,255) 100%);border-color: rgb(197 220 241);}
+  .yellow_gradient_card{
+    background-image: -moz-linear-gradient( 35deg, rgb(246,165,38) 0%, rgb(255,206,95) 100%);
+    background-image: -webkit-linear-gradient( 35deg, rgb(246,165,38) 0%, rgb(255,206,95) 100%);
+    background-image: -ms-linear-gradient( 35deg, rgb(246,165,38) 0%, rgb(255,206,95) 100%);
+    border-color: rgb(241 235 225);}
+  .cursor-pointer{cursor: pointer;}
+  .pink_card{border-color: rgb(239 221 224);background-color: rgb(254, 108, 133);}
+  .fs-13{font-size: 13px;}
+  .fs-12{font-size: 12px;}
+  .text-white{color:white;}
+  .time_schedule{color: #909090;}
+  .blue{color:#1a3e6f;}
+  .calendar_info{border:1px solid #e0e0e0;border-radius: 10px;padding:15px 10px;margin-bottom:20px;}
+  .green_badge{border-radius: 17px;background-color: rgb(24, 211, 159);padding:7px 12px;}
+  .fw-900{font-weight: 900;}
+  .fw-500{font-weight:500;}
+  .light_border{border-top:1px solid #e0e0e0 ;}
+  .mt-8{margin-top:8px;margin-bottom:8px;}
+  .light_gray{color:#bbbbbc;}
+  .btn-light-blue{border-radius: 15px;color:#007aff !important;background-color: rgb(233, 243, 255);}
+  .left_user{margin-left:-15px;}
+  .multi_users{width: fit-content;background-color: #e2e2e2;padding:13px 3px;border-radius: 27px;}
+  .multi_users img{border:2px solid white;border-radius: 50%;}
+  .calendar_user{border-style: solid;border-width: 3px;border-color: rgb(197 220 241);border-radius: 50%;}
+  @media (min-width: 1200px){.p-lg-0{padding: 0;}}
+    @media (max-width: 767px){
+  .align-items-stretch {width: 100%;}ul#cal_Tabs{border: unset;}}
+  .shape_card{background-image: url(<%= asset_path('shape.png') %>);background-size: cover;background-repeat: no-repeat;}
+  .border-0{border:none;}
+  .align-items-stretch{align-items: stretch;}
+  .align-self-end{align-self: flex-end;} 
+  .datepicker-inline{width: 100%}
+  .table-condensed{width: 100%}
+  .daterangepicker{display: none !important;}
+  .calendar_card{cursor: pointer;}
+  .datepicker table tr td.active.active, .datepicker table tr td.active.highlighted.active, .datepicker table tr td.active.highlighted:active, .datepicker table tr td.active:active, .datepicker table tr td span.active{
+    background-color: #007aff !important;
+    border-radius: 100px;
+  }
+  .datepicker table tr td.today {background-color: #efece2 !important;border-radius: 100px; }
+  .datepicker table tr td span {border-radius: 100px; }
+  .datepicker table tr td, .datepicker table tr th{border-radius: 100px;}
+  .visibility-hidden{visibility: hidden;}
+</style>
+
+<script>
+  var today = moment(new Date()).format('MM/DD/YYYY');
+  var active_meeting_categories = [];
+
+  function fill_up_meeting_details(start_date) {
+    $('.header_date').text(moment(new Date(start_date)).format('MMM DD, YYYY'));
+    $('.meeting_type_checkbox').prop('checked', false);
+    $('.meeting_details_time').text('-');
+    $('.meeting_details_time_count').text('-');
+    $('.meeting_details_date').text('-');
+    $('.meeting_details_reschedule').attr('href', '#');
+    $('.meeting_details_reschedule').addClass('hide');
+    $('.meeting_details_organizer').text('-');
+    $('.meeting_details_organizer_role').text('-');
+    $('.list_of_participants').html('-');
+    $('.meeting_start_time').html('-');
+    $('.meeting_title').html('-');
+    $('.calendar_card').removeClass('calendar_card_box_shadow');
+    $.ajax({
+      url: Routes.calendar_day_meetings_meetings_path(),
+      method: 'POST',
+      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+      data: {
+        start_date: start_date
+      },
+      success: function(e) { }
+    });
+  }
+
+  function dateChanged(ev) {
+    let timestamp = ev.timestamp;
+    let date = ev.date;
+    final_date = moment(date).format('MM/DD/YYYY');
+    fill_up_meeting_details(final_date);
+  }
+
+  function append_participant(value, index, array){
+    $('.list_of_participants').append('<p class="blue fw-600 fs-14 m-0">' + value + '</p>');
+  }
+
+  $(document).ready(function(){
+    $('#calendar').datepicker("destroy");
+    $('#calendar').datepicker({
+      inline: true,
+      todayHighlight: true,
+      startDate: new Date()
+    }).change(dateChanged).on('changeDate', dateChanged);
+
+    $('#calendar_2').datepicker("destroy");
+    $('#calendar_2').datepicker({
+      inline: true,
+      todayHighlight: true
+    }).change(dateChanged).on('changeDate', dateChanged);
+
+    $('[data-toggle="tab"]').on('click', function(){
+      $('[data-toggle="tab"]').removeClass('active show')
+      $(this).addClass('active show')
+    })
+
+    fill_up_meeting_details(today);
+
+    $(document).on("click", ".calendar_card", function(){
+      $('.meeting_details_time').text($(this).attr('data-start-time') + ' - ' + $(this).attr('data-end-time'));
+      $('.meeting_details_time_count').text($(this).attr('data-meeting-time'));
+      $('.meeting_details_date').text($(this).attr('data-meeting-date'));
+      $('.meeting_details_reschedule').attr('href', $(this).attr('data-url'));
+      $('.meeting_details_organizer').text($(this).attr('data-organizer'));
+      $('.meeting_details_organizer_role').text($(this).attr('data-organizer-role'));
+      $('.list_of_participants').html('');
+      $('.meeting_start_time').html($(this).attr('data-start-time'));
+      $('.meeting_title').html($(this).attr('data-meeting-title'));
+      $('.meeting_details_reschedule').removeClass('hide');
+      $('.meeting_scheduled_badge').removeClass('hide');
+      $('.calendar_card').removeClass('calendar_card_box_shadow');
+      $(this).addClass('calendar_card_box_shadow');
+      let attendees = $(this).attr('data-attendees').split(',')
+      attendees.forEach(append_participant);
+    });
+
+    $('.meeting_type_checkbox').on('click', function(){
+      if ($(this).val()=='all'){
+        if ($(this).prop('checked') == true){
+          $('.meeting_type_checkbox').prop('checked', true);
+          $('.meeting_time_details').find('.calendar_card').parent('div').removeClass('hide')
+        } else {
+          $('.meeting_type_checkbox').prop('checked', false);
+          $('.meeting_time_details').find('.calendar_card').parent('div').addClass('hide')
+        }
+      } else {
+        active_meeting_categories = [];
+        $('.meeting_type_checkbox').each(function(){
+          if ($(this).prop('checked')){
+            active_meeting_categories.push($(this).val());
+          }
+        })
+        $('.meeting_time_details').find('.calendar_card').parent('div').addClass('hide')
+        $('.meeting_time_details').find('.calendar_card').each(function(){
+          for ( var i = 0; i < active_meeting_categories.length; i++ )
+          {
+            if ( $(this).hasClass( active_meeting_categories[i] ) )
+            {
+              $(this).parent('div').removeClass('hide');
+            }
+          }
+        })
+      }
+    });
+  })
+  
+</script>

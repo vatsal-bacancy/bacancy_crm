@@ -1,0 +1,40 @@
+<%- case field.column_type
+when 'Text', 'Skype' %>
+  <%= object.send(field.field_name)%>
+
+<% when 'Text Area HTML'%>
+  <%#= f.text_area field_name, class: 'form-control', required: field.required, placeholder: field.placeholder, value: value, rows: 4 %>
+  <%= object.send(field.field_name).try(:html_safe)%>
+
+<% when 'Decimal', 'Integer', 'Percent', 'Currency'%>
+  <%= object.send(field.field_name)%>
+
+
+
+<% when  'Picklist','Multi-Select Check Box'%>
+  
+<% when  'Email'%>
+  <%= f.email_field field_name, class: 'form-control', required: field.required, pattern: Field::PATTERNS["Email".to_sym], placeholder: field.placeholder, value: value %>
+<% when 'Date' %>
+  <%= f.text_field field_name, class: 'form-control datepicker', required: field.required, pattern: Field::PATTERNS["Date".to_sym], placeholder: field.placeholder, value: value.try(:strftime, "%m/%d/%Y, %I:%M %p") %>
+<% when 'Phone' %>
+  <%= f.text_field field_name, class: 'form-control', required: field.required, pattern: Field::PATTERNS["Phone".to_sym], placeholder: field.placeholder, value: value %>
+<% when 'URL' %>
+  <%= f.text_field field_name, class: 'form-control', required: field.required, pattern: Field::PATTERNS["URL".to_sym], placeholder: field.placeholder, value: value %>
+<% when 'Time' %>
+  <%= f.text_field field_name, class: 'form-control', required: field.required, pattern: Field::PATTERNS["Time".to_sym], placeholder: field.placeholder, value: value %>
+<% when 'Checkbox' %>
+  <%= f.check_box field_name, class: 'form-control', required: field.required, placeholder: field.placeholder, value: value %>
+<% when 'DateTime' %>
+  <%= f.text_field field_name, class: 'form-control', required: field.required, placeholder: field.placeholder, value: value %>
+<% when 'File' %>
+  <% if f.object.persisted?%>
+    <span class="file-name"><%= f.object.send(field_name).file.filename %></span>
+    <span class="remove-file"> <i class="fa fa-close" id="<%= field_name %>"></i></span>
+    <%= f.file_field field_name, class: 'form-control hidden file-field',multiple: true %>
+  <% else %>
+    <%= f.file_field field_name, required: field.required, class: 'form-control',multiple: true %>
+  <% end %>
+<%else%>
+  <strong> Not a field</strong>
+<% end%>

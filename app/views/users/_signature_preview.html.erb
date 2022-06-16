@@ -1,0 +1,11 @@
+<div class="col-md-12">
+  <div class="d-md-flex d-flex-wrap">
+    <label>Preview:</label>
+    <div class="action-icon">
+      <%= link_to user_signature_path(current_user), class: 'ml10', remote: true do %>
+        <i class="fa fa-pencil" aria-hidden="true"></i>
+      <% end %>
+    </div>
+  </div>
+  <pre class="col-sm-4 mt10"><%= current_user.signature.try(:html_safe) %></pre>
+</div>

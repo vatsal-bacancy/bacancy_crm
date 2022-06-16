@@ -1,0 +1,6 @@
+<% if @object.present?%>
+
+  $("#ticket .list").html("<%= escape_javascript(render partial: 'index', locals: {object: @object, ticket_fields: @ticket_fields, ticket_klass: @ticket_klass }) %>"); //on client and lead show page
+<%end%>
+$("#ticket-all").html("<%= escape_javascript(render partial:'ticket_list', locals: { tickets: @tickets,ticket_fields: @ticket_fields, object: nil, ticket_klass: @ticket_klass }) %>"); //on ticket index page
+$('#ticketModal').modal('hide');

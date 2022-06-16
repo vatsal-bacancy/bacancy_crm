@@ -1,0 +1,136 @@
+<div class="table-responsive">
+  <table class="common-data-table table table-bordered text-center lead_table display no-footer dataTable" id="tickets-table">
+    <thead>
+      <th>
+        <div class="radio-lbl">
+          <label class="check ">
+            <input type="checkbox"  name="" id="ticket-check-all">
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      </th>
+      <th>Action</th>
+      <% ticket_fields.each do |field|%>
+        <th data-id="<%=field.id%>"><%=field.label %></th>
+      <%end%>
+    </thead>
+
+    <tbody class="list-body">
+      <% if object.present? %>
+        <% tickets_all = object.tickets %>
+      <% else %>
+        <% tickets_all = tickets %>
+      <% end %>
+
+      <% tickets_all.each do |ticket| %>
+        <tr>
+          <td>
+            <div class="radio-lbl">
+              <label class="check ">
+                <%= check_box_tag "ticket_ids[]", ticket.id , false, class:"ticket-check" %>
+                <span class="checkmark"></span>
+              </label>
+            </div>
+          </td>
+          <td>
+           <div class="btn-wrapper">
+               <div class="action-icon">
+               <%= link_to contacts_ticket_path(ticket) do %>
+                 <i class="fa  fa-eye" aria-hidden="true"></i>
+               <% end %>
+             </div>
+
+           </div>
+          </td>
+          <% ticket_fields.each do |field| %>
+            <td data-id="<%= ticket.id %>" data-klass='ticket' data-field="<%= field.name %>" data-deletable="<%= field.deletable %>" class="ticket-editable" >
+              <span>
+                <%#= field.name == "user_id" ? ticket.user.fullname : ticket.send(field.name) %>
+                <% case field.name %>
+                <% when "user_id" %>
+                  <%= ticket.user.fullname %>
+                <% when "created_at" %>
+                 <%= ticket.send(field.name)&.strftime("%m/%d/%Y, %I:%M %p") %>
+                <% when 'attachment' %>
+                  <% if ticket.documents.present? %>
+                    <% ticket.documents.each do |attach| %>
+                        <%= link_to attach.attachment.url, target: 'blank', title: attach.attachment.file.filename do %>
+                          <i class="fa fa-file" aria-hidden="true"></i>
+                          <%= attach.attachment.file.filename.truncate(20) %>
+                        <%end%>
+                        <br/>
+                    <% end %>
+                  <% else %>
+                    No Attachment Added
+                  <% end %>
+                <% else %>
+                  <% if field.column_type == "Text Area HTML" %>
+                    <%= ticket.send(field.name)&.truncate_html(100).html_safe %>
+                  <% else %>
+                    <%= ticket.send(field.name) %>
+                  <% end %>
+                <% end %>
+              </span>
+            </td>
+          <% end  %>
+
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+
+
+<script>
+  $(document).ready(function(){
+    if ( $.fn.DataTable.isDataTable('#tickets-table') ) {
+      $('#tickets-table').DataTable().destroy();
+    }
+    $('#tickets-table').DataTable({
+      sDom: 'lfrtip',
+      scrollX: false,
+      autoWidth: false,
+      paging: true,
+      // pageLength: 50,
+      // bLengthChange: false,
+      searching: true,
+      lengthMenu: [50, 100],
+      columnDefs: [
+        {orderable: false, targets: [0,1]},
+        {className: "dt-center", targets: "_all"},
+        {width: "25px", targets: [0] }
+      ],
+      order: []
+    });
+
+    $('#ticket-check-all').on('change', function(){
+      $('.list-body .ticket-check').prop('checked',$(this).prop('checked'));
+    });
+
+    $('#destroy_all_tickets').on('click', function(){
+      console.log('yes');
+
+      var checked = []
+      $("input[name='ticket_ids[]']:checked").each(function ()
+      {
+          checked.push(parseInt($(this).val()));
+      });
+      if(checked == 0){
+        confirm("Please select any ticket");
+      }else{
+        $.ajax({
+          url: "<%= object ? destroy_all_tickets_path(ticketable_type: object.class, ticketable_id: object.id) : destroy_all_tickets_path %>",
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          type: 'DELETE',
+          data: {
+            ids: checked
+          },
+          dataType: "script",
+          success: function(result){
+          }
+        });
+      }
+    });
+  });
+</script>

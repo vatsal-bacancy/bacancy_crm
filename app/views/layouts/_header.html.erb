@@ -1,0 +1,110 @@
+<div class="site-header">
+   <nav class="navbar navbar-default">
+      <div class="navbar-header">
+         <a class="navbar-brand" href="<%= root_url%>">
+
+           <%= image_tag @company.white_background_image, class: 'small-logo', width: '33px', height: '33px'%>
+          <span>
+            <%= image_tag @company.big_image, class: 'big-logo' %>
+          </span>
+         </a>
+         <button class="navbar-toggler sidebar-toggler left-sidebar-toggle pull-left visible-xs" type="button">
+         <span class="hamburger"></span>
+         </button>
+
+         <button class="navbar-toggler pull-right visible-xs-block" type="button" data-toggle="collapse" data-target="#navbar">
+         <span class="more"></span>
+         </button>
+      </div>
+      <div class="navbar-collapsible">
+         <div id="navbar" class="navbar-collapse collapse">
+            <button class="navbar-toggler sidebar-toggler left-sidebar-collapse pull-left hidden-xs" type="button">
+            <span class="hamburger"></span>
+            </button>
+            <div class="logo-navbar left-sidebar-toggle pull-left hidden-xs">
+              <%= image_tag @company.big_image, class: '' %>
+            </div>
+            <ul class="nav navbar-nav">
+               <li class="visible-xs-block">
+
+                  <h4 class="navbar-text text-center">Welcome, <%= current_user.fullname %>!</h4>
+               </li>
+            </ul>
+            <!--<form class="navbar-form navbar-left" action='/search'>
+               <div class="navbar-search-group">
+                  <input type="text" class="form-control" placeholder="Search by Leads, Company Name" name='value'>
+                  <button type="submit" class="btn btn-default">
+                  <i class="fa fa-search"></i>
+                  </button>
+               </div>
+            </form>-->
+            <ul class="nav navbar-nav navbar-right d-sm-flex align-items-center text-center">
+              <li>
+                <span class=''>
+                  <% if current_user.clocked_in? %>
+                    <a href="<%= clock_in_out_toggle_user_time_sheet_logs_path(current_user) %>" class='btn btn-outline-success'>Clock Out</a>
+                  <% else %>
+                    <a href="<%= clock_in_out_toggle_user_time_sheet_logs_path(current_user) %>" class='btn btn-danger'>Clock In</a>
+                  <% end %>
+                </span>
+              </li>
+               <li class="nav-table dropdown ">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  <span class="nav-cell p-r-10">
+                  <div id="user_pro_pic" style="display: inline-block;">
+                        <%= render partial: 'layouts/user_header_profile', locals: { current_user: current_user } %>
+                        <%#= image_tag asset_path('small_demo_img.jpg'), class: 'img-circle', width: '32px', height: '32px'%>
+                     </div>
+
+                  <%#= image_tag asset_path('small_demo_img.jpg'), class: 'img-circle', width: '32px', height: '32px'%>
+
+                  </span>
+                  <span class="nav-cell blue-font" id="fullname_header"><%= current_user.fullname %>
+                  <span class="caret"></span>
+                  </span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a href="<%=user_path(current_user)%>">
+                      <i class="fa fa-user m-r-10"></i> Profile</a>
+                    </li>
+                    <!--<li>
+                      <a href="javascript:void(0)">
+                      <i class="fa fa-cog m-r-10"></i> Settings</a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0)">
+                      <i class="fa fa-question-circle m-r-10"></i> Help</a>
+                    </li> -->
+                    <%# @client_list.each do |client|%>
+                      <!-- <li>
+                        <%#= link_to  client_set_path(client_id: client.id), method: :post do%>
+                          <i class="fa fa-industry m-r-10"></i> <%#= client.company_name %>
+                        <%# end %>
+                      </li> -->
+                    <%# end %>
+                    <li role="separator" class="divider"></li>
+                    <li>
+                      <%if user_signed_in?%>
+                        <%=  link_to destroy_user_session_path, method: :delete  do%>
+                          <i class="fa fa-sign-out m-r-10"></i> Logout
+                        <%end%>
+                      <%end%>
+                    </li>
+                  </ul>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </nav>
+</div>
+<style>
+  .logo-navbar{
+    font-size: 24px;
+    height: 50px; 
+    line-height: 50px; 
+    position: relative;
+    width: 58px;
+    margin-left: 25px;
+  }
+</style>

@@ -1,0 +1,29 @@
+<div class="modal fade" id="modal" role="dialog">
+  <div class="modal-dialog">
+    <%= form_for contact, class: "form-inline", remote: true do |f| %>
+      <div id='flash_message'></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Contact</h4>
+        </div>
+        <div class="modal-body">
+          <%= render 'form', f: f, contact: contact, klass: klass %>
+          <%= hidden_field_tag(:contactable_type, params[:contactable_type]) %>
+          <% if params["contactable_id"].present? %>
+            <%= hidden_field_tag(:contactable_id, params[:contactable_id]) %>
+          <%else%>
+            <div class="form-group">
+              <%= label_tag "Select #{params[:contactable_type]}"%>
+              <%= select_tag :contactable_id,   options_for_select(params[:contactable_type].constantize.pluck(:company_name, :id), f.try(:object).try(:lead_client_contact).try(:contactable_id)), { class: 'form-control', prompt: "Select #{params[:contactable_type]}", required: true, name: "contact[contactable_id]"}%>
+            </div>
+          <%end%>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <%= f.submit class: 'btn btn-success' %>
+        </div>
+      </div>
+    <%end%>
+  </div>
+</div>

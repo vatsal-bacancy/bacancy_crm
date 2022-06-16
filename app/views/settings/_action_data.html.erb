@@ -1,0 +1,108 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bhoechie-tab tab-content">
+  <div role="tabpanel" class="tab-pane fade in active block-ui-box" id="tabLead">
+    <div class='col-md-12'>
+      Select and drag fields to show in the list view
+    </div>
+    <div class='col-sm-6'>
+      <table data-klass-id= "<%=klass.id%>" class="action-table">
+        <thead>
+          <tr><th></th></tr>
+        </thead>
+        <tbody>
+        <% klass.fields.where.not(column_type: %w(Hidden File)).reorder('label ASC').each do |field| %>
+          <tr class="" data-field-id="<%= field.id%>" data-klass-id="<%= klass.id%>">
+            <td><%= check_box_tag "field_ids[]", field.id , field.user_preference(user: current_user).visible_in_table, class: 'add_to_list' %>
+            <%= field.label %></td>
+          </tr>
+        <%end%>
+        </tbody>
+      </table>
+    </div>
+    <div class='col-sm-6'>
+      SELECTED COLUMNS (<%= current_user.fields_for_table_with_order(klass: klass).where.not(column_type: %w(Hidden File)).count %>)
+      <ul class="fields-sortable list" data-klass-id= "<%=klass.id%>" >
+        <% current_user.fields_for_table_with_order(klass: klass).where.not(column_type: %w(Hidden File)).each do |field|%>
+          <li class="action-block-ui-box" data-field-id="<%= field.id%>" data-klass-id="<%= klass.id%>" data-position-in-table="<%= field.user_preference(user: current_user).position_in_table %>">
+            <span class="pull-right">
+              <%=  link_to 'javascript:void(0)', class: 'add_to_list' do%>
+                <i class="fa fa-close" aria-hidden="true"></i>
+              <%end%>
+            </span>
+            <%= field.label %>
+          </li>
+        <%end%>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $("div#myTabs>a").click(function(e) {
+        e.preventDefault();
+        $(this).siblings('a.active').removeClass("active");
+        $(this).addClass("active");
+        var index = $(this).index();
+        $("div.bhoechie-tab>div.tab-pan").removeClass("active");
+        $("div.bhoechie-tab>div.tab-pan").eq(index).addClass("active");
+    });
+
+    $('.add_to_list').on('click',function(){
+      $.ajax({
+        url: "<%= toggle_visible_in_table_fields_path %>",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: 'PATCH',
+        data: {
+          klass_id: $(this).parent().parent().data('klass-id'),
+          field_id: $(this).parent().parent().data('field-id'),
+          visible_in_table: $(this).is(':checked')
+        },
+        success: function(){
+          $.ajax({
+            url: "<%= actions_settings_path(klass_id: klass.id, url: request.url, update: 'true') %>"
+          })
+        }
+      });
+    });
+
+    $( ".fields-sortable" ).sortable({ items: '> li:not(.pin)',
+        connectWith: ".connectedSortable",
+        stop: function(event, ui) {
+          let positionInTable = ui.item.attr('data-position-in-table');
+          let klassId = ui.item.attr('data-klass-id');
+          let fieldId=ui.item.attr('data-field-id');
+          let newPositionInTable = ui.item.index();
+          let details = {from: positionInTable, to: newPositionInTable};
+          $.ajax({
+            url: "<%= change_position_in_table_fields_path %>",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            type: 'PATCH',
+            data: {
+              details: details,
+              klass_id: klassId,
+              field_id: fieldId
+            },
+            dataType: "script",
+            success: function(result){
+              $.ajax({
+                url: "<%= actions_settings_path(klass_id: klass.id, url: request.url, update: 'true') %>"
+              });
+            }
+          });
+        }
+    });
+
+    if ( $.fn.DataTable.isDataTable('.action-table') ) {
+      $('.action-table').DataTable().destroy();
+    }
+
+    $('.action-table').DataTable({
+      sDom: 'lfrtip',
+      scrollX: false,
+      autoWidth: false,
+      paging: false,
+      searching: true,
+      order: []
+    });
+  });
+</script>

@@ -1,0 +1,2 @@
+$("#modalContainer").html("<%= escape_javascript(render partial: 'new', locals: {user: @user, groups: @groups, data: @data}) %>")
+$("#modal").modal('show');

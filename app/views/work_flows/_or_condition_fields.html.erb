@@ -1,0 +1,26 @@
+<div class = 'nested-fields'>
+  <p class=" col-md-12">
+    <%= link_to_remove_association f, class: "common-link pull-right" do %>
+      <i class="fa fa-trash" aria-hidden="true"></i>
+    <% end %>
+  </p>
+  <div class= 'col-md-4'>
+    <div class="form-group">
+      <%= f.label :field %><span class="required">*</span>
+      <%= f.select :field_id, grouped_options_for_select(fields_by_klass_for_options(f.object.work_flow.klass), f.object.field_id), { prompt: 'Select field' }, required: true, class: 'form-control', data: { "field-change": true } %>
+    </div>
+  </div>
+  <div class= 'col-md-4'>
+    <div class="form-group">
+      <%= f.label :comparator %><span class="required">*</span>
+      <%= f.select :comparator, options_for_select(WorkFlows::OrCondition.comparators.keys.map{|comparator| [comparator.humanize, comparator]}, f.object.comparator), { prompt: 'Select comparator' }, required: true, class: 'form-control' %>
+    </div>
+  </div>
+  <div class= 'col-md-4'>
+    <div class="form-group">
+      <%= f.label :value %>
+      <%= f.text_field :value, placeholder: "Value", class: 'form-control mb10', data: { "field-value": true } %>
+    </div>
+  </div>
+  <hr/>
+</div>

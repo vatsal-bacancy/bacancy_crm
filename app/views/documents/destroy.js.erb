@@ -1,0 +1,8 @@
+
+<%unless params[:file_remove].present?%>
+  <%if @object.present? %>$("#documentList .list").html("<%= escape_javascript(render partial: 'index', locals: {object: @object }) %>");<% end %>
+  $("#directory_content").html("<%= escape_javascript(render partial: 'directories/directory_content', locals: { directory: @directory, directories: @directories, documents: @documents} ) %>");
+<%end%>
+$('#directory_detail').html("<%= escape_javascript(render partial: 'directories/directory_detail',locals: {directory: @directory, directories: @directories, documents: @documents}) %>")
+$("#success_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");
+$('#doc-<%=params[:id]%>').remove();

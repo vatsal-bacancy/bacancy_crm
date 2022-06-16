@@ -1,0 +1,2 @@
+$("#task-list").html("<%= escape_javascript(render partial: 'task_list', locals: { object: @object, task_fields: @task_fields }) %>");
+$("#task-all").html("<%= escape_javascript(render partial: 'task_list', locals: { object: nil, task_fields: @task_fields }) %>");

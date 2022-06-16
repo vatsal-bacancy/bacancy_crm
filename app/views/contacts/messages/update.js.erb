@@ -1,0 +1,4 @@
+<% if @object.present?%>
+  $("#project-detail").html("<%= escape_javascript(render partial: 'contacts/messages/messages', locals: {object: @object})%>")
+<%end%>
+$('#messageModal').modal('hide');

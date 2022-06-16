@@ -1,0 +1,96 @@
+<div id="success_message"></div>
+<div class="site-main">
+  <%= render 'layouts/contacts_sidebar'%>
+  <div class="site-content site-content-data ">
+    <div class="row">
+
+      <div class="col-md-12">
+        <div class="white-bg pl10 pr10 pb10 pt10 user-profile">
+          <div class="dynmic-tab-div-header">
+            <span class="heading">Contact Details</span>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="d-flex d-flex-wrap sm-justify-center">
+                <div class="dropdown">
+                  <!-- profile image -->
+                  <div id="conatct_profile_picture">
+                    <%= render partial: 'contact_profile', locals: { current_contact: current_contact } %>
+                  </div>
+
+                </div>
+                <!-- <div class="profile-circle-main" id="profile_image"></div>  -->
+
+                <div class="profile-circle-title">
+                  <div class="d-flex d-flex-wrap ">
+                    <h3 class="" id="fullname_contact"><span><%= current_contact.fullname %></span></h3>
+                    <!-- contact edit  -->
+                    <span style="font-size:13px;display:block;">
+                      <a data-remote="true" href="<%= edit_contacts_contact_path(current_contact) %>" class="ml10" remote="true">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                      </a>
+                    </span>
+                  </div>
+                  <span style="font-size:13px;display:block;" id="contact-email"><%= current_contact.email  %> </span>
+                  <!-- company edit -->
+                  <span style="font-size:13px;display:block;">
+                    <b>Company:</b><span id="contact-company"> <%= current_contact.lead_client_contact.contactable.company_name  %> </span>
+                    <%# if current_contact.is_primary.present? %>
+                      <!--<a data-remote="true" href="<%#= contacts_contact_company_edit_path(current_contact) %>" class="ml10" remote="true">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                      </a>-->
+                    <%# end %>
+                  </span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div id="contact-details" class="contact-show edit-user-company">
+                    <%= form_for current_contact, remote: true, class: "form-inline" do |f| %>
+                      <%= render partial: 'contact_details', locals: { f: f, current_contact: current_contact } %>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+
+              <!--<div id="phone">
+                <%#= render partial: 'phone_edit', locals: { current_contact: current_contact } %>
+              </div>-->
+                <!-- first name and last name update  -->
+
+            </div>
+          </div>
+
+
+          <div class="dynmic-tab-div-header mt20">
+            <span class="heading">Company Details</span>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+             <div id="company-details" class="contact-show edit-user-company">
+              <% if current_contact.is_primary.present? %>
+                <%= form_for @client, remote: true , class: "form-inline" do |f| %>
+                  <%= render partial: 'contact_company_details', locals: { f: f, current_contact: current_contact,  company: @client } %>
+                <% end %>
+              <% else %>
+                <%= render partial: 'company_details', locals: { company: @client } %>
+              <% end %>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div id="modalContainer"></div>
+<div id="uploadContainer"></div>
+<div id="companyContainer"></div>
+<script type="text/javascript">
+
+
+
+</script>

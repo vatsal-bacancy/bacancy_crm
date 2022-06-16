@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Welcome to iPos</title>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0"/>
+
+  <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+
+  <style>
+    * {
+      padding: 0;margin: 0;box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      color: #2b2b2b;
+      font-weight: normal;
+      margin: 0;
+      padding: 0;
+    }
+
+    table {
+      border: 0 none;
+      border-spacing: 0;
+    }
+
+    th, td {
+      font-weight: normal;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    @media only screen and (max-width: 480px) {
+      .logo-area img {
+        height: 50px;
+      }
+
+      .desc-table {
+        overflow-x: auto;
+        width: 330px !important;
+      }
+    }
+
+    @media only screen and (max-width: 360px) {
+      .desc-table {
+        width: 290px !important;
+      }
+    }
+
+  </style>
+
+</head>
+
+<body>
+<div style="background:#f2f2f2;">
+  <table cellpadding="0" cellspacing="0" style="max-width:640px; width: 100%; margin:0 auto;">
+    <tbody>
+    <tr>
+      <td>
+        <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#fff;">
+          <tbody>
+          <tr>
+            <td style="padding:50px 20px;">
+              <div>
+                <div class="logo-area" style="display: inline-block;">
+                  <% attachments.inline['iPos-logo.png'] = File.read("#{Rails.root}/app/assets/images/iPos-logo.png") %>
+                  <%= image_tag(attachments['iPos-logo.png'].url) %>
+                </div>
+                <div style="float: right;">
+                  <% attachments.inline['shipping.jpg'] = File.read("#{Rails.root}/app/assets/images/shipping.jpg") %>
+                  <%= image_tag(attachments['shipping.jpg'].url) %>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:20px;">
+              <p style="font-family: 'Poppins', sans-serif; font-size:13px; color: #111111; margin-bottom: 20px;">Dear
+                Customer,<br/>
+                Thank you for your business. The following items have been successfully shipped.</p>
+              <p style="font-family: 'Poppins', sans-serif;  font-size:13px; color: #111111;">
+                <span style="color: #007aff; font-weight: bold;">Order #</span> <%= @shipment.module_number %></p>
+              <p style="font-family: 'Poppins', sans-serif;  font-size:13px; color: #111111;">
+                <span style="color: #007aff; font-weight: bold;">MID #</span> <%= @shipment.client_merchant_id %></p>
+              <p style="font-family: 'Poppins', sans-serif;  font-size:13px; color: #111111;">
+                <span style="color: #007aff; font-weight: bold;">DBA Name:</span> <%= @shipment.client_company_name %></p>
+            </td>
+          </tr>
+          <tr>
+            <td style="font-family: 'Poppins', sans-serif;  font-size:13px; color: #111111; text-align: left; padding:20px 15px;">
+              <div class="desc-table">
+                <table width="100%" cellpadding="0" cellspacing="0" style="padding-bottom: 10px;">
+                  <thead>
+                  <tr>
+                    <th style="color: #007aff; font-weight: 600; padding: 5px;">Description</th>
+                    <th style="color: #007aff; font-weight: 600; padding: 5px;">Qty</th>
+                    <th style="color: #007aff; font-weight: 600; padding: 5px;">Status</th>
+                    <th style="color: #007aff; font-weight: 600; padding: 5px;">Date Shipped</th>
+                    <th style="color: #007aff; font-weight: 600; padding: 5px;">Carrier</th>
+                    <th style="color: #007aff; font-weight: 600; padding: 5px;">Tracking Number</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <% @shipment.packages.select_except_response.each do |package| %>
+                    <tr>
+                      <td style="padding: 2px 5px;"><%= package.description %></td>
+                      <td style="padding: 2px 5px;"><%= package.quantity %></td>
+                      <td style="padding: 2px 5px;"><%= package.tracking_status %></td>
+                      <td style="padding: 2px 5px;"><%= pretty_date package.shipment.ship_date %></td>
+                      <td style="padding: 2px 5px;"><%= package.carrier %></td>
+                      <td style="padding: 2px 5px;"><a href="<%= package.tracking_url %>" target="_blank" style="color: #007aff;"><%= package.tracking_number %></a></td>
+                    </tr>
+                  <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:20px;">
+              <p style="font-family: 'Poppins', sans-serif; font-size:13px; color: #111111; margin-bottom: 20px;">For
+                information about your order, contact:
+                <a href="javascript:" style="color: #007aff;">support@ipointofsale.com</a></p>
+              <p style="font-family: 'Poppins', sans-serif; font-size:13px; color: #111111;">Respectfully,<br/>
+                iPos</p>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

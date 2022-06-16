@@ -1,0 +1,2 @@
+$('#modalContainerCenter').html("<%= escape_javascript(render partial: 'new_assign_all', locals: {lead: @lead, users: @users }) %>");
+$('#modal').modal('show');

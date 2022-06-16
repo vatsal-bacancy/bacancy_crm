@@ -1,0 +1,130 @@
+<div class="dynmic-tab-div directory-structure" id="meetings">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="dynmic-tab-div-header">
+        <span class="heading">Schedules</span>
+        <div class="pull-right">
+          <% if true %>
+            <a href="javascript:void(0)" class="site-content-head-btn" id="destroy_all_meetings">
+              Delete
+            </a>
+          <% end %>
+          <% if true %>
+            <%= link_to new_meeting_path(meetingable: meetingable.to_polymorphic), remote: true, class: "site-content-head-btn" do %>
+              + New Deployment Schedule
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+      <div class="dynmic-tab-div-data ">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="site-content-data">
+              <div class="table-list">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="site-content-data">
+                      <div class="table-list">
+                        <div class="table-responsive">
+                          <table class="common-data-table">
+                            <thead>
+                              <tr>
+                                <th>
+                                  <div class="radio-lbl">
+                                    <label class="check">
+                                      <input type="checkbox" id="check_all_meeting">
+                                      <span class="checkmark"></span>
+                                    </label>
+                                  </div>
+                                </th>
+                                <th class="action">Action</th>
+                                <th>Title</th>
+                                <th>Deployment Assigned To</th>
+                                <th>Start Time</th>
+                                <th>End Time</th>
+                                <th>Description</th>
+                                <th>Created By</th>
+                              </tr>
+                            </thead>
+                            <tbody class='list-body'>
+                            <% meetingable.meetings.each do |meeting| %>
+                              <tr>
+                                <td>
+                                  <div class="radio-lbl">
+                                    <label class="check">
+                                      <%= check_box_tag "meeting_ids[]", meeting.id , false, class:"check" %>
+                                      <span class="checkmark"></span>
+                                    </label>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="btn-wrapper">
+                                    <% # todo: permission %>
+                                    <% if true %>
+                                      <div class="action-icon">
+                                        <%= link_to edit_meeting_path(meeting, meetingable: meetingable.to_polymorphic), remote: true do %>
+                                          <i class="fa fa-pencil" aria-hidden="true"></i>
+                                        <% end %>
+                                      </div>
+                                    <% end %>
+                                    <% if true %>
+                                      <div class="action-icon">
+                                        <%= link_to meeting_path(meeting), method: :delete, remote: true do %>
+                                          <i class="fa fa-trash " aria-hidden="true"></i>
+                                        <% end %>
+                                      </div>
+                                    <% end %>
+                                  </div>
+                                </td>
+                                <td><%= meeting.title %></td>
+                                <td><%= meeting.attendees.map{|attendee| attendee.resourceable.fullname }.join(", ") %></td>
+                                <td><%= pretty_date_time meeting.start_date_time %></td>
+                                <td><%= pretty_date_time meeting.end_date_time %></td>
+                                <td><%= meeting.description.truncate_html(70).html_safe %></td>
+                                <td><%= meeting.user.fullname %></td>
+                              </tr>
+                            <% end %>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function() {
+    $('#check_all_meeting').on('change', function(){
+      $('.list-body .check').prop('checked',$(this).prop('checked'));
+    });
+    $('#destroy_all_meetings').on('click', function(){
+      let checked = [];
+      $("input[name='meeting_ids[]']:checked").each(function ()
+      {
+        checked.push(parseInt($(this).val()));
+      });
+      if(checked.length == 0){
+        confirm("Please select a meeting");
+        return;
+      }
+      $.ajax({
+        url: "<%= destroy_all_meetings_path(meetingable: meetingable.to_polymorphic) %>",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: 'DELETE',
+        data: {
+          ids: checked
+        },
+        dataType: "script",
+        success: function(result){
+        }
+      });
+    });
+  });
+</script>

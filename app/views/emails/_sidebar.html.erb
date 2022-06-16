@@ -1,0 +1,59 @@
+<aside class="sidebar">
+  <div class="">
+    <p class="inbox-text"><b>Mail</b></p>
+    <button class="btn toggle-main">
+      <div class="toggle-1"> <i class="fa fa-angle-left" aria-hidden="true"></i> <i class="fa fa-angle-left" aria-hidden="true"></i> </div>
+      <div class="toggle-2"> <i class="fa fa-angle-right" aria-hidden="true"></i> <i class="fa fa-angle-right" aria-hidden="true"></i> </div>
+    </button>
+
+    <div class="left-menu">
+      <a href="<%=new_email_path()%>" class="btn Compose-text" data-remote="true">Compose</a>
+      <ul>
+        <li class='inbox'>
+          <a href="<%= emails_path %>">
+            <div class=" pull-left">Inbox</div>
+            <div class="link-number-circle"></div>
+            <div class="small-circle"></div>
+          </a>
+        </li>
+        <li class='sent'>
+          <%= link_to sent_emails_path, remote: true do %>
+            <div class=" pull-left">Sent</div>
+            <div class="link-number-circle"></div>
+          <% end %>
+        </li>
+        <li class='draft'>
+          <%= link_to draft_emails_path, remote: true do %>
+            <div class=" pull-left">Drafts</div>
+            <div class="link-number-circle"></div>
+          <% end %>
+        </li>
+      </ul>
+    </div>
+    <!-- <div class="bottom-menu">
+       <ul>
+          <li class="nav-table dropdown">
+             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+             <span class="small-img"><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>
+             <span class="nav-cell p-r-10">
+             <span class="nav-cell blue-font">Available
+             <span class="caret"></span>
+             </span>
+             </a>
+             <ul class="dropdown-menu">
+                <li>
+                   <a href="javascript:void(0)">
+                   <i class="fa fa-user m-r-10"></i> Profile</a>
+                </li>
+             </ul>
+          </li>
+          <li>
+             <a href="JavaScript:Void(0);">
+             <span class="small-img"><i class="fa fa-cog" aria-hidden="true"></i></span>
+             <span class="nav-cell blue-font">inbox setting</span>
+             </a>
+          </li>
+       </ul>
+    </div> -->
+  </div>
+</aside>

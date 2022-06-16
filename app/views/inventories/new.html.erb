@@ -1,0 +1,39 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <%= link_to inventories_path, class: "main-menu-sitecontent" do %> Inventory <% end %>
+            <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> </span>
+            <span class="sub-menu-sitecontent"> New Inventory</span>
+          </div>
+          <div class="pull-right">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="inventoryGroupFormRow">
+      <%= form_for @inventory, class: "form-inline", html: { multipart: true } do |f| %>
+        <%= render 'form', inventory: @inventory, klass: @klass, f: f, submit_block: -> { %>
+          <div class="row mt20">
+            <div class="col-sm-12">
+              <%= f.submit class: 'btn btn-success' %>
+              <%= link_to inventories_path, class: "site-content-head-btn" do %>
+                Cancel
+              <% end %>
+            </div>
+          </div>
+        <% } %>
+      <% end %>
+    </div>
+    <div id="modalContainer" class="modal-right"></div>
+    <div id="importfiled"></div>
+  </div>
+</div>
+<script>
+  $(document).ready(function() {
+    $(".dropdown-toggle").dropdown();
+  });
+</script>

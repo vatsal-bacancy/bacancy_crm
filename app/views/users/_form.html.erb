@@ -1,0 +1,14 @@
+<% groups.each do |group| %>
+  <div class='block-ui-box m-t-5 row'>
+    <div class="col-md-12">
+      <h3 class="title p-b-5"><%= group.label%></h3>
+      <% group.fields.each do |field| %>
+        <div class= field.column_type == "Text Area HTML" ? 'col-md-12' : 'col-md-6'>
+          <div class='form-group'>
+            <%= render partial: 'forms/field', locals: { f: f, field_name: field.name, field_label: field.label, column_type: field.column_type, custom: field.custom, have_custom_value: field.have_custom_value, field: field, data: data, value: user.send(field.name)} %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

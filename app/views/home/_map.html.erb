@@ -1,0 +1,43 @@
+<div class="modal fade" id="myModal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Map</h4>
+      </div>
+      <div class="modal-body">
+        <div id='address_map'></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script type="text/javascript">
+function initMap() {
+  // The location of Uluru
+  var uluru = {lat: parseFloat(<%= lat %>), lng: parseFloat(<%= long %>)};
+  // The map, centered at Uluru
+  var map = new google.maps.Map(
+      document.getElementById('address_map'), {zoom: 17, center: uluru});
+  // The marker, positioned at Uluru
+  var marker = new google.maps.Marker({position: uluru, map: map,icon: {
+      url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+      labelOrigin: new google.maps.Point(75, 32),
+      size: new google.maps.Size(32,32),
+      anchor: new google.maps.Point(16,32)
+      },
+      label: {
+        text: "<%= params[:address]%>",
+        color: "#C70E20",
+        fontWeight: "bold"
+      }});
+}
+</script>

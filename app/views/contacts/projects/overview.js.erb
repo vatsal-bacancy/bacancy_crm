@@ -1,0 +1,3 @@
+$("#project-detail").html("<%= escape_javascript(render partial: 'contacts/projects/overview', locals: {klass: @klass, project: @project, overviews: @overviews})%>")
+$("#project-detail-msg").html("<%= escape_javascript(render partial: 'contacts/projects/overview', locals: {klass: @klass, project: @project, overviews: @overviews})%>")
+$document_ids = [];

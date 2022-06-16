@@ -1,0 +1,47 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<div class="site-main">
+  <div class="custom-wrapper emails">
+    <%= render partial: 'emails/sidebar' %>
+    <section class="content">
+      <div class="row">
+        <div class="col-md-12 filter-custom-main pr-0">
+          <div class="d-flex flex-align-center cm-dasboard-serach  m-t-10">
+            <div class="navbar-search-group navbar-search-group-mail">
+              <input type="text" class="form-control" placeholder="Search Mail" name="value" id="search-msg">
+              <button type="submit" class="btn btn-default">
+                <i class="fa fa-search"></i>
+              </button>
+            </div>
+          </div>
+          <div class="email-hr">
+            <hr/>
+          </div>
+          <div class='filter-middle m-t-0'>
+            <div id='messages_container'>
+              <%= render partial: 'messages', locals: {messages: @messages} %>
+            </div>
+          </div>
+          <div class='hidden' id='message_container'></div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<div id="modal_container" class='modal-bottom'></div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    if ($(window).width() < 991) {
+    $(".sidebar").removeClass('is-collapsed');
+    $(".content").removeClass('is-full-width');
+    } else{
+    }
+    $(window).resize(function(){
+      if ($(window).width() < 991) {
+       $(".sidebar").removeClass('is-collapsed');
+       $(".content").removeClass('is-full-width');
+       } else{
+       }
+    });
+  });
+</script>

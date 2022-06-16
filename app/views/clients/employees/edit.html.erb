@@ -1,0 +1,33 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar' %>
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <span class= "main-menu-sitecontent">Contracts</span>
+          </div>
+          <div class="pull-right">
+            <%= link_to 'Back', contract_contracts_path, class: 'btn btn-success' %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="site-content-data">
+          <div class="white-body-wrapper">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="Inventory-header">
+                  <h1>Edit Contract</h1>
+                </div>
+              </div>
+            </div>
+            <%= render 'form', contract: @contract %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

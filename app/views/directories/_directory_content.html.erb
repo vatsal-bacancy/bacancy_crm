@@ -1,0 +1,119 @@
+<div class="admin-table bg-white table-responsive p-4">
+  <table class="common-data-table table table-bordered text-center lead_table" id="dirs">
+    <thead>
+      <tr>
+        <th>
+          <div class="radio-lbl">
+            <label class="check ">
+              <input type="checkbox"  name="" id="check-all">
+              <span class="checkmark"></span>
+            </label>
+          </div>
+        </th>
+        <th class="text-left">
+          Name
+        </th>
+        <th> Created By </th>
+        <th>
+          Last Updated At
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%if directory.directoriable_type == 'Directory'%>
+        <tr>
+          <td></td>
+          <td class="text-left">
+            <%= link_to directories_path(directory_id: directory.directoriable_id), class:"common-link" do%>
+              <i class="fa fa-folder-o"> </i> ...
+            <% end %>
+          </td>
+          <td></td>
+          <td></td>
+        </tr>
+      <%end%>
+      <% directory.directories.each do |directory|%>
+        <tr>
+          <td>
+            <div class="radio-lbl">
+              <label class="check ">
+                <%= check_box_tag "directory_id[]", directory.id , false, class:"check directory-checkbox", data: {id: directory.id} %>
+                <span class="checkmark"></span>
+              </label>
+            </div>
+          </td>
+          <!-- <td> <%#= link_to directory_path(directory, directory_id: (params[:directory_id].present? ?  params[:directory_id] : directory.get_directory) ), method: :delete,remote: true, class:"common-link" do %> <i class="fa fa-trash" aria-hidden="true"></i><%# end %> </td> -->
+
+          <td class="text-left">
+            <%= link_to directories_path(directory_id: directory.id), class:"common-link" do%>
+              <i class="fa fa-folder-o" area-hidden='true'> </i> <%= directory.name %>
+            <% end %>
+          </td>
+          <td> <%= directory.resourcable.fullname %> </td>
+          <td><%= last_update(directory) %>   <%#= directory.created_at.strftime("%m/%d/%Y, %I:%M %p") %></td>
+        </tr>
+      <%end%>
+
+      <% directory.documents.each do |document| %>
+        <tr>
+          <td>
+            <div class="radio-lbl">
+              <label class="check ">
+                <%= check_box_tag "document_ids[]", document.id , false, class:"check document-checkbox", data: {id: document.id} %>
+                <span class="checkmark"></span>
+              </label>
+            </div>
+          </td>
+          <!-- <td>
+            <%#= link_to document_path(document,directory_id: (params[:directory_id].present? ?  params[:directory_id] : document.get_directory) ), method: :delete, remote: true, class:"common-link" do %> <i class="fa fa-trash" aria-hidden="true"></i> <%# end %>
+          </td> -->
+          <td class="text-left">
+            <%= link_to document.attachment.url, target: '_blank', class:"common-link" do%>
+              <% extension = document.attachment.try(:file).try(:extension).try(:downcase) %>
+              <% if extension == "jpg" || extension == "png" || extension == "jpeg"  %>
+              <%= image_tag document.attachment.url, :size => "35x35" %>
+              <% elsif extension == "pdf" %>
+              <img src="/assets/icon_PDF_big.png" class="file-icon" width="35" height="35">
+              <% else %>
+              <img src="/assets/icon_Generic_big.png" class="file-icon" width="35" height="35">
+              <% end %>
+             <%= document.attachment.file.filename.truncate(30) %>
+            <% end %>
+          </td>
+          <td> <%= document.try(:resourcable).try(:fullname) %> </td>
+          <td>
+            <%= document.created_at.strftime("%m/%d/%Y, %I:%M %p") %>
+          </td>
+        </tr>
+      <%end%>
+    </tbody>
+  </table>
+</div>
+<script type="text/javascript">
+
+  $(document).ready(function(){
+    if ( $.fn.DataTable.isDataTable('#dirs') ) {
+        $('#dirs').DataTable().destroy();
+    }
+    $('#dirs').DataTable({
+      sDom: 'lfrtip',
+      scrollX: false,
+      autoWidth: false,
+      paging: true,
+      pageLength: 25,
+      // bLengthChange: false,
+      searching: true,
+      lengthMenu: [25,50, 100],
+      // colReorder: {
+      //   fixedColumnsLeft: 1
+      // },
+      columnDefs: [
+        {orderable: false, targets: [0]},
+        {width: "30px", targets: [0] },
+        {className: "dt-center", targets: "_all"}
+      ],
+      order: [],
+    });
+  });
+</script>

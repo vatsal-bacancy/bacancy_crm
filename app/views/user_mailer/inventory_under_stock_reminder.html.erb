@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <style type="text/css">
+      body {font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;}
+      table, th, td {border: 1px solid black;border-collapse: collapse;padding: 10px;}
+      table th {background-color: #000;color: #fff;}
+    </style>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <th>Inventory Group Name</th>
+        <th>Qty On Hand</th>
+        <th>Minimum Qty</th>
+      </tr>
+      <% @inventory_groups.each do |inventory_group| %>
+        <tr>
+          <td><%= link_to inventory_group.name, inventory_group_url(inventory_group), target: '_blank' %></td>
+          <td><%= inventory_group.active_inventories.count %></td>
+          <td><%= inventory_group.active_inventories_minimum_qty %></td>
+        </tr>
+      <% end %>
+    </table>
+  </body>
+</html>

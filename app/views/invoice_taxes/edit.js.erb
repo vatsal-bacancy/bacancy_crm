@@ -1,0 +1,2 @@
+$("#modalContainer").html("<%= escape_javascript(render partial: 'modal', locals: {invoice_tax: @invoice_tax}) %>")
+$("#taxModal").modal("show");

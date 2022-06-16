@@ -1,0 +1,107 @@
+.bg-lightgray {
+  background-color: #fbfbfc;
+}
+.bg-green {
+  background-color: #3cc87b;
+}
+.bg-orange {
+  background-color: #ff9029;
+}
+.bg-red {
+  background-color: #f01212;
+}
+
+.text-white {
+  color: #ffffff;
+}
+.text-darkgray {
+  color: #111111;
+}
+.text-blue {
+  color: #007aff;
+}
+.text-red {
+  color: #f60808;
+}
+.text-green {
+  color: #3cc87b;
+}
+
+.d-flex {
+  display: flex;
+}
+.align-items-center {
+  align-items: center;
+}
+
+.production-summary-table {
+  color: #111111;
+}
+.production-summary-table .table tr th {
+  background: #f8f9fa;
+  font-size: 18px;
+  color: #444444;
+  font-weight: 500;
+  vertical-align: top;
+  border-bottom: none;
+}
+.production-summary-table .table tr td {
+  padding: 20px 10px;
+}
+.production-summary-table .head-title {
+  font-size: 18px;
+  font-weight: 500;
+  min-height: 40px;
+}
+.production-summary-table .select-area {
+  margin-top: 10px;
+}
+.production-summary-table .select-area a {
+  margin-left: 5px;
+}
+.production-summary-table .client-detail {
+  margin-top: 10px;
+}
+.production-summary-table .client-detail p {
+  font-size: 16px;
+  color: #444444;
+  font-weight: 500;
+}
+.production-summary-table .client-detail h4 {
+  color: #444444;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.production-summary-table .table-box {
+  padding: 30px 12px;
+  border-radius: 10px;
+  box-shadow: rgba(0,0,0,0.2) 5px 5px 8px;
+  min-width: 180px;
+  min-height: 250px;
+}
+.production-summary-table .table-box .assign-text {
+  font-size: 15px;
+}
+.production-summary-table .table-box .box-title {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+.production-summary-table .table-box .date-area p {
+  font-size: 17px;
+  font-weight: 600;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  white-space: nowrap;
+}
+.production-summary-table .table-box .date-area p span {
+  font-size: 15px;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-right: 5px;
+}
+.production-summary-table .table-box .day-title {
+  font-size: 28px;
+  margin-top: 15px;
+}

@@ -1,0 +1,737 @@
+<div class="row">
+  <div class="col-sm-12">
+    <!-- <span class="attachmentsheading">Select a file</span> -->
+    <div class="navbar-search-group  attachments-navbar-search-group">
+      <input type="text" class="form-control" placeholder="Search " name="value" id="search-details">
+      <button type="submit" class="btn btn-default">
+      <i class="fa fa-search"></i>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <div class="pull-left attachment-btn-icon mt10">
+      <%if directory.directoriable_type == 'Directory'%>
+          <%= link_to directory_path(directory.directoriable), remote: true,class:"site-content-head-btn" do%>
+            <i class="fa fa-folder"> </i> Back
+          <% end %>
+      <%end%>
+    </div>
+    <div class="pull-right attachment-btn-icon mt5">
+      <a href="javascript:void(0)" class="site-content-head-btn" id="destroy-all"> Delete All</a>
+      <span class="" id='new-directory'>
+        <%= link_to new_directory_path(directoriable_type: directory.class.name, directoriable_id: directory.id), remote: true,class:"site-content-head-btn" do %>
+          <i class="fa fa-folder"> </i> +
+        <% end %>
+      </span>
+      <span id='new_dir_field' class="hidden">
+
+      </span>
+      <a href="javascript:void(0)" class="site-content-head-btn" id="list-view-link"><i class="fa fa-bars" aria-hidden="true"></i></a>
+      <a href="javascript:void(0)" class="site-content-head-btn" id="grid-view-link"><i class="fa fa-th-large" aria-hidden="true"></i></a>
+    </div>
+  </div>
+</div>
+
+<div class="row grid-view hidden" >
+  <div class="col-sm-12">
+    <div class="attachment-main-wrapper list_directory_document">
+      <div class="row">
+        <% directory.directories.each do |dir| %>
+          <div class="col-lg-2 col-md-3 col-xs-6 attachment-main">
+
+            <div class="dropdown grid-view-dropdown grid-foldr-rename dropdown-small-width" id="">
+              <button class="grid-view-btn dropdown-toggle" type="button" data-toggle="dropdown">  <i class="fa fa-sun-o" aria-hidden="true"></i>
+              <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li><a href="javascript:void(0)" id="grid-rename-folder-<%= dir.id %>" data-dirId= "<%= dir.id %>">Rename</a></li>
+                <li><%= link_to "Delete", directory_path(dir),data: { confirm: "Are you sure you want to Delete this Directory?" },method: :delete,  remote: true,id:"grid-doc-delete" %> </li>
+              </ul>
+            </div>
+
+            <div class="content grid-editable dir-over" data-id="<%= dir.id %>" data-klass='Directory' data-grid-field="name" >
+              <%= link_to directory_path(dir), remote: true,class:"common-link"  do%>
+                <i class="fa fa-folder-o" aria-hidden="true"></i>
+                <p class="content1"><%= dir.name.truncate(12) %></p>
+              <p class="content2"><%=dir.updated_at.strftime("%m/%d/%Y")%></p>
+              <% end %>
+              <div class="form-group field hidden ml10">
+                <%= text_field_tag :name, "#{dir.name}", class: "form-control name" %>
+              </div>
+            </div>
+
+          </div>
+        <% end %>
+        <% directory.documents.each do |doc| %>
+          <div class="col-lg-2 col-md-3 col-xs-6 attachment-main">
+
+            <div class="dropdown grid-view-dropdown dropdown-small-width" id="grid-file-rename">
+              <button class="grid-view-btn dropdown-toggle" type="button" data-toggle="dropdown">  <i class="fa fa-sun-o" aria-hidden="true"></i>
+              <span class="caret"></span></button>
+
+              <ul class="dropdown-menu">
+                <li><a href="javascript:void(0)" id="grid-rename-file-<%= doc.id %>" data-docId= "<%= doc.id %>">Rename</a></li>
+                <% if current_user.present? %>
+                  <% if checked_permission?(current_user, @klass_list['Document'], @action_list['delete'])%>
+                    <li><%= link_to "Delete", document_path(doc),data: { confirm: "Are you sure you want to Delete this Document?" },method: :delete,  remote: true %> </li>
+                  <%end%>
+                <% elsif current_contact.present? %>
+                  <li><%= link_to "Delete", document_path(doc),data: { confirm: "Are you sure you want to Delete this Document?" },method: :delete,  remote: true %> </li>
+
+                <% end %>
+              </ul>
+            </div>
+            <div class="content grid-editable" data-docId="<%= doc.id %>" data-klass='Document' data-grid-field="attachment">
+              <%= link_to doc.attachment.url, target: "_blank", class:"common-link" do%>
+                <div class="radio-lbl">
+                  <label class="check ">
+                    <%= check_box_tag "documents[]", doc.id, false, class: 'doc-checkbox', data: {id: doc.id}%>
+                    <span class="checkmark">
+                      <% extension = doc.attachment.try(:file).try(:extension).try(:downcase) %>
+                      <% if extension == "jpg" || extension == "png" || extension == "jpeg"  %>
+                        <%= image_tag doc.attachment.url, :size => "35x35" %>
+                      <% elsif extension == "pdf" %>
+                        <img src="/assets/icon_PDF_big.png" class="file-icon" width="35" height="35">
+                      <% else %>
+                        <img src="/assets/icon_Generic_big.png" class="file-icon" width="35" height="35">
+                      <% end %>
+                    </span>
+                  </label>
+                </div>
+
+                <p class="content1"><%= doc.attachment.file.filename.truncate(12) %></p>
+                <p class="content2"><%= doc.updated_at.strftime("%m/%d/%Y") %></p>
+              <% end %>
+
+              <div class="form-group docField hidden ml10">
+                <%= text_field_tag :attachment, "#{doc.attachment.file.filename}", class: "form-control attachment" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+
+        <!-- <div class="col-sm-3 col-xs-6">
+          <div class="content">
+            <img src="/assets/big_demo_img.jpg">
+            <p class="content1">aaaa</p>
+            <p class="content2">10:57</p>
+          </div>
+        </div>
+        <div class="col-sm-3 col-xs-6 attachment-main">
+          <div class="content">
+            <i class="fa fa-file-o" aria-hidden="true"></i>
+            <p class="content1">aaaa</p>
+            <p class="content2">10:57</p>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="row list-view  ">
+  <div class="col-sm-12">
+    <div class="site-content-data list_directory_document">
+      <div class="table-responsive" id="">
+        <table class="table common-data-table user-list attachment-table">
+          <thead>
+            <tr>
+              <th>
+                <div class="radio-lbl">
+                  <label class="check ">
+                    <input type="checkbox"  name="" id="ddcheck-all">
+                    <span class="checkmark"></span>
+                  </label>
+                </div>
+              </th>
+              <th width="10%;" class="text-left">&nbsp;</th>
+              <th width="40%;" class="text-left">Name</th>
+              <th width="30%" class="text-left">Update</th>
+              <th width="15%"></th>
+            </tr>
+          </thead>
+          <tbody id="directory-table">
+            <% directory.directories.each do |dir| %>
+              <tr>
+                <td width="5%;" >
+                  <div class="radio-lbl">
+                    <label class="check ">
+                      <%= check_box_tag "directories[]", dir.id, false, class: 'dir-checkbox', data: {id: dir.id}%>
+                      <span class="checkmark">
+                      </span>
+                    </label>
+                  </div>
+                </td>
+                <td width="15%;" class="icon-img-td text-left" >
+                  <%= link_to directory_path(dir), remote: true,class:"common-link"  do%>
+                  <i class="fa fa-folder-o" aria-hidden="true"></i>
+                  <%end%>
+                </td>
+                <td width="40%;" class="text-left">
+                  <div class="content editable" data-id="<%= dir.id %>" data-klass='Directory' data-field="name">
+                    <%= link_to directory_path(dir), remote: true,class:"common-link"  do%>
+                      <div class="content">
+                        <p class="content1"><%=dir.name.truncate(30)%></p>
+                      </div>
+                    <%end%>
+                    <div class="form-group field hidden ml10">
+                      <%= text_field_tag :name, "#{dir.name}", class: "form-control name" %>
+                    </div>
+                  </div>
+                </td>
+                <td width="30%" class="text-left">
+                  <div class="content">
+                    <p class="content1"><%=dir.updated_at.strftime("%m/%d/%Y, %I:%M %p")%></p>
+                  </div>
+                </td>
+                <td width="15%" class="text-center">
+
+                  <div class="dropdown dropdown-small-width" id="foldr-rename">
+                    <button class="site-content-head-btn setting-directory-btn dropdown-toggle" type="button" data-toggle="dropdown">  <i class="fa fa-sun-o" aria-hidden="true"></i>
+                    <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                      <li><a href="javascript:void(0)" id="rename-folder-<%= dir.id %>" data-dirId= "<%= dir.id %>">Rename</a></li>
+                      <li><%= link_to "Delete", directory_path(dir),data: { confirm: "Are you sure you want to Delete this Directory?" },method: :delete,  remote: true %> </li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+            <%end%>
+
+            <% directory.documents.each do |doc| %>
+              <tr>
+                <td width="5%;" >
+                  <div class="radio-lbl">
+                    <label class="check ">
+                      <%= check_box_tag "documents[]", doc.id, false, class: 'doc-checkbox', data: {id: doc.id}%>
+                      <span class="checkmark">
+                      </span>
+                    </label>
+                  </div>
+                </td>
+                <td width="15%;" class="icon-img-td text-left" >
+
+
+                        <% extension = doc.attachment.try(:file).try(:extension).try(:downcase) %>
+                        <% if extension == "jpg" || extension == "png" || extension == "jpeg"  %>
+                        <%= image_tag doc.attachment.url, :size => "35x35" %>
+                        <% elsif extension == "pdf" %>
+                        <img src="/assets/icon_PDF_big.png" class="file-icon" width="35" height="35">
+                        <% else %>
+                        <img src="/assets/icon_Generic_big.png" class="file-icon" width="35" height="35">
+                        <% end %>
+
+                </td>
+                <td width="40%;" class="text-left">
+                  <div class="content editable" data-docId="<%= doc.id %>" data-klass='Document' data-field="attachment">
+                    <%#= link_to doc.attachment.url, target: "_blank", class:"common-link m-t-15" do%>
+                      <div class="content">
+                        <p class="content1"><%= doc.attachment.file.filename.truncate(30) %></p>
+                      </div>
+                    <%# end %>
+                    <div class="form-group  docField hidden ml10">
+                      <%= text_field_tag :attachment, "#{doc.attachment.file.filename}", class: "form-control attachment" %>
+                    </div>
+                  </div>
+                </td>
+                <td width="30%" class="text-left">
+                  <div class="content">
+                    <p class="content1"><%=doc.updated_at.strftime("%m/%d/%Y, %I:%M %p")%></p>
+                  </div>
+                </td>
+                <td width="15%" class="text-center">
+                  <div class="dropdown dropdown-small-width" id="file-rename">
+                    <button class="site-content-head-btn setting-directory-btn dropdown-toggle" type="button" data-toggle="dropdown">  <i class="fa fa-sun-o" aria-hidden="true"></i>
+                    <span class="caret"></span></button>
+
+                    <ul class="dropdown-menu">
+                      <li><a href="javascript:void(0)" id="rename-file-<%= doc.id %>" data-docId= "<%= doc.id %>">Rename</a></li>
+                      <% if current_user.present? %>
+                        <% if checked_permission?(current_user, @klass_list['Document'], @action_list['delete'])%>
+                          <li><%= link_to "Delete", document_path(doc),data: { confirm: "Are you sure you want to Delete this Document?" },method: :delete,  remote: true %> </li>
+                        <%end%>
+                      <% elsif current_contact.present? %>
+                        <li><%= link_to "Delete", document_path(doc),data: { confirm: "Are you sure you want to Delete this Document?" },method: :delete,  remote: true %> </li>
+
+                      <% end %>
+                    </ul>
+
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<%
+=begin%>
+
+<%#= render partial: 'directories/list_directories', locals: {directory: directory}%>
+<div class="list_directory_document">
+  <%#= render partial: 'directories/list_documents', locals: {directory: directory}%>
+</div>
+<%
+=end%>
+
+<%= form_for Document.new, url: uploadfiles_path(), html: {multipart: true, class: 'dropzone', id: 'my-dropzone', method: :post} do |f| %>
+  <div id='flash_message'></div>
+
+  <div id='content'>
+    <div class="dz-message needsclick">
+      <h3> Add new file here </h3> or
+      <strong> Click </strong> to upload
+    </div>
+    <div class="fallback">
+      <%= f.file_field :attachment %>
+      <%= f.submit 'Upload Document'%>
+    </div>
+  </div>
+<%end%>
+
+<script>
+  $(document).ready(function() {
+
+    $view = "";
+    $(".dropdown-toggle").dropdown();
+    var documentId;
+    resourcable_type = "<%= current_user ? current_user.class.name : current_contact.class.name %>";
+    resourcable_id = "<%= current_user ? current_user.id : current_contact.id %>";
+    documentable_type = "<%= directory.class.name%>";
+    documentable_id = "<%= directory.id%>";
+
+    // List view and Grid view 
+    $('#grid-view-link').on('click', function(){
+      $('.grid-view').removeClass('hidden');
+      $('.list-view').addClass('hidden');
+      $('#destroy-all').addClass('hidden');
+      $view = 'grid-view-link';
+    });
+    $('#list-view-link').on('click', function(){
+      $('#destroy-all').removeClass('hidden');
+      $('.list-view').removeClass('hidden');
+      $('.grid-view').addClass('hidden');
+      $view = 'list-view-link';
+    });
+    if($view == 'grid-view-link'){
+      $('.grid-view').removeClass('hidden');
+      $('.list-view').addClass('hidden');
+      $('#destroy-all').addClass('hidden');
+    }
+
+    // Search in List and Grid view
+    $("#search-details").on("keyup", function() {
+      var value = $(this).val().toLowerCase();
+      if($view == "grid-view-link"){
+        $('.grid-view .attachment-main').filter(function() {
+          $(this).toggle($('.content .content1',this).text().toLowerCase().indexOf(value) > -1)
+        });
+      }
+      else{
+        $("#directory-table tr").filter(function() {
+          $(this).toggle($('td:nth-child(3)',this).text().toLowerCase().indexOf(value) > -1)
+        });
+      }
+    });
+
+    // In Grid view -> at hover setting icon display
+    $(".attachment-main").mouseover(function(){
+      $(this).children(".grid-view-dropdown").css('display','block');
+    }).mouseout(function() {
+      $(".grid-view-dropdown").css('display','none');
+    });
+
+    // DropZone document add
+    $(function(){
+      Dropzone.autoDiscover = false;
+
+      $myDropzone= $('#my-dropzone').dropzone({
+        maxFileSize: 2,
+        addRemoveLinks: true,
+        paramName: 'document[attachment]',
+        init: function() {
+          this.on("sending", function(file, xhr, formData) {
+            formData.append("document[resourcable_type]", resourcable_type);
+            formData.append("document[resourcable_id]", resourcable_id);
+            formData.append("documentable_type", documentable_type);
+            formData.append("documentable_id", documentable_id);
+            console.log(formData)
+          });
+          this.on("success", function(file,res){
+            documentId = res["d_id"];
+            select_ids.push(documentId)
+            select_ids = unique_array(select_ids) // unique values
+            this.removeFile(file);
+          });
+          this.on("complete", function (file) {
+            $.ajax({
+              url: "<%= update_documents_documents_url %>",
+              data: {
+                directory_id: documentable_id
+              },
+              success: function(){
+                $.each(select_ids, function(i,v){
+                  $(':checkbox[data-id=' + v + ']').prop('checked', 'checked');
+                });
+                $('.document_ids').val(select_ids);
+              }
+            });
+          });
+        }
+      });
+    });
+
+    // Ajax for document is selected when click on Ok button
+    function select_document(document_id){
+      $.ajax({
+        url: "<%= selected_documents_documents_path %>",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: 'GET',
+        data: {
+          document_ids: document_id
+        },
+        dataType: "script",
+        success: function(result){}
+      });
+    }
+
+    //Unique array element
+    function unique_array(data) {
+      var unique = data.filter(function(itm, i, data) {
+        return i == data.indexOf(itm);
+      });
+      return unique
+    }
+
+
+
+    // 1st exicute -> when partial call is check a checkbox from $document_ids
+    $('.doc-checkbox').each(function(){
+      if($document_ids.includes(parseInt($(this).attr('data-id')))){
+        $(this).prop('checked', 'checked');
+        $(this).parents('tr').addClass('doc-selected');
+      }
+    });
+
+     // Select and Unselect a checked box of Document
+    $('.list_directory_document').on('click', '.doc-checkbox', function(){
+      ele = $(this);
+    
+      if($(this).is(':checked')) //true
+      {
+        if(!select_ids.includes(parseInt($(this).attr('data-id')))) {
+          select_ids.push(parseInt($(this).attr("data-id")));
+        }
+        ele.parents('tr').addClass('doc-selected');
+      }
+      else{
+        select_ids = jQuery.grep(select_ids, function(value) {
+          return value != parseInt(ele.attr("data-id"));
+        });
+
+        ele.parents('tr').removeClass('doc-selected');
+      }
+      
+      select_ids = unique_array(select_ids) //unique values
+      $('.document_ids').val(select_ids);
+    });
+
+
+    // Document select -> call after $('.list_directory_document')
+    $('.doc-checkbox').change(function(){
+      if($(this).prop('checked')){
+        // $(".directory-checkbox").attr("disabled", true);
+      }else{
+        if($('.doc-checkbox').filter(':checked').length == 0){
+          $(".dir-checkbox").attr("disabled", false);
+        }
+      }
+    });
+
+    //Directory select
+    $('.dir-checkbox').change(function(){
+      if($(this).prop('checked')){
+        // $(".document-checkbox").attr("disabled", true);
+      }else{
+        if($('.dir-checkbox').filter(':checked').length == 0){
+          $(".doc-checkbox").attr("disabled", false);
+        }
+      }
+    });
+
+    // Check all Document and Directory
+    $('#ddcheck-all').on('change', function(){
+      $('.doc-checkbox').prop('checked', $(this).prop('checked'));
+      $('.dir-checkbox').prop('checked', $(this).prop('checked'));
+
+      $('.doc-checkbox').each(function(){
+        if(!$(this).prop('checked')){
+          ele = $(this)
+          select_ids = jQuery.grep(select_ids, function(value) {
+            return value != parseInt(ele.attr("data-id"));
+          });
+          $(this).parents('tr').removeClass('doc-selected');
+        } 
+        else {
+          $(this).parents('tr').addClass('doc-selected');
+          if(!select_ids.includes($(this).attr('data-id'))) {
+            select_ids.push(parseInt($(this).attr("data-id")));
+          }
+         
+        }
+      });
+      select_ids = unique_array(select_ids) //unique values
+      $('.document_ids').val(select_ids);
+
+    });
+    
+    // Destory all document and directory
+    $('#destroy-all').on('click', function(){
+
+      //if document destroy then remove selected document
+      $('.remove-document').trigger('click');
+
+      var checkedDir = [];
+      var checkedDoc = [];
+      $(".dir-checkbox:checked").each(function (){
+        checkedDir.push(parseInt($(this).val()));
+      });
+      $(".doc-checkbox:checked").each(function (){
+        checkedDoc.push(parseInt($(this).val()));
+      });
+      if(checkedDir == 0 && checkedDoc == 0){
+        confirm("Please select Directory Or Document.");
+      }else{
+        if(checkedDir != 0){
+          $.ajax({
+            url: "<%= destroy_all_directories_path %>",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            type: 'DELETE',
+            data: {
+              ids: checkedDir
+            },
+            dataType: "script",
+            success: function(result){
+            }
+          });
+        }
+        if(checkedDoc != 0){
+          $.ajax({
+            url: "<%= destroy_all_documents_path %>",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            type: 'DELETE',
+            data: {
+              ids: checkedDoc
+            },
+            dataType: "script",
+            success: function(result){ 
+            }
+          });
+        }
+      }
+    });
+
+
+    // Click on ok button call Ajax
+    $('.ok_btn').on('click',function() {
+  
+      $document_ids = unique_array(select_ids)
+      select_document($document_ids) // call Ajax
+    });
+
+    // Rename of Directory(Folder) -> In List view 
+    var text,dataId,field,element,dirTab,element;
+    function sendData(){
+      data={}
+      data[field] = $(this).val();
+      $.ajax({
+        url: "/directories/"+ dataId ,
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: "patch",
+        data: {
+          directory: data
+        },
+        dataType: "script",
+        success: function(result){
+          element.addClass('hidden');
+          dirTab.html(element.children('.form-control').val())
+          dirTab.removeClass('hidden');
+        }
+      });
+
+    }
+
+    function getData(){
+      var dirId = $(this).attr('data-dirId'); // directory id
+      dirTab = $('.editable[data-id="'+ dirId + '"] p') // directory name
+      dirTab.addClass('hidden'); // name of folder hide
+
+      text = dirTab.text(); //folder name
+      dataId = dirId; // directory id
+      field = $('.editable[data-id="'+ dirId + '"]').attr("data-field"); // name as attribute
+      element = $('.editable[data-id="'+ dirId + '"] .field'); // input text
+      element.removeClass('hidden'); // show input text
+      element.children('.form-control').focus();
+      element.children('.form-control').select();
+      element.children('.form-control').on('blur', sendData);
+    }
+
+    $("#foldr-rename .dropdown-menu a").on("click", getData )
+
+    // Rename of Document(File) -> in List view
+    var docText,docId=0,docField ,docElement,DocTab;
+    function sendFile(){
+      data = {};
+      data[docField] = $(this).val();
+      $.ajax({
+        url: '/documents/'+ docId,
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: 'patch',
+        data:{
+          document: data
+        },
+        dataType: 'script',
+        success: function(){
+          docElement.removeClass('hidden');
+          docTab.html(docElement.children('.form-group .docField').val())
+          docTab.removeClass('hidden');
+        }
+      });
+    }
+
+    function getFile(){
+      docId = $(this).attr('data-docId'); // Document id
+      docTab = $('.editable[data-docId="'+ docId + '"] p') // Document name tab
+      docTab.addClass('hidden'); // name of documet hide
+
+      docText = docTab.text(); //file name name
+      docField = $('.editable[data-docId="'+ docId + '"]').attr("data-field"); // attachment as attribute
+      docElement = $('.editable[data-docId="'+ docId + '"] .docField'); // input text
+      docElement.removeClass('hidden'); // show input text
+      docElement.children('.form-group.docField #attachment').focus();
+      var inputValue = docText.split('.')
+      var inputData =  inputValue[0].length
+      //var inputTag = docElement.children('.form-group.docField #attachment')[0]
+      docElement.children('.form-group.docField #attachment')[0].setSelectionRange(0,inputData);
+
+      docElement.children('.form-group.docField #attachment').on('blur', sendFile);
+    }
+
+    $("#file-rename .dropdown-menu a").on("click", getFile);
+
+    //Rename of Directory(Folder) -> In Grid view 
+    var gDirtext,gDirId,gDirField,gDirElement,gDirTab;
+    function gridSendFolder(){
+
+      data = {};
+      data["name"] = $(this).val();
+      $.ajax({
+        url: "/directories/"+ gDirId ,
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: "patch",
+        data: {
+          directory: data
+        },
+        dataType: "script",
+        success: function(){
+          gDirElement.removeClass('hidden');
+          gDirTab.html(gDirElement.children('.form-group').val())
+          gDirTab.removeClass('hidden');
+          //show grid view
+          $('.grid-view').removeClass('hidden');
+          $('.list-view').addClass('hidden');
+          $('#destroy-all').addClass('hidden');
+          $view = 'grid-view-link';
+        }
+      });
+    }
+
+    function gridFolder(){
+      var dirId = $(this).attr('data-dirId'); // directory id
+      gDirTab = $('.grid-editable[data-id="'+ dirId + '"] p.content1') // directory name
+      gDirTab.addClass('hidden'); // name of folder hide
+      gDirtext = gDirTab.text(); //folder name
+      gDirId = dirId; // directory id
+      gDirField = $('.grid-editable[data-id="'+ gDirId + '"]').attr("data-grid-field"); // name as attribute
+      gDirElement = $('.grid-editable[data-id="'+ gDirId + '"] .field'); // input text
+      gDirElement.removeClass('hidden'); // show input text
+      gDirElement.children('.form-control').focus();
+      gDirElement.children('.form-control').select();
+      gDirElement.children('.form-control').on('blur', gridSendFolder);
+    }
+    $(".grid-foldr-rename .dropdown-menu a").on('click',gridFolder);
+
+    //Rename Document(File) -> Grid view
+    var gDoctext,gDocId,gDocField,gDocElement,gDocTab;
+    function gridSendFile(){
+      data = {};
+      data[gDocField] = $(this).val();
+      $.ajax({
+        url: '/documents/'+ gDocId,
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: 'patch',
+        data:{
+          document: data
+        },
+        dataType: 'script',
+        success: function(){
+          gDocElement.removeClass('hidden');
+          gDocTab.html(gDocElement.children('.form-group .docField').val())
+          gDocTab.removeClass('hidden');
+          //show grid view
+          $('.grid-view').removeClass('hidden');
+          $('.list-view').addClass('hidden');
+          $('#destroy-all').addClass('hidden');
+          $view = 'grid-view-link';
+        }
+      });
+    }
+
+    function gridFile()
+    {
+      var docId = $(this).attr('data-docId'); // directory id
+      gDocTab = $('.grid-editable[data-docId="'+ docId + '"] p.content1') // directory name
+      gDocTab.addClass('hidden'); // name of folder hide
+
+      gDoctext = gDocTab.text(); //folder name
+      gDocId = docId; // directory id
+      gDocField = $('.grid-editable[data-docId="'+ gDocId + '"]').attr("data-grid-field"); // name as attribute
+      gDocElement = $('.grid-editable[data-docId="'+ gDocId + '"] .docField'); // input text
+      gDocElement.removeClass('hidden'); // show input text
+      gDocElement.children('.form-control').focus();
+      var inputValue = gDoctext.split('.')
+      var inputData =  inputValue[0].length
+      gDocElement.children('.form-control')[0].setSelectionRange(0,inputData);
+      //gDocElement.children('.form-control').select();
+      gDocElement.children('.form-control').on('blur', gridSendFile);
+
+    }
+    $("#grid-file-rename .dropdown-menu a").on('click',gridFile);
+
+
+    // $('.list_directory_document tbody tr').click(function(event) { if (event.target.type !== 'checkbox') { $(':checkbox', this).trigger('click'); } });
+
+    // $('.doc-checkbox').each(function(){
+    //   if($document_ids.includes(parseInt($(this).attr('data-id')))){
+    //     $(this).prop('checked', 'checked');
+    //     $(this).parents('tr').addClass('doc-selected');
+    //   }
+    // });
+
+
+
+    
+  });
+</script>

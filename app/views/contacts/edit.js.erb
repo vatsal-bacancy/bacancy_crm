@@ -1,0 +1,2 @@
+$("#modalContainer").html("<%= escape_javascript(render partial: 'modal', locals: {contact: @contact, klass: @klass}) %>")
+$("#modal").modal('show');

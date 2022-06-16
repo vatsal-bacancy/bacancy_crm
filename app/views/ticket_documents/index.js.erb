@@ -1,0 +1,2 @@
+$("#ticket-detail").html("<%= escape_javascript(render partial: 'ticket_documents/documents', locals: {documents: @documents, object: @ticket})%>")
+$("#project-detail-msg").html("<%= escape_javascript(render partial: 'ticket_documents/documents', locals: {documents: @documents, object: @ticket})%>")

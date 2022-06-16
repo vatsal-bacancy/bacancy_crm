@@ -1,0 +1,2 @@
+module PurchaseOrder::ProductsHelper
+end

@@ -1,0 +1,57 @@
+<div class='nested-fields row block-ui-box m-t-5 m-r-5'>
+  <div class="col-md-12">
+    <%= link_to_remove_association f, class: 'pull-right' do %>
+      <i class="fa fa-trash" aria-hidden="true"></i>
+    <% end %>
+  </div>
+  <div class='col-md-6'>
+    <div class="form-group">
+      <%= f.label :first_name %>
+      <%= f.text_field :first_name, class: 'form-control', placeholder: "First Name" %>
+    </div>
+  </div>
+  <div class='col-md-6'>
+    <div class="form-group">
+      <%= f.label :last_name %>
+      <%= f.text_field :last_name, class: 'form-control', placeholder: "Last Name" %>
+    </div>
+  </div>
+  <div class='col-md-6'>
+    <div class="form-group">
+      <%= f.label :email %>
+      <%= f.email_field :email, class: 'form-control mb10', placeholder: "Primary Email", 'data-contact-email' => true %>
+    </div>
+  </div>
+  <div class='col-md-6'>
+    <div class="form-group">
+      <%= f.label :phone_no %>
+      <%= f.text_field :phone_no, class: 'form-control phone-validation',  maxlength: 14, placeholder: "Phone Number" %>
+    </div>
+  </div>
+</div>
+
+<script>
+  $('[data-contact-email]').on('change', function() {
+    $.ajax({
+      url: Routes.check_email_contacts_path(),
+      type: 'get',
+      data: {
+        email: $(this).val()
+      },
+      dataType: "script",
+      success: (result) => {
+        if(result == 'true'){
+          $(this).siblings("p").remove();
+          $(this).after("<p class='error-msg'>This email already present.</p>");
+          $('input[type="submit"]').attr('disabled','disabled');
+          $(this).blur().focus();
+        } else {
+          $(this).siblings("p").remove();
+          $(this).attr('title', '');
+          $(this).blur().focus();
+          $('input[type="submit"]').removeAttr('disabled');
+        }
+      }
+    });
+  });
+</script>

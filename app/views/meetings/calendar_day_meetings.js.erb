@@ -1,0 +1,3 @@
+<% responses = @response.group_by { |h| h[:starting_point] } %>
+<% grouped_responses = responses.sort_by { |k, v| k.to_datetime } %>
+$('.meeting_time_details').html('<%= escape_javascript(render 'meeting_time_details', grouped_responses: grouped_responses) %>');

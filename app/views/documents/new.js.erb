@@ -1,0 +1,4 @@
+
+$("#documents").html("<%= escape_javascript(render partial: 'documents/new', locals: {document: @document, users: @users, documentable_type: @documentable_type, documentable_id: @documentable_id}) %>");
+$('#newDoc').modal('show');
+$document_ids = [];

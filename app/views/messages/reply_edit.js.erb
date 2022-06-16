@@ -1,0 +1,2 @@
+$('#ticket-message').html("<%= escape_javascript(render partial: 'ticket_modal', locals: {message: @message, ticket: @ticket}) %>");
+$('#ticketModal').modal('show');

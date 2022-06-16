@@ -1,0 +1,7 @@
+<% if @object.present? %>
+  $("#directory_content").html("<%= escape_javascript(render partial: 'directories/directory_content', locals: { directory: @directory, directories: @directories, documents: @documents} ) %>");
+  $("#documentList .list").html("<%= escape_javascript(render partial: 'index', locals: {object: @object }) %>");
+<% else %>
+  $("#dir_list").html("<%= escape_javascript(render partial: 'directories/list', locals: {directory: @directory, directories: @directories, documents: @documents}) %>");
+  $('#directory_detail').html("<%= escape_javascript(render partial: 'directories/directory_detail',locals: {directory: @directory, directories: @directories, documents: @documents}) %>")
+<% end %>

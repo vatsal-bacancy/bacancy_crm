@@ -1,0 +1,72 @@
+<%= form_for contract do |f| %>
+  <div class="row mt20">
+    <div class="col-lg-12">
+      <div class="row">
+        <div class="col-md-2">
+          <%= f.label :company_name %>
+          <span class="required">*</span>
+        </div>
+        <div class="col-md-10">
+          <div class="form-group">
+            <%= contract.contractable.company_name %>
+            <%= hidden_field_tag :contractable, contract.contractable.to_polymorphic %>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <%= f.label :template_name %>
+        </div>
+        <div class="col-md-10">
+          <div class="form-group">
+            <select class="form-control" data-template-change>
+              <option>Select Template</option>
+              <%= options_for_select(contract.templates.pluck(:name, :id)) %>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <%= f.label :title %>
+          <span class="required">*</span>
+        </div>
+        <div class="col-md-10">
+          <div class="form-group">
+            <%= f.text_field :title, placeholder: 'Enter A Title', class: "form-control", required: true, data: { 'contract-title': true } %>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <%= f.label :description %>
+          <span class="required">*</span>
+        </div>
+        <div class="col-md-10">
+          <div class="form-group">
+            <%= f.cktext_area :description, class: "form-control", required: true, ckeditor: { toolbar: 'Full' }, data: { 'contract-description': true } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt20">
+    <div class="col-sm-12">
+      <%= f.submit class: "btn btn-success" %>
+    </div>
+  </div>
+<% end %>
+<script>
+  $(document).ready(function() {
+    $('[data-template-change]').on('change', function() {
+      $.ajax({
+        url: Routes.contract_template_path($(this).val()),
+        method: "GET",
+        success: function(template) {
+          $('[data-contract-title]').val(template.title);
+          CKEDITOR.instances.contract_contract_description.setData(template.description);
+        }
+      });
+    });
+  });
+</script>

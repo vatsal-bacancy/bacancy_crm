@@ -1,0 +1,47 @@
+<div class="site-main">
+  <%= render 'layouts/contacts_sidebar'%>
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <span class="main-menu-sitecontent">Inventory</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="site-content-data">
+          <div class="table-responsive">
+            <%= render partial: 'contacts/inventories/inventory_list', locals: {inventories: @inventories} %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="modalContainer" class="modal-right"></div>
+    <div id="importfiled"></div>
+  </div>
+</div>
+<script>
+  $(document).ready(function() {
+    $(".dropdown-toggle").dropdown();
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+
+  $('#selectAllDelete').on('change', function(){
+    $('.deleteInventory').prop('checked', $(this).prop('checked'));
+    manageDestroyAllDisable();    
+  });
+
+  $('.deleteInventory').on('change', function(){
+    var selectedInventoriesLength = selectedInventories().length;
+    $('#selectAllDelete').prop('checked', $('.deleteInventory').length == selectedInventoriesLength);
+    if(selectedInventoriesLength == 0){
+      $('#destroy_all').addClass('pointer-disable');
+    }
+    else{
+      $('#destroy_all').removeClass('pointer-disable');
+    }
+  })
+</script>

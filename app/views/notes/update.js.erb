@@ -1,0 +1,13 @@
+<% if @note.errors.any? %>
+  $("#flash_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");
+<% else %>
+  $("#success_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");
+  <% if @object.present?%>
+    $('#note .list').html("<%= escape_javascript(render partial: 'index', locals: { object: @object, note_fields: @note_fields, list: 'Object' }) %>");
+  <%end%>
+  $('#noteModal').modal('hide');
+  $("#note-list").html("<%= escape_javascript(render partial: 'note_list', locals: { object: @object, note: @note_show, note_fields: @note_fields, list: 'Index' }) %>");// at note index page
+
+  $(".comment-lists-1").html("<%= escape_javascript(render partial: 'note_on_show', locals: { object: @object, note: @note_show, id: '1', list: 'Object' }) %>");
+  $(".comment-lists-2").html("<%= escape_javascript(render partial: 'note_on_show', locals: { object: @object, note: @note_show, id: '2', list: 'Object' }) %>");
+<% end %>

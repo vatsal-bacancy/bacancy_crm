@@ -1,0 +1,8 @@
+<%if @klass.present?%>
+  $("#tabLead").html("<%= escape_javascript(render partial: 'settings/module_setting', locals: {klass: @klass, groups: @klass.groups}) %>");
+  $('#myModal').modal('hide');
+<%else%>
+  $(".flash-messages").css('display', '');
+  $(".flash-messages").html("");
+  $(".flash-messages").html("<%= escape_javascript(render partial: 'layouts/flash')%>");
+<%end%>

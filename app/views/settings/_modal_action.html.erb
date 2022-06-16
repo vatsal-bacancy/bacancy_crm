@@ -1,0 +1,52 @@
+<div class="modal fade" id="actionModal" role="dialog">
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Settings</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row action-data">
+          <%= render partial: 'settings/action_data', locals:{ klass: klass, url: url }%>
+        </div>
+      </div>
+      <hr/>
+      <div class="modal-footer">
+        <%= link_to "Save", 'javascript:void(0)', class: 'btn btn-success', id: 'change-header-view' %>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script>
+  $(document).ready(function() {
+    $("#change-header-view").on('click', function(){
+      var klassId = $(".fields-sortable").data("klass-id");
+      var checked = []
+      $("input[name='field_ids[]']:checked").each(function (){
+        checked.push(parseInt($(this).val()));
+      });
+
+      $.ajax({
+        url: "<%= change_header_view_fields_url %>",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: 'PATCH',
+        data: {
+          klass_id: klassId,
+          field_ids: checked
+        },
+        dataType: "script",
+        success: function(result){
+          $.ajax({
+            url: "<%= url %>",
+            type: 'GET',
+            data: {},
+            dataType: "script",
+          });
+          $('#actionModal').modal('hide');
+        }
+      });
+    });
+  });
+</script>

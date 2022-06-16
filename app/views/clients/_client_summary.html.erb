@@ -1,0 +1,3 @@
+<%= form_for client, local: true, class: "form-inline" do |f| %>
+  <%= render partial: 'client_details', locals: { client: client, klass: klass, f: f, data: data } %>
+<%end%>

@@ -1,0 +1,74 @@
+* { box-sizing: border-box; }
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, select, input, option { border: 0; outline: 0; font-size: 100%; }
+article, aside, details, figcaption, figure, footer, header, hgroup, nav, section, summary { display: block; }
+audio, canvas, video { display: inline-block; }
+audio:not([controls]) { display: none; height: 0; }
+pre { white-space: pre; white-space: pre-wrap; word-wrap: break-word }
+q { quotes: none }
+q:before, q:after { content: ''; content: none }
+small { font-size: 80% }
+sub, sup { font-size: 75%; line-height: 0; position: relative; vertical-align: baseline }
+sup { top: -0.5em; }
+sub { bottom: -0.25em }
+nav ul, nav ol { list-style: none; list-style-image: none; }
+button, input, select, textarea { font-size: 100%; margin: 0; vertical-align: baseline; }
+textarea { overflow: auto; vertical-align: top }
+table { border-collapse: collapse; border-spacing: 0 }
+button, html input[type="button"], input[type="reset"], input[type="submit"] { -webkit-appearance: none; appearance: none; cursor: pointer; }
+/* remember to define focus styles! */
+:focus { outline: 0; }
+/* tables still need 'cellspacing="0"' in the markup */
+table { border-collapse: separate; border-spacing: 0; }
+caption, th, td { text-align: left; font-weight: normal; }
+
+blockquote:before, blockquote:after, q:before, q:after { content: ""; }
+blockquote, q { quotes: "" ""; }
+table { border: 0 none; border-collapse: collapse; border-spacing: 0; }
+td { vertical-align: top; }
+img { border: 0 none; max-width: 100%; }
+/* End hide from IE Mac */ .none { display: none; } /* End Clearfix */
+article, aside, details, figcaption, figure, footer, header, hgroup, nav, section { display: block }
+.clear { clear: both; }
+/* For modern browsers */ 
+.cf:before, .cf:after { content: ""; display: table }
+.cf:after { clear: both; }
+/* For IE 6/7 (trigger hasLayout) */
+/*----------intial declartaion of css end----------*/
+
+/* font family start */
+/* font family end */
+
+
+/* base css start */
+
+html { width: 100%; height: 100%; }
+body {font-family: 'Poppins', sans-serif;min-height: 100%; margin: 0; padding: 0; font-weight: normal; font-size: 1em; line-height: 1.42857143;overflow-x: hidden;  color: #000;position: relative;}
+.mb20{margin-bottom:20px;}
+.mb10{margin-bottom:10px;}
+.text-right{text-align:right;}
+.header-left , .invoice-wrapper-left{width:75%;float: left;}
+.header-right , .invoice-wrapper-right{width:25%;float: left;}
+.header-right{height:200px;width:200px;}
+.header-right img{max-width:200px;max-height:200px;}
+.blue-color{color:#5aa2c2;}
+.gray-color{color:#a1a4a8;}
+.header-left h3{font-size:16px;}
+.pay-table table thead{background:#d8e9f0;}
+.pay-table table thead tr th{text-transform:uppercase;color:#5aa2c2;padding:5px;}
+.pay-table table tbody tr td{padding:5px;}
+.cutom-hr hr{border-top:1px dashed #545454;}
+.invoice-pdf-bottom p{color:#a1a4a8;font-size:13px;}
+.combo-link{background-color: #F5F6FA !important;border: 1px solid #e7e7e7 !important;border-right: 1px solid #e7e7e7 !important;}   
+    
+
+.paid-image{width: 500px;
+  height: 190px;
+  position: absolute;
+  top:200px;
+  left:25%;
+  padding: 54px;
+  text-align: center;
+  margin-bottom: 15px;
+  z-index:0;
+  opacity:0.5;
+}

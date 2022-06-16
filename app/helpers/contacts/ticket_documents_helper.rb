@@ -1,0 +1,2 @@
+module Contacts::TicketDocumentsHelper
+end

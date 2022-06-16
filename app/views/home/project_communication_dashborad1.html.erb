@@ -1,0 +1,198 @@
+<div class="site-main">
+<%= render 'layouts/sidebar'%>
+<div class="site-content site-content-data">
+
+      <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <span class="main-menu-sitecontent">dashboard</span>
+             <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> Project Communication Dashboard</span>
+          <span class="sub-menu-sitecontent"> </span>
+          </div>
+          <div class="pull-right">
+            <a class="site-content-head-btn" data-remote="true" href="">+Add Customer</a>
+             <a class="site-content-head-btn" data-remote="true" href="">Import Customer</a>   
+            <a class="site-content-head-btn" href="">Filter</a>         
+            <a href="javascript:void(0)" class="dropdown-toggle site-content-head-btn" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <span class="nav-cell blue-font"> Action
+            <span class="caret"></span>
+            </span>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item" data-remote="true" href="">Edit Column</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="">Edit Properties</a>
+              </li>
+            </ul>
+            <!-- <a href="" class="site-content-head-btn">Actions</a> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  <div class="row">
+    <div class="col-lg-8 col-md-12">
+      <div class="dynmic-tab-div">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="dynmic-tab-div-header mb0">
+              <span class="heading"> SEO NAPS Dashboard </span>
+            </div>
+          </div>
+        </div>
+        <div class="cmn-tab-div">
+         <div class="row">
+        <div class="col-md-12">
+          <ul id="myTabs" class="nav nav-pills nav-justified bpro-tab" role="tablist" data-tabs="tabs">
+            <li class="open active"><a href="#tab1" data-toggle="tab" aria-expanded="false">Project Overview  </a></li>
+            <li class=""><a href="#Message" data-toggle="tab" aria-expanded="true">Message</a></li>
+            <!-- <li><a href="#tab4" data-toggle="tab">Email</a></li> -->
+            <li class=""><a href="#Files" data-toggle="tab" aria-expanded="false">Files</a></li>
+            <li class=""><a href="#New-Message" data-toggle="tab" aria-expanded="false">New Message</a></li>
+            
+          </ul>
+
+        </div>
+      </div>
+      <div class="row">
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade in active" id="tab1">
+              <div class="col-md-12">
+             <div class="dynmic-tab-div-header dynmic-tab-sub-header mt15">
+                <div class="d-flex">
+                  <div class="heading-wrapper">
+                <p class="heading">Project Communication Dashboard</p>
+              </div>
+                <div class="new-msg-div">
+                  <span>New Message</span>
+                </div>
+              </div>
+            </div>
+        
+       <div class="row cl-both" >
+          <div class="col-sm-5">
+            <div class="d-flex flex-align-center cm-dasboard-serach">
+              <label class="blue-font">Show </label><select name="leads_length" aria-controls="leads" class="form-control"><option value="50">50</option><option value="100">100</option></select> <label>entries</label>
+            </div>
+          </div>
+          <div class="col-sm-7">
+            <div class="d-flex flex-align-center cm-dasboard-serach pull-right">
+              <label class="blue-font">Search</label>
+              <input type="search" class="form-control" placeholder="Search here" aria-controls="leads">
+            </div>
+          </div>
+        </div>
+
+
+              <div class="dynmic-tab-div-header dynmic-tab-sub-header mt15">
+                <div class="d-flex">
+                  <div class="heading-wrapper">
+                <p class="heading blue-font text-captalized">Today</p>
+              </div>
+              </div>
+            </div>
+            <div class="row">
+                  <div class="col-sm-12">
+                    <div class="table-responsive">
+                    <table width="100%" class="sub-table">
+                      <tbody><tr>
+                        <td><a href="" class="msg-btn">Comment</a></td>
+                          <td><span class="ml15"><span class="blue-font">Re: Message abcd xyz -</span> <span class="inprogress-text">Inprogress</span></span>
+                        </td>
+                        <td class="text-right">
+                          <span class="posted-by">Posted by</span>
+                          <span class="posted-by-name">Rohan P.</span>
+                        </td>
+                      </tr>
+                  
+                    </tbody></table>
+                  </div>
+                  </div>
+                </div>
+                  <div class="dynmic-tab-div-header dynmic-tab-sub-header mt15">
+                <div class="d-flex">
+                  <div class="heading-wrapper">
+                <p class="heading blue-font text-captalized">Monday 10, June-2019</p>
+              </div>
+              </div>
+            </div>
+            <div class="row">
+                  <div class="col-sm-12">
+                    <div class="table-responsive">
+                    <table width="100%" class="sub-table">
+                      <tbody>
+                        <tr>
+                        <td><a href="" class="msg-btn">Message</a></td>
+                          <td><span class="ml15"><i class="fa fa-paperclip" aria-hidden="true"></i> Message abcd xyz - <span class="Todo-text">Todo</span></span>
+                        </td>
+                        <td class="text-right">
+                          <span class="posted-by">Posted by</span>
+                          <span class="posted-by-name">Rohan P.</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="" class="msg-btn">Message</a></td>
+                          <td><span class="ml15"><i class="fa fa-paperclip" aria-hidden="true"></i> Message abcd xyz - <span class="Todo-text">Todo</span></span>
+                        </td>
+                        <td class="text-right">
+                          <span class="posted-by">Posted by</span>
+                          <span class="posted-by-name">Rohan P.</span>
+                        </td>
+                      </tr>
+                  
+                    </tbody>
+                  </table>
+                  </div>
+                  </div>
+                </div>
+       
+     
+              </div>
+            </div>
+             <div role="tabpanel" class="tab-pane fade" id="Message">
+              <div class="col-md-12">
+                sdfkds;kl;
+              </div>
+             </div>
+             <div role="tabpanel" class="tab-pane fade" id="Files">
+              <div class="col-md-12">
+                sdfkds;kl;
+              </div>
+             </div>
+             <div role="tabpanel" class="tab-pane fade" id="New-Message">
+              <div class="col-md-12">
+                sdfkds;kl;
+              </div>
+             </div>
+          </div>
+
+      </div>
+
+        </div>
+      </div>
+     </div>
+    <div class="col-lg-4 col-md-12">
+       <div class="dynmic-tab-div">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="dynmic-tab-div-header mb0">
+              <span class="heading"> SEO NAPS </span>
+          </div>
+          </div>
+        </div>
+        <div class="cmn-tab-div">
+          <div class="row">
+            <div class="col-sm-12 text-center">
+               <a href="" class="cr-project ">Create Project</a>
+               <p class="mt15 new-project-text">Start new project here by clicing Create Project</p>
+      </div>
+    </div>
+    </div>
+  </div>
+ 
+</div>
+</div>
+</div>
+</div>

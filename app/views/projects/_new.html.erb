@@ -1,0 +1,48 @@
+<div class="modal fade" id="myModal" role="dialog">
+  <div class="modal-dialog">
+
+  <%= form_for project, remote: true, class: 'form-inline', html: { multipart: true } do |f| %>
+    <div id='flash_message'></div>
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" id="modalProjectTitle">Projects</h4>
+      </div>
+      <div class="modal-body">
+        <%= render 'form', project: project, f: f %>
+        <%= hidden_field_tag :object, "#{params[:object]}" if params[:object] %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <%= f.submit class: "btn btn-success" %>
+      </div>
+    </div>
+  <% end %>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $(".remove-file").on('click', function(){
+      var id = $(this).data('id');
+      var object_id = "<%= project.id %>"
+      var object_type = "<%= project.class.name %>"
+      $.ajax({
+        url: "/documents/" + id + "?object_id=" + object_id + ";object_type=" + object_type,
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: 'delete',
+        data: {
+          id: id,
+          file_remove: true
+        },
+        dataType: "script",
+        success: function(result){
+
+        }
+      });
+      $(this).siblings(".file-name").addClass("hidden");
+      $(this).addClass("hidden");
+    });
+  });
+</script>

@@ -1,0 +1,8 @@
+$('#directory_detail').html("<%= escape_javascript(render partial: 'directories/directory_detail', locals: {directory: @directory}) %>");
+$("#directory_content").html("<%= escape_javascript(render partial: 'directories/directory_content', locals: {directory: @directory, directories: @directory.directories, documents: @directory.documents})%>")
+$('.doc-checkbox').each(function(){
+  if($document_ids.includes($(this).attr('data-id'))){
+    $(this).prop('checked', 'checked');
+    $(this).parents('tr').addClass('doc-selected');
+  }
+});

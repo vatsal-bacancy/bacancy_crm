@@ -1,0 +1,114 @@
+<div class="modal fade" id="Uploadmodal" role="dialog">
+  <div class="modal-dialog">
+    <%#= form_for user,url: user_upload_image_path , class: "form-inline",:html => { :id => "form-image"}  do |f| %>
+      <div id='flash_message'></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><%= field.humanize %></h4>
+        </div>
+        <div class="modal-body">
+
+
+          <div class="placeholder-inv d-flex flex-justify-center">
+            <div id='inventory-carousel' class="carousel slide" data-ride="carousel">
+              <div class="carousel-inner inventory-carousel" id='user_images'>
+                <%= image_tag asset_path('inv-placeholder.png') %>
+              </div>
+            </div>
+
+            <%= file_field_tag "#{field}", id: :user_images_field, class: 'actionUpload hidden', multiple: true  %>
+            <div id="main-cropper" class="hidden"></div>
+          </div>
+       </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success" id="save">Save</button>
+          <%#= submit "Save", class: 'btn btn-success', id: "save" %>
+        </div>
+      </div>
+      <!--<div id="main-cropper"></div>-->
+    <%#end%>
+    <div class="loading-overlay" id="img-loder"></div>
+      <div class="loading-overlay-image-container">
+        <%= image_tag("loader.gif", class: "loading-overlay-img") %>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+$(document).ready(function() {
+  var user_id = "<%= user.id %>";
+  var user_company = "<%= user_company.present? ? true : false %>";
+  var field = "<%= field %>";
+  var view;
+
+  if(user_company=="true"){view = { width: 250, height: 250 } } else{ view = { width: 250, height: 250, type: 'circle'  } }
+  var $basic = $('#main-cropper').croppie({
+        viewport: view,
+        boundary: { width: 300, height: 300 },
+        enforceBoundary: true,
+        showZoomer: false,
+        enableResize: true
+        //url: srcData
+
+      });
+
+  $('#user_images').on('click', function(){
+    document.getElementById('user_images_field').click();
+  });
+
+  $('#user_images_field').on('change', function(){
+    $('#user_images').addClass('hidden');
+    $('#main-cropper').removeClass('hidden');
+
+    var reader = new FileReader();
+    reader.onload = function (e) {
+    	$basic.croppie('bind', {
+
+    		url: e.target.result
+    	}).then(function(){
+    		//jQuery bind complete
+    	});
+
+    }
+    reader.readAsDataURL(this.files[0]);
+  });
+
+  $('#save').on('click', function(ev){
+    if($('#user_images_field')[0].files.length === 0){
+      return;
+    }
+    $('.loading-overlay').css('display', 'block');
+    $('.loading-overlay-image-container').css('display', 'block');
+    $basic.croppie('result', {
+		  type: 'canvas',
+		  size: 'viewport'
+	    }).then(function (resp) {
+        data={}
+      if(user_company == "true"){ data['company_id'] = "<%= user_company.id  if user_company.present? %>" }
+      data['image'] = resp
+      data['field'] = field
+      $.ajax({
+        url: "/settings/users/" + user_id + "/upload_image",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+
+        type: "PATCH",
+        dataType: "script",
+        data: data,
+        success: function (data) {
+
+        }
+      });
+
+	  });
+
+  });
+
+
+
+
+});
+</script>

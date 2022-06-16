@@ -1,0 +1,13 @@
+<% if @task.errors.any? %>
+  $("#flash_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");
+<% else %>
+   $("#success_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");
+  <% if @object.present?%>
+    $("#task-edit").html("<%= escape_javascript( render partial: 'task_details',locals: { task: @task, klass: @klass } ) %>"); //on show of task
+
+    $("#task .list").html("<%= escape_javascript(render partial: 'index', locals: {object: @object, task_fields: @task_fields, task_klass: @task_klass }) %>"); // on client and lead page
+  <%end%>
+  $("#task-all").html("<%= escape_javascript( render partial: 'task_list',locals: { tasks: @tasks, task_fields: @task_fields, object: nil  } ) %>"); //on index of task
+  $('#task_modal').modal('hide');
+<% end %>
+$document_ids = [];

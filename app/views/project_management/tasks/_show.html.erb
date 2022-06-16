@@ -1,0 +1,36 @@
+<div class="modal fade" id="modal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Task</h4>
+      </div>
+      <div class="modal-body">
+        <% ProjectManagement::Project::Task.klass.groups.each do |group| %>
+          <div class='row block-ui-box m-t-5 m-r-5'>
+            <div class="col-sm-12">
+              <p class="title">
+              <h3 class="title p-b-5"><%= group.label %></h3></p>
+              <% group.fields.each do |field| %>
+                <div class="row">
+                  <div class="col-md-4">
+                    <span class="info-title"><%= field.label %></span>
+                  </div>
+                  <div class="col-md-8">
+                  <span class="info-dynamic-data">
+                    <%= pretty_value(field, task) %>
+                  </span>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+        <%= render 'comments', task: task %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

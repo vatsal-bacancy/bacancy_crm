@@ -1,0 +1,9 @@
+<form data-status-board-datatable-field-form>
+  <div data-status-board-datatable-field-value>
+    <%= pretty_value(field, client) %>
+  </div>
+  <div style="display: none;" data-status-board-datatable-field-editor>
+    <%= text_field_tag "client[#{field.name}]", client.send(field.name), class: 'form-control' %>
+  </div>
+  <%= hidden_field_tag 'client_id', client.id %>
+</form>

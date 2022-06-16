@@ -1,0 +1,1 @@
+InvoiceTax.find_or_create_by(name: 'Non taxable', tax_rate: 0.0)

@@ -1,0 +1,108 @@
+<div class="flash-messages"></div>
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+  <div class="site-content common-datatable">
+    <div class="inventory-top bg-white d-sm-flex justify-content-between border-bottom mb-25">
+      <div class="site-content-head">
+        <div class="row">
+          <div class="col-sm-12">
+            <h2 class="admin-main-title text-darkgray1 dark-gray-font mb-0 pr-2 m-0 text-capitalize">Inventory Group</h2>
+          </div>
+        </div>
+      </div>
+      <div class="download-area d-flex align-items-center justify-content-end flex-wrap leads_icons pl-0">
+        <a href="javascript:;" class="nowrap" id='destroy_all'>
+          <i class="mr-2">
+            <%= image_tag asset_path('ic_delete.svg') %>
+          </i>Delete
+        </a>
+        <%= link_to new_inventory_group_path, class: 'nowrap' do %>
+          <i class="mr-2">
+            <%= image_tag asset_path('add_lead.svg') %>
+          </i>Add Inventory Group
+        <%end%>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="site-content-data">
+          <div class="content position-relative lead_page">
+          <div class="admin-table bg-white table-responsive p-4">
+            <table class="table common-data-table inv-table inv-group table-bordered text-center lead_table" data-simple-datatable data-simple-datatable-options="<%= {paging: false}.to_json %>">
+              <thead>
+                <tr>
+                  <th width="5%">
+                    <div class="radio-lbl">
+                      <label class="check ">
+                      <input type="checkbox" name="name" id="inventory_group_delete_all">
+                      <span class="checkmark mt3"></span> </label>
+                    </div>
+                  </th>
+                  <th width="42%" data-simple-datatable-column-type="Text">Inventory Group Name</th>
+                  <th width="12%" data-simple-datatable-column-type="Picklist">Category</th>
+                  <th width="17%" data-simple-datatable-column-type="Picklist">Subcategory</th>
+                  <th width="12%" class="text-right">Qty On Hand</th>
+                  <th width="12%" class="text-right">Minimum Qty Alert</th>
+                  <th style="display: none;">SKUs</th>
+                </tr>
+              </thead>
+              <tbody id="inventory_group_table_body">
+                <%= render 'inventory_group_table_rows', inventory_groups: @inventory_groups %> 
+              </tbody>
+            </table>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="modalContainer" class="modal-right"></div>
+    <div id="importfiled"></div>
+  </div>
+</div>
+<script>
+  $(document).ready(function() {
+    $(".dropdown-toggle").dropdown();
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+
+  $(document).on('click', '.showItems', function(){
+    var id = $(this).attr('data-group-id');
+    $('#hideItems' + id).show();
+    $(this).hide();
+    $('.inventoryRows_' + id).show();
+  });
+
+  $(document).on('click', '.hideItems', function(){
+    var id = $(this).attr('data-group-id');
+    $('#showItems' + id).show();
+    $(this).hide();
+    $('.inventoryRows_' + id).hide();
+  });
+
+  $('#inventory_group_delete_all').on('click', function(){
+    $('.inventory_group_delete').prop('checked', $(this).prop('checked'));
+  });
+
+  $('#destroy_all').on('click', function(){
+    if(confirm('Are you sure you want to Delete selected Inventories?')) {
+      var inventory_groups = [];
+      $.each($('.inventory_group_delete'), function(index, value){
+        if($(value).prop('checked')){
+          inventory_groups.push($(value).attr('data-group-id'));
+        }
+        if(inventory_groups.length > 0){
+          $.ajax({
+            url: "/inventory_groups/destroy_all",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            type: 'DELETE',
+            data: {
+              inventory_group_ids: inventory_groups
+            },
+            dataType: "script"
+          });
+        }
+      });
+    }
+  });
+  $(document).trigger('simple-datatable:reload');
+</script>

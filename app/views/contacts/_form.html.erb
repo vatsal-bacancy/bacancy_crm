@@ -1,0 +1,32 @@
+<% klass.groups.each do |group| %>
+  <div class = 'row block-ui-box m-t-5 m-r-5'>
+    <p class="title">
+      <h3 class="title m-l-10 p-b-5"><%= group.label %></h3>
+    </p>
+    <% group.fields.each do |field| %>
+    <div class="<%= field.column_type == "Text Area HTML" ? 'col-md-12' : 'col-md-6' %>">
+      <div class="form-group">
+        <% if (params[:contactable_type] == "Lead" || params[:contactable_type] == "Vendor") && field.name == 'portal_invitation'%>
+        <% else %>
+          <%= render partial: 'forms/field', locals: {f: f, field_name: field.name.to_underscore, field_label: field.label, column_type: field.column_type, custom: field.custom, have_custom_value: field.have_custom_value, data: @data, field: field, value: contact.send(field.name) }  %>
+        <% end %>
+      </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+<script>
+  $(document).ready(function(){
+    if($('#contact_portal_invitation').is(':checked')){
+      $('#contact_portal_invitation').attr('disabled', true);
+    }
+    $('#contact_portal_invitation').on('change', function(){
+      if($(this).is(':checked')){
+        $('#contact_email').attr('required', true);
+      }
+      else{
+        $('#contact_email').attr('required', false);
+      }
+    });
+  });
+</script>

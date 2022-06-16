@@ -1,0 +1,81 @@
+<%= render 'components/site_content' do %>
+  <% content_for :head do %>
+    <div class="l-menu">
+      <span class="main-menu-sitecontent">
+        <%= link_to 'Inventory Groups', inventory_groups_path, class: 'common-link' %>
+      </span>
+      <span class="sub-menu-sitecontent m-x-10"><i class="fa fa-angle-right"></i></span>
+      <span class="main-menu-sitecontent">
+        <%= link_to @inventory.inventory_group.name, inventory_group_path(@inventory.inventory_group), class: 'common-link' %>
+      </span>
+      <span class="sub-menu-sitecontent m-x-10"><i class="fa fa-angle-right"></i></span>
+      <span class="sub-menu-sitecontent">Logs</span>
+    </div>
+    <div class="pull-right">
+      <%= link_to 'Back', inventory_group_path(@inventory.inventory_group), class: 'btn btn-success' %>
+    </div>
+  <% end %>
+  <% content_for :body do %>
+    <%= render 'components/white_body' do %>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="m-b-10 item-cat inv-data">
+            <div class="item-title-header">
+              <h1><%= @inventory.name %></h1>
+            </div>
+            <div class="row">
+              <label class="items-label col-sm-1">Category:</label>
+              <div class="col-sm-11 mt5"><%= @inventory.inventory_group.category.try(:title) %></div>
+            </div>
+            <div class="row">
+              <label class="items-label col-sm-1">Subcategory:</label>
+              <div class="col-sm-11 mt5"><%= @inventory.inventory_group.subcategory.try(:title) %></div>
+            </div>
+            <div class="row">
+              <label class="items-label col-sm-1">SKU:</label>
+              <div class="col-sm-11 mt5"><%= @inventory.sku %></div>
+            </div>
+            <div class="row">
+              <label class="items-label col-sm-1">Vendor Name:</label>
+              <div class="col-sm-11 mt5"><%= @inventory.vendor&.company_name || '-' %></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="table-responsive">
+            <table class="table common-data-table" data-simple-datatable data-simple-datatable-options="<%= {sDom: 'lrtip', paging: false}.to_json %>">
+              <thead>
+              <tr>
+                <th>Date/Time</th>
+                <th>Created By</th>
+                <th>Status Changed From</th>
+                <th>Status Changed To</th>
+                <th>Client Company Name</th>
+              </tr>
+              </thead>
+              <tbody>
+                <% @inventory.versions.each do |version| %>
+                  <tr>
+                    <td><%= pretty_date_time version.created_at %></td>
+                    <td><%= version.user.fullname %></td>
+                    <td><%= (from_status = version.object_changes.status.first).present? ? from_status : '-' %></td>
+                    <td><%= version.object_changes.status.last %></td>
+                    <td>
+                      <% if Inventory.assigned_to_client?(version.object) %>
+                        <%= link_to "(#{version.object.client_inventory_association.client.company_name})", client_path(version.object.client_inventory_association.client.id), class: 'common-link' %>
+                      <% else %>
+                      -
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

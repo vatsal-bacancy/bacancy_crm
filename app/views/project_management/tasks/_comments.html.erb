@@ -1,0 +1,37 @@
+<div class='row block-ui-box m-t-5 m-r-5'>
+  <div class="col-sm-12">
+    <p class="title">
+    <h3 class="title p-b-5">Comments</h3></p>
+    <div class="col-sm-12 m-t-5" data-project-task-comments-container></div>
+    <div class="col-sm-12 m-t-20" data-comment-form data-comment-form-url="<%= project_management_project_task_comments_path(task.project, task) %>">
+      <div class="form-group">
+        <%= cktext_area_tag 'project_management_project_task_comment[description]', nil, class: 'form-control' %>
+      </div>
+      <button type="button" class="btn btn-success" data-comment-form-submit>Comment</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $.ajax({
+      url: $('[data-comment-form]').attr('data-comment-form-url'),
+      method: 'GET'
+    });
+
+    $('[data-comment-form-submit]').on('click', function() {
+      updateCKEDITORInstances();
+      $.ajax({
+        url: $(this).closest('[data-comment-form]').attr('data-comment-form-url'),
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        method: 'POST',
+        data: $(this).closest('[data-comment-form]').find(':input').serializeArray(),
+        success: function() {
+          CKEDITOR.instances
+            .project_management_project_task_comment_description
+            .setData('');
+        }
+      });
+    });
+  });
+</script>

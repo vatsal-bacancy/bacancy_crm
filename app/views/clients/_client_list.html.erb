@@ -1,0 +1,38 @@
+<div class="admin-table bg-white table-responsive p-4">
+  <%= ::Renderer::AjaxDatatable.new.render(id: 'ajax-datatable-clients', url: clients_path, fields: fields.as_json, default_search: {}) %>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $(document).trigger('ajax-datatable:reload');
+
+    $('#check-all').on('change', function() {
+      $('.list-body .check').prop('checked',$(this).prop('checked'));
+    });
+
+
+    $('#destroy_all').on('click', function() {
+      let checked = [];
+      $("input[name='ids[]']:checked").each(function () {
+        checked.push(parseInt($(this).val()));
+      });
+      if(checked == 0) {
+        confirm("Please select a Client.");
+      } else {
+        if(confirm('Are you sure you want to Delete selected Clients?')) {
+          $.ajax({
+            url: "<%= destroy_all_clients_path %>",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            type: 'DELETE',
+            data: {
+              ids: checked
+            },
+            dataType: "script",
+            success: function(result){
+            }
+          });
+        }
+      }
+    });
+  });
+</script>

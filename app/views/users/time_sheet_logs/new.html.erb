@@ -1,0 +1,83 @@
+<%= render 'components/site_content' do %>
+  <% content_for :head do %>
+    <div class="l-menu">
+      <span class="sub-menu-sitecontent"><%= link_to 'CRM Customization Settings', settings_path, class: 'common-link' %></span>
+      <span class="sub-menu-sitecontent m-x-10"><i class="fa fa-angle-right"></i></span>
+      <span class="sub-menu-sitecontent"><%= link_to 'User Settings', users_settings_path, class: 'common-link' %></span>
+      <span class="sub-menu-sitecontent m-x-10"><i class="fa fa-angle-right"></i></span>
+      <span class="sub-menu-sitecontent"><%= link_to 'User Timesheet', time_sheet_logs_all_users_users_path, class: 'common-link' %></span>
+      <span class="sub-menu-sitecontent m-x-10"><i class="fa fa-angle-right"></i></span>
+      <span class="sub-menu-sitecontent"><%= link_to "#{@time_sheet_log.user.fullname}", user_time_sheet_logs_path(@time_sheet_log.user), class: 'common-link' %></span>
+      <span class="sub-menu-sitecontent m-x-10"><i class="fa fa-angle-right"></i></span>
+      <span class="sub-menu-sitecontent">Adjust Time</span>
+    </div>
+    <div class="pull-right">
+      <%= link_to 'Back', user_time_sheet_logs_path(@time_sheet_log.user), class: 'btn btn-success' %>
+    </div>
+  <% end %>
+  <% content_for :body do %>
+    <%= form_for @time_sheet_log do |f| %>
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>Clock In</th>
+            <th>Clock Out</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>1</td>
+            <td><%= f.text_field :clock_in_datetime, value: pretty_date_time(@time_sheet_log.clock_in_datetime), class: 'form-control datetimepicker' %></td>
+            <td><%= f.text_field :clock_out_datetime, value: pretty_date_time(@time_sheet_log.clock_out_datetime), class: 'form-control datetimepicker' %></td>
+            <td></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <%= render 'components/white_body' do %>
+        <div class="row">
+          <div class="col-sm-12" style="text-align: center;">
+            Breaks
+            <div class="pull-right">
+              <%= link_to_add_association f, :break_logs, 'data-association-insertion-node' => '[data-time-sheet-break-logs-fields]', 'data-association-insertion-method' => 'append', class: 'common-link' do %>
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                Add Break
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody data-time-sheet-break-logs-fields>
+          <%= f.fields_for :break_logs do |break_log| %>
+            <%= render 'break_log_fields', f: break_log %>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+      <%= f.hidden_field :base_date, value: @time_sheet_log.base_date %>
+      <% if current_user.is_super_admin? %>
+        <%= f.submit 'Save', class: 'btn btn-success' %>
+      <% end %>
+      <%= link_to 'Cancel', user_time_sheet_logs_path(@time_sheet_log.user), class: 'btn btn-default' %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<script>
+  $('[data-time-sheet-break-logs-fields]').on('cocoon:after-insert', function(e, item) {
+    Bpro.events.forceCallOnLoaded();
+  });
+</script>

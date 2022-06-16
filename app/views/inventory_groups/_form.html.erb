@@ -1,0 +1,208 @@
+<div class="row">
+  <%= hidden_field_tag :id, '', value: inventory_group.id, id: 'inventoryGroupId' %>
+   <%= form_for inventory_group, local: true, html: {class: "", id: 'inventoryGroupForm'} do |f| %>
+   <div class="col-sm-12">
+      <div class="site-content-data inv-data">
+         <div id="client-list" class="table-list">
+            <!-- design start -->
+            <div class="white-body-wrapper">
+               <div class="row">
+                  <div class="col-sm-12">
+                     <div class="Inventory-header">
+                        <h1><%= f.object.new_record? ? 'New' : 'Edit' %> Item Group</h1>
+                     </div>
+                  </div>
+               </div>
+               <div class="row mt20">
+                  <div class="col-lg-8">
+                     <div class="row ">
+                        <div class="col-md-2">
+                           <%= f.label :name, 'Item Group Name' %><span class="required">*</span>
+                        </div>
+                        <div class="col-md-10">
+                           <div class="form-group">
+                              <%= f.text_field :name, placeholder: 'Enter Item Group Name', class: "form-control", required: true %>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row mt10">
+                        <div class="col-md-2">
+                           <%= f.label :description %>
+                        </div>
+                        <div class="col-md-10">
+                           <div class="form-group">
+                              <%= f.text_area :description, placeholder: 'Write Description', rows: 4, class: "form-control" %>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row mt10">
+                        <div class="col-md-2">
+                           <%= f.label :category %><span class="required">*</span>
+                        </div>
+                        <div class="col-md-10">
+                           <div class="form-group">
+                             <%= f.select :category_id, options_for_select(Category.pluck(:title, :id), f.object.category_id), {include_blank: 'Select Category'}, required: true, class: 'form-control' %>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row mt10">
+                        <div class="col-md-2">
+                           <%= f.label :subcategory %><span class="required">*</span>
+                        </div>
+                        <div class="col-md-10">
+                           <div class="form-group">
+                             <%= f.select :subcategory_id, options_for_select(Subcategory.pluck(:title, :id), f.object.subcategory_id), {include_blank: 'Select Subcategory'}, required: true, class: 'form-control', 'data-inventory-group-subcategories' => true %>
+                           </div>
+                        </div>
+                     </div>
+                    <div class="row mt10">
+                      <div class="col-md-2">
+                        <%= f.label :active_inventories_minimum_qty, 'Minimum Qty Alert' %><span class="required">*</span>
+                      </div>
+                      <div class="col-md-10">
+                        <%= f.number_field :active_inventories_minimum_qty, min: 0, required: true, class: 'form-control' %>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 hide">
+                     <div class="placeholder-inv d-flex flex-justify-center">
+                        <%= image_tag inventory_group.image_path_for_image_tag, class: "img-responsive", id: 'inventory_group_image' %>
+                        <%= f.file_field :image, id: :inventory_group_image_field, accept: "image/*", data: { preview_element_id: 'inventory_group_image', preview_element_type: 'id'}, class: 'upload hidden' %>
+                     </div>
+                  </div>
+               </div>
+               <div class="multi-option mt20 hide">
+                  <div class="row ">
+                     <div class="col-sm-12">
+                        <div class="radio-lbl">
+                           <label class="check" style="color:#333333;" ><b>Multiple Item Option</b>
+                           <%= f.check_box :multiple_inventories %>
+                           <span class="checkmark" style="margin-top:3px;"></span> </label>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row mt10" id="inventory_group_option_fields_main" style="display: <%= inventory_group.multiple_inventories ? 'block' : 'none' %>">
+                     <div class='row' id="inventory_group_option_fields_div">
+                        <%= f.fields_for :inventory_group_options do |inventory_group_option| %>
+                        <%= render 'inventory_group_option_fields', f: inventory_group_option %>
+                        <% end %>
+                     </div>
+                     <div class="col-md-12">
+                        <div class="add-more-link">
+                           <%= link_to_add_association f, :inventory_group_options, data: {association_insertion_node: '#inventory_group_option_fields_div', association_insertion_method: :append} do %>
+                           <i class="fa fa-plus" aria-hidden="true"></i> Add more attribute
+                           <% end %>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+              <div class="row mt20">
+                <div class="col-sm-offset-9 col-sm-3 form-inline">
+                  <div class="form-group">
+                    <label>Search:</label>
+                    <input type="text" class="form-control" data-inventory-group-search>
+                  </div>
+                </div>
+              </div>
+               <div class="row mt20">
+                  <div class="col-sm-12">
+                     <div class="site-content-data">
+                        <div class="table-responsive" id="inventory_group_list">
+                          <%= render 'inventory_groups_table', f: f %>
+                        </div>
+                     </div>
+                  </div>
+                 <div class="col-sm-12">
+                   <div class="add-more-link">
+                     <%= link_to_add_association f, :inventories, data: {association_insertion_node: '#inventory_group_table', association_insertion_method: :append}, partial: 'inventory_fields_tr' do %>
+                       <i class="fa fa-plus" aria-hidden="true"></i> Add New Inventory Items
+                     <% end %>
+                   </div>
+                 </div>
+               </div>
+               <div class="row mt20">
+                  <div class="col-sm-12">
+                     <%= f.submit 'Submit Inventory Group', class: "btn btn-success" %>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <% end %>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $(".dropdown-toggle").dropdown();
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+
+  $('#inventory_group_multiple_inventories').on('change', function(){
+    if($(this).prop('checked')){
+      $('#inventory_group_option_fields_main').show();
+    }
+    else{
+      $('#inventory_group_option_fields_main').hide(); 
+    }
+  });
+
+  $('#inventory_group_option_fields_main').on('cocoon:after-insert', function(e, insertedItem) {
+    $('.tagableinput').tagsinput();
+  });
+
+  $('#inventory_group_option_fields_main').on('cocoon:after-remove', function(e, insertedItem) {
+    renderItemGroup();
+  });
+
+
+  $('#inventory_group_image').on('click', function(){
+    document.getElementById('inventory_group_image_field').click();
+  });
+
+ 
+  $('#inventory_group_option_fields_div').on('itemAdded itemRemoved', '.tagableinput', function(event) {
+      renderItemGroup();
+  });
+
+  $('#inventory_group_option_fields_div').on('click', '.remove_fields', function() {
+    renderItemGroup();
+  });
+
+  $(document).on('change', '#inventory_group_category_id', function() {
+    $.ajax({
+      url: Routes.subcategories_for_category_inventory_groups_path(),
+      type: 'GET',
+      data: {
+        id: $(this).val()
+      },
+      dataType: "script"
+    })
+  });
+  $("input[data-role=tagsinput]").tagsinput();
+
+  $('#inventory_group_list').on('cocoon:after-insert', function(e, item) {
+    $('[data-inventory-purchase-date]').daterangepicker({
+      drops: 'auto',
+      parentEl: '.modal',
+      autoUpdateInput: false,
+      singleDatePicker: true,
+      timePicker: true,
+      timePickerIncrement: 15,
+      locale: {
+        format: 'MM/DD/YYYY hh:mm A'
+      }
+    });
+    $('[data-inventory-purchase-date]').on('apply.daterangepicker', function(ev, picker) {
+      $(this).val(picker.startDate.format(picker.locale.format));
+      $(this).trigger('change');
+    });
+  });
+  $('#inventory_group_list').trigger('cocoon:after-insert');
+
+  $("[data-inventory-group-search]").on("keyup", function() {
+    let value = $(this).val().toLowerCase();
+    $("#inventory_group_list [data-inventory-group-search-data]").filter(function() {
+      $(this).parent("tr").toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+</script>

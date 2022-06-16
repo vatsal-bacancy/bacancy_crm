@@ -1,0 +1,2 @@
+$("#success_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");
+$(document).trigger('ajax-datatable:reload');

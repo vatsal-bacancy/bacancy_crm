@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <style type="text/css">
+      body {font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;}
+      table, th, td {border: 1px solid black;border-collapse: collapse;padding: 10px;}
+      table th {background-color: #000;color: #fff;}
+    </style>
+  </head>
+  <body>
+    <h3>Timesheet Report of Last <%= pretty_days_from_float @setting.since_days %></h3>
+    <table>
+      <tr>
+        <th>Employee Name</th>
+        <th>Total Work Hours</th>
+      </tr>
+        <% @setting.time_sheet_logs.each do |user, data| %>
+          <tr>
+            <td><%= user.fullname %></td>
+            <td><%= pretty_hours_from_number(data[:total_work_hours]) %></td>
+          </tr>
+        <% end %>
+    </table>
+  </body>
+</html>

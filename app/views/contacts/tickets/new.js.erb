@@ -1,0 +1,4 @@
+$("#modalContainer").html("<%= escape_javascript(render partial: 'modal', locals: {ticket: @ticket, users: @users, grouped_options: @grouped_options, ticketable: @ticketable}) %>")
+$("#modalContainerIndex").html("<%= escape_javascript(render partial: 'modal', locals: {ticket: @ticket, users: @users, grouped_options: @grouped_options, ticketable: @ticketable}) %>")
+
+$("#ticketModal").modal('show');

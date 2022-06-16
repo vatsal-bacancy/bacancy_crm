@@ -1,0 +1,40 @@
+<div id="success_message"></div>
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <%= link_to settings_index_path, class: "main-menu-sitecontent common-link" do %> CRM CUSTOMIZATION SETTINGS <% end%>
+            <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> </span>
+            <span class="sub-menu-sitecontent"> Invoice Tax </span>
+            <!-- <%= link_to invoice_taxes_path, class: "sub-menu-sitecontent" do %> All <% end%> -->
+          </div>
+          <div class="pull-right">
+            <%= link_to new_invoice_tax_path, class: 'site-content-head-btn', remote: true do %>
+              + Add Tax
+            <%end%>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+       <div class="col-sm-12">
+          <div class="site-content-data">
+            <div id="tax-list" class="table-list">
+              <%= render partial: "tax_list", locals: {taxs: @taxs}%>
+            </div>
+          </div>
+       </div>
+    </div>
+    <div id="modalContainer" class="modal-right"></div>
+    <div id="importfiled"></div>
+  </div>
+</div>
+<script>
+  $(document).ready(function() {
+    $(".dropdown-toggle").dropdown();
+  });
+</script>

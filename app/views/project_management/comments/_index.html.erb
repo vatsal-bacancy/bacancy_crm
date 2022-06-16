@@ -1,0 +1,26 @@
+<div class="table-responsive">
+  <table width="100%" class="sub-table">
+    <tbody>
+    <% comments.each do |comment| %>
+      <tr>
+        <td width="65%">
+          <span><%= comment.description.html_safe %></span>
+        </td>
+        <td class="text-right" width="30%">
+          <span class="posted-by">Posted by</span>
+          <span class="posted-by-name"><%= comment.created_by.fullname %></span>
+        </td>
+        <td width="5%">
+          <% if comment.created_by == current_user %>
+            <div class="action-icon">
+              <%= link_to project_management_project_task_comment_path(comment.task.project, comment.task, comment), method: :delete, remote: true, data: { confirm: "Are you sure you want to Delete this Comment?" } do %>
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              <% end %>
+            </div>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

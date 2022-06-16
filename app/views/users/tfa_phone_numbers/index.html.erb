@@ -1,0 +1,39 @@
+<%= render 'components/site_content' do %>
+  <% content_for :head do %>
+    <div class="l-menu">
+      <span class="sub-menu-sitecontent">
+        <%= link_to 'CRM Customization Settings', settings_path, class: 'common-link' %>
+      </span>
+      <span class="sub-menu-sitecontent m-x-10"><i class="fa fa-angle-right"></i></span>
+      <span class="sub-menu-sitecontent">2FA Phone Numbers</span>
+    </div>
+    <span class='pull-right'>
+      <a href="<%= settings_index_path %>" class='btn btn-success'>Back</a>
+    </span>
+  <% end %>
+  <% content_for :body do %>
+    <div class="block-ui-box-wrapper" style="max-width: 50%">
+      <div class="block-ui-box m-t-20">
+        <div class="row">
+          <div class="col-md-12">
+            <%= link_to new_users_tfa_phone_number_path, remote: true, class: 'pull-right m-t-10 m-b-10 m-r-20' do %>
+              <i class="fa fa-plus" aria-hidden="true"></i>Add Phone Number
+            <% end %>
+          </div>
+          <div class="col-md-12">
+            <ul class="list-unstyled">
+              <% @phone_numbers.each_with_index do |phone_number| %>
+                <li class="block-ui-box m-t-5">
+                  <%= phone_number.number %>
+                  <%= link_to users_tfa_phone_number_path(phone_number), method: :delete, remote: true do %>
+                    <i class="fa fa-trash pull-right" aria-hidden="true"></i>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>

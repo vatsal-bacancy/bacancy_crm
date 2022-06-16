@@ -1,0 +1,2 @@
+module Contacts::DocumentsHelper
+end

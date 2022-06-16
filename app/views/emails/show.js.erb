@@ -1,0 +1,3 @@
+$("#message_container").html("<%= escape_javascript(render partial: 'message', locals: {message: @message}) %>");
+$("#message_container").removeClass('hidden');
+$("#messages_container").addClass('hidden');

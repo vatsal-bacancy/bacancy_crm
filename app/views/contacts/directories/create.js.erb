@@ -1,0 +1,4 @@
+$("#directory_detail").html("<%= escape_javascript(render partial: 'contacts/directories/directory_detail', locals: {directory: @directory.directoriable}) %>")
+$("#directory_content").html("<%= escape_javascript(render partial: 'contacts/directories/directory_content', locals: {directory: @directory.directoriable, directories: @directory.directoriable.directories, documents: @directory.directoriable.documents }) %>")
+$('#newDir').modal('hide');
+$("#success_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");

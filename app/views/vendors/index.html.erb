@@ -1,0 +1,74 @@
+<div id="success_message"></div>
+<%= render 'components/site_content_2' do %>
+  <% content_for :head_title do %>
+    <h2 class="admin-main-title text-darkgray1 mb-0 pr-2 m-0 dark-gray-font text-capitalize">Vendors</h2>
+  <% end %>
+  <% content_for :head_buttons do %>
+    <% if checked_permission?(current_user, @klass_list['Vendor'], @action_list['delete']) %>
+      <!-- <a href="javascript:void(0)" class="site-content-head-btn" data-vendor-destroy-all>Delete</a> -->
+      <a href="javascript:;" class="nowrap" data-vendor-destroy-all>
+        <i class="mr-2">
+          <%= image_tag asset_path('ic_delete.svg') %>
+        </i>Delete
+      </a>
+    <% end %>
+    <% if checked_permission?(current_user, @klass_list['Vendor'], @action_list['create']) %>
+      <%#= link_to '+ Add Vendor', new_vendor_path, remote: true, class: 'site-content-head-btn' %>
+      <%= link_to new_vendor_path, class: 'nowrap', remote: true do %>
+        <i class="mr-2">
+          <%= image_tag asset_path('add_lead.svg') %>
+        </i>Add Vendor
+      <% end %>
+    <% end %>
+    <div class="nav-item dropdown">
+      <a href="javascript:;"
+        class="nav-link text-blue1 fw-400 fs-15 mr-0 p-0 nowrap dropdown-toggle fw-500 d-flex align-items-center"
+        data-toggle="dropdown">
+        <i class="mr-2"><%= image_tag asset_path('action.svg') %></i> Actions
+      </a>
+      <ul class="dropdown-menu">
+        <li>
+          <%= link_to "Edit Column", actions_settings_path(klass_id: @klass.id, url: request.url), class: 'dropdown-item', remote: true %>
+        </li>
+        <li role="separator" class="divider"></li>
+        <li>
+          <%= link_to "Edit Properties", module_settings_path(klass_id: @klass.id), class: 'dropdown-item' %>
+        </li>
+      </ul>
+    </div>
+  <% end %>
+  <% content_for :body do %>
+    <div class="admin-table bg-white table-responsive p-4" data-vendor-table>
+      <%= render 'list', fields: @fields %>
+    </div>
+  <% end %>
+<% end %>
+<div id="modalContainer" class='modal-right'></div>
+
+<script>
+  $(document).ready(function() {
+    $('[data-vendor-destroy-all]').on('click', function() {
+      let checked = [];
+      $("input[name='ids[]']:checked").each(function() {
+        checked.push(parseInt($(this).val()));
+      });
+      if(checked == 0) {
+        confirm("Please select a Vendor.");
+      } else {
+        if(confirm('Are you sure you want to Delete selected Vendor?')) {
+          $.ajax({
+            url: Routes.destroy_all_vendors_path(),
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            type: 'DELETE',
+            data: {
+              ids: checked
+            },
+            dataType: "script",
+            success: function(result){
+            }
+          });
+        }
+      }
+    });
+  });
+</script>

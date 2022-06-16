@@ -1,0 +1,22 @@
+<ul class="">
+  <!-- <li>
+    <a href="javascript:void(0)">
+    <i class="fa fa-user m-r-10"></i> Profile</a>
+  </li>
+  <li>
+    <a href="javascript:void(0)">
+    <i class="fa fa-cog m-r-10"></i> Settings</a>
+  </li>
+  <li>
+    <a href="javascript:void(0)">
+    <i class="fa fa-question-circle m-r-10"></i> Help</a>
+  </li> -->
+  <% @client_list.each do |client|%>
+    <li>
+      <%= link_to  client_set_path(client_id: client.id), method: :post do%>
+        <i class="fa fa-industry m-r-10"></i> <%= client.company_name %>
+      <% end %>
+    </li>
+  <% end %>
+  
+</ul>

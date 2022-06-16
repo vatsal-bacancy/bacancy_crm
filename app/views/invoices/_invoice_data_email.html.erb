@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="form-group">
+      <label for="To">To:</label>
+      <%= @invoice.email %>
+    </div>
+  </div>
+  <div class="col-sm-12">
+    <div class="form-group">
+      <label for="Cc">Cc:</label>
+      <%= invoice.cc %>
+    </div>
+  </div>
+  <div class="col-sm-12">
+    <div class="form-group">
+      <label for="Bcc">Bcc:</label>
+      <%= invoice.bcc %>
+    </div>
+  </div>
+</div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group ">
+        <label for="Subject" style="display: block;">Subject</label>
+        <input class="form-control" type="text"  id="email_subject" value="<%= "Invoice #{invoice.invoice_no} from iPos CRM" %>">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+       <label for="Subject">Body</label>
+      <div contentEditable="true" id="email_body" data-text="enter your email body" class="email-text" >
+        <p>Dear <%= @invoice.client.company_name %>,</p>
+        <p>Here's your invoice! We appreciate your prompt payment.</p>
+        <p>Thanks for your business!<br/> <%= invoice.sales_person.fullname %>  </p>
+      </div>
+    </div>
+  </div>

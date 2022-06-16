@@ -1,0 +1,3 @@
+$("#note .list").html("<%= escape_javascript(render partial: 'note_details', locals: { note: @note, klass: @klass }) %>");
+$("#note-list").html("<%= escape_javascript(render partial: 'show_index', locals: { note: @note, klass: @klass }) %>");
+

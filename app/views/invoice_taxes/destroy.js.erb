@@ -1,0 +1,6 @@
+<% if @tax.errors.any? %>
+  $("#flash_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>"); 
+<% else %>
+  $("#success_message").html("<%= escape_javascript(render partial: 'layouts/flash') %>");
+  $("#tax-list").html("<%= escape_javascript(render partial: 'tax_list', locals: {taxs: @taxs}) %>")
+<% end %>

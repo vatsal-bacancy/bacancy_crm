@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <style type="text/css">
+      body {font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;}
+      table, th, td {border: 1px solid black;border-collapse: collapse;padding: 10px;}
+      table th {background-color: #000;color: #fff;}
+    </style>
+  </head>
+  <body>
+    <% @tickets_by_status.each do |status, tickets| %>
+      <% if tickets.present? %>
+        <h3><%= status %> Tickets</h3>
+        <table>
+          <tr>
+            <th>Created Date/Time</th>
+            <th>Company Name</th>
+            <th>Ticket Subject</th>
+            <th>Ticket Category</th>
+            <th>Ticket Priority</th>
+            <th>iPos Sales Agent</th>
+            <th>Assigned To</th>
+            <th>Created By</th>
+          </tr>
+          <% tickets.each do |ticket| %>
+            <tr>
+              <td><%= pretty_date_time(ticket.created_at) %></td>
+              <td><%= link_to ticket.ticketable_company_name, polymorphic_url(ticket.ticketable), target: '_blank' %></td>
+              <td>
+                <%= link_to ticket.title, ticket_url(ticket), target: '_blank' %>
+              </td>
+              <td><%= ticket.category %></td>
+              <td><%= ticket.priority %></td>
+              <td><%= ticket.sales_agent_name %></td>
+              <td><%= ticket.users.collect(&:fullname).join(', ') %></td>
+              <td><%= ticket.owner.fullname %></td>
+            </tr>
+          <% end %>
+        </table>
+        <br>
+        <br>
+      <% end %>
+    <% end %>
+  </body>
+</html>

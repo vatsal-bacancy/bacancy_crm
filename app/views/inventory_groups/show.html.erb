@@ -1,0 +1,133 @@
+<%= render 'components/site_content' do %>
+  <% content_for :head do %>
+    <div class="l-menu">
+      <span class="main-menu-sitecontent">
+        <%= link_to 'Inventory Groups', inventory_groups_path, class: 'common-link' %>
+      </span>
+      <span class="sub-menu-sitecontent m-x-10"><i class="fa fa-angle-right"></i></span>
+      <span class="sub-menu-sitecontent"><%= @inventory_group.name %></span>
+    </div>
+    <div class="pull-right">
+      <%= link_to '+ Add Inventory', new_inventory_path(inventory_group_id: @inventory_group.id), remote: true, class: 'site-content-head-btn' %>
+      <%= link_to 'Back', inventory_groups_path, class: 'btn btn-success' %>
+    </div>
+  <% end %>
+  <% content_for :body do %>
+    <%= render 'components/white_body' do %>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="m-b-10 item-cat inv-data">
+            <div class="item-title-header">
+              <h1><%= @inventory_group.name %></h1>
+            </div>
+            <div class="row">
+              <label class="items-label col-sm-1">Category:</label>
+              <div class="col-sm-11 mt5"><%= @inventory_group.category.try(:title) %></div>
+            </div>
+            <div class="row">
+              <label class="items-label col-sm-1">Subcategory:</label>
+              <div class="col-sm-11 mt5"><%= @inventory_group.subcategory.try(:title) %></div>
+            </div>
+            <div class="row">
+              <label class="items-label col-sm-1">Qty On Hand:</label>
+              <div class="col-sm-11 mt5"><%= @inventory_group.active_inventories.count %></div>
+            </div>
+            <div class="row">
+              <label class="items-label col-sm-1">Minimum Qty Alert:</label>
+              <div class="col-sm-11 mt5"><%= @inventory_group.active_inventories_minimum_qty %></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <div class="row mt10">
+      <div class="col-md-12">
+        <ul id="myTabs" class="nav nav-pills nav-justified bpro-tab" role="tablist" data-tabs="tabs">
+          <% Inventory::STATUSES.each_with_index do |(identifier, status), index| %>
+            <li class="<%= 'active' if index == 0 %>"><a href="#inventories-<%= identifier %>" data-toggle="tab"><%= "#{status} (#{@inventory_group.inventories.where(status: status).length})" %></a></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="tab-content">
+        <% Inventory::STATUSES.each_with_index do |(identifier, status), index| %>
+          <div role="tabpanel" class="tab-pane fade <%= 'in active' if index == 0 %>" id="inventories-<%= identifier %>">
+            <div class="col-sm-12">
+              <div class="dynmic-tab-div">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="dynmic-tab-div-data">
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div class="table-responsive">
+                            <table class="table common-data-table" data-simple-datatable data-simple-datatable-options="<%= {sDom: 'lrtip', paging: false}.to_json %>">
+                              <thead>
+                              <tr>
+                                <th>Action</th>
+                                <th>Created Date/Time</th>
+                                <th>Inventory Item Name	</th>
+                                <th>Vendor Name</th>
+                                <th>Inventory Item Status</th>
+                                <th data-simple-datatable-column-type="Text">Company Name</th>
+                                <th data-simple-datatable-column-type="Text">SKU</th>
+                                <th>Buy Price</th>
+                                <th>Sell Price</th>
+                                <th>Created By</th>
+                                <th>Logs</th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                              <% @inventory_group.inventories.where(status: status).includes(:user, client_inventory_association: :client).each do |inventory| %>
+                                <tr>
+                                  <td>
+                                    <div class="btn-wrapper">
+                                      <div class="action-icon">
+                                        <%= link_to edit_inventory_path(inventory), remote: true do %>
+                                          <i class="fa fa-pencil" aria-hidden="true"></i>
+                                        <% end %>
+                                      </div>
+                                      <div class="action-icon">
+                                        <%= link_to inventory_path(inventory), data: { confirm: "Are you sure you want to Delete this?" }, method: :delete, remote: true do %>
+                                          <i class="fa fa-trash" aria-hidden="true"></i>
+                                        <% end %>
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td><%= pretty_date_time inventory.created_at %></td>
+                                  <td><%= inventory.name %></td>
+                                  <td><%= inventory.vendor&.company_name || '-' %></td>
+                                  <td><%= inventory.status %></td>
+                                  <td>
+                                    <%= link_to(inventory.client_inventory_association.client.company_name, client_path(inventory.client_inventory_association.client), class: 'common-link') if inventory.client_inventory_association.present? %>
+                                  </td>
+                                  <td><%= inventory.sku %></td>
+                                  <td><%= pretty_amount inventory.buy_price %></td>
+                                  <td><%= pretty_amount inventory.sell_price %></td>
+                                  <td><%= inventory.user.fullname %></td>
+                                  <td><%= link_to('Logs', logs_inventory_path(inventory), class: 'common-link') %></td>
+                                </tr>
+                              <% end %>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+<div id="modalContainer" class="modal-right"></div>
+
+<script>
+  $(document).ready(function() {
+    $(document).trigger('simple-datatable:reload');
+  });
+</script>

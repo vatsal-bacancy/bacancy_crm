@@ -1,0 +1,59 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <span class="main-menu-sitecontent">My messages</span>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%if session[:azure_token] %>
+
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="site-content-data">
+            <div class="table-responsive">
+              <table class="common-data-table">
+                <tr>
+                  <th>From</th>
+                  <th>Subject</th>
+
+                  <th>Received</th>
+                </tr>
+                <% @messages.each do |message| %>
+                  <tr>
+                    <td><%= message.from.email_address.name %></td>
+                    <td><%= message.subject %></td>
+                    <td><%= message.received_date_time&.strftime("%m/%d/%Y, %I:%M %p") %></td>
+                  </tr>
+                <% end %>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    <% elsif session[:google_token]%>
+    <%else%>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="site-content-data">
+
+            <a class="btn btn-primary" href="<%= @login_url %>" role="button" id="connect-button">Connect to Outlook</a>
+            <a class="btn btn-primary" href="<%= @google_login_url %>" role="button" id="connect-button">Connect to Google</a>
+
+          </div>
+
+
+        </div>
+      </div>
+    <%end%>
+  </div>
+</div>

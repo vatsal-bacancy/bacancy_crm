@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <title>Home</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <style type="text/css">
+      .card-section{padding:20px;}
+      .card-wrapper{background-color: #ffffff;border-radius: 4px; width: 100%; box-shadow: 0 12px 19px 0 rgba(192, 192, 192, 0.5);}
+      .main-card-wrapper{padding: 15px 60px 0;}
+      .company-name{font-size: 32px;font-style: normal; font-stretch: normal; line-height: 1; -webkit-letter-spacing: normal; -moz-letter-spacing: normal; -ms-letter-spacing: normal; letter-spacing: normal; color: #4a4a4a; margin-top: 35px; text-align: center;}
+      .payment-amount-wrapper{margin-top: 32px;}
+      .payment-amount-label{font-size: 12px;color: #8c9097; text-transform: uppercase; display: block;}
+      .payment-amount{font-size: 30px; line-height: 37px; color: #4a4a4a; text-transform: uppercase; display: block;}
+      .contact-message{font-size: 22px; color: #4a4a4a; display: block; margin-top: 15px; margin-bottom: 25px; text-align: center; line-height: 1.3;}
+      .custom-hr hr{border-top: 1px solid rgba(151, 151, 151, 1);border-bottom: 0; border-right: 0; border-left: 0; opacity: 0.33; margin: 20px 0px 20px 0px;}
+      .flex{display:flex;}
+      .side-icon-wrapper{flex-wrap: wrap;}
+      .icon{margin-top: 1px;}
+      .side-icon-wrapper .content {margin-left: 10px;text-align: left;}
+      .contact-info .contact-link{    color: #0079cb; font-size: 14px; -webkit-text-decoration: none; text-decoration: none; cursor: pointer;}
+      .custom-hr1 hr{border-top: 1px solid rgba(151, 151, 151, 1); border-bottom: 0; border-right: 0; border-left: 0; opacity: 0.33; margin: 20px 0px 20px 0px;}
+      .main-footer{font-size: 12px;text-align: center; color: #848588; padding: 0 7px 20px;}
+      .justify-center{justify-content:center;}
+      .side-panel{max-width: 320px;}
+      .pdf-preview-wrapper{position: relative;margin-bottom:20px;}
+      .pdf-preview-thumbnail-wrapper{height: 180px;position: relative;}
+      .pdf-img{position: relative;overflow: hidden;height: 180px;}
+      .pdf-img img{position: absolute; left: 0; top: 0; width: 94%;margin:10px;height:160px;}
+      .side-panel-hr hr{border-top: 1px solid rgba(151, 151, 151, 1);border-bottom: 0;border-right: 0; border-left: 0; opacity: 0.33; margin: 0px 0px 0px 0px;}
+      .space-between{}
+      .flex-row{flex-direction: row;display: -webkit-box;display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-pack: justify; -webkit-justify-content: space-between; -ms-flex-pack: justify; justify-content: space-between;}
+      .side-panel label{cursor: text;font-size: 14px; color: #393a3d; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex;} 
+      .side-panel span{   cursor: text;font-size: 14px; color: #393a3d;}
+      .no-wrap{white-space: nowrap; }
+      .lock-wrapper{line-height: normal;margin-top:15px;}
+      .lockwrapper-msg{font-size: 12px;color: #393a3d; vertical-align: text-top; margin-left: 3px; padding-top: 3px; white-space: normal; }
+      .overlay {position: absolute; top: 0; bottom: 0; left: 0; right: 0; height: 180px; width: 100%; opacity: 0; transition: .5s ease; background-color: #393a3d; border-top-left-radius: 4px; border-top-right-radius: 4px; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column; -webkit-align-content: space-around; -ms-flex-line-pack: space-around; align-content: space-around; -webkit-box-pack: center; -webkit-justify-content: center; -ms-flex-pack: center; justify-content: center; -webkit-align-items: center; -webkit-box-align: center; -ms-flex-align: center; align-items: center; }
+      .pdf-preview-thumbnail-wrapper:hover .overlay {opacity: 1;}
+      .text {color: white; font-size: 20px; position: absolute; top: 50%; left: 50%; -webkit-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); text-align: center; } 
+      .pdf-preview-btn{    margin-top: 5px;width: 180px; height: 35px; background-color: transparent; border: 2px solid #ffffff; border-radius: 17px; color: #ffffff; font-size: 14px; cursor: pointer; -webkit-transition: background-color 0.35s ease; transition: background-color 0.35s ease; }
+      .pdf-preview-btn:hover, .pdf-preview-btn:active, .pdf-preview-btn:focus{background-color: #68686c;color:#fff;text-decoration:none;}
+      .pdf-preview-actions{display: -webkit-box;display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-pack: justify; -webkit-justify-content: space-between; -ms-flex-pack: justify; justify-content: space-between; margin-top: 30px; width: 100%; padding: 0 17px; }
+      .pdf-preview-actions button{width: 138px;height: 35px; background: none; border: none; font-size: 14px; color: #ffffff; cursor: pointer; border-radius: 17px; padding: 5px 15px; -webkit-transition: background-color 0.35s ease; transition: background-color 0.35s ease; white-space: nowrap;display: flex;justify-content: center;}
+      .pdf-preview-actions button:hover{background-color: #68686c;}
+      .pdf-preview-actions button svg{margin-right: 5px;}
+      .pdf-preview-actions a{width: 138px;height: 35px; background: none; border: none; font-size: 14px; color: #ffffff; cursor: pointer; border-radius: 17px; padding: 5px 15px; -webkit-transition: background-color 0.35s ease; transition: background-color 0.35s ease; white-space: nowrap;display: flex;justify-content: center;}
+      .pdf-preview-actions a:hover, {background-color: #68686c;}
+      .pdf-preview-actions a svg{margin-right: 5px;}
+      .pdf-preview-actions a:hover, .pdf-preview-actions a:focus, .pdf-preview-actions a:active {color:#fff;text-decoration:none;}
+      .nav.nav-pills {border-bottom: 2px solid #ECEEF1;}
+      .nav>li>a { background: transparent; font-size: 14px;color: #393a3d;padding: 5px 15px; } 
+      .nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {background: transparent !important; font-size: 14px;color: #393a3d; border-bottom: 4px solid #00a300 !important; border-radius: 0px; } 
+      .nav>li>a:focus, .nav>li>a:hover {background-color: transparent; } 
+      .nav .open>a, .nav .open>a:focus, .nav .open>a:hover{background-color: transparent; border-color: transparent;}
+      .tab-content{margin-top:20px;}  
+      .form-group label{font-size:12px;}
+      .form-group input{font-size:14px;}
+      .form-group ::-webkit-input-placeholder { font-size:14px;}
+      .form-group :-ms-input-placeholder {font-size:14px;}
+      .form-group::placeholder{ font-size:14px;}
+      .check {display: inline-block; position: relative; padding-left: 30px; margin-bottom: 12px; padding-right: 15px; cursor: pointer; font-weight: normal; font-size: 16px; color: #868686; width: 100%;}
+      .check input {position: absolute; opacity: 0;cursor: pointer;}
+      .checkmark {position: absolute;top: 3px;left: 0;height: 20px;width: 20px; border-radius: 2px;border:1px solid #cbcbcb;}
+      .check input:checked ~ .checkmark {background-color: #3b5a94;border-color:#3b5a94;}
+      .checkmark:after {content: "";position: absolute;display: none;}
+      .check input:checked ~ .checkmark:after {display: block;}
+      .check .checkmark:after {left: 6px; top: 2px; width: 6px; height: 12px; border: solid; border-color: #fff; border-width: 0 3px 3px 0; transform: rotate(45deg); } 
+      .radio-lbl{text-align:left;font-size:18px;}
+      .radio {display: inline-block;position: relative;cursor: pointer;padding-left:40px;font-weight: normal;font-size: 16px;color:#868686; width: 100%;}
+      .radio input {position: absolute;opacity: 0;cursor: pointer;}
+      .checkround {position: absolute;top:10%;left: 0;height: 22px;width: 22px;border-radius: 50%;border: 1px solid #cbcbcb;}
+      .radio input:checked ~ .checkround {background-color: #fff;border-color:#1a3e6f;}
+      .checkround:after { content: ""; position: absolute;display: none;}
+      .radio input:checked ~ .checkround:after {display: block;}
+      .cpButton--jumbo {height: 48px; min-width: 120px; border-radius: calc(48px/2); font-size: 19px; line-height: 24px; -webkit-box-pack: center; -webkit-justify-content: center; -ms-flex-pack: center; justify-content: center; -webkit-align-content: center; -ms-flex-line-pack: center; align-content: center;width: 100%;position: relative;outline: none; padding: 0 18px; margin: 0; cursor: pointer; white-space: nowrap;     border: none; background-color: #00a300; color: #ffffff;} 
+      .cpButton--jumbo:hover {background-color: #108000;}
+      .amount-to-pay { margin-left: 6px;display: inline-block;}
+      .message {margin-top:10px;margin-bottom: 10px; font-size: 12px; color: #848588; text-align: center; font-style: normal; font-stretch: normal; line-height: 1.33; -webkit-letter-spacing: -0.1px; -moz-letter-spacing: -0.1px; -ms-letter-spacing: -0.1px; letter-spacing: -0.1px; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+      .bugs{margin-bottom:10px;}
+      .bugs ul {list-style: none; padding: 0; margin: 0; text-align: center; }
+      .bugs ul li:not(first-child) {margin-left: 5px;}
+      .bugs ul li{display: inline-block;}
+      .info-input{position:relative;}
+      .info-input .btn{background-color: transparent !important;color: #b0b0b0; border: none; border-radius: 0; font-size: 20px; top: 27px; padding: 0; position: absolute;  right: 8px;} 
+      .tooltip-inner {width: 100% !important;max-width: 100% !important;min-width: 200px;}
+      .pdf-icon-main{left: 33% !important;top: 23% !important;width: 80px !important; height: 80px !important;}
+      .flash-messages-container { display: none; }
+      .flash-messages { position: absolute; width: 100%; z-index: 999999; top: 0px; background: #39b54a; margin-bottom: 0px; color: #ffffff; }
+      .flash-danger {background: #e53935;}
+      .loading-overlay {display: none; background: rgba( 26, 26, 26, 0.7 ); position: fixed; width: 100%; height: 100%; z-index: 5; top: 0; opacity: 0.7; } 
+      .loading-overlay-image-container {display: none; position: fixed; z-index: 7; top: 50%; left: 50%; transform: translate( -50%, -50% ); }
+      .loading-overlay-img {width: 50px; height: 50px; border-radius: 5px; }
+      .flash-messages {position: absolute;width: 100%;z-index: 999999;top: 0px;background: #39b54a;}
+      .flash-messages .alert{
+        margin-bottom: 0px;
+        color: #ffffff;
+
+      }
+      /*media query*/
+      @media (max-width: 767px) {
+      .pdf-preview-wrapper{margin-top:20px;}
+      .card-section{padding: 0px;}
+       .nav>li{text-align: center;}
+       .nav>li>a{display: inline-block;}
+       .nav-pills>li{float: left;}
+       .main-card-wrapper {padding: 15px 40px 0;}
+       .nav-justified>li>a{margin-bottom:0px;}
+       
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+    </header>
+    <section class="card-section">
+      <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+          <%= render partial:'layouts/flash' %>
+        </div>
+        <div class="col-sm-7">
+          <div class="card-wrapper">
+            <div class="main-card-wrapper">
+              <div class="company-name">
+                <span><%= @invoice.sales_person.company.name %></span>
+              </div>
+              <div class="payment-amount-wrapper">
+                <div class="payment-amount-label">
+                  <span>PAYMENT AMOUNT</span>
+                  <span class="payment-amount"><span>$<%= @invoice.amount_with_tax %></span></span>
+                </div>
+              </div>
+              <div class="cutom-hr">
+                <hr style="margin-top:2px;">
+              </div>
+              <div class="row">
+                <!--div class="col-sm-12">
+                  <ul id="myTabs" class="nav nav-pills nav-justified payment-tab" role="tablist" data-tabs="tabs">
+                    <li class="open active"><a href="#Debitcard" data-toggle="tab" aria-expanded="true">Debit card</a></li>
+                    <li class=""><a href="#Banktransfer" data-toggle="tab" aria-expanded="true">Bank transfer</a></li>
+                    <li class=""><a href="#Creditcard" data-toggle="tab" aria-expanded="true">Credit card</a></li>
+                  </ul>
+                </div-->
+              </div>
+              <div class="row">
+                <div class="tab-content">
+                  <div role="tabpanel" class="tab-pane fade active in" id="Debitcard">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <%= form_tag invoice_payment_path(@invoice),id:'from-submit', remote: true do %>
+                          <div class="form-group">
+                            <label>Name on card</label>
+                            <input type="text" class="form-control" id="" name="card_holder_name" placeholder="Sam Smith">
+                          </div>
+                          <div class="form-group">
+                            <label>Card number</label>
+                            <input type="text" class="form-control" id="" name="card_number" placeholder="1234 5678 9000 0000">
+                          </div>
+                          <div class="row">
+                            <div class="col-sm-4">
+                              <div class="form-group">
+                                <label>Exp date</label>
+                                <input type="text" class="form-control" name="card_expiry" id="" placeholder="MM/YY">
+                              </div>
+                            </div>
+                            <div class="col-sm-3">
+                              <div class="form-group">
+                                <label>CVV code</label>
+                                <input type="text" class="form-control" name="card_cvv" id="" placeholder="123">
+                              </div>
+                            </div>
+                            <div class="col-sm-5">
+                              <div class="form-group">
+                                <label>Postal code</label>
+                                <input type="text" class="form-control" id="" name="postal_code" placeholder="12345">
+                              </div>
+                            </div>
+                          </div>
+                          <%= button_tag class: "cpButton pay cpButton--jumbo cpButton--primary cpButton--custom-width", id:"submit-form" do %>
+                            <span class="">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="15" viewBox="0 0 12 15" class="lock-icon">
+                                <g fill="none" fill-rule="evenodd" transform="translate(1 1)">
+                                  <rect width="10.165" height="9" y="4" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" rx="2"></rect>
+                                  <path stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.132 4V2.963C8.132 1.327 6.767 0 5.082 0 3.399 0 2.034 1.327 2.034 2.963V4"></path>
+                                  <path stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.083 8v2"></path>
+                                  <ellipse cx="5.083" cy="8" fill="#ffffff" fill-rule="nonzero" rx="1.017" ry="1"></ellipse>
+                                </g>
+                              </svg>
+                              <span class="jsx-2357038070 caption"><span class="amount-to-pay">Pay</span></span><span class="jsx-2357038070 amount-to-pay">$<%= @invoice.amount_with_tax %></span>
+                            </span>
+                          <% end %>
+                        <% end %>
+                        <div class=" message">
+                          <p class=" cp-link"><span>By selecting <b>Pay</b>, I accept the <a class="termsOfServiceFooter" href="/payor-terms-of-service" target="_blank">Terms of Service</a> and have read and acknowledge the <a href="" target="_blank">Privacy Statement</a>. I also allow iPos CRM to charge $<%= @invoice.amount_with_tax %> to my card on <%= Date.today.strftime("%m/%d/%Y") %>.</span></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--div role="tabpanel" class="tab-pane fade" id="Banktransfer">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <form>
+                          <div class="form-group">
+                            <label for="sel1">Account type</label>
+                            <select class="form-control" id="sel1">
+                              <option>Personal checking</option>
+                              <option>Personal savings</option>
+                              <option>Business checking</option>
+                              <option>Business savings</option>
+                            </select>
+                          </div>
+                          <div class="form-group info-input">
+                            <label>Routing number</label>
+                            <input type="text" class="form-control" id="" placeholder="Routing number">
+                            <button type="submit" class="btn btn-default">
+                            <i class="fa fa-question-circle-o" aria-hidden="true" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="Your Routing number is the first set of numbers on the bottom of your checks."></i>
+                            </button>
+                          </div>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <div class="form-group info-input">
+                                <label> Account number</label>
+                                <input type="text" class="form-control" id="" placeholder="Account number">
+                                <button type="submit" class="btn btn-default">
+                                <i class="fa fa-question-circle-o" aria-hidden="true" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="Your Account number is the second set of numbers on the bottom of your checks."></i>
+                                </button>
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label>Confirm account number</label>
+                                <input type="text" class="form-control" id="" placeholder="Confirm account number">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label>Account holder's name</label>
+                            <input type="text" class="form-control" id="" placeholder="">
+                          </div>
+                                   <div class="radio-lbl">
+                            <label class="check "><span style="font-size: 12px; color: rgb(74, 74, 74);"><span> Save payment method to pay faster next time</span><span class="cp-link">&nbsp;<span>(<a href="">sign in</a> or <a href="">create an account</a> to save) </span></span></span>
+                            <input type="checkbox" name="remember_me">
+                            <span class="checkmark"></span> </label>
+                          </div>
+                          <button class=" cpButton pay cpButton--jumbo cpButton--primary cpButton--custom-width">
+                            <span class=" ">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="15" viewBox="0 0 12 15" class="lock-icon">
+                                <g fill="none" fill-rule="evenodd" transform="translate(1 1)">
+                                  <rect width="10.165" height="9" y="4" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" rx="2"></rect>
+                                  <path stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.132 4V2.963C8.132 1.327 6.767 0 5.082 0 3.399 0 2.034 1.327 2.034 2.963V4"></path>
+                                  <path stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.083 8v2"></path>
+                                  <ellipse cx="5.083" cy="8" fill="#ffffff" fill-rule="nonzero" rx="1.017" ry="1"></ellipse>
+                                </g>
+                              </svg>
+                              <span class="jsx-2357038070 caption"><span class="amount-to-pay">Pay</span></span><span class="jsx-2357038070 amount-to-pay">$10.00</span>
+                            </span>
+                          </button>
+                        </form>
+                         <div class=" message">
+                          <p class=" cp-link"><span>By selecting <b>Pay</b>, I accept the <a class="termsOfServiceFooter" href="/payor-terms-of-service" target="_blank">Terms of Service</a> and have read and acknowledge the <a href="" target="_blank">Privacy Statement</a>. I also allow Intuit to charge $10.00 to my card on July 1, 2019.</span></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div-->
+                  <!--div role="tabpanel" class="tab-pane fade" id="Creditcard">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <form>
+                          <div class="form-group">
+                            <label>Name on card</label>
+                            <input type="text" class="form-control" id="" placeholder="Sam Smith">
+                          </div>
+                          <div class="form-group">
+                            <label>Card number</label>
+                            <input type="text" class="form-control" id="" placeholder="1234 5678 9000 0000">
+                          </div>
+                          <div class="row">
+                            <div class="col-sm-4">
+                              <div class="form-group">
+                                <label>Exp date</label>
+                                <input type="text" class="form-control" id="" placeholder="MM/YY">
+                              </div>
+                            </div>
+                            <div class="col-sm-3">
+                              <div class="form-group">
+                                <label>CVV code</label>
+                                <input type="text" class="form-control" id="" placeholder="cvc">
+                              </div>
+                            </div>
+                            <div class="col-sm-5">
+                              <div class="form-group">
+                                <label>Postal code</label>
+                                <input type="text" class="form-control" id="" placeholder="12345">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="radio-lbl">
+                            <label class="check "><span style="font-size: 12px; color: rgb(74, 74, 74);"><span>Save payment method to pay faster next time</span><span class="cp-link">&nbsp;<span>(<a href="">sign in</a> or <a href="">create an account</a> to save) </span></span></span>
+                            <input type="checkbox" name="remember_me">
+                            <span class="checkmark"></span> </label>
+                          </div>
+                          <button class=" cpButton pay cpButton--jumbo cpButton--primary cpButton--custom-width">
+                            <span class=" ">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="15" viewBox="0 0 12 15" class="lock-icon">
+                                <g fill="none" fill-rule="evenodd" transform="translate(1 1)">
+                                  <rect width="10.165" height="9" y="4" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" rx="2"></rect>
+                                  <path stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.132 4V2.963C8.132 1.327 6.767 0 5.082 0 3.399 0 2.034 1.327 2.034 2.963V4"></path>
+                                  <path stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.083 8v2"></path>
+                                  <ellipse cx="5.083" cy="8" fill="#ffffff" fill-rule="nonzero" rx="1.017" ry="1"></ellipse>
+                                </g>
+                              </svg>
+                              <span class="jsx-2357038070 caption"><span class="amount-to-pay">Pay</span></span><span class="jsx-2357038070 amount-to-pay">$10.00</span>
+                            </span>
+                          </button>
+                        </form>
+                        <div class=" message">
+                          <p class=" cp-link"><span>By selecting <b>Pay</b>, I accept the <a class="termsOfServiceFooter" href="/payor-terms-of-service" target="_blank">Terms of Service</a> and have read and acknowledge the <a href="" target="_blank">Privacy Statement</a>. I also allow Intuit to charge $10.00 to my card on July 1, 2019.</span></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div-->
+                  <div class="bugs">
+                    <ul class="">
+                      <li><img src="https://static.cns-icn-prod.a.intuit.com/visa.bug.svg"></li>
+                      <li><img src="https://static.cns-icn-prod.a.intuit.com/mastercard.bug.svg"></li>
+                      <li><img src="https://static.cns-icn-prod.a.intuit.com/discover.bug.svg"></li>
+                      <li><img src="https://static.cns-icn-prod.a.intuit.com/american-express.bug.svg"></li>
+                      <li><img src="https://static.cns-icn-prod.a.intuit.com/bank.bug.svg"></li>
+                    </ul>
+                  </div>
+                  <div class="main-footer"><span>© 2019 iPos CRM Inc. All rights reserved.</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-5">
+          <aside class="side-panel">
+            <div class="card-wrapper">
+              <div class="pdf-preview-wrapper">
+                <div class="pdf-preview-thumbnail-wrapper">
+                  <div class="pdf-img">
+                    <img src="/assets/pdf-icon.png" alt="PDF Preview" class="pdf-icon-main">
+                    <div class="overlay">
+                      <%= link_to "View invoice",invoice_path(@invoice,format: :pdf), class: "btn pdf-preview-btn" %>
+                      <div class="pdf-preview-actions">
+                        <%= link_to invoice_download_path(@invoice,format: :pdf) do %>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+                            <g fill="none" fill-rule="evenodd" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round">
+                              <path stroke-width="2" d="M8.558 1h5.8a1 1 0 0 1 1 1v5.902h2.188a1 1 0 0 1 .642 1.767l-5.417 4.54a2 2 0 0 1-2.602-.029L5 9.655a1 1 0 0 1 .659-1.753h1.898V2a1 1 0 0 1 1-1z"></path>
+                              <path fill="#FFF" d="M1 20h20.296v1.255H1z"></path>
+                            </g>
+                          </svg>
+                          Download
+                        <% end %>
+                        <button type="button" class="">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+                            <g fill="none" fill-rule="evenodd" transform="translate(1 1)">
+                              <path stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7V1a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v6"></path>
+                              <circle cx="3" cy="10" r="1" fill="#FFF"></circle>
+                              <path stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16H2a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-.653"></path>
+                              <rect width="4" height="10" x="8.003" y="11.008" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" rx="2" transform="rotate(-89.91 10.003 16.008)"></rect>
+                            </g>
+                          </svg>
+                          Print
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="side-panel-hr">
+                  <hr>
+                </div>
+                <div style="padding: 10px 18px;">
+                  <div class=" flex-column">
+                    <div class=" space-between flex-row">
+                      <span class=" label"><span>Invoice</span></span>
+                      <label class=" label label-data right trunc"><%=  @invoice.invoice_no %></label>
+                    </div>
+                    <div class=" space-between flex-row">
+                      <span class=" label"><span>Due date</span></span>
+                      <label class=" label label-data right trunc">
+                      <span><%= @invoice.due_date&.strftime("%m/%d/%Y") %></span></label>
+                    </div>
+                    <div class=" space-between flex-row"><span class=" label"><span>Invoice total</span></span><label class=" label label-data right trunc"><span>$<%= @invoice.amount_with_tax %></span></label></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-wrapper" style="margin-bottom:20px;">
+            <div style="padding: 10px 18px;position: relative;">
+              <div class=""><%= @invoice.sales_person.company.name %></div>
+              <div class="c cp-link" style="font-size:14px;"><span>Email</span><span>:&nbsp;</span><a href="mailto:<%= @invoice.sales_person.company.email %>?subject=Question about invoice <%= @invoice.invoice_no %>" class="contact contact-link"><%= @invoice.sales_person.company.email %></a></div>
+            </div>
+            </div>
+            <a href="" class=""><img src="/assets/iPos-logo.svg" class=""></a>
+            <div class=" lock-wrapper no-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="13" viewBox="0 0 12 15">
+                <g fill="none" fill-rule="evenodd" transform="translate(1 1)">
+                  <rect width="10.165" height="9" y="4" stroke="#393a3d" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" rx="2"></rect>
+                  <path stroke="#393a3d" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M8.132 4V2.963C8.132 1.327 6.767 0 5.082 0 3.399 0 2.034 1.327 2.034 2.963V4"></path>
+                  <path stroke="#393a3d" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5.083 8v2"></path>
+                  <ellipse cx="5.083" cy="8" fill="#393a3d" fill-rule="nonzero" rx="1.017" ry="1"></ellipse>
+                </g>
+              </svg>
+              <span class=" msg"><span class="lockwrapper-msg">Information is protected and kept confidential</span></span>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <div id="paymet-success"></div>
+
+    <div class="loading-overlay" id="img-loder"></div>
+    <div class="loading-overlay-image-container">
+      <%= image_tag("loader.gif", class: "loading-overlay-img") %>
+    </div>
+
+  </body>
+ 
+ <script>
+  $(document).ready(function() {
+    //$('#img-loder').addClass('hide');
+    $(".dropdown-toggle").dropdown();
+    $('[data-toggle="tooltip"]').tooltip();
+
+    $('#submit-form').click(function(e){
+      //var form = this;
+      e.preventDefault();
+      $('.loading-overlay').css('display', 'block');
+      $('.loading-overlay-image-container').css('display', 'block');
+
+      setTimeout(function () {
+        //$('#img-loder').removeClass('hide');
+        // $('.loading-overlay').css('display', 'block');
+        // $('.loading-overlay-image-container').css('display', 'block');
+        $('#from-submit').submit();
+      }, 2000); // in milliseconds
+      //$('#img-loder').addClass('hide');
+    });
+  });
+</script>
+</html>

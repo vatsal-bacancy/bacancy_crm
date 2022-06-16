@@ -1,0 +1,25 @@
+<%= render 'components/site_content' do %>
+  <% content_for :head do %>
+    <div class="l-menu">
+      <span class="main-menu-sitecontent">
+        <%= link_to 'Products', purchase_order_products_path, class: 'common-link' %>
+      </span>
+      <span class="sub-menu-sitecontent m-x-10"><i class="fa fa-angle-right"></i></span>
+      <span class="sub-menu-sitecontent">New Product</span>
+    </div>
+  <% end %>
+  <% content_for :body do %>
+    <%= render 'components/white_body' do %>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="Inventory-header">
+            <h1>New Product</h1>
+          </div>
+        </div>
+      </div>
+      <div class="row mt20">
+        <%= render 'form', product: @product %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

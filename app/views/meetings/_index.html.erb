@@ -1,0 +1,5 @@
+<% if current_user.google_access_token %>
+  <%= render 'meetings/list', meetingable: meetingable %>
+<% else %>
+  <%= render 'meetings/connect', meetingable: meetingable %>
+<% end %>

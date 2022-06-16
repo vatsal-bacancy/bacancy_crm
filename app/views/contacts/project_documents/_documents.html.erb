@@ -1,0 +1,157 @@
+<div role="tabpanel" class="tab-pane fade in active" id="tab1">
+  <div class="col-md-12">
+    <div class="dynmic-tab-div-header dynmic-tab-sub-header inner-header mt15">
+      <div class="d-flex">
+        <div class="heading-wrapper">
+          <p class="heading">Files for this project</p>
+        </div>
+        <div class="pull-right">
+          <a href="javascript:void(0)" class="m-r-10" id="list-view-link">List View</a>
+          <a href="javascript:void(0)" class="" id="grid-view-link"> Image-grid view</a>
+          <%#= link_to "New Message", new_project_message_path(project_id: @project.id), remote: true %>
+        </div>
+      </div>
+    </div>
+
+    <!--   list view   -->
+    <div class="site-content-data pr15 pl15 list-view">
+      <div class="row cl-both" >
+        <div class="col-sm-5">
+          <div class="d-flex flex-align-center cm-dasboard-serach">
+            <!--<label class="blue-font">Show </label><select name="leads_length" aria-controls="leads" class="form-control"><option value="50">50</option><option value="100">100</option></select> <label>entries</label>-->
+          </div>
+        </div>
+        <div class="col-sm-7">
+          <div class="d-flex flex-align-center cm-dasboard-serach pull-right">
+            <label class="">Search</label>
+            <input type="search" class="form-control" placeholder="Search here" aria-controls="leads" id="search-document">
+          </div>
+        </div>
+      </div>
+
+
+      <div id="file-display">
+        <% document(object).each do |date,data| %>
+          
+            <div class="row mt10">
+              <div class="col-sm-12">
+                <h2 class="date-heading mt15">
+                  <span>
+                    <%= date == Date.today ? "Today" : date&.strftime("%m/%d/%Y") %>
+                  </span>
+                </h2>
+              </div>
+            </div>
+
+            <% data.each do |hash| %>
+              <% key = hash.keys[0] %> <!-- Project,Message -->
+              <% value = hash.values %>
+              <% document = value[0].document %>
+              <div class="">
+              <div class="row mt15 file-search">
+                <div class="col-sm-12">
+                  <div class="d-flex d-flex-wrap">
+                    <div class="file-img">
+                      <% extension = document.attachment.try(:file).try(:extension).try(:downcase) %>
+                      <% if extension == "jpg" || extension == "png" || extension == "jpeg"  %>
+                        <%= image_tag document.attachment.url, :size => "35x35" %>
+                      <% elsif extension == "pdf" %>
+                        <img src="/assets/icon_PDF_big.png" class="file-icon" width="35" height="35">
+                      <% else %>
+                        <img src="/assets/icon_Generic_big.png" class="file-icon" width="35" height="35">
+                      <% end %>
+                    </div>
+                    <div class="file-data">
+                      <h1><%= link_to document.attachment.file.filename, document.attachment.url, target: '_blank', class: "document_name" %> </h1>
+                      <div class="message_data">
+                        <% title = key.class.name == 'Project' ?   "#{key.name}" : key.messageable_type == "Project" ?  "#{key.title}" : "Re:#{key.messageable.title}"  %>
+                        <% url = key.class.name == 'Project' ?   contacts_project_path(key) : key.messageable_type == "Project" ?  contacts_project_message_path( key.messageable_id , key.id) : contacts_project_message_path( key.messageable.messageable_id , key.messageable_id ) %>
+                        <%= link_to  title, url, class: "message_title msg-link"  %>
+                        <span class="dash">—</span>
+                        <span class="wordbreak inlinep">
+                          <%= truncate(key.description, :length=>45, escape: false) %>
+                        </span>
+                      </div>
+                      <h3> by <%= document.resourcable.fullname  %> on <%= document.created_at.strftime("%m/%d/%Y, %I:%M %p") %></h3>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </div>
+            <% end %>
+        <% end %>
+      </div>
+    </div>
+
+
+    <!--   gris view   -->
+    <div class="site-content-data pr15 pl15 m-t-20 grid-view hidden">
+      <% document(object).each do |date,data| %>
+        <div id="" class="">
+          <% data.each do |hash| %>
+            <% key = hash.keys[0] %> <!-- Project,Message -->
+            <% value = hash.values %>
+            <% document = value[0].document %>
+
+            <% extension = document.attachment.try(:file).try(:extension).try(:downcase) %>
+            <% if extension == "jpg" || extension == "png" || extension == "jpeg"  %>
+              <div class=" mt15">
+                <div class="col-md-3 file-grid">
+                  <center>
+                    <div class="d-flex d-flex-wrap text-center">
+                      <div class="file-img-grid">
+                        <%= image_tag document.attachment.url, :size => "" %>
+                      </div>
+                      <div class="file-data-grid">
+                        <h1 class="document-name"><%= link_to document.attachment.file.filename.truncate(10), document.attachment.url, target: '_blank', class: 'common-link' %> </h1>
+                        <div class='document-detail'>
+                          <% title = key.class.name == 'Project' ?   "#{key.name}" : key.messageable_type == "Project" ?  "#{key.title}" : "Re:#{key.messageable.title}"  %>
+                          <% url = key.class.name == 'Project' ?   contacts_project_path(key) : key.messageable_type == "Project" ?  contacts_project_message_path( key.messageable_id , key.id) : contacts_project_message_path( key.messageable.messageable_id , key.messageable_id ) %>
+                          <%= link_to  title,  url, class: "message_title msg-link"  %>
+                          <span class="dash">—</span>
+                          <span class="wordbreak inlinep">
+                            <%= truncate(key.description, :length=>25, escape: false) %>
+                          </span>
+                        </div>
+                        <h3 class='document-detail'> by <%= document.resourcable.fullname  %> on <%= document.created_at.strftime("%m/%d/%Y, %I:%M %p") %></h3>
+                      </div>
+                    </div>
+                  </center>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      <%end%>
+      
+    </div> 
+
+
+
+  </div>
+</div>
+<script>
+$(document).ready(function(){
+  $view = "";
+  $("#search-document").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#file-display .file-search").filter(function() {
+      $(this).toggle($('.document_name',this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+  $('#grid-view-link').on('click', function(){
+    $('.grid-view').removeClass('hidden');
+    $('.list-view').addClass('hidden');
+    $view = 'grid-view-link';
+  });
+  $('#list-view-link').on('click', function(){
+    $('.list-view').removeClass('hidden');
+    $('.grid-view').addClass('hidden');
+    $view = 'list-view-link';
+  });
+  if($view == 'grid-view-link'){
+    $('.grid-view').removeClass('hidden');
+    $('.list-view').addClass('hidden');
+  }
+});
+</script>

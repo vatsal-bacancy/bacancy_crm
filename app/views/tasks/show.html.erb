@@ -1,0 +1,97 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <%= link_to tasks_path, class: "main-menu-sitecontent" do %> Task <% end %>
+            <span class="sub-menu-sitecontent m-x-10"> <i class="fa fa-angle-right"></i> </span>
+            <%= link_to @task.taskable, class: "sub-menu-sitecontent" do %><%= @task.get_object_name %> <% end %>
+          </div>
+
+          <span class='l-menu pull-right'> <%= link_to edit_task_path(@task),remote: true	, class: 'btn btn-primary btn-sm back-btn-margin' do %> Edit <% end %></span>
+
+          <% if params[:object].present? %>
+            <span class='l-menu pull-right'> <%= link_to [@task.taskable, task: "task"], class: 'btn btn-success btn-sm back-btn-margin' do %> Back <% end %></span>
+          <% else %>
+            <span class='l-menu pull-right'><a href="<%= tasks_path %>" class='btn btn-success btn-sm back-btn-margin'>Back</a></span>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div id='task-edit'>
+          <%= render partial: "task_details", locals: {klass: @klass, task: @task} %>
+        </div>
+        <%
+=begin%>
+ <% @klass.groups.each do |group|%>
+          <div class="dynmic-tab-div">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="dynmic-tab-div-header">
+                  <span class="heading"><%= group.label%></span>
+                  <div class="pull-right">
+                  </div>
+                </div>
+                <div class="dynmic-tab-div-data">
+                  <div class="row">
+                    <% group.fields.each do |field|%>
+                      <div class="col-sm-6 border-right">
+                        <div class="row">
+                          <div class="col-md-4">
+                            <span class="info-title "><%= field.label%></span>
+                          </div>
+                          <div class="col-md-6 editable" data-id="<%=@task.id %>" data-klass='Lead' data-field="<%= field.name%>" data-deletable="<%= field.deletable%>" >
+                            <span class="info-dynamic-data value">
+                              <% case field.name %>
+                              <% when  "user_id" %>
+                                <%= @task.user.fullname %>
+                              <% when  "due_to" %>
+                                <%= @task.send(field.name)&.strftime("%m/%d/%Y, %I:%M %p") %>
+                              <% when  "email_reminder" %>
+                                <%= @task.send(field.name)&.strftime("%m/%d/%Y, %I:%M %p") %>
+                              <% when "attachment"%>
+                                <% if @task.documents.present? %>
+                                  <% @task.documents.each do |attach| %>
+                                    <%#= link_to attach.attachment.url, target: 'blank', title: attach.attachment.file.filename %>
+                                    <%= link_to attach.attachment.url, target: 'blank', class: 'dis-block common-link m-t-5',  title: attach.attachment.file.filename do %>
+                                      <i class="fa fa-file" aria-hidden="true"></i>
+                                      <%= attach.attachment.file.filename %>
+                                    <%end%>
+                                  <% end %>
+                                <% else %>
+                                  No Files
+                                <% end %>
+                              <% else %>
+                                <% if field.column_type == "Text Area HTML" %>
+                                  <%= @task.send(field.name).html_safe %>
+                                <% else %>
+                                <%= @task.send(field.name) %>
+                                <% end %>
+                              <% end %>
+                            </span>
+                            <div class="form-group field hidden">
+                                <%#= render partial: 'forms/field', locals: { f: f, field_name: field.name, field_label: nil, column_type: field.column_type, custom: field.custom, have_custom_value: field.have_custom_value, data: data, field: field, value: lead.send(field.name), disp_lable: false } %>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <%end%>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <%end%> 
+<%
+=end%>
+          <%#= link_to "Back", tasks_path,class: "btn btn-primary"  %>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="task-show" ></div>

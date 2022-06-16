@@ -1,0 +1,32 @@
+<%= render 'components/site_content' do %>
+  <% content_for :body do %>
+    <div class="row">
+      <div class="col-md-12">
+        <ul id="myTabs" class="nav nav-pills nav-justified bpro-tab" role="tablist" data-tabs="tabs">
+          <li class="active"><a href="#summary-tab" data-toggle="tab">Summary</a></li>
+          <% if checked_permission?(current_user, @klass_list['Contact'], @action_list['read']) %>
+            <li><a href="#contact" data-toggle="tab">Contacts</a></li>
+          <% end %>
+          <span class='pull-right'><a href="<%= vendors_path %>" class='btn btn-success back-btn-margin'>Back</a></span>
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade in active" id="summary-tab">
+          <div class="col-sm-8" data-vendor-summary>
+            <%= render 'summary', vendor: @vendor, klass: @klass %>
+          </div>
+        </div>
+        <% if checked_permission?(current_user, @klass_list['Contact'], @action_list['read']) %>
+          <div role="tabpanel" class="tab-pane fade" id="contact">
+            <div class="col-md-12 list">
+              <%= render partial: 'contacts/contacts', locals: {contactable: @vendor} %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+<div id="modalContainer" class='modal-right'></div>

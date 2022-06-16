@@ -1,0 +1,27 @@
+// Place all the styles related to the settings controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+#sortable { list-style-type: none; margin: 0; padding: 0; width: 100%; }
+#sortable li { margin: 0 3px 3px 3px; padding: 0.6em; padding-left: 2.5em; font-size: 2.4em; height: 280px; }
+#sortable li span { position: absolute; margin-left: -1.3em; }
+
+
+.setting-shortcut-wrapper{padding:10px;color:#000;position:realtive;background-color: #fff;margin:0px 15px;}
+.setting-shortcut-wrapper:hover{background:#F3F3F4;}
+.setting-shortcut-wrapper a{color:#545454;text-decoration: none;}
+.setting-shortcut-wrapper a:hover{color:#545454;text-decoration: none;}
+.setting-shortcut-wrapper:hover .close-icon{display:block;}
+
+.close-icon{position:absolute;top:5px;right:25px;display:none;}
+.row-eq-height{display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; }
+.setting-title{font-size: 20px;
+    color: #1a3e6f;
+    font-weight: 500;}
+
+/* media query */
+
+@media (max-width:767px) {
+.row-eq-height { flex-direction: column; }
+}

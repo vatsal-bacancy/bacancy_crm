@@ -1,0 +1,149 @@
+<div class="site-main">
+  <%= render 'layouts/sidebar'%>
+  <div class="site-content">
+    <div class="site-content-head">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="l-menu">
+            <span class="main-menu-sitecontent">Invoices</span>
+          </div>
+          <div class="pull-right">
+            <%= link_to new_client_path, class: 'site-content-head-btn', remote: true do %>
+              Add Company/ Customer
+            <%end%>
+            <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item" data-remote="true" href="">Edit Column</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="">Edit Properties</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="site-content-data ">
+      <%= form_for @invoice,local: true, class: "form-inline", html: { multipart: true } do |f| %>
+        <%= render partial: "form", locals: { f: f, klass: @klass, invoice: @invoice } %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function() {
+    $document_ids =[];
+
+    $("a.add_fields").data("association-insertion-method", 'append').data("association-insertion-node", '.invoice-table');
+
+    $('.invoice-table').on('change', '.qty', function(){
+      var tr = $(this).closest('tr');
+      var amt = parseFloat(tr.find('.qty').val()) * parseFloat(tr.find('.rate').val());
+      toFixedFloat(tr.find('.amount'), amt);
+    });
+    $('.invoice-table').on('change', '.rate', function(){
+      toFixedFloat($(this), $(this).val());
+      var tr = $(this).closest('tr');
+      var amt = parseFloat(tr.find('.qty').val()) * parseFloat(tr.find('.rate').val());
+      toFixedFloat(tr.find('.amount'), amt);
+    });
+    $('.invoice-table').on('change', '.amount', function(){
+      toFixedFloat($(this), $(this).val());
+      var tr = $(this).closest('tr');
+      var rate = parseFloat($(this).val())/parseFloat(tr.find('.qty').val());
+      toFixedFloat(tr.find('.rate'), rate);
+    });
+    $('.invoice-table').on('change', '.qty, .rate, .amount, .tax', function(){
+      refreshAmount();
+    });
+    $('.invoice-table').on('cocoon:after-insert', function(e, insertedItem, originalEvent) {
+      $('table.invoice-table tr:last-child td:nth-child(1)').html($(this).find('tr:visible').length - 1);
+      refresh_select2(insertedItem.find('.inventory_select'), insertedItem.find('.tax'));
+    });
+    $('.invoice-table').on('cocoon:after-remove', function(e, removedItem, originalEvent) {
+      refreshAmount();
+    });
+    refresh_select2($('.inventory_select'), $('.tax'));
+
+     
+     $(".remove-file").on('click', function(){
+      var id = $(this).data('id');
+      var object_id = "<%= @invoice.id %>"
+      var object_type = "<%= @invoice.class.name %>"
+      $.ajax({
+        url: "/documents/" + id + "?object_id=" + object_id + ";object_type=" + object_type,
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: 'delete',
+        data: {
+          id: id,
+          file_remove: true
+        },
+        dataType: "script",
+        success: function(result){
+
+        }
+      });
+      $(this).siblings(".file-name").addClass("hidden");
+      $(this).addClass("hidden");
+    });
+  });
+  function refresh_select2(inventoryItem, taxItem){
+    inventoryItem.select2({
+      theme: 'bootstrap',
+      ajax: {
+        url: '<%= inventories_invoices_path %>',
+        delay: 250,
+        processResults: function(data) {
+          data.results.unshift({id: "null", text: '+ New Inventory', newTag: true});
+          return data;
+        }
+      },
+      placeholder: 'Select inventory',
+      width: "auto"
+    }).on('select2:select', function(e) {
+      if(e.params.data.newTag){
+        $.ajax({
+          url: "<%= new_inventory_path %>",
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          type: 'GET',
+          data: {
+            inventory_select_html_id: $(this).attr('id')
+          },
+          dataType: "script"
+        });
+        return;
+      }
+      var tr = $(this).closest('tr');
+      tr.find('.rate').val(e.params.data.sell_price).trigger('change');
+      tr.find('.qty').val(1).trigger('change');
+      tr.find('.tax').val((e.params.data.tax).toString()).trigger('change');
+    }).on('select2:closing', function(e){
+      //to avoid selection of "+ New Inventory"
+      if(e.params.args.originalSelect2Event && e.params.args.originalSelect2Event.data.newTag) {
+        $(e.target).val('').trigger('change');
+      }
+    });
+    taxItem.select2({ theme: 'bootstrap', placeholder: "Select tax", width: "auto" });
+  }
+  function refreshAmount(){
+    var total = 0.00;
+    $('.nested-fields').each(function(){
+      //ignore deleted inventory
+      if($(this).is(':visible')) {
+        var amt = parseFloat($(this).find('.qty').val()) * parseFloat($(this).find('.rate').val());
+        if(parseFloat($(this).find('.tax').find(':selected').val())){
+          amt += amt * parseFloat($(this).find('.tax').find(':selected').val())/100;
+        }
+        else{
+          amt += amt * 0/100;
+        }
+        total += amt;
+      }
+    });
+    $('#invoice_total, #invoice_balance_due').html((total).toFixed(2));
+  }
+  function toFixedFloat(ele, val){
+    ele.val((parseFloat(val)).toFixed(2));
+  }
+  refreshAmount();
+</script>

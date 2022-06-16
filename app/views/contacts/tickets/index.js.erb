@@ -1,0 +1,1 @@
+$("#ticket-list, #ticket-all").html("<%= escape_javascript(render partial: 'ticket_list', locals: {object: @object, ticket_fields: @ticket_fields, tickets: @tickets}) %>")

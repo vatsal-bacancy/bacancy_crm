@@ -1,0 +1,437 @@
+<div class="site-left-sidebar">
+  <div class="sidebar-backdrop"></div>
+  <div class="custom-scrollbar">
+    <ul class="sidebar-menu">
+      <li class="with-sub dropdown-none <%= active_menu_class(:dashboard) %>">
+        <a href="<%= root_path%>" aria-haspopup="true">
+          <span class="menu-icon">
+            <i class="fa" aria-hidden="true">
+              <%= image_tag("sidebar/ic_dashboard.svg") %>
+            </i>
+          </span>
+          <span class="menu-text"> Dashboard</span>
+        </a>
+        <ul class="sidebar-submenu collapse">
+          <a href="<%= root_path%>" aria-haspopup="true">
+            <li class="menu-subtitle menu-subtitle-nodropdown">Dashboard</li>
+          </a>
+        </ul>
+      </li>
+
+      <% if checked_permission?(current_user, @klass_list["Lead"], @action_list["read"]) || checked_permission?(current_user, @klass_list["Contact"], @action_list["read"]) %>
+        <li class="with-sub <%= active_menu_class(:leads) %>">
+          <a href="javascript:void(0)" aria-haspopup="true">
+            <span class="menu-icon">
+              <i class="fa " aria-hidden="true">
+                <%= image_tag("sidebar/ic_employees.svg") %>
+              </i>
+            </span>
+            <span class="menu-text">Leads</span>
+          </a>
+          <ul class="sidebar-submenu <%= active_menu_dropdown_class(:leads) %>">
+            <li class="menu-subtitle">Leads</li>
+            <li>
+              <% if checked_permission?(current_user, @klass_list["Lead"], @action_list["read"]) %>
+                <a href="<%= leads_path %>" aria-haspopup="true" class="<%= active_submenu_item_class(:lead_company) %>">
+                  <%# <span class="menu-icon">
+                    <i class="fa fa-address-card-o" aria-hidden="true"></i>
+                  </span> %>
+                  <span class="menu-text">Lead Company</span>
+                </a>
+              <%end%>
+              <%if checked_permission?(current_user, @klass_list["Contact"], @action_list["read"]) %>
+                <a href="<%= lead_contacts_contacts_path %>" aria-haspopup="true" class="<%= active_submenu_item_class(:lead_contacts) %>">
+                  <%# <span class="menu-icon">
+                    <i class="fa fa-address-card-o" aria-hidden="true"></i>
+                  </span> %>
+                  <span class="menu-text">Lead Contacts</span>
+                </a>
+              <%end%>
+            </li>
+          </ul>
+        </li>
+      <% end %>
+
+      <% if checked_permission?(current_user, @klass_list["Client"], @action_list["read"]) || checked_permission?(current_user, @klass_list["Contact"], @action_list["read"]) %>
+        <li  class="with-sub <%= active_menu_class(:clients) %>">
+          <a href="javascript:void(0)" aria-haspopup="true" >
+            <span class="menu-icon">
+              <i class="fa " aria-hidden="true">
+                <%= image_tag("sidebar/ic_customers.svg") %>
+              </i>
+            </span>
+            <span class="menu-text">Clients</span>
+          </a>
+          <ul class="sidebar-submenu <%= active_menu_dropdown_class(:clients) %>">
+            <li class="menu-subtitle">Clients</li>
+            <% if checked_permission?(current_user, @klass_list["Client"], @action_list["read"]) %>
+
+              <li>
+                <a href="<%= clients_path%>" aria-haspopup="true" class="<%= active_submenu_item_class(:client_company) %>">
+                  <%# <span class="menu-icon">
+                    <i class="fa fa-building-o" aria-hidden="true"></i>
+                  </span> %>
+                  <span class="menu-text"> Client Company</span>
+                </a>
+              </li>
+            <%end%>
+            <% if checked_permission?(current_user, @klass_list["Contact"], @action_list["read"]) %>
+              <li>
+                <a href="<%= client_contacts_contacts_path%>" aria-haspopup="true" class="<%= active_submenu_item_class(:client_contacts) %>">
+                  <%# <span class="menu-icon">
+                    <i class="fa fa-building-o" aria-hidden="true"></i>
+                  </span> %>
+                  <span class="menu-text"> Client Contacts</span>
+                </a>
+              </li>
+            <%end%>
+            <li>
+              <a href="<%= status_board_clients_path %>" aria-haspopup="true" class="<%= active_submenu_production_item_class(:production_summary) %>">
+                  <%# <span class="menu-icon">
+                    <i class="fa " aria-hidden="true">
+                     
+                    </i>
+                  </span> %>
+                <span class="menu-text">Production Summary</span>
+              </a>
+            </li>
+            <li>
+              <a href="<%= status_board_clients_path(tv: true) %>" aria-haspopup="true" class="<%= active_submenu_production_item_class(:production_summary_tv) %>">
+                <%# <span class="menu-icon">
+                  <i class="fa fa-calendar" aria-hidden="true"></i>
+                </span> %>
+                <span class="menu-text">Production Summary (TV)</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      <% end %>
+
+      <li class="with-sub <%= active_menu_class(:vendors) %>">
+        <a href="javascript:void(0)" aria-haspopup="true">
+          <span class="menu-icon">
+            <i class="fa " aria-hidden="true">
+            <%= image_tag("sidebar/ic_driver.svg") %>
+            </i>
+          </span>
+          <span class="menu-text">Vendors</span>
+        </a>
+        <ul class="sidebar-submenu <%= active_menu_dropdown_class(:vendors) %>">
+          <li class="menu-subtitle">Vendors</li>
+          <li>
+            <a href="<%= vendors_path %>" aria-haspopup="true" class="<%= active_submenu_item_class(:vendor_company) %>">
+              <%# <span class="menu-icon">
+                <i class="fa fa-address-card-o" aria-hidden="true"></i>
+              </span> %>
+              <span class="menu-text">Vendor Company</span>
+            </a>
+          </li>
+          <li>
+            <a href="<%= vendor_contacts_contacts_path %>" aria-haspopup="true" class="<%= active_submenu_item_class(:vendor_contacts) %>">
+              <%# <span class="menu-icon">
+                <i class="fa fa-address-card-o" aria-hidden="true"></i>
+              </span> %>
+              <span class="menu-text">Vendor Contacts</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <% if checked_permission?(current_user, @klass_list["Ticket"], @action_list["read"]) %>
+        <li class="with-sub <%= active_menu_class(:support) %>">
+          <a href="javascript:void(0)" aria-haspopup="true">
+            <span class="menu-icon">
+            <i class="fa " aria-hidden="true">
+              <%= image_tag("sidebar/ic_support.svg") %>
+            </i>
+            </span>
+            <span class="menu-text"> Support</span>
+          </a>
+          <ul class="sidebar-submenu <%= active_menu_dropdown_class(:support) %>">
+            <li class="menu-subtitle">Support</li>
+            <li>
+               <a href="<%= tickets_path %>" aria-haspopup="true" class="<%= active_submenu_item_class(:tickets) %>">
+               <%# <span class="menu-icon"><i class="fa fa-ticket" aria-hidden="true"></i></span> %>
+               <span class="menu-text"> Tickets</span>
+               </a>
+            </li>
+          </ul>
+        </li>
+      <%end%>
+
+      <% if checked_permission?(current_user, @klass_list[ProjectManagement::Project.klass_name], @action_list["read"]) %>
+        <li class="with-sub <%= active_menu_class(:projects) %>">
+          <a href="javascript:void(0)" aria-haspopup="true">
+            <span class="menu-icon">
+            <i class="fa icon-box blue-background" aria-hidden="true">
+              <%= image_tag("sidebar/business_type.svg") %>
+            </i>
+            </span>
+            <span class="menu-text">Projects</span>
+          </a>
+          <ul class="sidebar-submenu <%= active_menu_dropdown_class(:projects) %>">
+            <li class="menu-subtitle">Projects</li>
+            <li>
+              <a href="<%= project_management_projects_path %>" aria-haspopup="true" class="<%= active_submenu_item_class(:projects_dashboard) %>">
+                <%# <span class="menu-icon"><i class="fa fa-sitemap" aria-hidden="true"></i></span> %>
+                <span class="menu-text">Projects Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a href="<%= list_project_management_projects_path %>" aria-haspopup="true" class="<%= active_submenu_item_class(:projects) %>">
+                <%# <span class="menu-icon"><i class="fa fa-sitemap" aria-hidden="true"></i></span> %>
+                <span class="menu-text">Projects</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      <% end %>
+
+      <% if checked_permission?(current_user, @klass_list["Document"], @action_list["read"]) %>
+        <li class="with-sub <%= active_menu_class(:file_drive) %>">
+          <a href="javascript:void(0)" aria-haspopup="true">
+            <span class="menu-icon">
+              <i class="fa icon-box fa-folder orange-background" aria-hidden="true"></i>
+            </span>
+            <span class="menu-text">File Drive</span>
+          </a>
+          <ul class="sidebar-submenu <%= active_menu_dropdown_class(:file_drive) %>">
+            <li class="menu-subtitle">File Drive</li>
+            <li>
+              <a href="<%= directories_path%>" aria-haspopup="true" class="<%= active_submenu_item_class(:file_drive) %>">
+                <%# <span class="menu-icon"><i class="fa fa-folder" aria-hidden="true"></i></span> %>
+                <span class="menu-text"> File Drive </span>
+              </a>
+            </li>
+            <li>
+              <a href="<%= system_files_directories_path %>" aria-haspopup="true" class="<%= active_submenu_item_class(:system_files) %>">
+                <%# <span class="menu-icon"><i class="fa fa-folder" aria-hidden="true"></i></span> %>
+                <span class="menu-text"> System Files </span>
+              </a>
+            </li>
+
+          </ul>
+        </li>
+      <%end%>
+
+      <li class="with-sub <%= active_menu_class(:ipos_marketing_tools) %>">
+        <a href="javascript:void(0)" aria-haspopup="true">
+          <span class="menu-icon">
+            <i class="fa  main-fa" aria-hidden="true">
+              <%= image_tag("sidebar/ic_marketplace.svg") %>
+            </i>
+          </span>
+          <span class="menu-text">Marketing Tools</span>
+        </a>
+        <ul class="sidebar-submenu <%= active_menu_dropdown_class(:ipos_marketing_tools) %>">
+          <li class="menu-subtitle">Marketplace</li>
+          <li>
+            <a href="<%= ipos_marketing_tools_path %>" aria-haspopup="true" class="<%= active_submenu_item_class(:marketplace) %>">
+              <span class="menu-text">Marketplace</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <% if checked_permission?(current_user, @klass_list["cEmail"], @action_list["read"]) %>
+        <li class="with-sub dropdown-none <%= active_menu_class(:mail_manager) %>">
+          <a href="<%= emails_path %>" aria-haspopup="true">
+            <span class="menu-icon">
+              <i class="fa " aria-hidden="true">
+                <%= image_tag("sidebar/ic_reservation.svg") %>
+              </i>
+            </span>
+            <span class="menu-text"> Mail Manager</span>
+          </a>
+          <ul class="sidebar-submenu <%= active_menu_dropdown_class(:mail_manager) %>">
+            <a href="<%= emails_path%>" aria-haspopup="true" class="<%= active_submenu_item_class(:system_files) %>">
+              <li class="menu-subtitle menu-subtitle-nodropdown">Mail Manager</li>
+            </a>
+          </ul>
+        </li>
+      <% end %>
+      
+      <% if checked_permission?(current_user, @klass_list["Inventory"], @action_list["read"]) %>
+        <li class="with-sub <%= active_menu_class(:inventory) %>">
+          <a href="javascript:void(0)" aria-haspopup="true">
+            <span class="menu-icon">
+              <i class="fa  main-fa" aria-hidden="true">
+                <%= image_tag("sidebar/ic_inventory.svg") %>
+              </i>
+            </span>
+            <span class="menu-text">Inventory</span>
+          </a>
+          <ul class="sidebar-submenu <%= active_menu_dropdown_class(:inventory) %>">
+            <li class="menu-subtitle">Inventory</li>
+            <li>
+              <a href="<%= inventory_groups_path %>" aria-haspopup="true" class="<%= active_submenu_item_class(:inventory_groups) %>">
+                <%#= link_to inventory_groups_path, "aria-haspopup" => "true", class:'pd-inv' do %>
+                <span class="menu-text">Inventory Groups</span>
+                <%# end %>
+              </a>
+            </li>
+            <li>
+              <a href="<%= categories_path %>" aria-haspopup="true" class="<%= active_submenu_item_class(:category_management) %>">
+                <%#= link_to categories_path, "aria-haspopup" => "true", class:'pd-inv' do %>
+                <span class="menu-text">Category Management</span>
+                <%# end %>
+              </a>
+            </li>
+          </ul>
+        </li>
+      <%end%>
+
+      <li class="with-sub <%= active_menu_class(:purchase_order) %>">
+        <a href="javascript:void(0)" aria-haspopup="true">
+          <span class="menu-icon">
+            <i class="fa " aria-hidden="true">
+              <%= image_tag("sidebar/ic_payout_one.svg") %>
+            </i>
+          </span>
+          <span class="menu-text">Purchase Order</span>
+        </a>
+        <ul class="sidebar-submenu <%= active_menu_dropdown_class(:purchase_order) %>">
+          <li class="menu-subtitle">Purchase Order</li>
+          <li>
+            <a href="<%= purchase_order_devices_path %>" aria-haspopup="true" class="<%= active_submenu_item_class(:devices) %>">
+              <%# <span class="menu-icon">
+                <i class="fa fa-laptop" aria-hidden="true"></i>
+              </span> %>
+              <span class="menu-text">Devices</span>
+            </a>
+            <a href="<%= purchase_order_products_path %>" aria-haspopup="true" class="<%= active_submenu_item_class(:products) %>">
+              <%# <span class="menu-icon">
+                <i class="fa fa-laptop" aria-hidden="true"></i>
+              </span> %>
+              <span class="menu-text">Products</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <% if checked_permission?(current_user, @klass_list["Invoice"], @action_list["read"]) %>
+        <li class="with-sub <%= active_menu_class(:invoice) %>">
+          <a href="javascript:void(0)" aria-haspopup="true">
+            <span class="menu-icon">
+              <i class="fa" aria-hidden="true">
+                <%= image_tag("sidebar/ic_report.svg") %>
+              </i>
+            </span>
+            <span class="menu-text"> Invoice</span>
+          </a>
+          <ul class="sidebar-submenu <%= active_menu_dropdown_class(:invoice) %>">
+            <li class="menu-subtitle">Invoice</li>
+            <li>
+              <a href="<%= invoices_path %>" aria-haspopup="true" class="<%= active_submenu_item_class(:invoices) %>">
+              <%#= link_to invoices_path, "aria-haspopup" => "true", style: "display: inline-block;margin-top:-20px;", class:'pd-inv' do %>
+                <span class="menu-text">Invoices</span>
+              <%# end %>
+              </a>
+            </li>
+          </ul>
+        </li>
+      <%end%>
+
+      <li class="with-sub <%= active_menu_class(:kpi) %>">
+        <a href="<%= kpis_path %>" aria-haspopup="true">
+          <span class="menu-icon">
+            <i class="fa fa-line-chart icon-box red-background" aria-hidden="true"></i>
+          </span>
+          <span class="menu-text">KPI</span>
+        </a>
+        <ul class="sidebar-submenu <%= active_menu_dropdown_class(:kpi) %>">
+          <li class="menu-subtitle">KPI</li>
+          <li>
+            <a href="<%= sales_kpis_path %>" aria-haspopup="true" class="<%= active_submenu_item_class(:sales_kpi) %>">
+              <%# <span class="menu-icon">
+                <i class="fa fa-line-chart" aria-hidden="true"></i>
+              </span> %>
+              <span class="menu-text">Sales KPI</span>
+            </a>
+            <a href="<%= marketing_kpis_path %>" aria-haspopup="true" class="<%= active_submenu_item_class(:marketing_kpi) %>">
+              <%# <span class="menu-icon">
+                <i class="fa fa-line-chart" aria-hidden="true"></i>
+              </span> %>
+              <span class="menu-text">Marketing KPI</span>
+            </a>
+            <a href="<%= status_board_clients_path %>" aria-haspopup="true" class="<%= active_submenu_item_class(:product_support_kpi) %>">
+              <%# <span class="menu-icon">
+                <i class="fa fa-line-chart" aria-hidden="true"></i>
+              </span> %>
+              <span class="menu-text">Product Support KPI</span>
+            </a>
+            <a href="<%= reports_tickets_path %>" aria-haspopup="true" class="<%= active_submenu_item_class(:ticket_report) %>">
+              <%# <span class="menu-icon"><i class="fa fa-file-text" aria-hidden="true"></i></span> %>
+              <span class="menu-text">Ticket Report</span>
+            </a>
+            <a href="<%= account_manager_performance_kpis_path %>" aria-haspopup="true" class="<%= active_submenu_item_class(:account_manager_performance) %>">
+              <%# <span class="menu-icon"><i class="fa fa-user" aria-hidden="true"></i></span> %>
+              <span class="menu-text">Account Manager Performance</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <%# if (current_user.has_role? :super_admin) %>
+        <li class="with-sub <%= active_menu_class(:settings) %>">
+          <a href="javascript:void(0)" aria-haspopup="true">
+            <span class="menu-icon">
+              <i class="fa" aria-hidden="true">
+                <%= image_tag("sidebar/ic_settings.svg") %>
+              </i>
+            </span>
+            <span class="menu-text">Settings </span>
+          </a>
+          <ul class="sidebar-submenu <%= active_menu_dropdown_class(:settings) %>">
+            <li class="menu-subtitle">Settings</li>
+            <li>
+              <a href="<%=settings_url%>" aria-haspopup="true" class="<%= active_submenu_item_class(:crm_settings) %>">
+                <%# <span class="menu-icon"><i class="fa fa-cogs" aria-hidden="true"></i></span> %>
+                <span class="menu-text"> CRM Settings</span>
+              </a>
+            </li>
+            <li></li>
+          </ul>
+        </li>
+      <%# end %>
+    </ul>
+  </div>
+</div>
+<style>
+  .sidebar-menu>.active{
+    background-color: #4ca2fe;
+  }
+  .sidebar-menu>.active>span{
+    color: white;
+  }
+  .sidebar-menu>.with-sub>.sidebar-submenu{
+    background-color: #fff !important;
+  }
+  .sidebar-menu>.with-sub>.sidebar-submenu>li>a>span{
+    color: black !important;
+  }
+  .active-submenu-item{
+    background-color: #f6f6f9;
+  }
+  .site-left-sidebar::-webkit-scrollbar {
+    width: 0em;
+  }
+  .sidebar-menu a{
+    border-bottom: rgba(84, 84, 84, 0.04) 1px solid;
+  }
+  .sidebar-menu > li{
+    border-color: rgba(84, 84, 84, 0.04);
+  }
+  .sidebar-menu .icon-box {
+    width: 27px;
+    height: 27px;
+    border-radius: 4px;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .blue-background {background-color: #007aff;}
+  .orange-background {background-color: #fe9500;color: #fff;}
+  .red-background {background-color: #FE2D55;color: #fff;}
+</style>

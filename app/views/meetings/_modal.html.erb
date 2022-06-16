@@ -1,0 +1,23 @@
+<div class="modal fade" id="modal" role="dialog">
+  <div class="modal-dialog">
+    <%= form_for meeting, remote: true, class: 'form-inline' do |f| %>
+      <div id='flash_message'></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Meeting</h4>
+        </div>
+        <div class="modal-body">
+          <%= render 'form', f: f %>
+          <% if params[:meetingable].present? # used to persist meetingable between request %>
+            <%= hidden_field_tag :meetingable, params[:meetingable] %>
+          <% end %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <%= f.submit class: "btn btn-success" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

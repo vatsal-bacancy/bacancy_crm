@@ -1,0 +1,87 @@
+<div role="tabpanel" class="tab-pane fade in active" id="tab1">
+  <div class="col-md-12">
+    <div class="dynmic-tab-div-header dynmic-tab-sub-header inner-header mt15">
+      <div class="d-flex">
+        <div class="heading-wrapper">
+          <p class="heading">All Messages</p>
+        </div>
+        <div class="new-msg-div">
+          <%#= link_to "New Message", new_project_message_path(project_id: @project.id), remote: true %>
+        </div>
+      </div>
+    </div>
+
+    <div class="pl15 pr15">
+      <div class="row cl-both">
+        <div class="col-sm-5">
+          <div class="d-flex flex-align-center cm-dasboard-serach">
+            <!--<label class="blue-font">Show </label><select name="leads_length" aria-controls="leads" class="form-control"><option value="50">50</option><option value="100">100</option></select> <label>entries</label>-->
+          </div>
+        </div>
+        <div class="col-sm-7">
+          <div class="d-flex flex-align-center cm-dasboard-serach pull-right">
+            <label class="">Search</label>
+            <input type="search" class="form-control" placeholder="Search here" aria-controls="leads" id="search-msg">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12 mt10" id="msg-data">
+      <% object.messages.order(updated_at: :desc).each do |msg| %>
+        <div class="br-btm" id="msg-search">
+          <div>
+            <span class="name-msg mt10"><b><%= msg.resourcable.fullname %></b></span>
+            <span class="date-msg mt10">posted this message on <%= msg.created_at.strftime("%m/%d/%Y, %I:%M %p") %></span>
+          </div>
+          <div class="d-flex d-flex-wrap">
+          <h4 class="msg-link-msg mt10 message-display-inline cmn1">
+            <%= link_to  msg.title, contacts_project_message_path(object, msg), class: "" %>
+          </h4>
+          <% if msg.resourcable == current_contact %>
+            <div class=" m-t-10 message-display-inline cmn2">
+              <div class="action-icon">
+                <%= link_to edit_contacts_project_message_path(object, msg),remote: true do %>
+                  <i class="fa fa-pencil" aria-hidden="true"></i>
+                <% end %>
+              </div>
+              <div class="action-icon">
+                <%= link_to contacts_project_message_path(object, msg),method: :delete, data: {confirm: "Are you sure?"},  remote: true do %>
+                  <i class="fa fa-trash " aria-hidden="true"></i>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+          <div class="row">
+            <div class="col-sm-12 p-mr-20 mt20 message-description"> 
+              <%= msg.description.html_safe %>
+            </div>
+          </div>
+          <div class="mt30 mb5">
+          <%if msg.messageable_type == 'Project'%>
+            <%= link_to  "Go to message", contacts_project_message_path(object, msg), class: "inner-msg-link" %>
+            <% comment = pluralize(msg.messages.count, 'comment') %> <span> | </span>
+            <%= link_to  comment, contacts_project_message_path(object, msg), class: "inner-msg-link" %>
+          <%elsif msg.messageable_type == 'Ticket'%>
+            <%= link_to  "Go to message", contacts_ticket_message_path(object, msg), class: "inner-msg-link" %>
+            <% comment = pluralize(msg.messages.count, 'comment') %> <span> | </span>
+            <%= link_to  comment, contacts_ticket_message_path(object, msg), class: "inner-msg-link" %>
+          <%end%>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+$(document).ready(function(){
+  $("#search-msg").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#msg-data #msg-search").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>

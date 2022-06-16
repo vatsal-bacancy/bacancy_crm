@@ -1,0 +1,86 @@
+<div class="modal fade" id="ticketModal" role="dialog">
+  <div class="modal-dialog">
+  <%= form_for ticket, remote: true, class: 'form-inline', html: { multipart: true } do |f|  %>
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><%= ticket.new_record? ? 'Create' : 'Update' %> Ticket</h4>
+      </div>
+      <div class="modal-body">
+        <%if ticketable.present? %>
+          <%= f.hidden_field :ticketable, value: "#{ticketable.class.name}:#{ticketable.id}"%>
+        <%else%>
+          <div class='row block-ui-box m-t-5 m-r-5'>
+            <p class="title">
+              <h3 class="title m-l-10 p-b-5"></h3>
+            </p>
+
+            <div class='col-md-12 '>
+              <div class="form-group ">
+                <%= f.label :company_name %><span class="required">*</span>
+                <%= f.select :ticketable, grouped_options_for_select(grouped_options, "#{f.object.ticketable_type}:#{f.object.ticketable_id}" ),
+                    { prompt: 'Select Company Name' }, { required: true, class: "form-control select_modules", style: "width:100%;",  "data-live-search": "true", id: "selectData" } %>
+              </div>
+            </div>
+          </div>
+        <%end%>
+        <%= render 'form', ticket: ticket, users: users, f: f %>
+        <div id='contacts-container'>
+          <%if f.object.ticketable%>
+            <%= render partial: 'contacts_list', locals: {ticketable: f.object.ticketable, ticket: ticket}%>
+          <%end%>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <%= f.submit class: 'btn btn-success' %>
+      </div>
+    </div>
+  <% end %>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $('#selectData').select2({theme: 'bootstrap'});
+    $('.btn.dropdown-toggle.btn-default').on('click', function(){
+        $(".btn-group.bootstrap-select.form-control.select_modules").addClass('open');
+    });
+
+    $('#selectData').on('change', function(){
+      $.ajax({
+        url: "<%= contacts_list_tickets_path %>",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: 'GET',
+        data: {
+          ticketable: $(this).val(),
+          ticket_id: "<%= ticket.id %>"
+        },
+        dataType: "script"
+      });
+    });
+
+    $(".remove-file").on('click', function(){
+      var id = $(this).data('id');
+      var object_id = "<%= ticket.id %>"
+      var object_type = "<%= ticket.class.name %>"
+      $.ajax({
+        url: "/documents/" + id + "?object_id=" + object_id + ";object_type=" + object_type,
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        type: 'delete',
+        data: {
+          id: id,
+          file_remove: true
+        },
+        dataType: "script",
+        success: function(result){
+
+        }
+      });
+      $(this).siblings(".file-name").addClass("hidden");
+      $(this).addClass("hidden");
+    });
+  });
+</script>
