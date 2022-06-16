@@ -104,8 +104,8 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.middleware.use ExceptionNotification::Rack, email: {
-    email_prefix: 'iPos CRM Exception ',
-    sender_address: %{"notifier" <notifier@ipointofsale.com>},
+    email_prefix: 'BACANCY CRM Exception ',
+    sender_address: %{"notifier" <notifier@bacancy.com>},
     exception_recipients: %W{#{ENV['DEVELOPER_EMAIL']}}
   }
 end

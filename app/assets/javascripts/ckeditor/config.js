@@ -36,13 +36,13 @@ CKEDITOR.editorConfig = function (config) {
   ];
 
 
-  CKEDITOR.plugins.addExternal( 'youtube', '/ckeditor/plugins/youtube/' );
+  // CKEDITOR.plugins.addExternal( 'youtube', '/ckeditor/plugins/youtube/' );
 
-  // for automatic height adjustment
-  CKEDITOR.plugins.addExternal( 'autogrow', '/ckeditor/plugins/autogrow/' );
-  config.autoGrow_minHeight = 250;
-  config.autoGrow_maxHeight = 1000;
-  config.autoGrow_onStartup = true;
+  // // for automatic height adjustment
+  // CKEDITOR.plugins.addExternal( 'autogrow', '/ckeditor/plugins/autogrow/' );
+  // config.autoGrow_minHeight = 250;
+  // config.autoGrow_maxHeight = 1000;
+  // config.autoGrow_onStartup = true;
 
-  config.extraPlugins = 'youtube, autogrow';
+  // config.extraPlugins = 'youtube, autogrow';
 };

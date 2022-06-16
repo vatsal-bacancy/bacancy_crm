@@ -214,25 +214,6 @@
         </li>
       <%end%>
 
-      <li class="with-sub <%= active_menu_class(:ipos_marketing_tools) %>">
-        <a href="javascript:void(0)" aria-haspopup="true">
-          <span class="menu-icon">
-            <i class="fa  main-fa" aria-hidden="true">
-              <%= image_tag("sidebar/ic_marketplace.svg") %>
-            </i>
-          </span>
-          <span class="menu-text">Marketing Tools</span>
-        </a>
-        <ul class="sidebar-submenu <%= active_menu_dropdown_class(:ipos_marketing_tools) %>">
-          <li class="menu-subtitle">Marketplace</li>
-          <li>
-            <a href="<%= ipos_marketing_tools_path %>" aria-haspopup="true" class="<%= active_submenu_item_class(:marketplace) %>">
-              <span class="menu-text">Marketplace</span>
-            </a>
-          </li>
-        </ul>
-      </li>
-
       <% if checked_permission?(current_user, @klass_list["cEmail"], @action_list["read"]) %>
         <li class="with-sub dropdown-none <%= active_menu_class(:mail_manager) %>">
           <a href="<%= emails_path %>" aria-haspopup="true">

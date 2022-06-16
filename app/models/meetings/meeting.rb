@@ -93,7 +93,7 @@ module Meetings
                       <div style="margin-bottom: 20px;">
                       <img src="https://iposcrm.com/assets/iPos-logo.png" alt="iPos logo">
                       </div>
-                      <h2 style="font-family: Poppins, sans-serif; font-size:28px; color: #111111; font-weight:600; margin-bottom: 20px;">iPos CRM</h2>
+                      <h2 style="font-family: Poppins, sans-serif; font-size:28px; color: #111111; font-weight:600; margin-bottom: 20px;">BACANCY CRM</h2>
                       <p style="font-family: Poppins, sans-serif; font-size:18px; color: #888888;">Deployment/Training Details.</p>
                     </td>
                   </tr>

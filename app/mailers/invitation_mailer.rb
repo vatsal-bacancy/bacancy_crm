@@ -4,7 +4,7 @@ class InvitationMailer < ApplicationMailer
 	def user_login_instructions(opts)
 		@user = User.find(opts[:user_id])
 		@current_user = User.find(opts[:current_user_id])
-		mail to: @user.email, subject: "#{@current_user.fullname} has invited you to join them in iPos CRM"
+		mail to: @user.email, subject: "#{@current_user.fullname} has invited you to join them in BACANCY CRM"
 	end
 
 	# if user not present (send signup email to set password)
@@ -13,14 +13,14 @@ class InvitationMailer < ApplicationMailer
 		@current_user = User.find(opts[:current_user_id])
 		@token = opts[:token]
 		@client = Client.find(opts[:client_id]) if opts[:client_id]
-		mail(to: @user.email, subject: "#{@current_user.fullname} has invited you to join them in iPos CRM")
+		mail(to: @user.email, subject: "#{@current_user.fullname} has invited you to join them in BACANCY CRM")
 	end
 
 	# if contact already present (send login email)
 	def contact_login_instructions(opts)
 		@contact = Contact.find(opts[:contact_id])
 		@current_user = User.find(opts[:current_user_id])
-		mail to: @contact.email, subject: "#{@current_user.fullname} has invited you to join them in iPos CRM"
+		mail to: @contact.email, subject: "#{@current_user.fullname} has invited you to join them in BACANCY CRM"
 	end
 
 	# if contact not present (send signup email to set password)
@@ -28,7 +28,7 @@ class InvitationMailer < ApplicationMailer
 		@contact = Contact.find(opts[:contact_id])
 		@current_user = User.find(opts[:current_user_id])
 		@token = opts[:token]
-		mail(to: @contact.email, subject: "#{@current_user.fullname} has invited you to join them in iPos CRM")
+		mail(to: @contact.email, subject: "#{@current_user.fullname} has invited you to join them in BACANCY CRM")
 	end
 
 	#send project invitation to contact

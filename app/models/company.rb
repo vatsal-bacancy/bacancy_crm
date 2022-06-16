@@ -12,7 +12,7 @@ class Company < ApplicationRecord
 
   def big_image
     #logo-left --> with white bg
-    self.big_logo.present? ? "#{self.big_logo.url}?_=#{Time.now.to_i}" : 'iPos-logo.svg'
+    self.big_logo.present? ? "#{self.big_logo.url}?_=#{Time.now.to_i}" : 'bacancy-logo-black.svg'
   end
 
   def small_image
@@ -20,7 +20,7 @@ class Company < ApplicationRecord
   end
 
   def white_background_image
-    :"ic_ipos_white.svg"
+    :"bacancy_white_logo.svg"
   end
 
   def fevicon_image
