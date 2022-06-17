@@ -11,7 +11,6 @@ gem 'rails', '5.2.4.2'
 # Use postgresql as the database adapter for ActiveRecord
 gem 'pg'
 
-gem 'mimemagic', '~> 0.3.10'
 # Use Puma as the app server
 gem 'puma', '~> 3.7'
 
