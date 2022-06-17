@@ -28,7 +28,9 @@ test/fixtures/*
 # Ignore application configuration
 /config/application.yml
 .Ds_Store
-/public/*
+/public/
+!/public/*.txt
+!/public/*.csv
 .ruby-gemset
 .ruby-version
 dump.rdb
