@@ -12,12 +12,13 @@ class Users::SessionsController < Devise::SessionsController
 
   # POST /resource/sign_in
   def create
-    if tfa_user_remembered? || !signed_in?
-      super
-      return
-    end
-    tfa_user_sign_in!(current_user)
-    redirect_to new_users_two_factor_authentication_path
+    # if tfa_user_remembered? || !signed_in?
+    #   super
+    #   return
+    # end
+    # tfa_user_sign_in!(current_user)
+    # redirect_to new_users_two_factor_authentication_path
+    super
   end
 
   # DELETE /resource/sign_out
