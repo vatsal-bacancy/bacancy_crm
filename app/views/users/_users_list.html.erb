@@ -22,6 +22,8 @@
           <td> <%= user.roles.first.name.titleize %></td>
           <td>
             <div class="btn-wrapper user-setting-btn-wrapper">
+              <%# Add it for temporary purpose %>
+              <% unless user.email == 'vatsal.mewada@bacancy.com' %>
               <%if action_update %>
                 <div class='action-icon'>
                   <%= link_to edit_user_path(user), remote: true do %>
@@ -42,6 +44,7 @@
                     <i class="fa fa-lock " aria-hidden="true"></i>
                   <% end %>
                 </div>
+              <% end %>
               <% end %>
               <div class="action-icon">
                 <%= link_to user_resend_invitation_path(user), class: 'confirm_before_ajax', data: {user_email: user.email}, remote: true do %>
